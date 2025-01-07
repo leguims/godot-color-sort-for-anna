@@ -1,0 +1,9 @@
+[gd_scene load_steps=2 format=3 uid="uid://dgx5nqu515xpv"]
+
+[ext_resource type="Texture2D" uid="uid://csp18gy1hwp8q" path="res://Scenes/Jeton/Sprites/cube_rouge_16x16.png" id="1_kxktg"]
+
+[node name="Jeton" type="CharacterBody2D"]
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+position = Vector2(1, 0)
+texture = ExtResource("1_kxktg")

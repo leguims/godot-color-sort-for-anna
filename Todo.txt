@@ -1,0 +1,25 @@
+Liste et organisation pour Godot:
+	- Jeton : cube de couleur
+		- contient la repesentation d'un jeton
+
+	- Pile : Colonne sur un plateau de jeu
+		- Contient les regles de jeu subjectives :
+			- Accepte un/des jeton(s) de couleur,
+			- Donne un/des jeton(s) de couleur,
+			- Est_terminé (colonne pleine mono-couleur),
+			- Est_vide (aucun jeton dans la pile),
+			- Est_pleine (aucune emplacement vide dans la pile)
+		- Contient les caractéritstiques de la pile :
+			- taille
+			- Liste des jetons actuels
+
+	- Plateau : ensemble des piles de jeu
+		- Associe plusieurs piles pour former le plateau
+		- Contient les regles subjectives :
+			- Liste des mouvements autorisés,
+			- Est_terminé (toutes les colonnes sont terminées),
+			- Est_bloqué (la liste des mouvements autorisés est vide)
+
+	- Menu :
+		- Page d'accueil
+		- Liens entre les plateaux
