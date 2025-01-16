@@ -2,23 +2,24 @@ extends Node
 
 class_name Jeton
 
-var jetons = [
-	['A', Color('RED')],
-	['B', Color('BLUE_VIOLET')],
-	['C', Color('FOREST_GREEN')],
-	['D', Color('CORAL')],
-	['E', Color('SADDLE_BROWN')],
-	['F', Color('DEEP_SKY_BLUE')],
-	['G', Color('MAGENTA')],
-	['H', Color('TOMATO')],
-	['I', Color('BLUE')],
+var jetons = {
+	0: ['A', Color('RED')],
+	1: ['B', Color('BLUE_VIOLET')],
+	3: ['C', Color('FOREST_GREEN')],
+	4: ['D', Color('CORAL')],
+	5: ['E', Color('SADDLE_BROWN')],
+	6: ['F', Color('DEEP_SKY_BLUE')],
+	7: ['G', Color('MAGENTA')],
+	8: ['H', Color('TOMATO')],
+	9: ['I', Color('BLUE')],
 	# ['J', Color('WEB_PURPLE')] # 'J' est hors cadre !
-	['K', Color('VIOLET')],
-	['L', Color('TEAL')],
-	['M', Color('SLATE_GRAY')],
-	['N', Color('SANDY_BROWN')],
-	['O', Color('SALMON')]
-]
+	10: ['K', Color('VIOLET')],
+	11: ['L', Color('TEAL')],
+	12: ['M', Color('SLATE_GRAY')],
+	13: ['N', Color('SANDY_BROWN')],
+	14: ['O', Color('SALMON')],
+	32: [' ', Color('DARK_MAGENTA')] # DARK_VIOLET # DARK_MAGENTA # INDIGO # REBECCA_PURPLE # WEB_PURPLE
+}
 
 @export var indice_jeton = 0
 var couleur
@@ -42,7 +43,7 @@ func _process(_delta: float) -> void:
 	pass
 
 func choisir_jeton(indice : int) -> void:
-	if 0 <= indice and indice < len(jetons):
+	if indice in jetons:
 		indice_jeton = indice
 		nom = jetons[indice_jeton][0]
 		couleur = jetons[indice_jeton][1]
@@ -58,3 +59,6 @@ func choisir_position(position : Vector2) -> void:
 
 func hauteur() -> int:
 	return $Carre.size.y
+
+func largeur() -> int:
+	return $Carre.size.x

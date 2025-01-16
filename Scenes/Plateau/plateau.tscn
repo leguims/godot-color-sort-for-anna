@@ -7,7 +7,7 @@
 script = ExtResource("1_yvses")
 pile_scene = ExtResource("2_7hnmy")
 
-[node name="fond" type="ColorRect" parent="."]
-offset_right = 40.0
-offset_bottom = 40.0
-color = Color(0.405212, 0.000120134, 0.408483, 1)
+[node name="Fond" type="ColorRect" parent="."]
+offset_right = 480.0
+offset_bottom = 720.0
+color = Color(0.34363, 8.53118e-05, 0.346463, 1)
