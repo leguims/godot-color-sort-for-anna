@@ -1,9 +1,22 @@
 [gd_scene load_steps=2 format=3 uid="uid://dgx5nqu515xpv"]
 
-[ext_resource type="Texture2D" uid="uid://csp18gy1hwp8q" path="res://Scenes/Jeton/Sprites/cube_rouge_16x16.png" id="1_kxktg"]
+[ext_resource type="Script" path="res://Scenes/Jeton/jeton.gd" id="1_lccag"]
 
-[node name="Jeton" type="CharacterBody2D"]
+[node name="Jeton" type="Node"]
+script = ExtResource("1_lccag")
 
-[node name="Sprite2D" type="Sprite2D" parent="."]
-position = Vector2(1, 0)
-texture = ExtResource("1_kxktg")
+[node name="Carre" type="ColorRect" parent="."]
+editor_description = "CRIMSON"
+offset_right = 32.0
+offset_bottom = 32.0
+color = Color(0.862745, 0.0784314, 0.235294, 1)
+
+[node name="Nom" type="Label" parent="."]
+offset_top = -16.0
+offset_right = 32.0
+offset_bottom = 48.0
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 30
+text = "A"
+horizontal_alignment = 1
+vertical_alignment = 1

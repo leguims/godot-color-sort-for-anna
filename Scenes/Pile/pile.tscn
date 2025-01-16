@@ -1,3 +1,8 @@
-[gd_scene format=3 uid="uid://xl5sym5dtjpg"]
+[gd_scene load_steps=3 format=3 uid="uid://xl5sym5dtjpg"]
 
-[node name="Pile" type="Node2D"]
+[ext_resource type="Script" path="res://Scenes/Pile/pile.gd" id="1_royl6"]
+[ext_resource type="PackedScene" uid="uid://dgx5nqu515xpv" path="res://Scenes/Jeton/jeton.tscn" id="2_qesri"]
+
+[node name="Pile" type="Node"]
+script = ExtResource("1_royl6")
+jeton_scene = ExtResource("2_qesri")

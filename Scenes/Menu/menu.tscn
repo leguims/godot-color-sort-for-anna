@@ -1,3 +1,16 @@
-[gd_scene format=3 uid="uid://dmma372owfsn0"]
+[gd_scene format=3 uid="uid://xsrt777ms37l"]
 
-[node name="Menu" type="Node2D"]
+[node name="Menu" type="Node"]
+
+[node name="Label" type="Label" parent="."]
+offset_left = 37.0
+offset_top = 28.0
+offset_right = 82.0
+offset_bottom = 103.0
+scale = Vector2(1.97041, 1.9826)
+theme_override_colors/font_color = Color(0.77084, 0.770839, 0.770839, 1)
+theme_override_colors/font_shadow_color = Color(0.54099, 0.54099, 0.54099, 1)
+text = "Color
+Wood
+Sort"
+horizontal_alignment = 1

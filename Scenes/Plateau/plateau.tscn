@@ -1,3 +1,13 @@
-[gd_scene format=3 uid="uid://cfqcdseqsuy1l"]
+[gd_scene load_steps=3 format=3 uid="uid://cfqcdseqsuy1l"]
 
-[node name="Plateau" type="Node2D"]
+[ext_resource type="Script" path="res://Scenes/Plateau/plateau.gd" id="1_yvses"]
+[ext_resource type="PackedScene" uid="uid://xl5sym5dtjpg" path="res://Scenes/Pile/pile.tscn" id="2_7hnmy"]
+
+[node name="Plateau" type="Node"]
+script = ExtResource("1_yvses")
+pile_scene = ExtResource("2_7hnmy")
+
+[node name="fond" type="ColorRect" parent="."]
+offset_right = 40.0
+offset_bottom = 40.0
+color = Color(0.405212, 0.000120134, 0.408483, 1)

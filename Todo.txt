@@ -12,6 +12,10 @@ Liste et organisation pour Godot:
 		- Contient les caractéritstiques de la pile :
 			- taille
 			- Liste des jetons actuels
+		- Encodage d'une pile:
+			- "AAAA" = 4x'A' sur une pile de 4
+			- "AAAA--" = 4x'A' + 2x' ' sur une pile de 6
+			- "ABC-" = 3x blocs et 1 case vide
 
 	- Plateau : ensemble des piles de jeu
 		- Associe plusieurs piles pour former le plateau
@@ -19,7 +23,18 @@ Liste et organisation pour Godot:
 			- Liste des mouvements autorisés,
 			- Est_terminé (toutes les colonnes sont terminées),
 			- Est_bloqué (la liste des mouvements autorisés est vide)
+		- Encodage de plateau:
+			- "AABB.BBAA.----" signifie :
+				- pile 1 : "AABB"
+				- pile 2 : "BBAA"
+				- pile 3 : vide
+			- "ABAB.BABA.----.-"
+				- pile 1 : "ABAB"
+				- pile 2 : "BABA"
+				- pile 3 : vide (4 emplacements)
+				- pile 4 : vide (1 emplacement)
 
 	- Menu :
 		- Page d'accueil
 		- Liens entre les plateaux
+		- Ligne de saisie pour générer un plateau à résoudre.
