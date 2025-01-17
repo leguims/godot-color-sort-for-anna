@@ -1,5 +1,7 @@
 extends Node
 
+class_name Plateau
+
 @export var pile_scene: PackedScene
 var liste_piles = []
 var string2int = {}
@@ -10,19 +12,19 @@ func _ready() -> void:
 		#creer_un_plateau( [ range(4), range(2,6), range(2,4) ] )
 		decoder_pile('AABC')
 		decoder_pile('ABCG')
-		var plateau #= decoder_plateau("ABC.AAB.CC .   ")
-		#creer_un_plateau(plateau)
+		var plateau = decoder_plateau("ABC.AAB.CC .   ")
+		creer_un_plateau(plateau)
 		
 		# Sleep
-		#await get_tree().create_timer(10.0).timeout
-		#effacer_le_plateau()
+		await get_tree().create_timer(10.0).timeout
+		effacer_le_plateau()
 		
-		#plateau = decoder_plateau("ABC.AAB.CC .   .EFG.MNOMNONONONONO")
-		#creer_un_plateau(plateau)
+		plateau = decoder_plateau("ABC.AAB.CC .   .EFG.MNOMNONONONONO")
+		creer_un_plateau(plateau)
 		
 		# Sleep
-		#await get_tree().create_timer(10.0).timeout
-		#effacer_le_plateau()
+		await get_tree().create_timer(10.0).timeout
+		effacer_le_plateau()
 		
 		plateau = decoder_plateau("AB.CJ.AAB.CC .   .DEFG.HIJKLMJ.NO.MNO.NON.ONO.NO")
 		creer_un_plateau(plateau)
@@ -113,4 +115,6 @@ func calculer_la_position_de_la_pile(nb_piles : int, indice_pile : int) -> Vecto
 
 func effacer_le_plateau() -> void:
 	for pile in liste_piles:
+		pile.effacer_la_pile()
 		pile.queue_free()
+	liste_piles.clear()

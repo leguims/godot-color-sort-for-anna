@@ -1,5 +1,7 @@
 extends Node
 
+class_name Pile
+
 @export var jeton_scene: PackedScene
 var liste_jetons = []
 var position = Vector2(0, 720)
@@ -57,3 +59,9 @@ func hauteur() -> int:
 	if liste_jetons:
 		return (liste_jetons[0].hauteur() + 2) * len(liste_jetons)
 	return 0
+
+func effacer_la_pile() -> void:
+	for jeton in liste_jetons:
+		jeton.queue_free()
+	position = Vector2(0, 720)
+	liste_jetons.clear()
