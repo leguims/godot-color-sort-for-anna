@@ -10,17 +10,21 @@ func _ready() -> void:
 		#creer_un_plateau( [ range(4), range(2,6), range(2,4) ] )
 		decoder_pile('AABC')
 		decoder_pile('ABCG')
-		var plateau = decoder_plateau("ABC.AAB.CC .   ")
+		var plateau #= decoder_plateau("ABC.AAB.CC .   ")
 		#creer_un_plateau(plateau)
 		
 		# Sleep
 		#await get_tree().create_timer(10.0).timeout
 		#effacer_le_plateau()
 		
-		plateau = decoder_plateau("ABC.AAB.CC .   .EFG.MNOMNONONONONO")
+		#plateau = decoder_plateau("ABC.AAB.CC .   .EFG.MNOMNONONONONO")
 		#creer_un_plateau(plateau)
 		
-		plateau = decoder_plateau("AB.C.AAB.CC .   .EFG.M.NO.MNO.NON.ONO.NO")
+		# Sleep
+		#await get_tree().create_timer(10.0).timeout
+		#effacer_le_plateau()
+		
+		plateau = decoder_plateau("AB.CJ.AAB.CC .   .DEFG.HIJKLMJ.NO.MNO.NON.ONO.NO")
 		creer_un_plateau(plateau)
 		var scr_size = DisplayServer.screen_get_size()
 		var win_size = DisplayServer.window_get_size()

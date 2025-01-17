@@ -5,14 +5,14 @@ class_name Jeton
 var jetons = {
 	0: ['A', Color('RED')],
 	1: ['B', Color('BLUE_VIOLET')],
-	3: ['C', Color('FOREST_GREEN')],
-	4: ['D', Color('CORAL')],
-	5: ['E', Color('SADDLE_BROWN')],
-	6: ['F', Color('DEEP_SKY_BLUE')],
-	7: ['G', Color('MAGENTA')],
-	8: ['H', Color('TOMATO')],
-	9: ['I', Color('BLUE')],
-	# ['J', Color('WEB_PURPLE')] # 'J' est hors cadre !
+	2: ['C', Color('FOREST_GREEN')],
+	3: ['D', Color('CORAL')],
+	4: ['E', Color('SADDLE_BROWN')],
+	5: ['F', Color('DEEP_SKY_BLUE')],
+	6: ['G', Color('MAGENTA')],
+	7: ['H', Color('TOMATO')],
+	8: ['I', Color('BLUE')],
+	9: ['J', Color('CORNFLOWER_BLUE')], # 'J' est hors cadre !
 	10: ['K', Color('VIOLET')],
 	11: ['L', Color('TEAL')],
 	12: ['M', Color('SLATE_GRAY')],
@@ -32,6 +32,8 @@ func _ready() -> void:
 	# Enregistrer les positions initiales
 	position_initiale_carre = $Carre.position
 	position_initiale_nom = $Nom.position
+	if false:
+		choisir_jeton(9)
 	while false:
 		for i in range(len(jetons)):
 			choisir_jeton(i)
@@ -49,6 +51,11 @@ func choisir_jeton(indice : int) -> void:
 		couleur = jetons[indice_jeton][1]
 		$Carre.color = couleur
 		$Nom.text = nom
+		if nom == 'J':
+			# La lettre 'J' sort de son carré
+			var font_size = $Nom.get_theme_font_size("font_size")
+			$Nom.add_theme_font_size_override("font_size", font_size - 2)
+			position_initiale_nom.y -= 3
 
 func choisir_position(position : Vector2) -> void:
 	$Carre.set_position(position_initiale_carre + position)

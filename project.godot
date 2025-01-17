@@ -10,7 +10,8 @@ config_version=5
 
 [application]
 
-config/name="godot_color_wood_sort"
+config/name="godot color wood sort"
+config/description="Jeu de tri de jeton de couleurs."
 run/main_scene="res://Scenes/Jeton/jeton.tscn"
 config/features=PackedStringArray("4.3", "GL Compatibility")
 config/icon="res://icon.svg"
