@@ -5,6 +5,7 @@ class_name Plateau
 @export var pile_scene: PackedScene
 var liste_piles = []
 var string2int = {}
+static var ESPACE = 32
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
@@ -53,13 +54,13 @@ func decoder_pile(pile_texte : String) -> Array:
 	if not string2int:
 		for i in range(26):
 			string2int[String.chr(65+i)] = i
-		string2int[String.chr(32)] = 32 # chr(32)=' '
+		string2int[String.chr(ESPACE)] = ESPACE # chr(ESPACE)=' '
 	for c in pile_texte:
 		pile_liste.append(string2int[c])
 	print("  decoder_pile : ", pile_texte, " => ", pile_liste)
 	return pile_liste
 
-func creer_un_plateau(piles : Array) -> void:
+func creer_un_plateau(piles : Array) -> bool:
 	for pile_courante in piles:
 		# Créer une nouvelle instance de la scene 'Jeton'.
 		var pile = pile_scene.instantiate()
@@ -70,13 +71,19 @@ func creer_un_plateau(piles : Array) -> void:
 		liste_piles.append(pile)
 		
 		# Créer la pile
-		pile.ajouter_les_jetons(pile_courante)
-		# TODO : Traiter le cas d'une pile invalide.
+		var valide = pile.ajouter_les_jetons(pile_courante)
+		# Traiter le cas d'une pile invalide.
+		if not valide:
+			# la pile est invalide, le plateau aussi
+			effacer_le_plateau()
+			return false
+		
 
 		# Definir la position de la pile sur le plateau
 		var position_pile = calculer_la_position_de_la_pile(len(piles), len(liste_piles)-1)
 		#print("creer_un_plateau : position_pile = ", position_pile)
 		pile.choisir_position( position_pile )
+	return true # plateau valide
 
 func calculer_la_position_de_la_pile(nb_piles : int, indice_pile : int) -> Vector2:
 	var marge_y = 50

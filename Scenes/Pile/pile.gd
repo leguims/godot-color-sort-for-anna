@@ -9,6 +9,14 @@ var position = Vector2(0, 720)
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
 	if false:
+		var valide
+		valide = est_valide([0,3,32])
+		print("est_valide([0,3,32]) = ",valide)
+		valide = est_valide([32,0,3])
+		print("est_valide([32,0,3]) = ",valide)
+		valide = est_valide([0,32,3])
+		print("est_valide([0,32,3]) = ",valide)
+	if false:
 		ajouter_les_jetons(range(14))
 	pass
 
@@ -17,7 +25,11 @@ func _ready() -> void:
 func _process(delta: float) -> void:
 	pass
 
-func ajouter_les_jetons(jetons : Array) -> void:
+func ajouter_les_jetons(jetons : Array) -> bool:
+	# Vérifier la validité de la pile
+	if not est_valide(jetons):
+		return false # pile invalide
+	
 	for jeton_courant in jetons:
 		# Créer une nouvelle instance de la scene 'Jeton'.
 		var jeton = jeton_scene.instantiate()
@@ -34,6 +46,7 @@ func ajouter_les_jetons(jetons : Array) -> void:
 
 		# Definir le type du jeton
 		jeton.choisir_jeton(jeton_courant)
+	return true # pile valide
 
 func choisir_position(nouvelle_position : Vector2) -> void:
 	position = nouvelle_position
@@ -65,3 +78,13 @@ func effacer_la_pile() -> void:
 		jeton.queue_free()
 	position = Vector2(0, 720)
 	liste_jetons.clear()
+
+func est_valide(jetons : Array) -> bool:
+	var vide = false
+	# Les cases vides sont en haut de la pile
+	for jeton_courant in jetons:
+		if not vide and jeton_courant == Plateau.ESPACE:
+			vide = true
+		elif vide and jeton_courant != Plateau.ESPACE:
+			return false
+	return true

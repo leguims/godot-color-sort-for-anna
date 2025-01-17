@@ -18,7 +18,7 @@ var jetons = {
 	12: ['M', Color('SLATE_GRAY')],
 	13: ['N', Color('SANDY_BROWN')],
 	14: ['O', Color('SALMON')],
-	32: [' ', Color('DARK_MAGENTA')] # DARK_VIOLET # DARK_MAGENTA # INDIGO # REBECCA_PURPLE # WEB_PURPLE
+	Plateau.ESPACE: [' ', Color('DARK_MAGENTA')] # DARK_VIOLET # DARK_MAGENTA # INDIGO # REBECCA_PURPLE # WEB_PURPLE
 }
 
 @export var indice_jeton = 0
