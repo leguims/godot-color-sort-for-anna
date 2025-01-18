@@ -21,7 +21,7 @@ var _jetons = {
 	Plateau.ESPACE: [' ', Color('DARK_MAGENTA')] # DARK_VIOLET # DARK_MAGENTA # INDIGO # REBECCA_PURPLE # WEB_PURPLE
 }
 
-@export var indice_jeton = 0
+@export var indice_jeton = Plateau.ESPACE
 var couleur
 var nom
 var position_initiale_carre : Vector2 #(0,0)
@@ -69,3 +69,6 @@ func hauteur() -> int:
 
 func largeur() -> int:
 	return $Carre.size.x
+
+func est_vide() -> bool:
+	return indice_jeton == Plateau.ESPACE

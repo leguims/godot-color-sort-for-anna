@@ -60,22 +60,20 @@ func _ready() -> void:
 func _process(delta: float) -> void:
 	pass
 
-func  commencer_un_nouveau_plateau(plateau_texte : String) -> bool:
-	var plateau = _decoder_plateau(plateau_texte)
-	var valide = _creer_un_plateau(plateau)
-	# TODO : Code de test
-	if true:
-		await get_tree().create_timer(5.0).timeout
-		#if randi_range(0, 1):
+func  commencer_un_nouveau_plateau(plateau_texte : String) -> void:
+	if est_valide(plateau_texte):
+		var plateau = _decoder_plateau(plateau_texte)
+		_creer_un_plateau(plateau)
+		# TODO : Code de test
 		if true:
-			fin_de_partie.emit()
-		else:
-			plateau_invalide.emit()
-	if not valide:
-		# TODO : Definir comment communiquer le plateau invalide : Booleen ou signal ?
+			await get_tree().create_timer(5.0).timeout
+			#if randi_range(0, 1):
+			if true:
+				fin_de_partie.emit()
+			else:
+				plateau_invalide.emit()
+	else:
 		plateau_invalide.emit()
-		return false
-	return true
 
 func effacer_le_plateau() -> void:
 	for pile in liste_piles:
@@ -112,7 +110,7 @@ func _decoder_pile(pile_texte : String) -> Array:
 	print("  decoder_pile : ", pile_texte, " => ", pile_liste)
 	return pile_liste
 
-func _creer_un_plateau(piles : Array) -> bool:
+func _creer_un_plateau(piles : Array) -> void:
 	for pile_courante in piles:
 		# Créer une nouvelle instance de la scene 'Jeton'.
 		var pile = pile_scene.instantiate()
@@ -129,14 +127,12 @@ func _creer_un_plateau(piles : Array) -> bool:
 			# la pile est invalide, le plateau aussi
 			effacer_le_plateau()
 			plateau_invalide.emit()
-			return false
 		
 
 		# Definir la position de la pile sur le plateau
 		var position_pile = _calculer_la_position_de_la_pile(len(piles), len(liste_piles)-1)
 		#print("_creer_un_plateau : position_pile = ", position_pile)
 		pile.choisir_position( position_pile )
-	return true # plateau valide
 
 func _calculer_la_position_de_la_pile(nb_piles : int, indice_pile : int) -> Vector2:
 	var marge_y = 50

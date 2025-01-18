@@ -44,12 +44,7 @@ func cacher_accueil():
 	$BoutonCommencer.hide()
 
 func _on_bouton_commencer_pressed() -> void:
-	# TODO : cacher_accueil()
 	commencer_plateau.emit()
-	# TODO : Code de test
-	if false:
-		await get_tree().create_timer(5.0).timeout
-		afficher_accueil()
 
 func _afficher_message(texte : String, temporaire : bool = true):
 	$Message.hide()
