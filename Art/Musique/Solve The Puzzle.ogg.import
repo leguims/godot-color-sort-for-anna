@@ -1,0 +1,19 @@
+[remap]
+
+importer="oggvorbisstr"
+type="AudioStreamOggVorbis"
+uid="uid://b0xpcrpr7dos3"
+path="res://.godot/imported/Solve The Puzzle.ogg-3cfd36036dd90b36e6c1635c3cf758c6.oggvorbisstr"
+
+[deps]
+
+source_file="res://Art/Musique/Solve The Puzzle.ogg"
+dest_files=["res://.godot/imported/Solve The Puzzle.ogg-3cfd36036dd90b36e6c1635c3cf758c6.oggvorbisstr"]
+
+[params]
+
+loop=false
+loop_offset=0
+bpm=0
+beat_count=0
+bar_beats=4

@@ -41,7 +41,7 @@ func ajouter_les_jetons(jetons : Array) -> bool:
 
 		# Definir la position du jeton dans la pile
 		var indice_jeton = len(liste_jetons)-1
-		var position_jeton = calculer_la_position_du_jeton(indice_jeton)
+		var position_jeton = _calculer_la_position_du_jeton(indice_jeton)
 		jeton.choisir_position( position_jeton )
 
 		# Definir le type du jeton
@@ -53,15 +53,9 @@ func choisir_position(nouvelle_position : Vector2) -> void:
 	var indice_jeton = 0
 	# Changer la position de tous les jetons
 	for jeton_courant in liste_jetons:
-		var position_jeton = calculer_la_position_du_jeton(indice_jeton)
+		var position_jeton = _calculer_la_position_du_jeton(indice_jeton)
 		jeton_courant.choisir_position( position_jeton )
 		indice_jeton += 1
-
-func calculer_la_position_du_jeton(indice_jeton : int) -> Vector2:
-	var position_jeton = position
-	# Inversion sur Y pour commencer à la base de la pile
-	position_jeton.y = position.y - indice_jeton * (liste_jetons[indice_jeton].hauteur() + 2)
-	return position_jeton
 
 func largeur() -> int:
 	if liste_jetons:
@@ -79,7 +73,7 @@ func effacer_la_pile() -> void:
 	position = Vector2(0, 720)
 	liste_jetons.clear()
 
-func est_valide(jetons : Array) -> bool:
+static func est_valide(jetons : Array) -> bool:
 	var vide = false
 	# Les cases vides sont en haut de la pile
 	for jeton_courant in jetons:
@@ -88,3 +82,9 @@ func est_valide(jetons : Array) -> bool:
 		elif vide and jeton_courant != Plateau.ESPACE:
 			return false
 	return true
+
+func _calculer_la_position_du_jeton(indice_jeton : int) -> Vector2:
+	var position_jeton = position
+	# Inversion sur Y pour commencer à la base de la pile
+	position_jeton.y = position.y - indice_jeton * (liste_jetons[indice_jeton].hauteur() + 2)
+	return position_jeton

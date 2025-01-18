@@ -2,6 +2,9 @@ extends Node
 
 class_name Plateau
 
+signal fin_de_partie
+signal plateau_invalide
+
 @export var pile_scene: PackedScene
 var liste_piles = []
 var string2int = {}
@@ -9,47 +12,96 @@ static var ESPACE = 32
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
-	if true:
-		#creer_un_plateau( [ range(4), range(2,6), range(2,4) ] )
-		decoder_pile('AABC')
-		decoder_pile('ABCG')
-		var plateau = decoder_plateau("ABC.AAB.CC .   ")
-		creer_un_plateau(plateau)
+	if false:
+		await get_tree().create_timer(15.0).timeout
+		fin_de_partie.emit()
+	if false:
+		await get_tree().create_timer(5.0).timeout
+		plateau_invalide.emit()
+	if false:
+		#_creer_un_plateau( [ range(4), range(2,6), range(2,4) ] )
+		_decoder_pile('AABC')
+		_decoder_pile('ABCG')
 		
+		var plateau = _decoder_plateau("ABC.AAB.CC .   ")
+		_creer_un_plateau(plateau)
 		# Sleep
-		await get_tree().create_timer(10.0).timeout
+		await get_tree().create_timer(5.0).timeout
 		effacer_le_plateau()
 		
-		plateau = decoder_plateau("ABC.AAB.CC .   .EFG.MNOMNONONONONO")
-		creer_un_plateau(plateau)
-		
+		plateau = _decoder_plateau("ABC.AAB.CC .   .EFG.MNOMNONONONONO")
+		_creer_un_plateau(plateau)
 		# Sleep
-		await get_tree().create_timer(10.0).timeout
+		await get_tree().create_timer(5.0).timeout
 		effacer_le_plateau()
 		
-		plateau = decoder_plateau("AB.CJ.AAB.CC .   .DEFG.HIJKLMJ.NO.MNO.NON.ONO.NO")
-		creer_un_plateau(plateau)
+		plateau = _decoder_plateau("AB.CJ.AAB.CC .   .DEFG.HIJKLMJ.NO.MNO.NON.ONO.NO")
+		_creer_un_plateau(plateau)
+		# Sleep
+		await get_tree().create_timer(5.0).timeout
+		effacer_le_plateau()
+
+		commencer_un_nouveau_plateau("ABC.AAB.CC .   ")
+		await get_tree().create_timer(5.0).timeout
+		effacer_le_plateau()
+		
+		commencer_un_nouveau_plateau("ABC.AAB.CC .   .EFG.MNOMNONONONONO")
+		await get_tree().create_timer(5.0).timeout
+		effacer_le_plateau()
+		
+		commencer_un_nouveau_plateau("AB.CJ.AAB.CC .   .DEFG.HIJKLMJ.NO.MNO.NON.ONO.NO")
+		
 		var scr_size = DisplayServer.screen_get_size()
 		var win_size = DisplayServer.window_get_size()
 		pass
 	pass
 
-
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta: float) -> void:
 	pass
 
-func decoder_plateau(plateau_texte : String) -> Array:
+func  commencer_un_nouveau_plateau(plateau_texte : String) -> bool:
+	var plateau = _decoder_plateau(plateau_texte)
+	var valide = _creer_un_plateau(plateau)
+	# TODO : Code de test
+	if true:
+		await get_tree().create_timer(5.0).timeout
+		#if randi_range(0, 1):
+		if true:
+			fin_de_partie.emit()
+		else:
+			plateau_invalide.emit()
+	if not valide:
+		# TODO : Definir comment communiquer le plateau invalide : Booleen ou signal ?
+		plateau_invalide.emit()
+		return false
+	return true
+
+func effacer_le_plateau() -> void:
+	for pile in liste_piles:
+		pile.effacer_la_pile()
+		pile.queue_free()
+	liste_piles.clear()
+
+func est_valide(plateau_texte : String) -> bool:
+	# Vérifier si chaque pile est valide
+	for pile in _decoder_plateau(plateau_texte):
+		if not Pile.est_valide(pile):
+			return false
+	return true
+
+func _decoder_plateau(plateau_texte : String) -> Array:
+	plateau_texte = plateau_texte.to_upper()
 	print("decoder_plateau : ", plateau_texte)
 	var plateau_liste = []
 	#plateau_texte = plateau_texte.replace(' ','')
 	for pile in plateau_texte.split('.'):
-		plateau_liste.append(decoder_pile(pile))
+		plateau_liste.append(_decoder_pile(pile))
 	print("  decoder_plateau : ", plateau_texte, " => ", plateau_liste)
 	print("decoder_plateau : fin")
 	return plateau_liste
 
-func decoder_pile(pile_texte : String) -> Array:
+func _decoder_pile(pile_texte : String) -> Array:
 	var pile_liste = []
 	if not string2int:
 		for i in range(26):
@@ -60,7 +112,7 @@ func decoder_pile(pile_texte : String) -> Array:
 	print("  decoder_pile : ", pile_texte, " => ", pile_liste)
 	return pile_liste
 
-func creer_un_plateau(piles : Array) -> bool:
+func _creer_un_plateau(piles : Array) -> bool:
 	for pile_courante in piles:
 		# Créer une nouvelle instance de la scene 'Jeton'.
 		var pile = pile_scene.instantiate()
@@ -76,16 +128,17 @@ func creer_un_plateau(piles : Array) -> bool:
 		if not valide:
 			# la pile est invalide, le plateau aussi
 			effacer_le_plateau()
+			plateau_invalide.emit()
 			return false
 		
 
 		# Definir la position de la pile sur le plateau
-		var position_pile = calculer_la_position_de_la_pile(len(piles), len(liste_piles)-1)
-		#print("creer_un_plateau : position_pile = ", position_pile)
+		var position_pile = _calculer_la_position_de_la_pile(len(piles), len(liste_piles)-1)
+		#print("_creer_un_plateau : position_pile = ", position_pile)
 		pile.choisir_position( position_pile )
 	return true # plateau valide
 
-func calculer_la_position_de_la_pile(nb_piles : int, indice_pile : int) -> Vector2:
+func _calculer_la_position_de_la_pile(nb_piles : int, indice_pile : int) -> Vector2:
 	var marge_y = 50
 	var taille_fenetre_jeu = DisplayServer.window_get_size()
 	var nb_ecarts = nb_piles + 1 # (nb_piles-1) = ecarts + 2 marges
@@ -95,6 +148,7 @@ func calculer_la_position_de_la_pile(nb_piles : int, indice_pile : int) -> Vecto
 	# 13 piles max par ligne, mais rendu surchargé
 	# 6 piles par ligne = rendu agréable. Correspond à un écart d'une pile vide entre chaque pile.
 	if 2*largeur_pile < ecart_entre_piles_x :
+		# Gérer 1 ligne de piles
 		position_pile.x = ecart_entre_piles_x * (1 + indice_pile) - 0.5 * largeur_pile
 		position_pile.y = taille_fenetre_jeu.y - marge_y
 		if indice_pile == 0:
@@ -119,9 +173,3 @@ func calculer_la_position_de_la_pile(nb_piles : int, indice_pile : int) -> Vecto
 				print("calculer_la_position_de_la_pile : Trop de piles ! nb_piles = ", nb_piles)
 		pass
 	return position_pile
-
-func effacer_le_plateau() -> void:
-	for pile in liste_piles:
-		pile.effacer_la_pile()
-		pile.queue_free()
-	liste_piles.clear()

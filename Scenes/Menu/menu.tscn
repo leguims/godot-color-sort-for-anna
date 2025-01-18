@@ -1,16 +1,78 @@
-[gd_scene format=3 uid="uid://xsrt777ms37l"]
+[gd_scene load_steps=2 format=3 uid="uid://xsrt777ms37l"]
 
-[node name="Menu" type="Node"]
+[ext_resource type="Script" path="res://Scenes/Menu/menu.gd" id="1_d2lp0"]
 
-[node name="Label" type="Label" parent="."]
-offset_left = 37.0
-offset_top = 28.0
-offset_right = 82.0
-offset_bottom = 103.0
-scale = Vector2(1.97041, 1.9826)
-theme_override_colors/font_color = Color(0.77084, 0.770839, 0.770839, 1)
-theme_override_colors/font_shadow_color = Color(0.54099, 0.54099, 0.54099, 1)
-text = "Color
-Wood
-Sort"
+[node name="Menu" type="CanvasLayer"]
+script = ExtResource("1_d2lp0")
+
+[node name="Message" type="Label" parent="."]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -33.5
+offset_top = -11.5
+offset_right = 33.5
+offset_bottom = 11.5
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_font_sizes/font_size = 60
+text = "Range les couleurs!"
 horizontal_alignment = 1
+vertical_alignment = 1
+autowrap_mode = 2
+
+[node name="BoutonCommencer" type="Button" parent="."]
+anchors_preset = 12
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = -100.0
+grow_horizontal = 2
+grow_vertical = 0
+theme_override_colors/font_hover_color = Color(0.994947, 0.331387, 1, 1)
+theme_override_colors/font_color = Color(0.675529, 0.00038495, 0.685483, 1)
+theme_override_font_sizes/font_size = 60
+text = "Commencer"
+
+[node name="TempoMessage" type="Timer" parent="."]
+wait_time = 2.0
+one_shot = true
+
+[node name="EditeurPlateau" type="ColorRect" parent="."]
+anchors_preset = 12
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = -200.0
+offset_bottom = -100.0
+grow_horizontal = 2
+grow_vertical = 0
+color = Color(0.808707, 0.00056236, 0.818096, 1)
+
+[node name="DescriptionEditionPlateau" type="Label" parent="EditeurPlateau"]
+layout_mode = 1
+anchors_preset = 10
+anchor_right = 1.0
+offset_bottom = 42.0
+grow_horizontal = 2
+theme_override_font_sizes/font_size = 30
+text = " Editer un nouveau plateau :"
+vertical_alignment = 2
+
+[node name="SaisieEditionPlateau" type="LineEdit" parent="EditeurPlateau"]
+layout_mode = 1
+anchors_preset = 12
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = -50.0
+grow_horizontal = 2
+grow_vertical = 0
+theme_override_font_sizes/font_size = 30
+text = "AA .BB .CC .ABC"
+alignment = 1
+
+[connection signal="pressed" from="BoutonCommencer" to="." method="_on_bouton_commencer_pressed"]
+[connection signal="timeout" from="TempoMessage" to="." method="_on_tempo_message_timeout"]

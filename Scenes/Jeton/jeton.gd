@@ -2,7 +2,7 @@ extends Node
 
 class_name Jeton
 
-var jetons = {
+var _jetons = {
 	0: ['A', Color('RED')],
 	1: ['B', Color('BLUE_VIOLET')],
 	2: ['C', Color('FOREST_GREEN')],
@@ -35,7 +35,7 @@ func _ready() -> void:
 	if false:
 		choisir_jeton(9)
 	while false:
-		for i in range(len(jetons)):
+		for i in range(len(_jetons)):
 			choisir_jeton(i)
 			await get_tree().create_timer(1.0).timeout
 
@@ -45,10 +45,10 @@ func _process(_delta: float) -> void:
 	pass
 
 func choisir_jeton(indice : int) -> void:
-	if indice in jetons:
+	if indice in _jetons:
 		indice_jeton = indice
-		nom = jetons[indice_jeton][0]
-		couleur = jetons[indice_jeton][1]
+		nom = _jetons[indice_jeton][0]
+		couleur = _jetons[indice_jeton][1]
 		$Carre.color = couleur
 		$Nom.text = nom
 		if nom == 'J':

@@ -1,0 +1,32 @@
+[gd_scene load_steps=8 format=3 uid="uid://dsdrtorwq3l2n"]
+
+[ext_resource type="Script" path="res://Scenes/Principal/principal.gd" id="1_d1g8n"]
+[ext_resource type="PackedScene" uid="uid://cfqcdseqsuy1l" path="res://Scenes/Plateau/plateau.tscn" id="1_hxkkh"]
+[ext_resource type="PackedScene" uid="uid://xsrt777ms37l" path="res://Scenes/Menu/menu.tscn" id="3_n0gty"]
+[ext_resource type="AudioStream" uid="uid://b0xpcrpr7dos3" path="res://Art/Musique/Solve The Puzzle.ogg" id="4_eiukq"]
+[ext_resource type="AudioStream" uid="uid://1yo7r2c0gaqs" path="res://Art/EffetSonore/game-start.mp3" id="5_r5rg6"]
+[ext_resource type="AudioStream" uid="uid://bta65s8emibd3" path="res://Art/EffetSonore/win.mp3" id="6_7sa58"]
+[ext_resource type="AudioStream" uid="uid://o2nhixe1lp0c" path="res://Art/EffetSonore/fail-jingle.mp3" id="7_gsfdl"]
+
+[node name="Principal" type="Node"]
+script = ExtResource("1_d1g8n")
+
+[node name="PlateauDeJeu" parent="." instance=ExtResource("1_hxkkh")]
+
+[node name="Menu" parent="." instance=ExtResource("3_n0gty")]
+
+[node name="Musique" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("4_eiukq")
+
+[node name="SonCommencer" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("5_r5rg6")
+
+[node name="SonFinDePartie" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("6_7sa58")
+
+[node name="SonEchec" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("7_gsfdl")
+
+[connection signal="fin_de_partie" from="PlateauDeJeu" to="." method="_on_plateau_de_jeu_fin_de_partie"]
+[connection signal="plateau_invalide" from="PlateauDeJeu" to="." method="_on_plateau_de_jeu_plateau_invalide"]
+[connection signal="commencer_plateau" from="Menu" to="." method="_on_menu_commencer_plateau"]

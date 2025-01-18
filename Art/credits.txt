@@ -1,0 +1,10 @@
+Moteur : https://godotengine.org
+	Godot
+
+Musique : https://patrickdearteaga.com
+	Solve The Puzzle
+
+Effet sonore : https://pixabay.com
+	freesound_community : game-start-6104
+	freesound_community : fail-jingle-stereo-mix-88784
+	floraphonic : marimba-win-f-2-209688
