@@ -39,3 +39,8 @@ Liste et organisation pour Godot:
 		- Liens entre les plateaux
 		OK - Ligne de saisie pour générer un plateau à résoudre.
 		- Lien vers les Crédits (GODOT, musique, effet sonore)
+
+Idées du futur:
+	- Game play "Message" :
+		- Réaliser des tableaux dont la solution est un message (Anna.Love.Sex).
+		- Réorganiser Jeton et construction de plateau pour arriver à ce résultat.

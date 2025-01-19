@@ -6,7 +6,7 @@ var _jetons = {
 	0: ['A', Color('RED')],
 	1: ['B', Color('BLUE_VIOLET')],
 	2: ['C', Color('FOREST_GREEN')],
-	3: ['D', Color('CORAL')],
+	3: ['D', Color('AQUA')],
 	4: ['E', Color('SADDLE_BROWN')],
 	5: ['F', Color('DEEP_SKY_BLUE')],
 	6: ['G', Color('MAGENTA')],
@@ -17,7 +17,18 @@ var _jetons = {
 	11: ['L', Color('TEAL')],
 	12: ['M', Color('SLATE_GRAY')],
 	13: ['N', Color('SANDY_BROWN')],
-	14: ['O', Color('SALMON')],
+	14: ['O', Color('DARK_GRAY')],
+	15: ['P', Color('BLACK')],
+	16: ['Q', Color('CHARTREUSE')],
+	17: ['R', Color('CRIMSON')],
+	18: ['S', Color('DARK_GREEN')],
+	19: ['T', Color('DARK_ORANGE')],
+	20: ['U', Color('DEEP_PINK')],
+	21: ['V', Color('HOT_PINK')],
+	22: ['W', Color('MAROON')],
+	23: ['X', Color('MEDIUM_SLATE_BLUE')],
+	24: ['Y', Color('TURQUOISE')],
+	25: ['Z', Color('SPRING_GREEN')],
 	Plateau.ESPACE: [' ', Color('DARK_MAGENTA')] # DARK_VIOLET # DARK_MAGENTA # INDIGO # REBECCA_PURPLE # WEB_PURPLE
 }
 

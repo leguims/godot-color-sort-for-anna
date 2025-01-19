@@ -13,6 +13,8 @@ static var ESPACE = 32
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
 	if false:
+		commencer_un_nouveau_plateau("ABCDE.FGHIJ.KLMNO.PQRST.UVWXY.Z ")
+	if false:
 		await get_tree().create_timer(15.0).timeout
 		fin_de_partie.emit()
 	if false:
@@ -128,7 +130,6 @@ func _creer_un_plateau(piles : Array) -> void:
 			effacer_le_plateau()
 			plateau_invalide.emit()
 		
-
 		# Definir la position de la pile sur le plateau
 		var position_pile = _calculer_la_position_de_la_pile(len(piles), len(liste_piles)-1)
 		#print("_creer_un_plateau : position_pile = ", position_pile)
