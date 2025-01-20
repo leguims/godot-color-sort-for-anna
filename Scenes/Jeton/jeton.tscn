@@ -20,3 +20,5 @@ theme_override_font_sizes/font_size = 30
 text = "A"
 horizontal_alignment = 1
 vertical_alignment = 1
+
+[connection signal="gui_input" from="Carre" to="." method="_on_carre_gui_input"]

@@ -2,6 +2,8 @@ extends Node
 
 class_name Jeton
 
+signal clique_gauche(reference_parent)
+
 var _jetons = {
 	0: ['A', Color('RED')],
 	1: ['B', Color('BLUE_VIOLET')],
@@ -37,6 +39,7 @@ var couleur
 var nom
 var position_initiale_carre : Vector2 #(0,0)
 var position_initiale_nom : Vector2 #(0,-16)
+var reference_parent # Reference pour que le parent identifie le jeton.
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
@@ -44,9 +47,11 @@ func _ready() -> void:
 	position_initiale_carre = $Carre.position
 	position_initiale_nom = $Nom.position
 	if false:
+		choisir_reference(0)
 		choisir_jeton(9)
 	while false:
 		for i in range(len(_jetons)):
+			choisir_reference(i)
 			choisir_jeton(i)
 			await get_tree().create_timer(1.0).timeout
 
@@ -54,6 +59,9 @@ func _ready() -> void:
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(_delta: float) -> void:
 	pass
+
+func choisir_reference(reference : int) -> void:
+	reference_parent = reference
 
 func choisir_jeton(indice : int) -> void:
 	if indice in _jetons:
@@ -83,3 +91,9 @@ func largeur() -> int:
 
 func est_vide() -> bool:
 	return indice_jeton == Plateau.ESPACE
+
+func _on_carre_gui_input(event: InputEvent) -> void:
+	if event is InputEventMouseButton:
+		if event.button_index == MOUSE_BUTTON_LEFT and event.pressed:
+			#print("Clique souris sur : ", $Nom.text)
+			clique_gauche.emit(reference_parent)

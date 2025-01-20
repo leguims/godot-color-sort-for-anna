@@ -2,9 +2,12 @@ extends Node
 
 class_name Pile
 
+signal clique_gauche(reference_parent)
+
 @export var jeton_scene: PackedScene
 var liste_jetons = []
 var position = Vector2(0, 720)
+var reference_parent
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
@@ -76,6 +79,9 @@ func _ready() -> void:
 func _process(delta: float) -> void:
 	pass
 
+func choisir_reference(reference : int) -> void:
+	reference_parent = reference
+
 func ajouter_les_jetons(jetons : Array) -> bool:
 	# Vérifier la validité de la pile
 	if not est_valide(jetons):
@@ -90,8 +96,15 @@ func ajouter_les_jetons(jetons : Array) -> bool:
 		add_child(jeton)
 		liste_jetons.append(jeton) 
 
-		# Definir la position du jeton dans la pile
+		# Fournir l'indice du jeton comme reference
+		# Permet d'identifier de quel jeton provient un signal.
 		var indice_jeton = len(liste_jetons)-1
+		jeton.choisir_reference(indice_jeton)
+		
+		# Connexion au signal 'Jeton.clique_gauche'
+		jeton.connect("clique_gauche", Callable(self, "on_jeton_clique_gauche"))
+		
+		# Definir la position du jeton dans la pile
 		var position_jeton = _calculer_la_position_du_jeton(indice_jeton)
 		jeton.choisir_position( position_jeton )
 
@@ -102,9 +115,7 @@ func ajouter_les_jetons(jetons : Array) -> bool:
 func ajouter_le_jeton_dans_le_vide(jeton_a_ajouter : int) -> bool:
 	var ajoute = false
 	if accepte_jeton(jeton_a_ajouter, 1):
-		var liste_inversee = liste_jetons.duplicate(true)
-		liste_inversee.reverse()
-		for jeton_courant in liste_inversee:
+		for jeton_courant in liste_jetons:
 			if jeton_courant.est_vide():
 				jeton_courant.choisir_jeton(jeton_a_ajouter)
 				# TODO : Attention, le jeton 'J' posera un probleme !
@@ -163,6 +174,8 @@ static func est_valide(jetons : Array) -> bool:
 			return false
 	return true
 
+
+# Methodes pour cadrer les mouvements de jetons
 func est_vide() -> bool:
 	return liste_jetons.is_empty() \
 		or liste_jetons.front().indice_jeton == Plateau.ESPACE
@@ -172,9 +185,9 @@ func est_pleine() -> bool:
 		or liste_jetons.back().indice_jeton != Plateau.ESPACE
 
 func est_termine() -> bool:
-	# la pile est pleine
-	if not est_pleine():
-		return false
+	# Terminée = vide ou pleine monocouleur
+	if est_vide():
+		return true
 	
 	# Tous les jetons sont identiques
 	var jeton_precedent = null
@@ -193,6 +206,26 @@ func quelle_est_la_couleur_au_sommet() -> int:
 				return jeton.indice_jeton
 	return Plateau.ESPACE
 	
+func combien_de_jetons_identiques_au_sommet() -> int:
+	var nb_identique_sommet = 0
+	var jeton_sommet = null
+	if not est_vide() and not est_termine():
+		var liste_inversee = liste_jetons.duplicate(true)
+		liste_inversee.reverse()
+		for jeton in liste_inversee:
+			if not jeton_sommet and jeton.indice_jeton == Plateau.ESPACE :
+				continue # Ignorer les cases vides au sommet
+			elif not jeton_sommet and jeton.indice_jeton != Plateau.ESPACE :
+				# Enregistrer le premier jeton rencontré
+				jeton_sommet = jeton.indice_jeton
+				nb_identique_sommet += 1
+			elif jeton_sommet and jeton.indice_jeton == jeton_sommet:
+				# Comptabiliser les jetons identiques
+				nb_identique_sommet += 1
+			else:
+				break # Arret du comptage pour un jeton différent
+	return nb_identique_sommet
+
 func combien_de_cases_vides_au_sommet() -> int:
 	var vide_sommet = 0
 	if not est_pleine():
@@ -214,3 +247,7 @@ func _calculer_la_position_du_jeton(indice_jeton : int) -> Vector2:
 	# Inversion sur Y pour commencer à la base de la pile
 	position_jeton.y = position.y - indice_jeton * (liste_jetons[indice_jeton].hauteur() + 2)
 	return position_jeton
+
+func on_jeton_clique_gauche(indice_jeton : int) -> void:
+	#print("clique sur le jeton : ", indice_jeton)
+	clique_gauche.emit(reference_parent)

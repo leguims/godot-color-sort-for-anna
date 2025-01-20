@@ -10,6 +10,8 @@ var liste_piles = []
 var string2int = {}
 static var ESPACE = 32
 
+var sauvegarde_indice_pile_depart : int = -1
+
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
 	if false:
@@ -67,7 +69,7 @@ func  commencer_un_nouveau_plateau(plateau_texte : String) -> void:
 		var plateau = _decoder_plateau(plateau_texte)
 		_creer_un_plateau(plateau)
 		# TODO : Code de test
-		if true:
+		if false:
 			await get_tree().create_timer(5.0).timeout
 			#if randi_range(0, 1):
 			if true:
@@ -122,6 +124,14 @@ func _creer_un_plateau(piles : Array) -> void:
 		add_child(pile)
 		liste_piles.append(pile)
 		
+		# Fournir l'indice de la pile comme reference
+		# Permet d'identifier de quelle pile provient un signal.
+		var indice_pile = len(liste_piles)-1
+		pile.choisir_reference(indice_pile)
+		
+		# Connexion au signal 'Jeton.clique_gauche'
+		pile.connect("clique_gauche", Callable(self, "on_pile_clique_gauche"))
+		
 		# Créer la pile
 		var valide = pile.ajouter_les_jetons(pile_courante)
 		# Traiter le cas d'une pile invalide.
@@ -170,3 +180,50 @@ func _calculer_la_position_de_la_pile(nb_piles : int, indice_pile : int) -> Vect
 				print("calculer_la_position_de_la_pile : Trop de piles ! nb_piles = ", nb_piles)
 		pass
 	return position_pile
+
+func on_pile_clique_gauche(indice_pile : int) -> void:
+	print("clique sur la pile : ", indice_pile)
+	if sauvegarde_indice_pile_depart == -1:
+		$SelectionPile.start()
+		sauvegarde_indice_pile_depart = indice_pile
+	else:
+		$SelectionPile.stop()
+		if realiser_le_tansfert_de_pile(sauvegarde_indice_pile_depart, indice_pile):
+			if liste_piles[indice_pile].est_termine():
+				# Vérifier si la partie est achevée
+				var termine = true
+				for pile in liste_piles:
+					if not pile.est_termine():
+						termine = false
+						break
+				if termine:
+					fin_de_partie.emit()
+		_on_selection_pile_timeout()
+
+func _on_selection_pile_timeout() -> void:
+	# Annulation du coup en cours
+	sauvegarde_indice_pile_depart = -1
+	print("Annulation du coup en cours")
+
+func realiser_le_tansfert_de_pile(indice_pile_depart : int, indice_pile_arrivee : int) -> bool:
+	var pile_depart = liste_piles[indice_pile_depart]
+	if pile_depart.est_vide() or pile_depart.est_termine():
+		print("Pile de départ vide ou terminée")
+		return false
+
+	var pile_arrivee = liste_piles[indice_pile_arrivee]
+	if pile_arrivee.est_pleine() or pile_arrivee.est_termine():
+		print("Pile d'arrivée pleine ou termniée")
+		return false
+
+	var indice_jeton_depart = pile_depart.quelle_est_la_couleur_au_sommet()
+	var nb_jeton_depart = pile_depart.combien_de_jetons_identiques_au_sommet()
+
+	if pile_arrivee.accepte_jeton(indice_jeton_depart, nb_jeton_depart):
+		for i in range(nb_jeton_depart):
+			pile_depart.retirer_le_dernier_jeton()
+			pile_arrivee.ajouter_le_jeton_dans_le_vide(indice_jeton_depart)
+		return true
+	else:
+		print("La pile d'arrivée refuse le(s) ", nb_jeton_depart, " jeton(s)")
+		return false
