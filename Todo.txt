@@ -51,7 +51,8 @@ Travaux pour la prochaine version V0.2 :
    - outillage : réécrire les plateaux avec les "." pour identifier les "colonnes x lignes" et mélanger les plateaux de forme différentes
    - outillage : construire un JSON selon une configuration qui indique le nombre de tableau de chaque niveau.
     - pour les plateaux sans solution, lancer une recherche en ajoutant 1 colonne d'une seule ligne.
-    - réfléchir à l'utilisation des musiques. 
+    - réfléchir à l'utilisation des musiques.
+    - détecter une position de plateau bloquée ou impossible.
 
 
 Pour une version long terme V1.0 :
