@@ -1,5 +1,5 @@
 
-# Liste des fonctionnailités
+# Liste des fonctionnalités
 
 ## V0.1 : Liste et organisation pour Godot:
 
