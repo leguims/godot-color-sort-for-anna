@@ -1,5 +1,8 @@
+
 # Liste des fonctionnailités
+
 ## V0.1 : Liste et organisation pour Godot:
+
 	:white_check_mark: - ~~Jeton : cube de couleur~~
 		:white_check_mark: - ~~contient la repesentation d'un jeton~~
 
