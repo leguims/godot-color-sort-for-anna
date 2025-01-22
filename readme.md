@@ -3,8 +3,8 @@
 
 ## V0.1 : Liste et organisation pour Godot:
 
-- ~~Jeton : cube de couleur~~
-  - ~~contient la repesentation d'un jeton~~
+- ~~Jeton : cube de couleur~~:heavy_check_mark:
+  - ~~contient la repesentation d'un jeton~~:heavy_check_mark:
 
 - Pile : Colonne sur un plateau de jeu
   - Contient les regles de jeu subjectives :
@@ -13,35 +13,35 @@
     - Est_terminé (colonne pleine mono-couleur),
     - Est_vide (aucun jeton dans la pile),
     - Est_pleine (aucune emplacement vide dans la pile)
-  - ~~Contient les caractéritstiques de la pile :~~
-    - ~~taille~~
-    - ~~Liste des jetons actuels~~
-    - ~~Encodage d'une pile:~~
-      - ~~"[0, 0, 0, 0]" = 4x'A' sur une pile de 4~~
-      - ~~"[0, 0, 0, 0, 32, 32]" = 4x'A' + 2x' ' sur une pile de 6~~
-      - ~~"[0, 1, 2, 32]" = 3x blocs et 1 case vide~~
+  - ~~Contient les caractéritstiques de la pile :~~:heavy_check_mark:
+    - ~~taille~~:heavy_check_mark:
+    - ~~Liste des jetons actuels~~:heavy_check_mark:
+    - ~~Encodage d'une pile:~~:heavy_check_mark:
+      - ~~"[0, 0, 0, 0]" = 4x'A' sur une pile de 4~~:heavy_check_mark:
+      - ~~"[0, 0, 0, 0, 32, 32]" = 4x'A' + 2x' ' sur une pile de 6~~:heavy_check_mark:
+      - ~~"[0, 1, 2, 32]" = 3x blocs et 1 case vide~~:heavy_check_mark:
 
 - Plateau : ensemble des piles de jeu
-  - ~~Associe plusieurs piles pour former le plateau~~
+  - ~~Associe plusieurs piles pour former le plateau~~:heavy_check_mark:
   - Contient les regles subjectives :
     - Liste des mouvements autorisés,
     - Est_terminé (toutes les colonnes sont terminées),
     - Est_bloqué (la liste des mouvements autorisés est vide)
-    - ~~Encodage de plateau:~~
-      - ~~"AABB.BBAA.    " signifie :~~
-      - ~~pile 1 : "AABB"~~
-      - ~~pile 2 : "BBAA"~~
-      - ~~pile 3 : vide (4 emplacements)~~
-    - ~~"ABAB.BABA.    . "~~
-      - ~~pile 1 : "ABAB"~~
-      - ~~pile 2 : "BABA"~~
-      - ~~pile 3 : vide (4 emplacements)~~
-      - ~~pile 4 : vide (1 emplacement)~~
+    - ~~Encodage de plateau:~~:heavy_check_mark:
+      - ~~"AABB.BBAA.    " signifie :~~:heavy_check_mark:
+      - ~~pile 1 : "AABB"~~:heavy_check_mark:
+      - ~~pile 2 : "BBAA"~~:heavy_check_mark:
+      - ~~pile 3 : vide (4 emplacements)~~:heavy_check_mark:
+    - ~~"ABAB.BABA.    . "~~:heavy_check_mark:
+      - ~~pile 1 : "ABAB"~~:heavy_check_mark:
+      - ~~pile 2 : "BABA"~~:heavy_check_mark:
+      - ~~pile 3 : vide (4 emplacements)~~:heavy_check_mark:
+      - ~~pile 4 : vide (1 emplacement)~~:heavy_check_mark:
 
 - Menu :
-  - ~~Page d'accueil~~
+  - ~~Page d'accueil~~:heavy_check_mark:
   - Liens entre les plateaux
-  - ~~Ligne de saisie pour générer un plateau à résoudre.~~
+  - ~~Ligne de saisie pour générer un plateau à résoudre.~~:heavy_check_mark:
   - Lien vers les Crédits (GODOT, musique, effet sonore)
 
 ## V0.2 : Travaux pour la prochaine version V0.2 :
