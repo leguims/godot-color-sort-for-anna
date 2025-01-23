@@ -27,6 +27,7 @@ stream = ExtResource("6_7sa58")
 [node name="SonEchec" type="AudioStreamPlayer" parent="."]
 stream = ExtResource("7_gsfdl")
 
-[connection signal="fin_de_partie" from="PlateauDeJeu" to="." method="_on_plateau_de_jeu_fin_de_partie"]
+[connection signal="abandon" from="PlateauDeJeu" to="." method="_on_plateau_de_jeu_abandon"]
 [connection signal="plateau_invalide" from="PlateauDeJeu" to="." method="_on_plateau_de_jeu_plateau_invalide"]
+[connection signal="victoire" from="PlateauDeJeu" to="." method="_on_plateau_de_jeu_victoire"]
 [connection signal="commencer_plateau" from="Menu" to="." method="_on_menu_commencer_plateau"]

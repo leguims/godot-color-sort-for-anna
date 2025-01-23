@@ -13,7 +13,19 @@ offset_bottom = 720.0
 color = Color(0.34363, 8.53118e-05, 0.346463, 1)
 
 [node name="SelectionPile" type="Timer" parent="."]
-wait_time = 5.0
+wait_time = 3.0
 one_shot = true
 
+[node name="BoutonAbandon" type="Button" parent="."]
+visible = false
+anchors_preset = 10
+anchor_right = 1.0
+offset_bottom = 91.0
+grow_horizontal = 2
+theme_override_colors/font_hover_color = Color(0.994947, 0.331387, 1, 1)
+theme_override_colors/font_color = Color(0.675529, 0.00038495, 0.685483, 1)
+theme_override_font_sizes/font_size = 60
+text = "Abandonner"
+
 [connection signal="timeout" from="SelectionPile" to="." method="_on_selection_pile_timeout"]
+[connection signal="pressed" from="BoutonAbandon" to="." method="_on_bouton_abandon_pressed"]

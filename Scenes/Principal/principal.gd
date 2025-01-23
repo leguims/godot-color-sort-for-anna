@@ -20,14 +20,19 @@ func _on_menu_commencer_plateau() -> void:
 	else:
 		_on_plateau_de_jeu_plateau_invalide()
 
-func _on_plateau_de_jeu_fin_de_partie() -> void:
+func _on_plateau_de_jeu_victoire() -> void:
 	$Menu.show()
-	$Menu.afficher_fin_de_partie()
+	$Menu.afficher_victoire()
 	$SonFinDePartie.play()
 	$Musique.stop()
 
 func _on_plateau_de_jeu_plateau_invalide() -> void:
 	$Menu.show()
 	$Menu.afficher_plateau_invalide()
+	$SonEchec.play()
+
+func _on_plateau_de_jeu_abandon() -> void:
+	$Menu.show()
+	$Menu.afficher_abandon()
 	$SonEchec.play()
 	$Musique.stop()

@@ -185,10 +185,7 @@ func est_pleine() -> bool:
 		or liste_jetons.back().indice_jeton != Plateau.ESPACE
 
 func est_termine() -> bool:
-	# Terminée = vide ou pleine monocouleur
-	if est_vide():
-		return true
-	
+	# Terminée = pleine monocouleur
 	# Tous les jetons sont identiques
 	var jeton_precedent = null
 	for jeton in liste_jetons:
@@ -213,13 +210,13 @@ func combien_de_jetons_identiques_au_sommet() -> int:
 		var liste_inversee = liste_jetons.duplicate(true)
 		liste_inversee.reverse()
 		for jeton in liste_inversee:
-			if not jeton_sommet and jeton.indice_jeton == Plateau.ESPACE :
+			if jeton_sommet == null and jeton.indice_jeton == Plateau.ESPACE :
 				continue # Ignorer les cases vides au sommet
-			elif not jeton_sommet and jeton.indice_jeton != Plateau.ESPACE :
+			elif jeton_sommet == null and jeton.indice_jeton != Plateau.ESPACE :
 				# Enregistrer le premier jeton rencontré
 				jeton_sommet = jeton.indice_jeton
 				nb_identique_sommet += 1
-			elif jeton_sommet and jeton.indice_jeton == jeton_sommet:
+			elif jeton_sommet != null and jeton.indice_jeton == jeton_sommet:
 				# Comptabiliser les jetons identiques
 				nb_identique_sommet += 1
 			else:

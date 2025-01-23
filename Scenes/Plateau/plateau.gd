@@ -2,8 +2,10 @@ extends Node
 
 class_name Plateau
 
-signal fin_de_partie
+
+signal victoire
 signal plateau_invalide
+signal abandon
 
 @export var pile_scene: PackedScene
 var liste_piles = []
@@ -18,7 +20,7 @@ func _ready() -> void:
 		commencer_un_nouveau_plateau("ABCDE.FGHIJ.KLMNO.PQRST.UVWXY.Z ")
 	if false:
 		await get_tree().create_timer(15.0).timeout
-		fin_de_partie.emit()
+		victoire.emit()
 	if false:
 		await get_tree().create_timer(5.0).timeout
 		plateau_invalide.emit()
@@ -73,7 +75,7 @@ func  commencer_un_nouveau_plateau(plateau_texte : String) -> void:
 			await get_tree().create_timer(5.0).timeout
 			#if randi_range(0, 1):
 			if true:
-				fin_de_partie.emit()
+				victoire.emit()
 			else:
 				plateau_invalide.emit()
 	else:
@@ -84,6 +86,7 @@ func effacer_le_plateau() -> void:
 		pile.effacer_la_pile()
 		pile.queue_free()
 	liste_piles.clear()
+	$BoutonAbandon.show()
 
 func est_valide(plateau_texte : String) -> bool:
 	# Vérifier si chaque pile est valide
@@ -191,14 +194,19 @@ func on_pile_clique_gauche(indice_pile : int) -> void:
 		if realiser_le_tansfert_de_pile(sauvegarde_indice_pile_depart, indice_pile):
 			if liste_piles[indice_pile].est_termine():
 				# Vérifier si la partie est achevée
-				var termine = true
-				for pile in liste_piles:
-					if not pile.est_termine():
-						termine = false
-						break
-				if termine:
-					fin_de_partie.emit()
+				if _est_termine():
+					$BoutonAbandon.hide()
+					victoire.emit()
 		_on_selection_pile_timeout()
+
+func _est_termine() -> bool:
+	# Vérifier si la partie est achevée
+	var termine = true
+	for pile in liste_piles:
+		if not pile.est_termine():
+			termine = false
+			break
+	return termine
 
 func _on_selection_pile_timeout() -> void:
 	# Annulation du coup en cours
@@ -206,14 +214,18 @@ func _on_selection_pile_timeout() -> void:
 	print("Annulation du coup en cours")
 
 func realiser_le_tansfert_de_pile(indice_pile_depart : int, indice_pile_arrivee : int) -> bool:
+	if indice_pile_depart == indice_pile_arrivee:
+		print("Pile de départ et d'arrivée sont les mêmes")
+		return false
+
 	var pile_depart = liste_piles[indice_pile_depart]
 	if pile_depart.est_vide() or pile_depart.est_termine():
 		print("Pile de départ vide ou terminée")
 		return false
 
 	var pile_arrivee = liste_piles[indice_pile_arrivee]
-	if pile_arrivee.est_pleine() or pile_arrivee.est_termine():
-		print("Pile d'arrivée pleine ou termniée")
+	if pile_arrivee.est_pleine():
+		print("Pile d'arrivée pleine")
 		return false
 
 	var indice_jeton_depart = pile_depart.quelle_est_la_couleur_au_sommet()
@@ -227,3 +239,8 @@ func realiser_le_tansfert_de_pile(indice_pile_depart : int, indice_pile_arrivee 
 	else:
 		print("La pile d'arrivée refuse le(s) ", nb_jeton_depart, " jeton(s)")
 		return false
+
+
+func _on_bouton_abandon_pressed() -> void:
+	$BoutonAbandon.hide()
+	abandon.emit()
