@@ -8,10 +8,12 @@ var plateaux = [
 	"AA .BB .CC .ABC",
 	"AB .BA .BA ",
 	"AB .AC .CBA.CB ",
-	#"ABBA.AB  .AB  ", # IMPOSSIBLE => TODO : corriger bug sur les outils python
-	#"BAAB.BA  .BA  ", # IMPOSSIBLE => TODO : corriger bug sur les outils python
 	"AAB .AB  .BBA ",
-	"ABB  .BA   .BBAAA"
+	"ABB  .BA   .BBAAA",
+	"ABA.BAB.   ",
+	"ABA.ABC.CBC.   ",
+	"BABA.BA  .BA  ",
+	"ABAB .ABAB .AB   "
 ]
 
 # Called when the node enters the scene tree for the first time.
@@ -62,6 +64,7 @@ func afficher_abandon():
 	_afficher_message("Fin de Partie")
 	await $TempoMessage.timeout
 	
+	# Abandon : revenir au plateau précédent
 	if 0 < plateau_actuel:
 		plateau_actuel -= 1
 	afficher_accueil()

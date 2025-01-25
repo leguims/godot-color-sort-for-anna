@@ -45,10 +45,11 @@
   - Lien vers les Crédits (GODOT, musique, effet sonore)
 
 ### Bug V0.1 :
-- La recherche de solution n'implémente pas de déplacement obligatoire de plusieurs jetons
-- "ABBA.AB  .AB  " : ce plateau est impossible
+- ~~La recherche de solution n'implémente pas de déplacement obligatoire de plusieurs jetons~~:heavy_check_mark:
+   - ~~"ABBA.AB  .AB  " : ce plateau est impossible~~:heavy_check_mark:
 
 ## V0.2 : Travaux pour la prochaine version V0.2 :
+   - jeu : Changer la couleur ou mettre en surbrillance le jeton ou la colonne selectionnée pour un mouvement.
    - jeu : enregistrer et lire un JSON des niveaux en cours
    - ~~jeu : sondage sur difficulté du plateau trop facile, bien, trop difficile.~~ Abandon pour échec/réussite automatique
    - jeu : si réussite, passer au niveau suivant, si échec descendre de niveau et passer au plateau suivant. 
@@ -57,7 +58,7 @@
    - outillage : produire un JSON des plateaux par niveau.
    - outillage : réécrire les plateaux avec les "." pour identifier les "colonnes x lignes" et mélanger les plateaux de forme différentes
    - outillage : construire un JSON selon une configuration qui indique le nombre de tableau de chaque niveau.
-   - outillage : pour les plateaux sans solution, lancer une recherche en ajoutant 1 colonne d'une seule ligne.
+   - outillage : pour les plateaux sans solution, lancer une recherche en ajoutant 1 colonne d'une seule ligne OU 1 case vide sur la derniere colonne.
    - jeu : enregistrer les dates de jeux et proposer une série de plateaux de chaque niveau. "Semaine 1", proposer les 1er plateaux de chaque niveau.
    - jeu : prévoir un json avec l'enregistrement des scores de chacun sur chaque semaine. Score total et score semaine.
    - jeu : prévoir un code pour que chaque joueur s'identifie. 
