@@ -46,7 +46,7 @@
 
 ## V0.2 : Travaux pour la prochaine version V0.2 :
    - jeu : enregistrer et lire un JSON des niveaux en cours
-   - ~~jeu : sondage sur difficulté du plateau trop facile, bien, trop difficile.~~Abandon pour échec/réussite automatique
+   - ~~jeu : sondage sur difficulté du plateau trop facile, bien, trop difficile.~~ Abandon pour échec/réussite automatique
    - jeu : si réussite, passer au niveau suivant, si échec descendre de niveau et passer au plateau suivant. 
    - ~~jeu : prévoir un bouton de retour au menu pour abandonner~~:heavy_check_mark:
    - jeu : menu en haut : campagne, éditer et crédits.
