@@ -1,21 +1,100 @@
 {
     "liste difficulte des plateaux": {
         "3": [
-            "BA.BA.  ",
-            "AB.BA.  ",
-            "AB.AB.  ",
-            "A .B .CA.CB",
-            "AC.A .B .CB",
-            "BB.CA.CA.  "
+            "AB .BAA.B  ",
+            "AB .A  .BBA",
+            "AAB.BBA.   ",
+            "BAA.BBA.   ",
+            "ABB.A  .BA ",
+            "AAB.BA .B  ",
+            "ABB.BAA.   ",
+            "AAB.AB .B  ",
+            "A  .BA .BBA",
+            "AAB.ABB.   "
         ],
         "4": [
-            "AB.AC.BC.  ",
-            "AC.AC.B .B ",
-            "BA.CA.CB.  ",
-            "BA.BA.C .C ",
-            "A .A .BC.BC",
-            "AC.BA.CB.  ",
-            "AB.AB.C .C "
+            "ABA.ABB.   ",
+            "ABA.BA .B  ",
+            "A  .BAB.BA ",
+            "AB .A  .BAB",
+            "ABA.BBA.   ",
+            "AAB.BAB.   ",
+            "AB .AB .BA ",
+            "AB .BA .BA ",
+            "BAA.BAB.   ",
+            "ABA.AB .B  "
+        ],
+        "5": [
+            "ABA.BAB.   ",
+            "AB .ACC.B  .CAB",
+            "ACB.ACC.BBA.   ",
+            "AAC.AB .BCC.B  ",
+            "AAC.BA .BCB.C  ",
+            "AC .AC .BA .CBB",
+            "AAB.CAC.CBB.   ",
+            "A  .BBA.CA .CBC",
+            "ABC.BAA.CB .C  ",
+            "AC .BA .BA .CCB"
+        ],
+        "6": [
+            "AB .ACB.BC .CA ",
+            "AC .BAC.B  .CAB",
+            "AAB.A  .BC .CBC",
+            "ACA.BA .BCB.C  ",
+            "ABA.BCB.CA .C  ",
+            "ACA.BA .CB .CB ",
+            "ABC.BAB.CCA.   ",
+            "AAB.AB .CBC.C  ",
+            "ABC.AB .BC .CA ",
+            "AC .A  .BAC.BBC"
+        ],
+        "7": [
+            "BAC.BCA.CAB.   ",
+            "BCA.B  .CA .CBA",
+            "AB .A  .CBA.CBC",
+            "ABC.BAC.BAC.   ",
+            "BAB.BC .CA .CA ",
+            "BA .BCA.CA .CB ",
+            "BAC.BBA.CAC.   ",
+            "AC .A  .BAC.BCB",
+            "ABC.ABC.BAC.   ",
+            "BAC.B  .CA .CBA"
+        ],
+        "8": [
+            "ABA.CBA.CBC.   ",
+            "ACA.ACB.BCB.   ",
+            "BAB.CAB.CAC.   ",
+            "BAB.BAC.CAC.   ",
+            "ABA.ABC.CBC.   ",
+            "ACA.BCA.BCB.   ",
+            "ACA.BDB.CBC.DA .D  ",
+            "AC .A  .BAC.BDB.CDD",
+            "AAD.BDC.CBA.CBD.   ",
+            "ACB.CDB.DAA.DCB.   "
+        ],
+        "10": [
+            "ABC.BAB.DCA.DCD.   ",
+            "ADB.BCD.CBA.CDA.   ",
+            "DAD.DB .CAC.B  .BAC",
+            "ACD.BCA.BDA.CDB.   ",
+            "ACD.BDA.BDC.CAB.   ",
+            "BCB.DCA.C  .BDA.DA ",
+            "AB .BAC.BD .CDA.CD ",
+            "ADA.ADC.BCB.BDC.   ",
+            "ABC.CDB.DBA.DCA.   ",
+            "CAC.BAD.BDA.CBD.   "
+        ],
+        "9": [
+            "AC .BCA.BD .DBA.DC ",
+            "AD .A  .BAD.CBC.DBC",
+            "ABA.BCB.DAC.DCD.   ",
+            "ABC.ACD.BCA.BD .D  ",
+            "B  .DAD.CA .BDB.CAC",
+            "AC .AC .BAD.BD .DCB",
+            "ABD.ACD.BD .B  .CAC",
+            "ACB.A  .CA .DBD.DCB",
+            "ABC.AC .CDB.DAB.D  ",
+            "ABD.ACB.CAB.CDD.   "
         ]
     }
 }
