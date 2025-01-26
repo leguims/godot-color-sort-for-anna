@@ -96,7 +96,7 @@ func choisir_position(nouvelle_position : Vector2) -> void:
 	# Changer la position de tous les jetons
 	for jeton_courant in liste_jetons:
 		var position_jeton = _calculer_la_position_du_jeton(indice_jeton)
-		print("Pile.choisir_position : position_jeton = ", position_jeton)
+		# print("Pile.choisir_position : position_jeton = ", position_jeton)
 		jeton_courant.choisir_position( position_jeton )
 		indice_jeton += 1
 	_choisir_position_fond(nouvelle_position)
@@ -105,7 +105,7 @@ func _choisir_position_fond(nouvelle_position : Vector2) -> void:
 	if liste_jetons:
 		# Position du dernier jeton + Centrage de la pile
 		$Fond.set_position(liste_jetons[-1].position() - Vector2(marge, marge))
-		print("Pile.choisir_position $Fond.get_position()", $Fond.get_position())
+		# print("Pile.choisir_position $Fond.get_position()", $Fond.get_position())
 
 func selectionner() -> void:
 	$Fond.color = couleur_de_selection
@@ -211,5 +211,5 @@ func _calculer_la_position_du_jeton(indice_jeton : int) -> Vector2:
 	return position_jeton
 
 func on_jeton_clique_gauche(indice_jeton : int) -> void:
-	#print("clique sur le jeton : ", indice_jeton)
+	# print("clique sur le jeton : ", indice_jeton)
 	clique_gauche.emit(reference_parent)

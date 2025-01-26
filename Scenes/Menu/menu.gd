@@ -3,21 +3,9 @@ extends CanvasLayer
 # Notifie la scene `Plateau` que le bouton est pressé
 signal commencer_plateau
 
-var plateau_actuel = 0
-var plateaux = [
-	"AA .BB .CC .ABC",
-	"AB .BA .BA ",
-	"AB .AC .CBA.CB ",
-	"AAB .AB  .BBA ",
-	"ABB  .BA   .BBAAA",
-	"ABA.BAB.   ",
-	"ABA.ABC.CBC.   ",
-	"BABA.BA  .BA  ",
-	"ABAB .ABAB .AB   "
-]
-
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
+	initialiser_les_plateaux()
 	pass # Replace with function body.
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
@@ -31,7 +19,7 @@ func afficher_accueil():
 	_afficher_message("Range les couleurs!", false)
 	# Attendre l'échéance d'une temporisation libre
 	await get_tree().create_timer(1.0).timeout
-	$EditeurPlateau/SaisieEditionPlateau.text = plateaux[plateau_actuel]
+	$EditeurPlateau/SaisieEditionPlateau.text = lire_plateau_courant()
 	$EditeurPlateau.show()
 	await get_tree().create_timer(1.0).timeout
 	$BoutonCommencer.show()
@@ -45,10 +33,9 @@ func afficher_victoire():
 	# Attendre l'échéance de la temporisation
 	await $TempoMessage.timeout
 	
-	# Victoire : passer au niveau suivant
-	if plateau_actuel < (len(plateaux)-1):
-		plateau_actuel += 1
-	elif plateau_actuel == (len(plateaux)-1):
+	# Mettre à jour les plateaux à jouer
+	changer_plateau_victoire()
+	if est_victoire_dernier_plateau():
 		_afficher_message("C'était le dernier plateau!")
 		await $TempoMessage.timeout
 		_afficher_message("Vous êtes au sommet...")
@@ -64,9 +51,8 @@ func afficher_abandon():
 	_afficher_message("Fin de Partie")
 	await $TempoMessage.timeout
 	
-	# Abandon : revenir au plateau précédent
-	if 0 < plateau_actuel:
-		plateau_actuel -= 1
+	# Mettre à jour les plateaux à jouer
+	changer_plateau_abandon()
 	afficher_accueil()
 
 func afficher_plateau_invalide():
@@ -89,3 +75,104 @@ func _afficher_message(texte : String, temporaire : bool = true):
 	$Message.show()
 	if temporaire:
 		$TempoMessage.start()
+
+
+
+# Gestion des niveaux et des plateaux à jouer
+var niveau_actuel = 3
+var plateau_actuel = {
+	'3': 0
+}
+var plateau_victoire_dernier_plateau = false
+
+# Dico : {'difficulte': [liste_plateaux]}
+var plateau_liste_difficulte = {
+	'3': [
+		"AA .BB .CC .ABC",
+		"AB .BA .BA ",
+		"AB .AC .CBA.CB ",
+		"AAB .AB  .BBA ",
+		"ABB  .BA   .BBAAA",
+		"ABA.BAB.   ",
+		"ABA.ABC.CBC.   ",
+		"BABA.BA  .BA  ",
+		"ABAB .ABAB .AB   "
+	]
+}
+
+func initialiser_les_plateaux() -> void:
+	# Lire la liste des plateaux classés par niveaux
+	var fichier_plateaux = read_json_file("res://Solutions_classees.json")
+	# print(fichier_plateaux)
+	
+	# Copier les niveaux lus
+	if fichier_plateaux:
+		if 'liste difficulte des plateaux' in fichier_plateaux:
+			var dico_difficulte = fichier_plateaux.get('liste difficulte des plateaux')
+			for difficulte in dico_difficulte.keys():
+				# Copie tous les niveaux, sauf 'None'
+				if difficulte not in ['None', '0', '1', '2', '3'] :
+					plateau_liste_difficulte[difficulte] = dico_difficulte.get(difficulte).duplicate()
+				print("Difficulté : ", difficulte)
+				var cpt = 0
+				for plateau in dico_difficulte.get(difficulte):
+					print("   - plateaux : ", plateau)
+					cpt += 1
+					if cpt >= 5:
+						break
+
+func read_json_file(chemin):
+	var fichier = null
+	var contenu_texte = null
+	
+	# Lecture du fichier
+	if FileAccess.file_exists(chemin):
+		fichier = FileAccess.open(chemin, FileAccess.READ)
+		if not fichier:
+			print("read_json_file : ERREUR sur le chemin : ", chemin)
+			return null
+		contenu_texte = fichier.get_as_text()
+		if not contenu_texte :
+			print("read_json_file : ERREUR sur le contenu : ", chemin, " erreur = ", fichier.get_as_text())
+			return null
+		fichier.close()
+	# print("contenu_texte = ", contenu_texte)
+	
+	# Decodage JSON
+	var json = JSON.new()
+	var error = json.parse(contenu_texte)
+	# print("error = ", error)
+	if error == OK:
+		return json.get_data()
+	print("read_json_file : ERREUR sur le décodage JSON: ", json.get_error_message(), " in ", chemin, " at line ", json.get_error_line())
+	return null
+
+func changer_plateau_victoire() -> void:
+	# Augmenter le plateau du niveau courant
+	if est_dernier_plateau():
+		plateau_victoire_dernier_plateau = true
+	if plateau_actuel.get(str(niveau_actuel)) < (len(plateau_liste_difficulte.get(str(niveau_actuel)))-1):
+		plateau_actuel[str(niveau_actuel)] += 1
+	
+	# Augmenter le niveau courant
+	if str(niveau_actuel + 1) in plateau_liste_difficulte:
+		niveau_actuel += 1
+		if str(niveau_actuel) not in plateau_actuel:
+			plateau_actuel[str(niveau_actuel)] = 0
+	print("Niveau = ", niveau_actuel, " indice Plateau = ", plateau_actuel.get(str(niveau_actuel)))
+
+func changer_plateau_abandon() -> void:
+	# Diminuer le niveau courant
+	if str(niveau_actuel - 1) in plateau_liste_difficulte:
+		niveau_actuel -= 1
+	print("Niveau = ", niveau_actuel, " indice Plateau = ", plateau_actuel.get(str(niveau_actuel)))
+
+func lire_plateau_courant() -> String:
+	var indice_plateau = plateau_actuel.get(str(niveau_actuel))
+	return plateau_liste_difficulte.get(str(niveau_actuel))[indice_plateau]
+
+func est_dernier_plateau() -> bool:
+	return lire_plateau_courant() == plateau_liste_difficulte.get(str(niveau_actuel)).back()
+
+func est_victoire_dernier_plateau() -> bool:
+	return plateau_victoire_dernier_plateau

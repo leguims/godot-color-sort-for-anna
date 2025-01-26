@@ -136,7 +136,7 @@ func _calculer_la_position_de_la_pile(nb_piles : int, indice_pile : int) -> Vect
 	return position_pile
 
 func on_pile_clique_gauche(indice_pile : int) -> void:
-	print("clique sur la pile : ", indice_pile)
+	# print("clique sur la pile : ", indice_pile)
 	if sauvegarde_indice_pile_depart == -1:
 		$SelectionPile.start()
 		sauvegarde_indice_pile_depart = indice_pile
@@ -166,7 +166,7 @@ func _on_selection_pile_timeout() -> void:
 	liste_piles[sauvegarde_indice_pile_depart].deselectionner()
 	# Annulation du coup en cours
 	sauvegarde_indice_pile_depart = -1
-	print("Annulation du coup en cours")
+	# print("Annulation du coup en cours")
 
 func realiser_le_tansfert_de_pile(indice_pile_depart : int, indice_pile_arrivee : int) -> bool:
 	if indice_pile_depart == indice_pile_arrivee:

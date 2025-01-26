@@ -3,10 +3,10 @@
 
 ## V0.1 : Liste et organisation pour Godot:
 
-- ~~Jeton : cube de couleur~~:heavy_check_mark:
+- ~~Jeton : cube de couleur~~
   - ~~contient la repesentation d'un jeton~~:heavy_check_mark:
 
-- ~~Pile : Colonne sur un plateau de jeu~~:heavy_check_mark:
+- ~~Pile : Colonne sur un plateau de jeu~~
   - ~~Contient les regles de jeu subjectives :~~:heavy_check_mark:
 	- ~~Accepte un/des jeton(s) de couleur,~~:heavy_check_mark:
 	- ~~Donne un/des jeton(s) de couleur,~~:heavy_check_mark:
@@ -21,7 +21,7 @@
 	  - ~~"[0, 0, 0, 0, 32, 32]" = 4x'A' + 2x' ' sur une pile de 6~~:heavy_check_mark:
 	  - ~~"[0, 1, 2, 32]" = 3x blocs et 1 case vide~~:heavy_check_mark:
 
-- Plateau : ensemble des piles de jeu
+- ~~Plateau : ensemble des piles de jeu~~
   - ~~Associe plusieurs piles pour former le plateau~~:heavy_check_mark:
   - ~~Contient les regles subjectives :~~
 	- ~~Liste des mouvements autorisés,~~ ABANDON géré par le bouton 'Abandonner'
@@ -40,23 +40,25 @@
 
 - Menu :
   - ~~Page d'accueil~~:heavy_check_mark:
-  - Liens entre les plateaux
+  - ~~Liens entre les plateaux~~:heavy_check_mark:
   - ~~Ligne de saisie pour générer un plateau à résoudre.~~:heavy_check_mark:
-  - Lien vers les Crédits (GODOT, musique, effet sonore)
+  - ~~Lien vers les Crédits (GODOT, musique, effet sonore)~~ Reporté V0.2
 
 ### Bug V0.1 :
 - ~~La recherche de solution n'implémente pas de déplacement obligatoire de plusieurs jetons~~:heavy_check_mark:
    - ~~"ABBA.AB  .AB  " : ce plateau est impossible~~:heavy_check_mark:
 
-## V0.2 : Travaux pour la prochaine version V0.2 :
+## V0.2 : Travaux pour la prochaine version
    - ~~jeu : Changer la couleur ou mettre en surbrillance le jeton ou la colonne selectionnée pour un mouvement.~~:heavy_check_mark:
-   - jeu : enregistrer et lire un JSON des niveaux en cours
+   - ~~jeu : lire un JSON des niveaux/plateaux JSON~~:heavy_check_mark:
+   - jeu : enregistrer/lire un JSON (ou autre) des niveaux en cours
    - ~~jeu : sondage sur difficulté du plateau trop facile, bien, trop difficile.~~ Abandon pour échec/réussite automatique
-   - jeu : si réussite, passer au niveau suivant, si échec descendre de niveau et passer au plateau suivant. 
+   - ~~jeu : si réussite, passer au niveau suivant, si échec descendre de niveau et passer au plateau suivant.~~:heavy_check_mark:
    - ~~jeu : prévoir un bouton de retour au menu pour abandonner~~:heavy_check_mark:
    - jeu : menu en haut : campagne, éditer et crédits.
-   - outillage : produire un JSON des plateaux par niveau.
-   - outillage : réécrire les plateaux avec les "." pour identifier les "colonnes x lignes" et mélanger les plateaux de forme différentes
+   - jeu : menu "crédits" : Lien vers les Crédits (GODOT, musique, effet sonore)
+   - ~~outillage : produire un JSON des plateaux par niveau.~~:heavy_check_mark:
+   - ~~outillage : réécrire les plateaux avec les "." pour identifier les "colonnes x lignes" et mélanger les plateaux de forme différentes~~:heavy_check_mark:
    - outillage : construire un JSON selon une configuration qui indique le nombre de tableau de chaque niveau.
    - outillage : pour les plateaux sans solution, lancer une recherche en ajoutant 1 colonne d'une seule ligne OU 1 case vide sur la derniere colonne.
    - jeu : enregistrer les dates de jeux et proposer une série de plateaux de chaque niveau. "Semaine 1", proposer les 1er plateaux de chaque niveau.
@@ -66,7 +68,7 @@
    - jeu : détecter une position de plateau bloquée ou impossible.
 
 
-## V1.0 : Pour une version long terme V1.0 :
+## V1.0 : Pour une version long terme
   - faire une animation du bloc qui se déplace
   - enregistrer dans les données immédiatement les déplacements, mais l'animation décide quand afficher/masquer les jetons selon son avancement. (idée, plusieurs coups sont enchaînés et joués même si l'animation n'est pas terminée. Le résultat donne une séquence d'animation magique)
   - pour les jetons, dissocier les caractéristiques : indice de jeton, couleur, nom, famille. Une famille pourrait avoir plusieurs jetons avec un nom ou une couleur différente.
