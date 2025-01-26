@@ -2,7 +2,6 @@ extends Node
 
 class_name Plateau
 
-
 signal victoire
 signal plateau_invalide
 signal abandon
@@ -16,50 +15,6 @@ var sauvegarde_indice_pile_depart : int = -1
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
-	if false:
-		commencer_un_nouveau_plateau("ABCDE.FGHIJ.KLMNO.PQRST.UVWXY.Z ")
-	if false:
-		await get_tree().create_timer(15.0).timeout
-		victoire.emit()
-	if false:
-		await get_tree().create_timer(5.0).timeout
-		plateau_invalide.emit()
-	if false:
-		#_creer_un_plateau( [ range(4), range(2,6), range(2,4) ] )
-		_decoder_pile('AABC')
-		_decoder_pile('ABCG')
-		
-		var plateau = _decoder_plateau("ABC.AAB.CC .   ")
-		_creer_un_plateau(plateau)
-		# Sleep
-		await get_tree().create_timer(5.0).timeout
-		effacer_le_plateau()
-		
-		plateau = _decoder_plateau("ABC.AAB.CC .   .EFG.MNOMNONONONONO")
-		_creer_un_plateau(plateau)
-		# Sleep
-		await get_tree().create_timer(5.0).timeout
-		effacer_le_plateau()
-		
-		plateau = _decoder_plateau("AB.CJ.AAB.CC .   .DEFG.HIJKLMJ.NO.MNO.NON.ONO.NO")
-		_creer_un_plateau(plateau)
-		# Sleep
-		await get_tree().create_timer(5.0).timeout
-		effacer_le_plateau()
-
-		commencer_un_nouveau_plateau("ABC.AAB.CC .   ")
-		await get_tree().create_timer(5.0).timeout
-		effacer_le_plateau()
-		
-		commencer_un_nouveau_plateau("ABC.AAB.CC .   .EFG.MNOMNONONONONO")
-		await get_tree().create_timer(5.0).timeout
-		effacer_le_plateau()
-		
-		commencer_un_nouveau_plateau("AB.CJ.AAB.CC .   .DEFG.HIJKLMJ.NO.MNO.NON.ONO.NO")
-		
-		var scr_size = DisplayServer.screen_get_size()
-		var win_size = DisplayServer.window_get_size()
-		pass
 	pass
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
@@ -70,14 +25,6 @@ func  commencer_un_nouveau_plateau(plateau_texte : String) -> void:
 	if est_valide(plateau_texte):
 		var plateau = _decoder_plateau(plateau_texte)
 		_creer_un_plateau(plateau)
-		# TODO : Code de test
-		if false:
-			await get_tree().create_timer(5.0).timeout
-			#if randi_range(0, 1):
-			if true:
-				victoire.emit()
-			else:
-				plateau_invalide.emit()
 	else:
 		plateau_invalide.emit()
 
@@ -88,6 +35,7 @@ func effacer_le_plateau() -> void:
 	liste_piles.clear()
 	$BoutonAbandon.show()
 
+
 func est_valide(plateau_texte : String) -> bool:
 	# Vérifier si chaque pile est valide
 	for pile in _decoder_plateau(plateau_texte):
@@ -97,13 +45,13 @@ func est_valide(plateau_texte : String) -> bool:
 
 func _decoder_plateau(plateau_texte : String) -> Array:
 	plateau_texte = plateau_texte.to_upper()
-	print("decoder_plateau : ", plateau_texte)
+	#print("decoder_plateau : ", plateau_texte)
 	var plateau_liste = []
 	#plateau_texte = plateau_texte.replace(' ','')
 	for pile in plateau_texte.split('.'):
 		plateau_liste.append(_decoder_pile(pile))
-	print("  decoder_plateau : ", plateau_texte, " => ", plateau_liste)
-	print("decoder_plateau : fin")
+	#print("  decoder_plateau : ", plateau_texte, " => ", plateau_liste)
+	#print("decoder_plateau : fin")
 	return plateau_liste
 
 func _decoder_pile(pile_texte : String) -> Array:
@@ -114,7 +62,7 @@ func _decoder_pile(pile_texte : String) -> Array:
 		string2int[String.chr(ESPACE)] = ESPACE # chr(ESPACE)=' '
 	for c in pile_texte:
 		pile_liste.append(string2int[c])
-	print("  decoder_pile : ", pile_texte, " => ", pile_liste)
+	#print("  decoder_pile : ", pile_texte, " => ", pile_liste)
 	return pile_liste
 
 func _creer_un_plateau(piles : Array) -> void:
@@ -162,7 +110,8 @@ func _calculer_la_position_de_la_pile(nb_piles : int, indice_pile : int) -> Vect
 		position_pile.x = ecart_entre_piles_x * (1 + indice_pile) - 0.5 * largeur_pile
 		position_pile.y = taille_fenetre_jeu.y - marge_y
 		if indice_pile == 0:
-			print("calculer_la_position_de_la_pile : nb_piles = ", nb_piles)
+			#print("calculer_la_position_de_la_pile : nb_piles = ", nb_piles)
+			pass
 	else :
 		# Gérer 2 lignes de piles
 		nb_ecarts = int((nb_piles -1) / 2 + 2) # (nb_piles-1)/2 = ecarts + 2 marges
@@ -175,12 +124,14 @@ func _calculer_la_position_de_la_pile(nb_piles : int, indice_pile : int) -> Vect
 			else:
 				position_pile.y = (taille_fenetre_jeu.y / 2) - marge_y
 			if indice_pile == 0:
-				print("calculer_la_position_de_la_pile : nb_piles = ", nb_piles)
+				#print("calculer_la_position_de_la_pile : nb_piles = ", nb_piles)
+				pass
 		else:
 			if indice_pile == 0:
 				# TODO : Gérer N lignes en fonction de la hauteur de pile !
 				# TODO : Gérer les piles de tailes différentes
-				print("calculer_la_position_de_la_pile : Trop de piles ! nb_piles = ", nb_piles)
+				#print("calculer_la_position_de_la_pile : Trop de piles ! nb_piles = ", nb_piles)
+				pass
 		pass
 	return position_pile
 
@@ -189,6 +140,8 @@ func on_pile_clique_gauche(indice_pile : int) -> void:
 	if sauvegarde_indice_pile_depart == -1:
 		$SelectionPile.start()
 		sauvegarde_indice_pile_depart = indice_pile
+		# Selecitonner la pile de depart
+		liste_piles[sauvegarde_indice_pile_depart].selectionner()
 	else:
 		$SelectionPile.stop()
 		if realiser_le_tansfert_de_pile(sauvegarde_indice_pile_depart, indice_pile):
@@ -209,6 +162,8 @@ func _est_termine() -> bool:
 	return termine
 
 func _on_selection_pile_timeout() -> void:
+	# Deselecitonner la pile de depart
+	liste_piles[sauvegarde_indice_pile_depart].deselectionner()
 	# Annulation du coup en cours
 	sauvegarde_indice_pile_depart = -1
 	print("Annulation du coup en cours")

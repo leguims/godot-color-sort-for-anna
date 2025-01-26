@@ -23,10 +23,10 @@
 
 - Plateau : ensemble des piles de jeu
   - ~~Associe plusieurs piles pour former le plateau~~:heavy_check_mark:
-  - Contient les regles subjectives :
-	- ~~Liste des mouvements autorisés,~~ ABANDON
+  - ~~Contient les regles subjectives :~~
+	- ~~Liste des mouvements autorisés,~~ ABANDON géré par le bouton 'Abandonner'
 	- ~~Est_terminé (toutes les colonnes sont terminées),~~:heavy_check_mark:
-	- Est_bloqué (la liste des mouvements autorisés est vide)
+	- ~~Est_bloqué (la liste des mouvements autorisés est vide)~~ ABANDON géré par le bouton 'Abandonner'
 	- ~~Encodage de plateau:~~:heavy_check_mark:
 	  - ~~"AABB.BBAA.    " signifie :~~:heavy_check_mark:
 	  - ~~pile 1 : "AABB"~~:heavy_check_mark:
@@ -49,7 +49,7 @@
    - ~~"ABBA.AB  .AB  " : ce plateau est impossible~~:heavy_check_mark:
 
 ## V0.2 : Travaux pour la prochaine version V0.2 :
-   - jeu : Changer la couleur ou mettre en surbrillance le jeton ou la colonne selectionnée pour un mouvement.
+   - ~~jeu : Changer la couleur ou mettre en surbrillance le jeton ou la colonne selectionnée pour un mouvement.~~:heavy_check_mark:
    - jeu : enregistrer et lire un JSON des niveaux en cours
    - ~~jeu : sondage sur difficulté du plateau trop facile, bien, trop difficile.~~ Abandon pour échec/réussite automatique
    - jeu : si réussite, passer au niveau suivant, si échec descendre de niveau et passer au plateau suivant. 

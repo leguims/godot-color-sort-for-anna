@@ -6,3 +6,8 @@
 [node name="Pile" type="Node"]
 script = ExtResource("1_royl6")
 jeton_scene = ExtResource("2_qesri")
+
+[node name="Fond" type="ColorRect" parent="."]
+offset_right = 40.0
+offset_bottom = 40.0
+color = Color(0.345098, 0, 0.345098, 1)

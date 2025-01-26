@@ -46,14 +46,6 @@ func _ready() -> void:
 	# Enregistrer les positions initiales
 	position_initiale_carre = $Carre.position
 	position_initiale_nom = $Nom.position
-	if false:
-		choisir_reference(0)
-		choisir_jeton(9)
-	while false:
-		for i in range(len(_jetons)):
-			choisir_reference(i)
-			choisir_jeton(i)
-			await get_tree().create_timer(1.0).timeout
 
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
@@ -78,16 +70,19 @@ func choisir_jeton(indice : int) -> void:
 
 func choisir_position(position : Vector2) -> void:
 	$Carre.set_position(position_initiale_carre + position)
-	# print("choisir_position : $Carre.position = ", position_courante)
+	# print("Jeton.choisir_position : $Carre.position = ", $Carre.get_position())
 	
 	$Nom.set_position(position_initiale_nom + position)
-	# print("choisir_position : $Nom.position = ", position_courante)
+	# print("Jeton.choisir_position : $Nom.position = ", $Nom.get_position())
 
 func hauteur() -> int:
 	return $Carre.size.y
 
 func largeur() -> int:
 	return $Carre.size.x
+
+func position() -> Vector2:
+	return $Carre.position
 
 func est_vide() -> bool:
 	return indice_jeton == Plateau.ESPACE

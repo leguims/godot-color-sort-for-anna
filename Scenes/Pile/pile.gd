@@ -6,72 +6,16 @@ signal clique_gauche(reference_parent)
 
 @export var jeton_scene: PackedScene
 var liste_jetons = []
-var position = Vector2(0, 720)
 var reference_parent
+
+var position = Vector2(0, 720)
+var marge = 4
+
+var couleur_de_deselection = Color("580058")
+var couleur_de_selection = Color("b800b8")
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
-	if false:
-			print("est vide : ", est_vide())
-			print("est pleine : ", est_pleine())
-			print("est terminé : ", est_termine())
-			
-			effacer_la_pile()
-			ajouter_les_jetons([0,0,0,0])
-			print("[0,0,0,0]")
-			print("est vide : ", est_vide())
-			print("est pleine : ", est_pleine())
-			print("est terminé : ", est_termine())
-			print("quelle_est_la_couleur_au_sommet : ",quelle_est_la_couleur_au_sommet())
-			print("combien_de_cases_vides_au_sommet : ",combien_de_cases_vides_au_sommet())
-			print("accepte_jeton(0,1) : ",accepte_jeton(0,1))
-			print("accepte_jeton(0,0) : ",accepte_jeton(0,0))
-			print("ajouter 0 : ", ajouter_le_jeton_dans_le_vide(0))
-			print("retirer : ", retirer_le_dernier_jeton())
-			for j in liste_jetons:
-				print(j.indice_jeton)
-
-			effacer_la_pile()
-			ajouter_les_jetons([0,1,0,32])
-			print("[0,1,0,32]")
-			print("est vide : ", est_vide())
-			print("est pleine : ", est_pleine())
-			print("est terminé : ", est_termine())
-			print("quelle_est_la_couleur_au_sommet : ",quelle_est_la_couleur_au_sommet())
-			print("combien_de_cases_vides_au_sommet : ",combien_de_cases_vides_au_sommet())
-			print("accepte_jeton(0,1) : ",accepte_jeton(0,1))
-			print("accepte_jeton(1,1) : ",accepte_jeton(1,1))
-			print("accepte_jeton(0,2) : ",accepte_jeton(0,2))
-			print("ajouter 1 : ", ajouter_le_jeton_dans_le_vide(1))
-			print("ajouter 0 : ", ajouter_le_jeton_dans_le_vide(0))
-			for j in liste_jetons:
-				print(j.indice_jeton)
-			
-			effacer_la_pile()
-			ajouter_les_jetons([32])
-			print("[32]")
-			print("est vide : ", est_vide())
-			print("est pleine : ", est_pleine())
-			print("est terminé : ", est_termine())
-			print("accepte_jeton(0,1) : ",accepte_jeton(0,1))
-			print("accepte_jeton(0,2) : ",accepte_jeton(0,2))
-			print("ajouter 1 : ", ajouter_le_jeton_dans_le_vide(1))
-			for j in liste_jetons:
-				print(j.indice_jeton)
-			print("retirer : ", retirer_le_dernier_jeton())
-			for j in liste_jetons:
-				print(j.indice_jeton)
-
-	if false:
-		var valide
-		valide = est_valide([0,3,32])
-		print("est_valide([0,3,32]) = ",valide)
-		valide = est_valide([32,0,3])
-		print("est_valide([32,0,3]) = ",valide)
-		valide = est_valide([0,32,3])
-		print("est_valide([0,32,3]) = ",valide)
-	if false:
-		ajouter_les_jetons(range(14))
 	pass
 
 
@@ -110,6 +54,13 @@ func ajouter_les_jetons(jetons : Array) -> bool:
 
 		# Definir le type du jeton
 		jeton.choisir_jeton(jeton_courant)
+	
+	# Definir la taille du fond de pile
+	var size = Vector2(largeur(), hauteur() )
+	$Fond.set_size(size)
+	
+	# Definir la position du fond de pile
+	_choisir_position_fond(Vector2(0, 720))
 	return true # pile valide
 
 func ajouter_le_jeton_dans_le_vide(jeton_a_ajouter : int) -> bool:
@@ -145,17 +96,31 @@ func choisir_position(nouvelle_position : Vector2) -> void:
 	# Changer la position de tous les jetons
 	for jeton_courant in liste_jetons:
 		var position_jeton = _calculer_la_position_du_jeton(indice_jeton)
+		print("Pile.choisir_position : position_jeton = ", position_jeton)
 		jeton_courant.choisir_position( position_jeton )
 		indice_jeton += 1
+	_choisir_position_fond(nouvelle_position)
+
+func _choisir_position_fond(nouvelle_position : Vector2) -> void:
+	if liste_jetons:
+		# Position du dernier jeton + Centrage de la pile
+		$Fond.set_position(liste_jetons[-1].position() - Vector2(marge, marge))
+		print("Pile.choisir_position $Fond.get_position()", $Fond.get_position())
+
+func selectionner() -> void:
+	$Fond.color = couleur_de_selection
+
+func deselectionner() -> void:
+	$Fond.color = couleur_de_deselection
 
 func largeur() -> int:
 	if liste_jetons:
-		return liste_jetons[0].largeur()
+		return liste_jetons[0].largeur() + 2 * marge
 	return 0
 
 func hauteur() -> int:
 	if liste_jetons:
-		return (liste_jetons[0].hauteur() + 2) * len(liste_jetons)
+		return (liste_jetons[0].hauteur() + 2) * len(liste_jetons) + 2 * marge
 	return 0
 
 func effacer_la_pile() -> void:
