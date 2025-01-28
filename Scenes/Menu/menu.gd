@@ -6,6 +6,7 @@ signal commencer_plateau
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
 	initialiser_les_plateaux()
+	lire_sauvegarde_joueur()
 	pass # Replace with function body.
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
@@ -77,12 +78,11 @@ func _afficher_message(texte : String, temporaire : bool = true):
 		$TempoMessage.start()
 
 
-
+###############################################
 # Gestion des niveaux et des plateaux à jouer
+###############################################
 var niveau_actuel = 3
-var plateau_actuel = {
-	'3': 0
-}
+var plateau_actuel = { '3': 0 }
 var plateau_victoire_dernier_plateau = false
 
 # Dico : {'difficulte': [liste_plateaux]}
@@ -121,7 +121,7 @@ func initialiser_les_plateaux() -> void:
 					if cpt >= 5:
 						break
 
-func read_json_file(chemin):
+func read_json_file(chemin) -> Variant:
 	var fichier = null
 	var contenu_texte = null
 	
@@ -136,35 +136,62 @@ func read_json_file(chemin):
 			print("read_json_file : ERREUR sur le contenu : ", chemin, " erreur = ", fichier.get_as_text())
 			return null
 		fichier.close()
-	# print("contenu_texte = ", contenu_texte)
-	
-	# Decodage JSON
-	var json = JSON.new()
-	var error = json.parse(contenu_texte)
-	# print("error = ", error)
-	if error == OK:
-		return json.get_data()
-	print("read_json_file : ERREUR sur le décodage JSON: ", json.get_error_message(), " in ", chemin, " at line ", json.get_error_line())
+		# print("contenu_texte = ", contenu_texte)
+		
+		# Decodage JSON
+		var json = JSON.new()
+		var error = json.parse(contenu_texte)
+		# print("error = ", error)
+		if error == OK:
+			return json.get_data()
+		print("read_json_file : ERREUR sur le décodage JSON: ", json.get_error_message(), " in ", chemin, " at line ", json.get_error_line())
+	else:
+		print("read_json_file : ERREUR, le fichier '", chemin, "' n'existe pas ")
 	return null
 
+func write_json_file(chemin, contenu) -> void:
+	var fichier = null
+	
+	# Ouverture du fichier
+	fichier = FileAccess.open(chemin, FileAccess.WRITE)
+	if not fichier:
+		print("write_json_file : ERREUR sur le chemin : ", chemin)
+		return
+	# Encodage JSON
+	var json = JSON.new()
+	var json_string = json.stringify(contenu)
+	# print("json_string = ", json_string)
+	# Ecriture du fichier
+	fichier.store_string(json_string)
+	fichier.close()
+
 func changer_plateau_victoire() -> void:
+	var sauvegarder = false
 	# Augmenter le plateau du niveau courant
 	if est_dernier_plateau():
 		plateau_victoire_dernier_plateau = true
+		sauvegarder = true
 	if plateau_actuel.get(str(niveau_actuel)) < (len(plateau_liste_difficulte.get(str(niveau_actuel)))-1):
 		plateau_actuel[str(niveau_actuel)] += 1
+		sauvegarder = true
 	
 	# Augmenter le niveau courant
 	if str(niveau_actuel + 1) in plateau_liste_difficulte:
 		niveau_actuel += 1
 		if str(niveau_actuel) not in plateau_actuel:
 			plateau_actuel[str(niveau_actuel)] = 0
+		sauvegarder = true
+	
 	print("Niveau = ", niveau_actuel, " indice Plateau = ", plateau_actuel.get(str(niveau_actuel)))
+	if sauvegarder:
+		enregistrer_sauvegarde_joueur()
+	
 
 func changer_plateau_abandon() -> void:
 	# Diminuer le niveau courant
 	if str(niveau_actuel - 1) in plateau_liste_difficulte:
 		niveau_actuel -= 1
+		enregistrer_sauvegarde_joueur()
 	print("Niveau = ", niveau_actuel, " indice Plateau = ", plateau_actuel.get(str(niveau_actuel)))
 
 func lire_plateau_courant() -> String:
@@ -176,3 +203,25 @@ func est_dernier_plateau() -> bool:
 
 func est_victoire_dernier_plateau() -> bool:
 	return plateau_victoire_dernier_plateau
+
+func lire_sauvegarde_joueur() -> void:
+	var sauvegarde_joueur = read_json_file("user://score.json")
+	if sauvegarde_joueur:
+		print("sauvegarde_joueur = ", sauvegarde_joueur)
+		if 'niveau_actuel' in sauvegarde_joueur:
+			niveau_actuel = sauvegarde_joueur['niveau_actuel']
+		if 'plateau_actuel' in sauvegarde_joueur:
+			plateau_actuel = sauvegarde_joueur['plateau_actuel'].duplicate(true)
+		if 'plateau_victoire_dernier_plateau' in sauvegarde_joueur:
+			plateau_victoire_dernier_plateau = sauvegarde_joueur['plateau_victoire_dernier_plateau']
+	else:
+		print("Erreur de la lecture de la sauvegarde du joueur")
+
+func enregistrer_sauvegarde_joueur() -> void:
+	var sauvegarde_joueur = {
+		'niveau_actuel' : niveau_actuel,
+		'plateau_actuel' : plateau_actuel,
+		'plateau_victoire_dernier_plateau' : plateau_victoire_dernier_plateau
+	}
+	write_json_file("user://score.json", sauvegarde_joueur)
+	print("enregistrer_sauvegarde_joueur")
