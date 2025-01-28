@@ -51,7 +51,7 @@
 ## V0.2 : Travaux pour la prochaine version
    - ~~jeu : Changer la couleur ou mettre en surbrillance le jeton ou la colonne selectionnée pour un mouvement.~~:heavy_check_mark:
    - ~~jeu : lire un JSON des niveaux/plateaux JSON~~:heavy_check_mark:
-   - ~~jeu : enregistrer/lire un JSON (ou autre) des niveaux en cours~:heavy_check_mark:
+   - ~~jeu : enregistrer/lire un JSON (ou autre) des niveaux en cours~~:heavy_check_mark:
    - ~~jeu : sondage sur difficulté du plateau trop facile, bien, trop difficile.~~ Abandon pour échec/réussite automatique
    - ~~jeu : si réussite, passer au niveau suivant, si échec descendre de niveau et passer au plateau suivant.~~:heavy_check_mark:
    - ~~jeu : prévoir un bouton de retour au menu pour abandonner~~:heavy_check_mark:
