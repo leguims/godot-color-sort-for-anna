@@ -75,7 +75,12 @@
   - faire une animation du bloc qui se déplace
   - enregistrer dans les données immédiatement les déplacements, mais l'animation décide quand afficher/masquer les jetons selon son avancement. (idée, plusieurs coups sont enchaînés et joués même si l'animation n'est pas terminée. Le résultat donne une séquence d'animation magique)
   - pour les jetons, dissocier les caractéristiques : indice de jeton, couleur, nom, famille. Une famille pourrait avoir plusieurs jetons avec un nom ou une couleur différente.
-  - réfléchir à une écriture de plateau qui porte l'organisation des piles dans le plateau. Par exemple '.' pour le changement de pile et '..' pour le changement de ligne. 
+  - réfléchir à une écriture de plateau qui porte l'organisation des piles dans le plateau. Par exemple '.' pour le changement de pile et '..' pour le changement de ligne.
+  - jeu : varier la représentation des jetons et le fond du plateau :
+     - fruits avec fond de cuisine,
+     - médicaments avec fond d'hôpital,
+     - animaux avec un zoo,
+     - pacman/fantômes et le labyrinthe
 
 
 ## V2.0 : Idées du futur:
@@ -83,4 +88,8 @@
   - Réaliser des tableaux dont la solution est un message (Anna.Loves.Sex).
   - Réorganiser Jeton et construction de plateau pour arriver à ce résultat.
 - jeu en réseau : course de joueurs sur un même plateau avec chrono
-- chrono enregistré sur les plateaux. Plateau masqué avant le départ. 
+- chrono enregistré sur les plateaux. Plateau masqué avant le départ.
+- fond de plateaux dynamiques :
+   - un hublot avec des nuages qui passent
+   - des oiseaux qui passent
+   - des feuilles d'automne qui passent
