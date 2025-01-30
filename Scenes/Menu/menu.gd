@@ -205,7 +205,7 @@ func est_victoire_dernier_plateau() -> bool:
 	return plateau_victoire_dernier_plateau
 
 func lire_sauvegarde_joueur() -> void:
-	var sauvegarde_joueur = read_json_file("user://score.json")
+	var sauvegarde_joueur = read_json_file("user://sauvegarde.json")
 	if sauvegarde_joueur:
 		print("sauvegarde_joueur = ", sauvegarde_joueur)
 		if 'niveau_actuel' in sauvegarde_joueur:
@@ -223,5 +223,5 @@ func enregistrer_sauvegarde_joueur() -> void:
 		'plateau_actuel' : plateau_actuel,
 		'plateau_victoire_dernier_plateau' : plateau_victoire_dernier_plateau
 	}
-	write_json_file("user://score.json", sauvegarde_joueur)
+	write_json_file("user://sauvegarde.json", sauvegarde_joueur)
 	print("enregistrer_sauvegarde_joueur")
