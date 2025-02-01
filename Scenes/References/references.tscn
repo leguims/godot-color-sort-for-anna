@@ -1,0 +1,36 @@
+[gd_scene load_steps=4 format=3 uid="uid://crh6v0vpu06u8"]
+
+[ext_resource type="Texture2D" uid="uid://bval8s3f0otos" path="res://Art/Images/credits_480x720.png" id="1_oti5q"]
+[ext_resource type="Script" path="res://Scenes/References/references.gd" id="1_y14jx"]
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_cte4r"]
+texture = ExtResource("1_oti5q")
+texture_margin_left = 10.0
+texture_margin_top = 100.0
+texture_margin_right = 10.0
+texture_margin_bottom = 10.0
+
+[node name="References" type="Node"]
+script = ExtResource("1_y14jx")
+
+[node name="RichTextLabel" type="RichTextLabel" parent="."]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/normal = SubResource("StyleBoxTexture_cte4r")
+bbcode_enabled = true
+text = "[left][outline_size=5][color=#ef00ef][b]Moteur : [url]https://godotengine.org[/url][/b]
+[ul]Godot[/ul]
+
+[b]Musique : [url]https://patrickdearteaga.com[/url][/b]
+[ul]Solve The Puzzle[/ul]
+
+[b]Effet sonore : [url]https://pixabay.com[/url][/b]
+[ul]freesound_community : game-start-6104
+freesound_community : fail-jingle-stereo-mix-88784
+floraphonic : marimba-win-f-2-209688[/ul]
+
+[b]didacticiel :[/b]
+[ul]Baba Des bois - [url]https://www.youtube.com/@BabaDesBois[/url][/ul][/color][/outline_size][/left]"

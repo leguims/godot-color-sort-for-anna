@@ -1,13 +1,24 @@
-Moteur : https://godotengine.org
-	Godot
+[left][outline_size=5][color=#ef00ef][b]Moteur : [url]https://godotengine.org[/url][/b]
+[ul]Godot[/ul]
 
-Musique : https://patrickdearteaga.com
-	Solve The Puzzle
+[b]Musique : [url]https://patrickdearteaga.com[/url][/b]
+[ul]Blues
+Dreaming
+Great Little Challenge
+Humble Match
+Intrusión
+Mall
+Mimos Menguados
+My Memory Lane
+Solve The Puzzle
+Su Turno
+The Three Princesses of Lilac Meadow
+Vals de su jardín C[/ul]
 
-Effet sonore : https://pixabay.com
-	freesound_community : game-start-6104
-	freesound_community : fail-jingle-stereo-mix-88784
-	floraphonic : marimba-win-f-2-209688
+[b]Effet sonore : [url]https://pixabay.com[/url][/b]
+[ul]freesound_community : game-start-6104
+freesound_community : fail-jingle-stereo-mix-88784
+floraphonic : marimba-win-f-2-209688[/ul]
 
-didacticiel :
-	Baba Des bois - https://www.youtube.com/@BabaDesBois
+[b]didacticiel :[/b]
+[ul]Baba Des bois - [url]https://www.youtube.com/@BabaDesBois[/url][/ul][/color][/outline_size][/left]

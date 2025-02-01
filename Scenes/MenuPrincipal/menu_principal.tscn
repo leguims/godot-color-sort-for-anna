@@ -1,7 +1,7 @@
 [gd_scene load_steps=15 format=3 uid="uid://due674pwfguqp"]
 
-[ext_resource type="Texture2D" uid="uid://cr6cir87eijgg" path="res://Scenes/MenuPrincipal/fond_cubes_480x720.png" id="1_32pun"]
 [ext_resource type="Script" path="res://Scenes/MenuPrincipal/menu_principal.gd" id="1_64slw"]
+[ext_resource type="Texture2D" uid="uid://bl3jiqwpmmvbq" path="res://Art/Images/fond_cubes_480x720.png" id="2_wsrww"]
 
 [sub_resource type="SystemFont" id="SystemFont_jisel"]
 font_names = PackedStringArray("Impact")
@@ -56,7 +56,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-texture = ExtResource("1_32pun")
+texture = ExtResource("2_wsrww")
 
 [node name="Marge" type="MarginContainer" parent="."]
 layout_mode = 1
@@ -103,14 +103,14 @@ layout_mode = 2
 theme_override_constants/separation = 30
 alignment = 1
 
-[node name="Nouveau joueur" type="Button" parent="Marge/HBoxContainer/VBoxContainer/Marge/VBoxContainer"]
+[node name="BoutonJoueur" type="Button" parent="Marge/HBoxContainer/VBoxContainer/Marge/VBoxContainer"]
 layout_mode = 2
 theme_override_font_sizes/font_size = 21
 theme_override_styles/hover = SubResource("StyleBoxFlat_qs1gd")
 theme_override_styles/normal = SubResource("StyleBoxFlat_urgqo")
 text = "Nouveau joueur"
 
-[node name="Nouveau Joueur" type="LineEdit" parent="Marge/HBoxContainer/VBoxContainer/Marge/VBoxContainer"]
+[node name="TexteJoueur" type="LineEdit" parent="Marge/HBoxContainer/VBoxContainer/Marge/VBoxContainer"]
 visible = false
 self_modulate = Color(0.87451, 0, 0.87451, 1)
 layout_mode = 2
@@ -120,39 +120,39 @@ theme_override_styles/normal = SubResource("StyleBoxFlat_w06fl")
 placeholder_text = "Nom joueur"
 alignment = 1
 
-[node name="Campagne" type="Button" parent="Marge/HBoxContainer/VBoxContainer/Marge/VBoxContainer"]
+[node name="BoutonCampagne" type="Button" parent="Marge/HBoxContainer/VBoxContainer/Marge/VBoxContainer"]
 layout_mode = 2
 theme_override_font_sizes/font_size = 21
 theme_override_styles/hover = SubResource("StyleBoxFlat_so4s0")
 theme_override_styles/normal = SubResource("StyleBoxFlat_mef5e")
 text = "Campagne"
 
-[node name="VBoxContainer" type="VBoxContainer" parent="Marge/HBoxContainer/VBoxContainer/Marge/VBoxContainer/Campagne"]
+[node name="VBoxContainer" type="VBoxContainer" parent="Marge/HBoxContainer/VBoxContainer/Marge/VBoxContainer/BoutonCampagne"]
 layout_mode = 0
 offset_right = 40.0
 offset_bottom = 40.0
 
-[node name="Marge" type="MarginContainer" parent="Marge/HBoxContainer/VBoxContainer/Marge/VBoxContainer/Campagne/VBoxContainer"]
+[node name="Marge" type="MarginContainer" parent="Marge/HBoxContainer/VBoxContainer/Marge/VBoxContainer/BoutonCampagne/VBoxContainer"]
 layout_mode = 2
 theme_override_constants/margin_left = 20
 theme_override_constants/margin_right = 20
 theme_override_constants/margin_bottom = 20
 
-[node name="Scores" type="Button" parent="Marge/HBoxContainer/VBoxContainer/Marge/VBoxContainer"]
+[node name="BoutonScores" type="Button" parent="Marge/HBoxContainer/VBoxContainer/Marge/VBoxContainer"]
 layout_mode = 2
 theme_override_font_sizes/font_size = 21
 theme_override_styles/hover = SubResource("StyleBoxFlat_0rh52")
 theme_override_styles/normal = SubResource("StyleBoxFlat_urgqo")
 text = "Scores"
 
-[node name="Editer un plateau" type="Button" parent="Marge/HBoxContainer/VBoxContainer/Marge/VBoxContainer"]
+[node name="BoutonEditerPlateau" type="Button" parent="Marge/HBoxContainer/VBoxContainer/Marge/VBoxContainer"]
 layout_mode = 2
 theme_override_font_sizes/font_size = 21
 theme_override_styles/hover = SubResource("StyleBoxFlat_3elix")
 theme_override_styles/normal = SubResource("StyleBoxFlat_yyhke")
 text = "Editer un plateau"
 
-[node name="Plateau" type="LineEdit" parent="Marge/HBoxContainer/VBoxContainer/Marge/VBoxContainer"]
+[node name="TextePlateau" type="LineEdit" parent="Marge/HBoxContainer/VBoxContainer/Marge/VBoxContainer"]
 visible = false
 self_modulate = Color(0.87451, 0, 0.87451, 1)
 layout_mode = 2
@@ -162,9 +162,11 @@ theme_override_styles/normal = SubResource("StyleBoxFlat_w06fl")
 placeholder_text = "ABC.AAB.CBC.   "
 alignment = 1
 
-[node name="Références" type="Button" parent="Marge/HBoxContainer/VBoxContainer/Marge/VBoxContainer"]
+[node name="BoutonRéférences" type="Button" parent="Marge/HBoxContainer/VBoxContainer/Marge/VBoxContainer"]
 layout_mode = 2
 theme_override_font_sizes/font_size = 21
 theme_override_styles/hover = SubResource("StyleBoxFlat_dfj4a")
 theme_override_styles/normal = SubResource("StyleBoxFlat_p4mar")
 text = "Références"
+
+[connection signal="pressed" from="Marge/HBoxContainer/VBoxContainer/Marge/VBoxContainer/BoutonRéférences" to="." method="_on_bouton_références_pressed"]
