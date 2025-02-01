@@ -1,0 +1,170 @@
+[gd_scene load_steps=15 format=3 uid="uid://due674pwfguqp"]
+
+[ext_resource type="Texture2D" uid="uid://cr6cir87eijgg" path="res://Scenes/MenuPrincipal/fond_cubes_480x720.png" id="1_32pun"]
+[ext_resource type="Script" path="res://Scenes/MenuPrincipal/menu_principal.gd" id="1_64slw"]
+
+[sub_resource type="SystemFont" id="SystemFont_jisel"]
+font_names = PackedStringArray("Impact")
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ruejn"]
+bg_color = Color(0, 0, 0, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_qs1gd"]
+bg_color = Color(0.537255, 0, 0.537255, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_urgqo"]
+bg_color = Color(0.873002, 0.000607988, 0.872996, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_w06fl"]
+bg_color = Color(0.87451, 0, 0.87451, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_so4s0"]
+bg_color = Color(0.537255, 0, 0.537255, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_mef5e"]
+bg_color = Color(0.87451, 0, 0.87451, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_0rh52"]
+bg_color = Color(0.537255, 0, 0.537255, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_3elix"]
+bg_color = Color(0.537255, 0, 0.537255, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_yyhke"]
+bg_color = Color(0.87451, 0, 0.87451, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_dfj4a"]
+bg_color = Color(0.537255, 0, 0.537255, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_p4mar"]
+bg_color = Color(0.87451, 0, 0.87451, 1)
+
+[node name="Menu_principal" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_64slw")
+
+[node name="Fond" type="TextureRect" parent="."]
+self_modulate = Color(0.589096, 0.589096, 0.589096, 1)
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("1_32pun")
+
+[node name="Marge" type="MarginContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 20
+theme_override_constants/margin_top = 20
+theme_override_constants/margin_right = 20
+theme_override_constants/margin_bottom = 20
+
+[node name="HBoxContainer" type="HBoxContainer" parent="Marge"]
+layout_mode = 2
+alignment = 1
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Marge/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 30
+alignment = 1
+
+[node name="Titre du jeu" type="Label" parent="Marge/HBoxContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.87451, 0, 0.87451, 1)
+theme_override_fonts/font = SubResource("SystemFont_jisel")
+theme_override_font_sizes/font_size = 42
+theme_override_styles/normal = SubResource("StyleBoxFlat_ruejn")
+text = "Ranger les
+couleurs !"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Marge" type="MarginContainer" parent="Marge/HBoxContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_constants/margin_left = 80
+theme_override_constants/margin_top = 20
+theme_override_constants/margin_right = 80
+theme_override_constants/margin_bottom = 20
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Marge/HBoxContainer/VBoxContainer/Marge"]
+layout_mode = 2
+theme_override_constants/separation = 30
+alignment = 1
+
+[node name="Nouveau joueur" type="Button" parent="Marge/HBoxContainer/VBoxContainer/Marge/VBoxContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 21
+theme_override_styles/hover = SubResource("StyleBoxFlat_qs1gd")
+theme_override_styles/normal = SubResource("StyleBoxFlat_urgqo")
+text = "Nouveau joueur"
+
+[node name="Nouveau Joueur" type="LineEdit" parent="Marge/HBoxContainer/VBoxContainer/Marge/VBoxContainer"]
+visible = false
+self_modulate = Color(0.87451, 0, 0.87451, 1)
+layout_mode = 2
+theme_override_colors/font_placeholder_color = Color(0.537375, 0.000207492, 0.537371, 1)
+theme_override_font_sizes/font_size = 21
+theme_override_styles/normal = SubResource("StyleBoxFlat_w06fl")
+placeholder_text = "Nom joueur"
+alignment = 1
+
+[node name="Campagne" type="Button" parent="Marge/HBoxContainer/VBoxContainer/Marge/VBoxContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 21
+theme_override_styles/hover = SubResource("StyleBoxFlat_so4s0")
+theme_override_styles/normal = SubResource("StyleBoxFlat_mef5e")
+text = "Campagne"
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Marge/HBoxContainer/VBoxContainer/Marge/VBoxContainer/Campagne"]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="Marge" type="MarginContainer" parent="Marge/HBoxContainer/VBoxContainer/Marge/VBoxContainer/Campagne/VBoxContainer"]
+layout_mode = 2
+theme_override_constants/margin_left = 20
+theme_override_constants/margin_right = 20
+theme_override_constants/margin_bottom = 20
+
+[node name="Scores" type="Button" parent="Marge/HBoxContainer/VBoxContainer/Marge/VBoxContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 21
+theme_override_styles/hover = SubResource("StyleBoxFlat_0rh52")
+theme_override_styles/normal = SubResource("StyleBoxFlat_urgqo")
+text = "Scores"
+
+[node name="Editer un plateau" type="Button" parent="Marge/HBoxContainer/VBoxContainer/Marge/VBoxContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 21
+theme_override_styles/hover = SubResource("StyleBoxFlat_3elix")
+theme_override_styles/normal = SubResource("StyleBoxFlat_yyhke")
+text = "Editer un plateau"
+
+[node name="Plateau" type="LineEdit" parent="Marge/HBoxContainer/VBoxContainer/Marge/VBoxContainer"]
+visible = false
+self_modulate = Color(0.87451, 0, 0.87451, 1)
+layout_mode = 2
+theme_override_colors/font_placeholder_color = Color(0.537375, 0.000207492, 0.537371, 1)
+theme_override_font_sizes/font_size = 21
+theme_override_styles/normal = SubResource("StyleBoxFlat_w06fl")
+placeholder_text = "ABC.AAB.CBC.   "
+alignment = 1
+
+[node name="Références" type="Button" parent="Marge/HBoxContainer/VBoxContainer/Marge/VBoxContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 21
+theme_override_styles/hover = SubResource("StyleBoxFlat_dfj4a")
+theme_override_styles/normal = SubResource("StyleBoxFlat_p4mar")
+text = "Références"

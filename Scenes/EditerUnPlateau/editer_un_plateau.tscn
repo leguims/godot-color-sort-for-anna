@@ -1,0 +1,26 @@
+[gd_scene load_steps=7 format=3 uid="uid://eny1o3cji3tu"]
+
+[ext_resource type="PackedScene" uid="uid://cfqcdseqsuy1l" path="res://Scenes/Plateau/plateau.tscn" id="1_p5juj"]
+[ext_resource type="PackedScene" uid="uid://xsrt777ms37l" path="res://Scenes/Menu/menu.tscn" id="2_r2t3f"]
+[ext_resource type="AudioStream" uid="uid://b0xpcrpr7dos3" path="res://Art/Musique/Solve The Puzzle.ogg" id="3_lit51"]
+[ext_resource type="AudioStream" uid="uid://1yo7r2c0gaqs" path="res://Art/EffetSonore/game-start.mp3" id="4_e6wlj"]
+[ext_resource type="AudioStream" uid="uid://bta65s8emibd3" path="res://Art/EffetSonore/win.mp3" id="5_ae4yu"]
+[ext_resource type="AudioStream" uid="uid://o2nhixe1lp0c" path="res://Art/EffetSonore/fail-jingle.mp3" id="6_uetgg"]
+
+[node name="EditerUnPlateau" type="Node"]
+
+[node name="PlateauDeJeu" parent="." instance=ExtResource("1_p5juj")]
+
+[node name="Menu" parent="." instance=ExtResource("2_r2t3f")]
+
+[node name="Musique" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("3_lit51")
+
+[node name="SonCommencer" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("4_e6wlj")
+
+[node name="SonFinDePartie" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("5_ae4yu")
+
+[node name="SonEchec" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("6_uetgg")
