@@ -38,7 +38,7 @@
 	  - ~~pile 3 : vide (4 emplacements)~~:heavy_check_mark:
 	  - ~~pile 4 : vide (1 emplacement)~~:heavy_check_mark:
 
-- Menu :
+- ~~Menu :~~
   - ~~Page d'accueil~~:heavy_check_mark:
   - ~~Liens entre les plateaux~~:heavy_check_mark:
   - ~~Ligne de saisie pour générer un plateau à résoudre.~~:heavy_check_mark:
@@ -55,8 +55,14 @@
    - ~~jeu : sondage sur difficulté du plateau trop facile, bien, trop difficile.~~ Abandon pour échec/réussite automatique
    - ~~jeu : si réussite, passer au niveau suivant, si échec descendre de niveau et passer au plateau suivant.~~:heavy_check_mark:
    - ~~jeu : prévoir un bouton de retour au menu pour abandonner~~:heavy_check_mark:
-   - jeu : menu en haut : campagne, éditer et crédits.
-   - jeu : menu "crédits" : Lien vers les Crédits (GODOT, musique, effet sonore)
+   - jeu : menu en haut : campagne, éditer et références.
+   - jeu : Page d'accueil : Nouveau joueur, campagne, ~~scores~~, éditer et ~~références~~.
+   - jeu : Page "Nouveau joueur" : apparence + edition du nom.
+   - jeu : Page "Campagne" : lien vers jeu + calcul du score + gestion du plateau à jouer + lien vers menu principal
+   - jeu : Page "Scores" : ~~apparence~~ + calcul des scores + ~~retour au menu principal~~
+   - jeu : Page "Editer un plateau" : apparence + edition plateau + jeu plateau + retour menu principal
+   - ~~jeu : Page "Références" : apparence + retour menu principal~~:heavy_check_mark:
+   - ~~jeu : Page "Références" : Lien vers les Crédits (GODOT, musique, effet sonore)~~:heavy_check_mark:
    - ~~outillage : produire un JSON des plateaux par niveau.~~:heavy_check_mark:
    - ~~outillage : réécrire les plateaux avec les "." pour identifier les "colonnes x lignes" et mélanger les plateaux de forme différentes~~:heavy_check_mark:
    - outillage : Réaliser un script d'élagage des plateaux valides.
@@ -77,10 +83,10 @@
   - pour les jetons, dissocier les caractéristiques : indice de jeton, couleur, nom, famille. Une famille pourrait avoir plusieurs jetons avec un nom ou une couleur différente.
   - réfléchir à une écriture de plateau qui porte l'organisation des piles dans le plateau. Par exemple '.' pour le changement de pile et '..' pour le changement de ligne.
   - jeu : varier la représentation des jetons et le fond du plateau :
-     - fruits avec fond de cuisine,
-     - médicaments avec fond d'hôpital,
-     - animaux avec un zoo,
-     - pacman/fantômes et le labyrinthe
+	 - fruits avec fond de cuisine,
+	 - médicaments avec fond d'hôpital,
+	 - animaux avec un zoo,
+	 - pacman/fantômes et le labyrinthe
 
 
 ## V2.0 : Idées du futur:

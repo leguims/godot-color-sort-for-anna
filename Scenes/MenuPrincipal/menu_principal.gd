@@ -13,3 +13,7 @@ func _process(delta: float) -> void:
 
 func _on_bouton_références_pressed() -> void:
 	get_tree().change_scene_to_file("res://Scenes/References/references.tscn")
+
+
+func _on_bouton_scores_pressed() -> void:
+	get_tree().change_scene_to_file("res://Scenes/Scores/scores.tscn")
