@@ -68,6 +68,7 @@ func cacher_accueil():
 	$BoutonCommencer.hide()
 
 func _on_bouton_commencer_pressed() -> void:
+	changer_plateau_commencer()
 	commencer_plateau.emit()
 
 func _afficher_message(texte : String, temporaire : bool = true):
@@ -81,6 +82,7 @@ func _afficher_message(texte : String, temporaire : bool = true):
 ###############################################
 # Gestion des niveaux et des plateaux à jouer
 ###############################################
+var nombre_de_partie = 0
 var niveau_actuel = 3
 var plateau_actuel = { '3': 0 }
 var plateau_victoire_dernier_plateau = false
@@ -165,6 +167,11 @@ func write_json_file(chemin, contenu) -> void:
 	fichier.store_string(json_string)
 	fichier.close()
 
+func changer_plateau_commencer() -> void:
+	nombre_de_partie += 1
+	print("Nombre de parties = ", nombre_de_partie)
+	enregistrer_sauvegarde_joueur()
+
 func changer_plateau_victoire() -> void:
 	var sauvegarder = false
 	# Augmenter le plateau du niveau courant
@@ -182,10 +189,9 @@ func changer_plateau_victoire() -> void:
 			plateau_actuel[str(niveau_actuel)] = 0
 		sauvegarder = true
 	
-	print("Niveau = ", niveau_actuel, " indice Plateau = ", plateau_actuel.get(str(niveau_actuel)))
+	print("Niveau = ", niveau_actuel, " - indice Plateau = ", plateau_actuel.get(str(niveau_actuel)), " - Nombre de parties = ", nombre_de_partie)
 	if sauvegarder:
 		enregistrer_sauvegarde_joueur()
-	
 
 func changer_plateau_abandon() -> void:
 	# Diminuer le niveau courant
@@ -208,6 +214,8 @@ func lire_sauvegarde_joueur() -> void:
 	var sauvegarde_joueur = read_json_file("user://sauvegarde.json")
 	if sauvegarde_joueur:
 		print("sauvegarde_joueur = ", sauvegarde_joueur)
+		if 'nombre_de_partie' in sauvegarde_joueur:
+			nombre_de_partie = sauvegarde_joueur['nombre_de_partie']
 		if 'niveau_actuel' in sauvegarde_joueur:
 			niveau_actuel = sauvegarde_joueur['niveau_actuel']
 		if 'plateau_actuel' in sauvegarde_joueur:
@@ -219,6 +227,7 @@ func lire_sauvegarde_joueur() -> void:
 
 func enregistrer_sauvegarde_joueur() -> void:
 	var sauvegarde_joueur = {
+		'nombre_de_partie' : nombre_de_partie,
 		'niveau_actuel' : niveau_actuel,
 		'plateau_actuel' : plateau_actuel,
 		'plateau_victoire_dernier_plateau' : plateau_victoire_dernier_plateau
