@@ -75,6 +75,7 @@
    - jeu : prévoir un code pour que chaque joueur s'identifie. 
    - jeu : réfléchir à l'utilisation des musiques.
    - jeu : détecter une position de plateau bloquée ou impossible.
+   - jeu : 'campagne' : faire apparaitre l'avancement dans la campagne. La distance jusqu'à la fin ... (peut-etre une jauge pour chaque niveau)
 
 
 ## V1.0 : Pour une version long terme
