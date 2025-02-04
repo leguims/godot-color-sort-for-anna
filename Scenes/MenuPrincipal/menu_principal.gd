@@ -3,6 +3,8 @@ extends Control
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
+	GestionScore.initialiser_les_plateaux()
+	GestionScore.lire_sauvegarde_joueur()
 	pass # Replace with function body.
 
 

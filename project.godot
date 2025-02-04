@@ -16,6 +16,10 @@ run/main_scene="res://Scenes/MenuPrincipal/menu_principal.tscn"
 config/features=PackedStringArray("4.3", "GL Compatibility")
 config/icon="res://icon.svg"
 
+[autoload]
+
+GestionScore="*res://Scenes/gestion_score.gd"
+
 [display]
 
 window/size/viewport_width=480
