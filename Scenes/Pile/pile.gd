@@ -12,7 +12,7 @@ var position = Vector2(0, 720)
 var marge = 4
 
 var couleur_de_deselection = Color("580058")
-var couleur_de_selection = Color("b800b8")
+var couleur_de_selection = Color("d800d8")
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
