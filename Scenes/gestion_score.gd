@@ -156,17 +156,14 @@ func _enregistrer_sauvegarde_joueur() -> void:
 	_write_json_file("user://sauvegarde.json", sauvegarde_joueur)
 	print("enregistrer_sauvegarde_joueur")
 
-func lire_top_5() -> Array:
-	"""Cette méthode retourne le TOP dans un dictionnaire avec les cles
-	- classement = varie de 1 à 5
-	- niveau
-	- plateau
-	- nombre_de_partie"""
-	var top_5 : Array
+func score() -> int:
+	"""Cette méthode retourne le score du joueur"""
+	var score : int = 0
 	for niveau in range(100, 0, -1):
 		if str(niveau) in  plateau_actuel:
 			var plateau = plateau_actuel.get(str(niveau))
-			top_5.append({'classement': len(top_5)+1, 'niveau': niveau, 'plateau': plateau, 'nombre_de_partie': nombre_de_partie})
-		if len(top_5) == 5:
-			break
-	return top_5
+			score += 1000 * niveau * plateau
+	if nombre_de_partie:
+		return int(score / nombre_de_partie)
+	else:
+		return 0

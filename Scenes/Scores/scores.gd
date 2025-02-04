@@ -13,15 +13,23 @@ var liste_scores = {
 func _ready() -> void:
 	# Remplir chaque score dans la liste des scores
 	var liste_score_bbcode : String
-	var top_5 = GestionScore.lire_top_5()
+	
+	var score = GestionScore.score()
 	liste_score_bbcode += liste_scores.get('entete')
-	for score in GestionScore.lire_top_5():
-		var classement = score.get('classement')
-		var niveau = score.get('niveau')
-		var plateau = score.get('plateau')
-		var nombre_de_partie = score.get('nombre_de_partie')
-		var texte_bbcode = liste_scores.get(classement)
-		texte_bbcode = texte_bbcode.replace('score', "Niv. "+ str(niveau) + "." + str(plateau) + " /"+ str(nombre_de_partie))
-		liste_score_bbcode += texte_bbcode
+	var texte_bbcode = liste_scores.get(1)
+	texte_bbcode = texte_bbcode.replace('score', str(score))
+	liste_score_bbcode += texte_bbcode
 	liste_score_bbcode += liste_scores.get('pied_de_page')
 	$ListeScores.bbcode_text = liste_score_bbcode
+	#var top_5 = GestionScore.lire_top_5()
+	#liste_score_bbcode += liste_scores.get('entete')
+	#for score in GestionScore.lire_top_5():
+	#	var classement = score.get('classement')
+	#	var niveau = score.get('niveau')
+	#	var plateau = score.get('plateau')
+	#	var nombre_de_partie = score.get('nombre_de_partie')
+	#	var texte_bbcode = liste_scores.get(classement)
+	#	texte_bbcode = texte_bbcode.replace('score', "Niv. "+ str(niveau) + "." + str(plateau) + " /"+ str(nombre_de_partie))
+	#	liste_score_bbcode += texte_bbcode
+	#liste_score_bbcode += liste_scores.get('pied_de_page')
+	#$ListeScores.bbcode_text = liste_score_bbcode

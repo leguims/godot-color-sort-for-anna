@@ -59,7 +59,7 @@
    - jeu : Page d'accueil : Nouveau joueur, campagne, ~~scores~~, éditer et ~~références~~.
    - jeu : Page "Nouveau joueur" : apparence + edition du nom.
    - jeu : Page "Campagne" : lien vers jeu + calcul du score + gestion du plateau à jouer + lien vers menu principal
-   - jeu : Page "Scores" : ~~apparence~~ + calcul des scores + ~~retour au menu principal~~
+   - ~~jeu : Page "Scores" : apparence + calcul des scores + retour au menu principal~~:heavy_check_mark:
    - jeu : Page "Editer un plateau" : apparence + edition plateau + jeu plateau + retour menu principal
    - ~~jeu : Page "Références" : apparence + retour menu principal~~:heavy_check_mark:
    - ~~jeu : Page "Références" : Lien vers les Crédits (GODOT, musique, effet sonore)~~:heavy_check_mark:
@@ -74,8 +74,8 @@
    - jeu : prévoir un json avec l'enregistrement des scores de chacun sur chaque semaine. Score total et score semaine.
    - jeu : prévoir un code pour que chaque joueur s'identifie. 
    - jeu : réfléchir à l'utilisation des musiques.
-   - jeu : détecter une position de plateau bloquée ou impossible.
-   - jeu : 'campagne' : faire apparaitre l'avancement dans la campagne. La distance jusqu'à la fin ... (peut-etre une jauge pour chaque niveau)
+   - jeu : (option) détecter une position de plateau bloquée ou impossible.
+   - jeu : Page "Campagne" : faire apparaitre l'avancement dans la campagne. La distance jusqu'à la fin ... (peut-etre une jauge pour chaque niveau)
 
 
 ## V1.0 : Pour une version long terme
