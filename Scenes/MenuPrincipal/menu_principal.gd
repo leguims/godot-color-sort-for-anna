@@ -32,3 +32,19 @@ func _on_texte_joueur_text_submitted(nom_nouveau_joueur: String) -> void:
 	print("Nouveau joueur : ", nom_nouveau_joueur)
 	if not GestionScore.ajouter_un_nouveau_joueur(nom_nouveau_joueur):
 		print("Erreur : Le nom '" + nom_nouveau_joueur + "' n'est pas libre")
+
+
+
+func _on_bouton_campagne_pressed() -> void:
+	if $Marge/HBoxContainer/VBoxContainer/Marge/VBoxContainer/TexteCampagne.is_visible_in_tree():
+		$Marge/HBoxContainer/VBoxContainer/Marge/VBoxContainer/TexteCampagne.hide()
+	else:
+		$Marge/HBoxContainer/VBoxContainer/Marge/VBoxContainer/TexteCampagne.show()
+
+
+func _on_texte_campagne_text_submitted(nom_joueur: String) -> void:
+	print("Campagne avec le joueur : ", nom_joueur)
+	if not GestionScore.choisir_le_joueur(nom_joueur):
+		print("Erreur : Le nom '" + nom_joueur + "' n'existe pas")
+	else:
+		get_tree().change_scene_to_file("res://Scenes/Principal/principal.tscn")
