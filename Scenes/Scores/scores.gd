@@ -1,6 +1,6 @@
 extends "res://Scenes/References/retour_menu_principal.gd"
 
-var liste_scores = {
+var liste_format_scores = {
 	'entete': "[outline_size=10][color=white][center]\n",
 	1: "[font_size=60][color=gold]score[/color][/font_size]\n",
 	2: "[font_size=50][color=silver]score[/color][/font_size]\n",
@@ -14,22 +14,27 @@ func _ready() -> void:
 	# Remplir chaque score dans la liste des scores
 	var liste_score_bbcode : String
 	
-	var score = GestionScore.lire_nom_joueur_actuel() + " " + str(GestionScore.lire_le_score_du_joueur_actuel())
-	liste_score_bbcode += liste_scores.get('entete')
-	var texte_bbcode = liste_scores.get(1)
-	texte_bbcode = texte_bbcode.replace('score', str(score))
-	liste_score_bbcode += texte_bbcode
-	liste_score_bbcode += liste_scores.get('pied_de_page')
+	# Realiser le classement des joueurs
+	var liste_score_croissant = []
+	var dico_score_nom_joueur = {}
+	for nom_joueur in GestionScore.liste_des_joueurs():
+		var score = GestionScore.lire_le_score_du_joueur(nom_joueur)
+		liste_score_croissant.append(score)
+		if score not in dico_score_nom_joueur:
+			dico_score_nom_joueur[score] = [nom_joueur]
+		else:
+			# Score égalité
+			dico_score_nom_joueur[score].append(nom_joueur)
+	liste_score_croissant.sort() # Classement croissant des scores
+	
+	liste_score_bbcode += liste_format_scores.get('entete')
+	for rang in range(1, 6):
+		var score = liste_score_croissant.pop_back()
+		if score:
+			var nom_joueur = dico_score_nom_joueur.get(score).pop_front()
+			var score_texte = nom_joueur + " " + str(score)
+			var texte_bbcode = liste_format_scores.get(rang)
+			texte_bbcode = texte_bbcode.replace('score', score_texte)
+			liste_score_bbcode += texte_bbcode
+	liste_score_bbcode += liste_format_scores.get('pied_de_page')
 	$ListeScores.bbcode_text = liste_score_bbcode
-	#var top_5 = GestionScore.lire_top_5()
-	#liste_score_bbcode += liste_scores.get('entete')
-	#for score in GestionScore.lire_top_5():
-	#	var classement = score.get('classement')
-	#	var niveau = score.get('niveau')
-	#	var plateau = score.get('plateau')
-	#	var nombre_de_partie = score.get('nombre_de_parties')
-	#	var texte_bbcode = liste_scores.get(classement)
-	#	texte_bbcode = texte_bbcode.replace('score', "Niv. "+ str(niveau) + "." + str(plateau) + " /"+ str(nombre_de_partie))
-	#	liste_score_bbcode += texte_bbcode
-	#liste_score_bbcode += liste_scores.get('pied_de_page')
-	#$ListeScores.bbcode_text = liste_score_bbcode

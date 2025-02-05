@@ -218,3 +218,9 @@ func lire_le_score_du_joueur(nom_joueur : String) -> int:
 					score += 1000 * niveau * plateau
 			return int(score / nb_parties)
 	return 0
+
+func liste_des_joueurs() -> Variant:
+	var liste_des_joueurs = []
+	for joueur in liste_des_sauvegardes:
+		liste_des_joueurs.append(joueur.get('nom'))
+	return liste_des_joueurs.duplicate(false)
