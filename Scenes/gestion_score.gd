@@ -3,11 +3,17 @@ extends Node
 ###############################################
 # Gestion des niveaux et des plateaux à jouer
 ###############################################
-var _nom = 'John Doe'
-var nombre_de_partie = 0
-var niveau_actuel = 3
-var plateau_actuel = { '3': 0 }
-var plateau_victoire_dernier_plateau = false
+var liste_des_sauvegardes = [
+	{
+		'nom': 'John Doe',
+		'nombre_de_parties': 0,
+		'niveau': 3,
+		'plateaux': { '3': 0 },
+		'plateau_victoire_dernier_plateau': false
+	}
+]
+var joueur_actuel = liste_des_sauvegardes[0]
+
 
 # Dico : {'difficulte': [liste_plateaux]}
 var plateau_liste_difficulte = {
@@ -36,7 +42,7 @@ func initialiser_les_plateaux() -> void:
 			for difficulte in dico_difficulte.keys():
 				# Copie tous les niveaux, sauf 'None'
 				if difficulte not in ['None', '0', '1', '2', '3'] :
-					plateau_liste_difficulte[difficulte] = dico_difficulte.get(difficulte).duplicate()
+					plateau_liste_difficulte[difficulte] = dico_difficulte.get(difficulte).duplicate(true)
 				print("Difficulté : ", difficulte)
 				var cpt = 0
 				for plateau in dico_difficulte.get(difficulte):
@@ -90,88 +96,125 @@ func _write_json_file(chemin, contenu) -> void:
 	fichier.close()
 
 func commencer() -> void:
-	nombre_de_partie += 1
-	print("Nombre de parties = ", nombre_de_partie)
-	_enregistrer_sauvegarde_joueur()
+	joueur_actuel['nombre_de_parties'] += 1
+	print("Nombre de parties = ", joueur_actuel.get('nombre_de_parties'))
+	_enregistrer_sauvegarde_joueurs()
 
 func gagner() -> void:
 	var sauvegarder = false
+	var str_niveau = str(joueur_actuel.get('niveau'))
+	var str_niveau_plus_1 = str(joueur_actuel.get('niveau') + 1)
 	# Augmenter le plateau du niveau courant
 	if _est_dernier_plateau():
-		plateau_victoire_dernier_plateau = true
+		joueur_actuel['plateau_victoire_dernier_plateau'] = true
 		sauvegarder = true
-	if plateau_actuel.get(str(niveau_actuel)) < (len(plateau_liste_difficulte.get(str(niveau_actuel)))-1):
-		plateau_actuel[str(niveau_actuel)] += 1
+	if joueur_actuel.get('plateaux').get(str_niveau) <= (len(plateau_liste_difficulte.get(str_niveau))-1):
+		joueur_actuel['plateaux'][str_niveau] += 1
 		sauvegarder = true
 	
 	# Augmenter le niveau courant
-	if str(niveau_actuel + 1) in plateau_liste_difficulte:
-		niveau_actuel += 1
-		if str(niveau_actuel) not in plateau_actuel:
-			plateau_actuel[str(niveau_actuel)] = 0
+	if str_niveau_plus_1 in plateau_liste_difficulte:
+		joueur_actuel['niveau'] += 1
+		str_niveau = str(joueur_actuel.get('niveau'))
+		if str_niveau not in joueur_actuel.get('plateaux'):
+			joueur_actuel['plateaux'][str_niveau] = 0
 		sauvegarder = true
 	
-	print("Niveau = ", niveau_actuel, " - indice Plateau = ", plateau_actuel.get(str(niveau_actuel)), " - Nombre de parties = ", nombre_de_partie)
+	print("Niveau = ", str_niveau, " - indice Plateau = ", joueur_actuel.get('plateaux').get(str_niveau), " - Nombre de parties = ", joueur_actuel.get('nombre_de_parties'))
 	if sauvegarder:
-		_enregistrer_sauvegarde_joueur()
+		_enregistrer_sauvegarde_joueurs()
 
 func abandonner() -> void:
 	# Diminuer le niveau courant
-	if str(niveau_actuel - 1) in plateau_liste_difficulte:
-		niveau_actuel -= 1
-		_enregistrer_sauvegarde_joueur()
-	print("Niveau = ", niveau_actuel, " indice Plateau = ", plateau_actuel.get(str(niveau_actuel)))
+	if str(joueur_actuel.get('niveau') - 1) in plateau_liste_difficulte:
+		joueur_actuel['niveau'] -= 1
+		_enregistrer_sauvegarde_joueurs()
+	var str_niveau = str(joueur_actuel.get('niveau'))
+	print("Niveau = ", str_niveau, " - indice Plateau = ", joueur_actuel.get('plateaux').get(str_niveau))
 
 func lire_plateau_courant() -> String:
-	var indice_plateau = plateau_actuel.get(str(niveau_actuel))
-	return plateau_liste_difficulte.get(str(niveau_actuel))[indice_plateau]
+	var str_niveau = str(joueur_actuel.get('niveau'))
+	var indice_plateau = joueur_actuel.get('plateaux').get(str_niveau)
+	if indice_plateau < len(plateau_liste_difficulte.get(str_niveau)):
+		return plateau_liste_difficulte.get(str_niveau)[indice_plateau]
+	return ""
 
 func _est_dernier_plateau() -> bool:
-	return lire_plateau_courant() == plateau_liste_difficulte.get(str(niveau_actuel)).back()
+	var str_niveau = str(joueur_actuel.get('niveau'))
+	return lire_plateau_courant() == plateau_liste_difficulte.get(str_niveau).back()
 
 func est_victoire_dernier_plateau() -> bool:
-	return plateau_victoire_dernier_plateau
+	return joueur_actuel.get('plateau_victoire_dernier_plateau')
 
-func lire_sauvegarde_joueur() -> void:
-	var sauvegarde_joueur = _read_json_file("user://sauvegarde.json")
-	if sauvegarde_joueur:
-		print("sauvegarde_joueur = ", sauvegarde_joueur)
-		if 'nom' in sauvegarde_joueur:
-			_nom = sauvegarde_joueur['nom']
-		if 'nombre_de_partie' in sauvegarde_joueur:
-			nombre_de_partie = sauvegarde_joueur['nombre_de_partie']
-		if 'niveau_actuel' in sauvegarde_joueur:
-			niveau_actuel = sauvegarde_joueur['niveau_actuel']
-		if 'plateau_actuel' in sauvegarde_joueur:
-			plateau_actuel = sauvegarde_joueur['plateau_actuel'].duplicate(true)
-		if 'plateau_victoire_dernier_plateau' in sauvegarde_joueur:
-			plateau_victoire_dernier_plateau = sauvegarde_joueur['plateau_victoire_dernier_plateau']
+
+###############################################
+# Gestion des sauvegardes
+###############################################
+
+func lire_sauvegarde_joueurs() -> void:
+	var lecture_liste_des_sauvegardes = _read_json_file("user://sauvegarde.json")
+	if lecture_liste_des_sauvegardes:
+		liste_des_sauvegardes = lecture_liste_des_sauvegardes.duplicate(true)
+		# Joueur par defaut
+		joueur_actuel = liste_des_sauvegardes[0]
+		print("liste_des_sauvegardes = ", liste_des_sauvegardes)
 	else:
-		print("Erreur de la lecture de la sauvegarde du joueur")
+		print("Erreur de lecture des sauvegardes des joueurs")
 
-func _enregistrer_sauvegarde_joueur() -> void:
-	var sauvegarde_joueur = {
-		'nom' : _nom,
-		'nombre_de_partie' : nombre_de_partie,
-		'niveau_actuel' : niveau_actuel,
-		'plateau_actuel' : plateau_actuel,
-		'plateau_victoire_dernier_plateau' : plateau_victoire_dernier_plateau
+func _enregistrer_sauvegarde_joueurs() -> void:
+	_write_json_file("user://sauvegarde.json", liste_des_sauvegardes.duplicate(true))
+	print("Progression sauvegardée")
+
+func _retourner_le_joueur(nom_joueur) -> Dictionary:
+	"""Choisit le joueur et le retourne"""
+	for compte_joueur in liste_des_sauvegardes:
+		if compte_joueur.get('nom') == nom_joueur:
+			return compte_joueur
+	return {}
+
+func choisir_le_joueur(nom_joueur) -> bool:
+	"""Choisit le joueur courant sinon retourne 'false'"""
+	var compte = _retourner_le_joueur(nom_joueur)
+	if compte:
+		joueur_actuel = compte
+		return true
+	return false
+
+func ajouter_un_nouveau_joueur(nom_nouveau_joueur : String) -> bool:
+	"""Crée un nouveau joueur si le nom est libre"""
+	# Vérifie que le nom est libre
+	if _retourner_le_joueur(nom_nouveau_joueur):
+		return false
+	# Crée le compte et l'enregistre
+	var compte = {
+		'nom': nom_nouveau_joueur,
+		'nombre_de_parties': 0,
+		'niveau': 3,
+		'plateaux': { '3': 0 },
+		'plateau_victoire_dernier_plateau': false
 	}
-	_write_json_file("user://sauvegarde.json", sauvegarde_joueur)
-	print("enregistrer_sauvegarde_joueur")
+	liste_des_sauvegardes.append(compte.duplicate(true))
+	_enregistrer_sauvegarde_joueurs()
+	return true
 
-func nom() -> String:
+func lire_nom_joueur_actuel() -> String:
 	"""Cette méthode retourne le nom du joueur"""
-	return _nom
+	return joueur_actuel.get('nom')
 
-func score() -> int:
+func lire_le_score_du_joueur_actuel() -> int:
+	"""Cette méthode retourne le score du joueur actuel"""
+	return lire_le_score_du_joueur(joueur_actuel.get('nom'))
+
+func lire_le_score_du_joueur(nom_joueur : String) -> int:
 	"""Cette méthode retourne le score du joueur"""
-	var score : int = 0
-	for niveau in range(100, 0, -1):
-		if str(niveau) in  plateau_actuel:
-			var plateau = plateau_actuel.get(str(niveau))
-			score += 1000 * niveau * plateau
-	if nombre_de_partie:
-		return int(score / nombre_de_partie)
-	else:
-		return 0
+	var joueur = _retourner_le_joueur(nom_joueur)
+	if joueur:
+		var nb_parties = joueur.get('nombre_de_parties')
+		if nb_parties:
+			var score : int = 0
+			for niveau in range(100, 0, -1):
+				if str(niveau) in joueur.get('plateaux'):
+					var plateau = joueur.get('plateaux').get(str(niveau))
+					score += 1000 * niveau * plateau
+			return int(score / nb_parties)
+	return 0

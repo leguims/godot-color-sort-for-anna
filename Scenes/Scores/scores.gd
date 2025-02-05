@@ -14,7 +14,7 @@ func _ready() -> void:
 	# Remplir chaque score dans la liste des scores
 	var liste_score_bbcode : String
 	
-	var score = GestionScore.nom() + " " + str(GestionScore.score())
+	var score = GestionScore.lire_nom_joueur_actuel() + " " + str(GestionScore.lire_le_score_du_joueur_actuel())
 	liste_score_bbcode += liste_scores.get('entete')
 	var texte_bbcode = liste_scores.get(1)
 	texte_bbcode = texte_bbcode.replace('score', str(score))
@@ -27,7 +27,7 @@ func _ready() -> void:
 	#	var classement = score.get('classement')
 	#	var niveau = score.get('niveau')
 	#	var plateau = score.get('plateau')
-	#	var nombre_de_partie = score.get('nombre_de_partie')
+	#	var nombre_de_partie = score.get('nombre_de_parties')
 	#	var texte_bbcode = liste_scores.get(classement)
 	#	texte_bbcode = texte_bbcode.replace('score', "Niv. "+ str(niveau) + "." + str(plateau) + " /"+ str(nombre_de_partie))
 	#	liste_score_bbcode += texte_bbcode

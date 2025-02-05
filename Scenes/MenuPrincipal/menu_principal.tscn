@@ -114,7 +114,8 @@ text = "Nouveau joueur"
 visible = false
 self_modulate = Color(0.87451, 0, 0.87451, 1)
 layout_mode = 2
-theme_override_colors/font_placeholder_color = Color(0.537375, 0.000207492, 0.537371, 1)
+theme_override_colors/font_placeholder_color = Color(0.537255, 0, 0.537255, 1)
+theme_override_colors/font_color = Color(0, 0, 0, 1)
 theme_override_font_sizes/font_size = 21
 theme_override_styles/normal = SubResource("StyleBoxFlat_w06fl")
 placeholder_text = "Nom joueur"
@@ -169,5 +170,7 @@ theme_override_styles/hover = SubResource("StyleBoxFlat_dfj4a")
 theme_override_styles/normal = SubResource("StyleBoxFlat_p4mar")
 text = "Références"
 
+[connection signal="pressed" from="Marge/HBoxContainer/VBoxContainer/Marge/VBoxContainer/BoutonJoueur" to="." method="_on_bouton_joueur_pressed"]
+[connection signal="text_submitted" from="Marge/HBoxContainer/VBoxContainer/Marge/VBoxContainer/TexteJoueur" to="." method="_on_texte_joueur_text_submitted"]
 [connection signal="pressed" from="Marge/HBoxContainer/VBoxContainer/Marge/VBoxContainer/BoutonScores" to="." method="_on_bouton_scores_pressed"]
 [connection signal="pressed" from="Marge/HBoxContainer/VBoxContainer/Marge/VBoxContainer/BoutonRéférences" to="." method="_on_bouton_références_pressed"]
