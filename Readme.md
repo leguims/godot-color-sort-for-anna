@@ -59,8 +59,8 @@
    - jeu : menu "crédits" : Lien vers les Crédits (GODOT, musique, effet sonore)
    - ~~outillage : produire un JSON des plateaux par niveau.~~:heavy_check_mark:
    - outillage : Définir le niveau de difficulté d'un plateau selon les critères suivants :
-          - longueur solution et nombre de colonne sur le plateau (simpliste)
-          - longueur solution et nombre de jetons sur le plateau (exhaustif)
+	  - longueur solution et nombre de colonne sur le plateau (simpliste)
+	  - longueur solution et nombre de jetons sur le plateau (exhaustif)
    - ~~outillage : réécrire les plateaux avec les "." pour identifier les "colonnes x lignes" et mélanger les plateaux de forme différentes~~:heavy_check_mark:
    - outillage : Réaliser un script d'élagage des plateaux valides.
 	  - 'ABC.CBA' ==(echange de piles)== 'CBA.ABC'
