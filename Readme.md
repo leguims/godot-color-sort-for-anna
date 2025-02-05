@@ -90,10 +90,10 @@
   - jeu : pour les jetons, dissocier les caractéristiques : indice de jeton, couleur, nom, famille. Une famille pourrait avoir plusieurs jetons avec un nom ou une couleur différente.
   - jeu : réfléchir à une écriture de plateau qui porte l'organisation des piles dans le plateau. Par exemple '.' pour le changement de pile et '..' pour le changement de ligne.
   - jeu : varier la représentation des jetons et le fond du plateau :
-     - fruits avec fond de cuisine,
-     - médicaments avec fond d'hôpital,
-     - animaux avec un zoo,
-     - pacman/fantômes et le labyrinthe
+	 - fruits avec fond de cuisine,
+	 - médicaments avec fond d'hôpital,
+	 - animaux avec un zoo,
+	 - pacman/fantômes et le labyrinthe
 
 
 ## V2.0 : Idées du futur:

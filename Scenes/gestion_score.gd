@@ -3,6 +3,7 @@ extends Node
 ###############################################
 # Gestion des niveaux et des plateaux à jouer
 ###############################################
+var _nom = 'John Doe'
 var nombre_de_partie = 0
 var niveau_actuel = 3
 var plateau_actuel = { '3': 0 }
@@ -135,6 +136,8 @@ func lire_sauvegarde_joueur() -> void:
 	var sauvegarde_joueur = _read_json_file("user://sauvegarde.json")
 	if sauvegarde_joueur:
 		print("sauvegarde_joueur = ", sauvegarde_joueur)
+		if 'nom' in sauvegarde_joueur:
+			_nom = sauvegarde_joueur['nom']
 		if 'nombre_de_partie' in sauvegarde_joueur:
 			nombre_de_partie = sauvegarde_joueur['nombre_de_partie']
 		if 'niveau_actuel' in sauvegarde_joueur:
@@ -148,6 +151,7 @@ func lire_sauvegarde_joueur() -> void:
 
 func _enregistrer_sauvegarde_joueur() -> void:
 	var sauvegarde_joueur = {
+		'nom' : _nom,
 		'nombre_de_partie' : nombre_de_partie,
 		'niveau_actuel' : niveau_actuel,
 		'plateau_actuel' : plateau_actuel,
@@ -155,6 +159,10 @@ func _enregistrer_sauvegarde_joueur() -> void:
 	}
 	_write_json_file("user://sauvegarde.json", sauvegarde_joueur)
 	print("enregistrer_sauvegarde_joueur")
+
+func nom() -> String:
+	"""Cette méthode retourne le nom du joueur"""
+	return _nom
 
 func score() -> int:
 	"""Cette méthode retourne le score du joueur"""

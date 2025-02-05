@@ -14,7 +14,7 @@ func _ready() -> void:
 	# Remplir chaque score dans la liste des scores
 	var liste_score_bbcode : String
 	
-	var score = GestionScore.score()
+	var score = GestionScore.nom() + " " + str(GestionScore.score())
 	liste_score_bbcode += liste_scores.get('entete')
 	var texte_bbcode = liste_scores.get(1)
 	texte_bbcode = texte_bbcode.replace('score', str(score))
