@@ -64,6 +64,9 @@
    - ~~jeu : Page "Références" : apparence + retour menu principal~~:heavy_check_mark:
    - ~~jeu : Page "Références" : Lien vers les Crédits (GODOT, musique, effet sonore)~~:heavy_check_mark:
    - ~~outillage : produire un JSON des plateaux par niveau.~~:heavy_check_mark:
+   - outillage : Définir le niveau de difficulté d'un plateau selon les critères suivants :
+	  - longueur solution et nombre de colonne sur le plateau (simpliste)
+	  - longueur solution et nombre de jetons sur le plateau (exhaustif)
    - ~~outillage : réécrire les plateaux avec les "." pour identifier les "colonnes x lignes" et mélanger les plateaux de forme différentes~~:heavy_check_mark:
    - outillage : Réaliser un script d'élagage des plateaux valides.
 	  - 'ABC.CBA' ==(echange de piles)== 'CBA.ABC'
@@ -76,18 +79,21 @@
    - jeu : réfléchir à l'utilisation des musiques.
    - jeu : (option) détecter une position de plateau bloquée ou impossible.
    - jeu : Page "Campagne" : faire apparaitre l'avancement dans la campagne. La distance jusqu'à la fin ... (peut-etre une jauge pour chaque niveau)
+   - jeu : détecter une position de plateau bloquée ou impossible.
+   - jeu : 'campagne' : faire apparaitre l'avancement dans la campagne. La distance jusqu'à la fin ... (peut-etre une jauge pour chaque niveau)
+   - jeu : Quand un niveau est terminé, faire pointer sur le suivant pour être hors borne et ne plus rejouer le dernier niveau indéfiniement
 
 
 ## V1.0 : Pour une version long terme
-  - faire une animation du bloc qui se déplace
-  - enregistrer dans les données immédiatement les déplacements, mais l'animation décide quand afficher/masquer les jetons selon son avancement. (idée, plusieurs coups sont enchaînés et joués même si l'animation n'est pas terminée. Le résultat donne une séquence d'animation magique)
-  - pour les jetons, dissocier les caractéristiques : indice de jeton, couleur, nom, famille. Une famille pourrait avoir plusieurs jetons avec un nom ou une couleur différente.
-  - réfléchir à une écriture de plateau qui porte l'organisation des piles dans le plateau. Par exemple '.' pour le changement de pile et '..' pour le changement de ligne.
+  - jeu : faire une animation du bloc qui se déplace
+  - jeu : enregistrer dans les données immédiatement les déplacements, mais l'animation décide quand afficher/masquer les jetons selon son avancement. (idée, plusieurs coups sont enchaînés et joués même si l'animation n'est pas terminée. Le résultat donne une séquence d'animation magique)
+  - jeu : pour les jetons, dissocier les caractéristiques : indice de jeton, couleur, nom, famille. Une famille pourrait avoir plusieurs jetons avec un nom ou une couleur différente.
+  - jeu : réfléchir à une écriture de plateau qui porte l'organisation des piles dans le plateau. Par exemple '.' pour le changement de pile et '..' pour le changement de ligne.
   - jeu : varier la représentation des jetons et le fond du plateau :
-	 - fruits avec fond de cuisine,
-	 - médicaments avec fond d'hôpital,
-	 - animaux avec un zoo,
-	 - pacman/fantômes et le labyrinthe
+     - fruits avec fond de cuisine,
+     - médicaments avec fond d'hôpital,
+     - animaux avec un zoo,
+     - pacman/fantômes et le labyrinthe
 
 
 ## V2.0 : Idées du futur:
