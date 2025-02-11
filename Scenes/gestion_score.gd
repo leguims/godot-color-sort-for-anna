@@ -14,6 +14,7 @@ var liste_des_sauvegardes = [
 ]
 var joueur_actuel = liste_des_sauvegardes[0]
 
+# TODO : Prevoir le nom d'un joueur et charger le profil en consequence
 
 # Dico : {'difficulte': [liste_plateaux]}
 var plateau_liste_difficulte = {
@@ -42,14 +43,16 @@ func initialiser_les_plateaux() -> void:
 			for difficulte in dico_difficulte.keys():
 				# Copie tous les niveaux, sauf 'None'
 				if difficulte not in ['None', '0', '1', '2', '3'] :
+				# TODO : DEBUG - if difficulte not in ['None', '0', '1', '2', '5', '6', '7', '8', '9'] :
 					plateau_liste_difficulte[difficulte] = dico_difficulte.get(difficulte).duplicate(true)
-				print("Difficulté : ", difficulte)
-				var cpt = 0
-				for plateau in dico_difficulte.get(difficulte):
-					print("   - plateaux : ", plateau)
-					cpt += 1
-					if cpt >= 5:
-						break
+				# Afficher un apercu du niveau
+				#print("Difficulté : ", difficulte)
+				#var cpt = 0
+				#for plateau in dico_difficulte.get(difficulte):
+					#print("   - plateaux : ", plateau)
+					#cpt += 1
+					#if cpt >= 5:
+						#break
 
 func _read_json_file(chemin) -> Variant:
 	var fichier = null

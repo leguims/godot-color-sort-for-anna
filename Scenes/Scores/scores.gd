@@ -5,8 +5,8 @@ var liste_format_scores = {
 	1: "[font_size=60][color=gold]score[/color][/font_size]\n",
 	2: "[font_size=50][color=silver]score[/color][/font_size]\n",
 	3: "[font_size=40][color=#CD7F32]score[/color][/font_size]\n",
-	4: "[font_size=30]score\n",
-	5: "score[/font_size]\n",
+	4: "[font_size=30]score[/font_size]\n",
+	5: "[font_size=30]score[/font_size]\n",
 	'pied_de_page': "[/center][/color][/outline_size]\n",
 	}
 

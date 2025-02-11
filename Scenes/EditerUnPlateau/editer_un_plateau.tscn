@@ -1,5 +1,6 @@
-[gd_scene load_steps=7 format=3 uid="uid://eny1o3cji3tu"]
+[gd_scene load_steps=8 format=3 uid="uid://eny1o3cji3tu"]
 
+[ext_resource type="Script" path="res://Scenes/EditerUnPlateau/editer_un_plateau.gd" id="1_e6s2l"]
 [ext_resource type="PackedScene" uid="uid://cfqcdseqsuy1l" path="res://Scenes/Plateau/plateau.tscn" id="1_p5juj"]
 [ext_resource type="PackedScene" uid="uid://xsrt777ms37l" path="res://Scenes/Menu/menu.tscn" id="2_r2t3f"]
 [ext_resource type="AudioStream" uid="uid://b0xpcrpr7dos3" path="res://Art/Musique/Solve The Puzzle.ogg" id="3_lit51"]
@@ -8,6 +9,7 @@
 [ext_resource type="AudioStream" uid="uid://o2nhixe1lp0c" path="res://Art/EffetSonore/fail-jingle.mp3" id="6_uetgg"]
 
 [node name="EditerUnPlateau" type="Node"]
+script = ExtResource("1_e6s2l")
 
 [node name="PlateauDeJeu" parent="." instance=ExtResource("1_p5juj")]
 
@@ -24,3 +26,9 @@ stream = ExtResource("5_ae4yu")
 
 [node name="SonEchec" type="AudioStreamPlayer" parent="."]
 stream = ExtResource("6_uetgg")
+
+[connection signal="abandon" from="PlateauDeJeu" to="." method="_on_plateau_de_jeu_abandon"]
+[connection signal="plateau_invalide" from="PlateauDeJeu" to="." method="_on_plateau_de_jeu_plateau_invalide"]
+[connection signal="victoire" from="PlateauDeJeu" to="." method="_on_plateau_de_jeu_victoire"]
+[connection signal="commencer_plateau" from="Menu" to="." method="_on_menu_commencer_plateau"]
+[connection signal="saisie_plateau" from="Menu" to="." method="_on_menu_saisie_plateau"]

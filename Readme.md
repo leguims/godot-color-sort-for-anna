@@ -56,11 +56,11 @@
    - ~~jeu : si réussite, passer au niveau suivant, si échec descendre de niveau et passer au plateau suivant.~~:heavy_check_mark:
    - ~~jeu : prévoir un bouton de retour au menu pour abandonner~~:heavy_check_mark:
    - jeu : menu en haut : campagne, éditer et références.
-   - jeu : Page d'accueil : Nouveau joueur, campagne, ~~scores~~, éditer et ~~références~~.
-   - jeu : Page "Nouveau joueur" : apparence + edition du nom.
-   - jeu : Page "Campagne" : lien vers jeu + calcul du score + gestion du plateau à jouer + lien vers menu principal
+   - ~~jeu : Page d'accueil : Nouveau joueur, campagne, scores, éditer et références.~~:heavy_check_mark:
+   - ~~jeu : Page "Nouveau joueur" : apparence + edition du nom.~~:heavy_check_mark:
+   - jeu : Page "Campagne" : ~~lien vers jeu + calcul du score + gestion du plateau à jouer~~ + lien vers menu principal
    - ~~jeu : Page "Scores" : apparence + calcul des scores + retour au menu principal~~:heavy_check_mark:
-   - jeu : Page "Editer un plateau" : apparence + edition plateau + jeu plateau + retour menu principal
+   - jeu : Page "Editer un plateau" : ~~apparence + edition plateau + jeu plateau~~ + retour menu principal
    - ~~jeu : Page "Références" : apparence + retour menu principal~~:heavy_check_mark:
    - ~~jeu : Page "Références" : Lien vers les Crédits (GODOT, musique, effet sonore)~~:heavy_check_mark:
    - ~~outillage : produire un JSON des plateaux par niveau.~~:heavy_check_mark:
@@ -75,7 +75,7 @@
    - outillage : pour les plateaux sans solution, lancer une recherche en ajoutant 1 colonne d'une seule ligne OU 1 case vide sur la derniere colonne.
    - jeu : enregistrer les dates de jeux et proposer une série de plateaux de chaque niveau. "Semaine 1", proposer les 1er plateaux de chaque niveau.
    - jeu : prévoir un json avec l'enregistrement des scores de chacun sur chaque semaine. Score total et score semaine.
-   - jeu : prévoir un code pour que chaque joueur s'identifie. 
+   - ~~jeu : prévoir un code pour que chaque joueur s'identifie.~~:heavy_check_mark:
    - jeu : réfléchir à l'utilisation des musiques.
    - jeu : (option) détecter une position de plateau bloquée ou impossible.
    - jeu : Page "Campagne" : faire apparaitre l'avancement dans la campagne. La distance jusqu'à la fin ... (peut-etre une jauge pour chaque niveau)
@@ -84,6 +84,7 @@
    - jeu : Quand un niveau est terminé, faire pointer sur le suivant pour être hors borne et ne plus rejouer le dernier niveau indéfiniement (supprimer 'plateau_victoire_dernier_plateau')
    - jeu : Détermination du score - Enregistrer le temps cumulé par niveau afin de le comptabiliser dans l'établissement du score. Rapide > lent
    - jeu : Détermination du score - Enregistrer le nombre de partie jouées par niveau afin de comptabiliser les essais dans l'établissement du score. 1 essai > n essais
+   - jeu : Détermination du score - Le nombre d'essais devrait être plus pénalisant que le temps passé. Car pour réussir du premier coup, il faut bien analyser le plateau.
 
 
 ## V1.0 : Pour une version long terme

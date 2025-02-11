@@ -41,6 +41,14 @@ func est_valide(plateau_texte : String) -> bool:
 	for pile in _decoder_plateau(plateau_texte):
 		if not Pile.est_valide(pile):
 			return false
+	# TODO : Vérifier la validité du plateau dans son ensemble (nombre de jetons, possibilité de réussir)
+	# Invalide : Plateau vide
+	if plateau_texte.is_empty():
+		return false
+	if plateau_texte.replacen(' ','').replacen('.','').is_empty():
+		return false
+	# TODO : Invalide : Nombre de jetons inégaux
+	# TODO : Invalide : Nombre de jetons != taille pile
 	return true
 
 func _decoder_plateau(plateau_texte : String) -> Array:
