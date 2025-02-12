@@ -2,6 +2,9 @@ extends Node
 
 class_name Campagne
 
+var heure_debut_en_ms : int
+var duree_en_ms : int
+
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
 	$Menu.set_script(MenuCampagne)
@@ -25,16 +28,18 @@ func _lancer_plateau_de_campagne(plateau : String) -> void:
 		$PlateauDeJeu.commencer_un_nouveau_plateau(plateau)
 		$SonCommencer.play()
 		$Musique.play()
+		heure_debut_en_ms = Time.get_ticks_msec()
 	else:
 		_on_plateau_de_jeu_plateau_invalide()
 
 func _on_plateau_de_jeu_victoire() -> void:
-	GestionScore.gagner()
+	duree_en_ms = Time.get_ticks_msec() - heure_debut_en_ms
+	GestionScore.gagner(duree_en_ms)
 	$Menu.show()
 	if GestionScore.est_victoire_dernier_plateau():
 		$Menu.afficher_fin_campagne()
 	else:
-		$Menu.afficher_victoire()
+		$Menu.afficher_victoire(int(duree_en_ms/1000))
 	$SonFinDePartie.play()
 	$Musique.stop()
 
@@ -44,6 +49,9 @@ func _on_plateau_de_jeu_plateau_invalide() -> void:
 	pass
 
 func _on_plateau_de_jeu_abandon() -> void:
+	duree_en_ms = Time.get_ticks_msec() - heure_debut_en_ms
+	# Mettre à jour les plateaux à jouer
+	GestionScore.abandonner(duree_en_ms)
 	$Menu.show()
 	$Menu.afficher_abandon()
 	$SonEchec.play()

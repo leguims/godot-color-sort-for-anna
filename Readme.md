@@ -55,7 +55,7 @@
    - ~~jeu : sondage sur difficulté du plateau trop facile, bien, trop difficile.~~ Abandon pour échec/réussite automatique
    - ~~jeu : si réussite, passer au niveau suivant, si échec descendre de niveau et passer au plateau suivant.~~:heavy_check_mark:
    - ~~jeu : prévoir un bouton de retour au menu pour abandonner~~:heavy_check_mark:
-   - jeu : menu en haut : campagne, éditer et références.
+   - ~~jeu : menu en haut : campagne, éditer et références.~~ ABANDON géré par la page d'accueil
    - ~~jeu : Page d'accueil : Nouveau joueur, campagne, scores, éditer et références.~~:heavy_check_mark:
    - ~~jeu : Page "Nouveau joueur" : apparence + edition du nom.~~:heavy_check_mark:
    - jeu : Page "Campagne" : ~~lien vers jeu + calcul du score + gestion du plateau à jouer~~ + lien vers menu principal
@@ -85,6 +85,8 @@
    - jeu : Détermination du score - Enregistrer le temps cumulé par niveau afin de le comptabiliser dans l'établissement du score. Rapide > lent
    - jeu : Détermination du score - Enregistrer le nombre de partie jouées par niveau afin de comptabiliser les essais dans l'établissement du score. 1 essai > n essais
    - jeu : Détermination du score - Le nombre d'essais devrait être plus pénalisant que le temps passé. Car pour réussir du premier coup, il faut bien analyser le plateau.
+   - outils : 'classer les solutions tronquer' produire un UUID dans le fichier des solutions.
+   - jeu : Lire les plateaux 'Solutions_classees.json' et enregistrer l'UUID. Si l'UUID n'est pas celui de la sauvegarde, effacer toutes les sauvegardes des joueurs.
 
 
 ## V1.0 : Pour une version long terme

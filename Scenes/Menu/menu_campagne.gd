@@ -29,13 +29,12 @@ func afficher_abandon():
 	await $TempoMessage.timeout
 	_afficher_message("Fin de Partie")
 	await $TempoMessage.timeout
-	# Mettre à jour les plateaux à jouer
-	GestionScore.abandonner()
 	afficher_plateau_suivant()
 
-func afficher_victoire():
+func afficher_victoire(duree : int) -> void:
 	_afficher_message("Bravo!")
-	# Attendre l'échéance de la temporisation
+	await $TempoMessage.timeout
+	_afficher_message("Gagné en " + str(duree) + "s")
 	await $TempoMessage.timeout
 	afficher_plateau_suivant()
 

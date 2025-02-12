@@ -5,10 +5,11 @@ extends Node
 ###############################################
 var liste_des_sauvegardes = [
 	{
-		'nom': 'John Doe',
+		'nom': 'Alain Konu',
 		'nombre_de_parties': 0,
 		'niveau': 3,
 		'plateaux': { '3': 0 },
+		'durees': { '3': 0 },
 		'plateau_victoire_dernier_plateau': false
 	}
 ]
@@ -98,15 +99,24 @@ func _write_json_file(chemin, contenu) -> void:
 	fichier.store_string(json_string)
 	fichier.close()
 
+func _ajouter_duree_de_partie(duree_en_ms : int) -> void:
+	var str_niveau = str(joueur_actuel.get('niveau'))
+	# Augmenter la duree du niveau courant
+	if str_niveau not in joueur_actuel.get('durees'):
+		joueur_actuel['durees'][str_niveau] = 0
+	joueur_actuel['durees'][str_niveau] += duree_en_ms
+
 func commencer() -> void:
 	joueur_actuel['nombre_de_parties'] += 1
 	print("Nombre de parties = ", joueur_actuel.get('nombre_de_parties'))
 	_enregistrer_sauvegarde_joueurs()
 
-func gagner() -> void:
+func gagner(duree_en_ms : int) -> void:
 	var sauvegarder = false
 	var str_niveau = str(joueur_actuel.get('niveau'))
 	var str_niveau_plus_1 = str(joueur_actuel.get('niveau') + 1)
+	# Enregistrer la duree de la partie
+	_ajouter_duree_de_partie(duree_en_ms)
 	# Augmenter le plateau du niveau courant
 	if _est_dernier_plateau():
 		joueur_actuel['plateau_victoire_dernier_plateau'] = true
@@ -127,7 +137,9 @@ func gagner() -> void:
 	if sauvegarder:
 		_enregistrer_sauvegarde_joueurs()
 
-func abandonner() -> void:
+func abandonner(duree_en_ms : int) -> void:
+	# Enregistrer la duree de la partie
+	_ajouter_duree_de_partie(duree_en_ms)
 	# Diminuer le niveau courant
 	if str(joueur_actuel.get('niveau') - 1) in plateau_liste_difficulte:
 		joueur_actuel['niveau'] -= 1
@@ -194,6 +206,7 @@ func ajouter_un_nouveau_joueur(nom_nouveau_joueur : String) -> bool:
 		'nombre_de_parties': 0,
 		'niveau': 3,
 		'plateaux': { '3': 0 },
+		'durees': { '3': 0 },
 		'plateau_victoire_dernier_plateau': false
 	}
 	liste_des_sauvegardes.append(compte.duplicate(true))
