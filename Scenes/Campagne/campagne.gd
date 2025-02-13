@@ -49,9 +49,8 @@ func _on_plateau_de_jeu_plateau_invalide() -> void:
 	pass
 
 func _on_plateau_de_jeu_abandon() -> void:
-	duree_en_ms = Time.get_ticks_msec() - heure_debut_en_ms
 	# Mettre à jour les plateaux à jouer
-	GestionScore.abandonner(duree_en_ms)
+	GestionScore.abandonner()
 	$Menu.show()
 	$Menu.afficher_abandon()
 	$SonEchec.play()

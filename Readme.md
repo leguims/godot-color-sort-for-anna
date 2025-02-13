@@ -93,6 +93,7 @@
    - jeu : Détermination du score - Le nombre d'essais devrait être plus pénalisant que le temps passé. Car pour réussir du premier coup, il faut bien analyser le plateau.
    - outils : 'classer les solutions tronquer' produire un UUID dans le fichier des solutions.
    - jeu : Lire les plateaux 'Solutions_classees.json' et enregistrer l'UUID. Si l'UUID n'est pas celui de la sauvegarde, effacer toutes les sauvegardes des joueurs.
+   - ~~jeu : Mesure de temps : faut-il comptabiliser le temps pour les victoires uniquements ?~~:heavy_check_mark:
    - outils : utiliser le module "logging" pour tracer l'avancement des threads dans leur tâches.
 
 

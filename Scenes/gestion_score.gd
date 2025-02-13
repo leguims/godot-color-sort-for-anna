@@ -137,9 +137,8 @@ func gagner(duree_en_ms : int) -> void:
 	if sauvegarder:
 		_enregistrer_sauvegarde_joueurs()
 
-func abandonner(duree_en_ms : int) -> void:
-	# Enregistrer la duree de la partie
-	_ajouter_duree_de_partie(duree_en_ms)
+func abandonner() -> void:
+	# En cas d'abandon, pas d'enrgistrement du temps.
 	# Diminuer le niveau courant
 	if str(joueur_actuel.get('niveau') - 1) in plateau_liste_difficulte:
 		joueur_actuel['niveau'] -= 1
