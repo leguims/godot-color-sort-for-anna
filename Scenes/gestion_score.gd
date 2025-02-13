@@ -6,9 +6,9 @@ extends Node
 var liste_des_sauvegardes = [
 	{
 		'nom': 'Alain Konu',
-		'nombre_de_parties': 0,
 		'niveau': 3,
 		'plateaux': { '3': 0 },
+		'nombre_de_parties': { '3': 0 },
 		'durees': { '3': 0 },
 		'plateau_victoire_dernier_plateau': false
 	}
@@ -107,8 +107,12 @@ func _ajouter_duree_de_partie(duree_en_ms : int) -> void:
 	joueur_actuel['durees'][str_niveau] += duree_en_ms
 
 func commencer() -> void:
-	joueur_actuel['nombre_de_parties'] += 1
-	print("Nombre de parties = ", joueur_actuel.get('nombre_de_parties'))
+	var str_niveau = str(joueur_actuel.get('niveau'))
+	# Augmenter le nombre de parties du niveau courant
+	if str_niveau not in joueur_actuel.get('nombre_de_parties'):
+		joueur_actuel['nombre_de_parties'][str_niveau] = 0
+	joueur_actuel['nombre_de_parties'][str_niveau] += 1
+	print("Nombre de parties = ", joueur_actuel.get('nombre_de_parties').get(str_niveau))
 	_enregistrer_sauvegarde_joueurs()
 
 func gagner(duree_en_ms : int) -> void:
@@ -133,7 +137,7 @@ func gagner(duree_en_ms : int) -> void:
 			joueur_actuel['plateaux'][str_niveau] = 0
 		sauvegarder = true
 	
-	print("Niveau = ", str_niveau, " - indice Plateau = ", joueur_actuel.get('plateaux').get(str_niveau), " - Nombre de parties = ", joueur_actuel.get('nombre_de_parties'))
+	print("Niveau = ", str_niveau, " - indice Plateau = ", joueur_actuel.get('plateaux').get(str_niveau), " - Nombre de parties = ", joueur_actuel.get('nombre_de_parties').get(str_niveau))
 	if sauvegarder:
 		_enregistrer_sauvegarde_joueurs()
 
@@ -202,9 +206,9 @@ func ajouter_un_nouveau_joueur(nom_nouveau_joueur : String) -> bool:
 	# Crée le compte et l'enregistre
 	var compte = {
 		'nom': nom_nouveau_joueur,
-		'nombre_de_parties': 0,
 		'niveau': 3,
 		'plateaux': { '3': 0 },
+		'nombre_de_parties': { '3': 0 },
 		'durees': { '3': 0 },
 		'plateau_victoire_dernier_plateau': false
 	}
@@ -224,14 +228,16 @@ func lire_le_score_du_joueur(nom_joueur : String) -> int:
 	"""Cette méthode retourne le score du joueur"""
 	var joueur = _retourner_le_joueur(nom_joueur)
 	if joueur:
-		var nb_parties = joueur.get('nombre_de_parties')
-		if nb_parties:
-			var score : int = 0
-			for niveau in range(100, 0, -1):
-				if str(niveau) in joueur.get('plateaux'):
-					var plateau = joueur.get('plateaux').get(str(niveau))
-					score += 1000 * niveau * plateau
-			return int(score / nb_parties)
+		var score : int = 0
+		for niveau in range(100, 0, -1):
+			var str_niveau = str(niveau)
+			var nb_parties = 0
+			if str_niveau in joueur.get('nombre_de_parties'):
+				nb_parties = joueur.get('nombre_de_parties').get(str_niveau)
+			if str_niveau in joueur.get('plateaux'):
+				var plateau = joueur.get('plateaux').get(str_niveau)
+				score += int(1000 * niveau * plateau / nb_parties)
+		return score
 	return 0
 
 func liste_des_joueurs() -> Variant:
@@ -239,3 +245,28 @@ func liste_des_joueurs() -> Variant:
 	for joueur in liste_des_sauvegardes:
 		liste_des_joueurs.append(joueur.get('nom'))
 	return liste_des_joueurs.duplicate(false)
+
+func lire_le_temps_du_joueur(nom_joueur : String, niveau : int) -> String:
+	"""Formater la durée en une chaîne de caractères lisible."""
+	var joueur = _retourner_le_joueur(nom_joueur)
+	if joueur:
+		if str(niveau) in joueur.get('durees'):
+			var duree_sec = int(joueur.get('durees').get(str(niveau)) / 1000)
+			if duree_sec < 60:
+				return str(duree_sec) + " secondes"
+			else:
+				var minutes = duree_sec / 60
+				var secondes = duree_sec % 60
+
+				var heures = minutes / 60
+				minutes = minutes % 60
+
+				var jours = heures / 60
+				heures = heures % 60
+				if jours > 0:
+					return str(jours) + " jours " + str(heures) + " heures"
+				elif heures > 0:
+					return str(heures) + " heures " + str(minutes) + " minutes"
+				else:
+					return str(minutes) + " minutes " + str(secondes) + " secondes"
+	return ""
