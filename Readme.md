@@ -59,6 +59,8 @@
    - ~~jeu : Page d'accueil : Nouveau joueur, campagne, scores, éditer et références.~~:heavy_check_mark:
    - ~~jeu : Page "Nouveau joueur" : apparence + edition du nom.~~:heavy_check_mark:
    - jeu : Page "Campagne" : ~~lien vers jeu + calcul du score + gestion du plateau à jouer~~ + lien vers menu principal
+   - jeu : Page "Campagne" : En même temps que le bouton "Commencer", faire des liens (en haut) vers chaque joueurs pour basculer d'une campagne à l'autre sans passer par le menu
+   - jeu : Page "Menu principal" : L'accès à la campagne se fait par un bouton sans édition de texte
    - ~~jeu : Page "Scores" : apparence + calcul des scores + retour au menu principal~~:heavy_check_mark:
    - jeu : Page "Editer un plateau" : ~~apparence + edition plateau + jeu plateau~~ + retour menu principal
    - ~~jeu : Page "Références" : apparence + retour menu principal~~:heavy_check_mark:
@@ -67,6 +69,10 @@
    - outillage : Définir le niveau de difficulté d'un plateau selon les critères suivants :
 	  - longueur solution et nombre de colonne sur le plateau (simpliste)
 	  - longueur solution et nombre de jetons sur le plateau (exhaustif)
+		- SurfacePlateau = NombreDePiles x NombreDeJetonParPile du plateau effectif
+		- SurfacePlateauMax = NombreDePilesMax x NombreDeJetonParPileMax (11x3 = max actuel; 12x12 = max théroique à court terme)
+		- ProfondeurSolution = Nombre de mouvements pour la solution
+		- Difficulté = Entier de ( ProfondeurSolution x SurfacePlateauMax / SurfacePlateau)
    - ~~outillage : réécrire les plateaux avec les "." pour identifier les "colonnes x lignes" et mélanger les plateaux de forme différentes~~:heavy_check_mark:
    - outillage : Réaliser un script d'élagage des plateaux valides.
 	  - 'ABC.CBA' ==(echange de piles)== 'CBA.ABC'
@@ -87,6 +93,7 @@
    - jeu : Détermination du score - Le nombre d'essais devrait être plus pénalisant que le temps passé. Car pour réussir du premier coup, il faut bien analyser le plateau.
    - outils : 'classer les solutions tronquer' produire un UUID dans le fichier des solutions.
    - jeu : Lire les plateaux 'Solutions_classees.json' et enregistrer l'UUID. Si l'UUID n'est pas celui de la sauvegarde, effacer toutes les sauvegardes des joueurs.
+   - outils : utiliser le module "logging" pour tracer l'avancement des threads dans leur tâches.
 
 
 ## V1.0 : Pour une version long terme
