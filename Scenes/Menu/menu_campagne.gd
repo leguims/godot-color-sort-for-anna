@@ -10,6 +10,9 @@ func afficher_accueil():
 	$EditeurPlateau/SaisieEditionPlateau.text = GestionScore.lire_plateau_courant()
 	$Message.size.y = $Message.size.y + 100
 	
+	$BoutonMenuPrincipal.show()
+	$InfosJoueur.show()
+	
 	_afficher_message("Mode Campagne!", false)
 	# Attendre l'échéance d'une temporisation libre
 	await get_tree().create_timer(1.0).timeout
@@ -18,6 +21,8 @@ func afficher_accueil():
 func afficher_plateau_suivant():
 	$EditeurPlateau/SaisieEditionPlateau.text = GestionScore.lire_plateau_courant()
 	_afficher_message("Plateau suivant!", false)
+	$BoutonMenuPrincipal.show()
+	$InfosJoueur.show()
 	$BoutonCommencer.show()
 
 func afficher_plateau_invalide():
@@ -48,4 +53,6 @@ func afficher_fin_campagne():
 	await $TempoMessage.timeout
 	_afficher_message("...de l'Everest!")
 	await $TempoMessage.timeout
+	$BoutonMenuPrincipal.show()
+	$InfosJoueur.show()
 	$BoutonCommencer.show()

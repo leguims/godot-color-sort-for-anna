@@ -3,7 +3,7 @@ extends Menu
 class_name MenuEditerUnPlateau
 
 func afficher_accueil():
-	# Initialisation du menu de campagne
+	# Initialisation du menu de l'éditeur
 	$EditeurPlateau.hide()
 	$EditeurPlateau/SaisieEditionPlateau.editable = true
 	$EditeurPlateau/SaisieEditionPlateau.placeholder_text = 'AC .A  .BAC.BDB.CDD'
@@ -16,6 +16,7 @@ func afficher_accueil():
 	$EditeurPlateau.show()
 	await get_tree().create_timer(1.0).timeout
 	$BoutonMenuPrincipal.show()
+	$InfosJoueur.hide()
 	$BoutonCommencer.show()
 
 func afficher_plateau_suivant():

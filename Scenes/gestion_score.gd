@@ -216,9 +216,18 @@ func ajouter_un_nouveau_joueur(nom_nouveau_joueur : String) -> bool:
 	_enregistrer_sauvegarde_joueurs()
 	return true
 
-func lire_nom_joueur_actuel() -> String:
+func lire_le_nom_du_joueur_actuel() -> String:
 	"""Cette méthode retourne le nom du joueur"""
 	return joueur_actuel.get('nom')
+
+func lire_le_niveau_du_joueur_actuel() -> int:
+	"""Cette méthode retourne le niveau du joueur"""
+	return joueur_actuel.get('niveau')
+
+func lire_indice_plateau_du_joueur_actuel() -> int:
+	"""Cette méthode retourne l'indice de plateau du joueur"""
+	var str_niveau = str(joueur_actuel.get('niveau'))
+	return joueur_actuel.get('plateaux').get(str_niveau)
 
 func lire_le_score_du_joueur_actuel() -> int:
 	"""Cette méthode retourne le score du joueur actuel"""

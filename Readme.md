@@ -58,11 +58,12 @@
    - ~~jeu : menu en haut : campagne, éditer et références.~~ ABANDON géré par la page d'accueil
    - ~~jeu : Page d'accueil : Nouveau joueur, campagne, scores, éditer et références.~~:heavy_check_mark:
    - ~~jeu : Page "Nouveau joueur" : apparence + edition du nom.~~:heavy_check_mark:
-   - jeu : Page "Campagne" : ~~lien vers jeu + calcul du score + gestion du plateau à jouer~~ + lien vers menu principal
+   - ~~jeu : Page "Campagne" : lien vers jeu + calcul du score + gestion du plateau à jouer + lien vers menu principal~~:heavy_check_mark:
    - jeu : Page "Campagne" : En même temps que le bouton "Commencer", faire des liens (en haut) vers chaque joueurs pour basculer d'une campagne à l'autre sans passer par le menu
+   - ~~jeu : Page "Campagne" : Le nom du joueur courant, Niveau courant apparait dans l'écran "Commencer"~~:heavy_check_mark:
    - jeu : Page "Menu principal" : L'accès à la campagne se fait par un bouton sans édition de texte
    - ~~jeu : Page "Scores" : apparence + calcul des scores + retour au menu principal~~:heavy_check_mark:
-   - jeu : Page "Editer un plateau" : ~~apparence + edition plateau + jeu plateau~~ + retour menu principal
+   - ~~jeu : Page "Editer un plateau" : apparence + edition plateau + jeu plateau + retour menu principal~~:heavy_check_mark:
    - ~~jeu : Page "Références" : apparence + retour menu principal~~:heavy_check_mark:
    - ~~jeu : Page "Références" : Lien vers les Crédits (GODOT, musique, effet sonore)~~:heavy_check_mark:
    - ~~outillage : produire un JSON des plateaux par niveau.~~:heavy_check_mark:

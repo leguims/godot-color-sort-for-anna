@@ -8,7 +8,11 @@ signal saisie_plateau
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
-	pass # Replace with function body.
+	"[center][font_size=30][b]infos joueur[/b][/font_size][/center]"
+	var nom = GestionScore.lire_le_nom_du_joueur_actuel()
+	var niveau = str(GestionScore.lire_le_niveau_du_joueur_actuel())
+	var indice_plateau = str(GestionScore.lire_indice_plateau_du_joueur_actuel())
+	$InfosJoueur.text = "[center][font_size=30]Joueur: " + nom + " - Niveau: " + niveau + "." + indice_plateau + "[/font_size][/center]"
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta: float) -> void:
@@ -26,6 +30,7 @@ func cacher_accueil():
 	$Message.hide()
 	$EditeurPlateau.hide()
 	$BoutonMenuPrincipal.hide()
+	$InfosJoueur.hide()
 	$BoutonCommencer.hide()
 
 func _afficher_message(texte : String, temporaire : bool = true):
