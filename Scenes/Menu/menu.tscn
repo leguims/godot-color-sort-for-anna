@@ -1,9 +1,33 @@
-[gd_scene load_steps=2 format=3 uid="uid://xsrt777ms37l"]
+[gd_scene load_steps=6 format=3 uid="uid://xsrt777ms37l"]
 
 [ext_resource type="Script" path="res://Scenes/Menu/menu.gd" id="1_d2lp0"]
 
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_w2jhv"]
+bg_color = Color(0, 0, 0, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_4v47e"]
+bg_color = Color(0, 0, 0, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_1gckf"]
+bg_color = Color(0, 0, 0, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_j78cs"]
+bg_color = Color(0, 0, 0, 1)
+
 [node name="Menu" type="CanvasLayer"]
 script = ExtResource("1_d2lp0")
+
+[node name="BoutonMenuPrincipal" type="Button" parent="."]
+anchors_preset = 10
+anchor_right = 1.0
+offset_bottom = 100.0
+grow_horizontal = 2
+theme_override_colors/font_hover_color = Color(0.996078, 0.333333, 1, 1)
+theme_override_colors/font_color = Color(0.67451, 0, 0.686275, 1)
+theme_override_font_sizes/font_size = 50
+theme_override_styles/hover = SubResource("StyleBoxFlat_w2jhv")
+theme_override_styles/normal = SubResource("StyleBoxFlat_4v47e")
+text = "Retour au menu"
 
 [node name="Message" type="Label" parent="."]
 anchors_preset = 8
@@ -72,8 +96,11 @@ grow_vertical = 0
 theme_override_colors/font_hover_color = Color(0.994947, 0.331387, 1, 1)
 theme_override_colors/font_color = Color(0.675529, 0.00038495, 0.685483, 1)
 theme_override_font_sizes/font_size = 60
+theme_override_styles/hover = SubResource("StyleBoxFlat_1gckf")
+theme_override_styles/normal = SubResource("StyleBoxFlat_j78cs")
 text = "Commencer"
 
+[connection signal="pressed" from="BoutonMenuPrincipal" to="." method="_on_bouton_menu_principal_pressed"]
 [connection signal="timeout" from="TempoMessage" to="." method="_on_tempo_message_timeout"]
 [connection signal="text_submitted" from="EditeurPlateau/SaisieEditionPlateau" to="." method="_on_saisie_edition_plateau_text_submitted"]
 [connection signal="pressed" from="BoutonCommencer" to="." method="_on_bouton_commencer_pressed"]

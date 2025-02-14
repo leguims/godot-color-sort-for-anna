@@ -15,6 +15,7 @@ func afficher_accueil():
 	$EditeurPlateau/SaisieEditionPlateau.clear()
 	$EditeurPlateau.show()
 	await get_tree().create_timer(1.0).timeout
+	$BoutonMenuPrincipal.show()
 	$BoutonCommencer.show()
 
 func afficher_plateau_suivant():
@@ -23,6 +24,7 @@ func afficher_plateau_suivant():
 	$EditeurPlateau/SaisieEditionPlateau.clear()
 	$EditeurPlateau.show()
 	await get_tree().create_timer(1.0).timeout
+	$BoutonMenuPrincipal.show()
 	$BoutonCommencer.show()
 
 func afficher_plateau_invalide():
@@ -42,6 +44,7 @@ func afficher_plateau_invalide():
 	await $TempoMessage.timeout
 	$Message.autowrap_mode=TextServer.AUTOWRAP_WORD
 
+	$BoutonMenuPrincipal.show()
 	$EditeurPlateau/SaisieEditionPlateau.clear()
 	$EditeurPlateau.show()
 	$BoutonCommencer.show()

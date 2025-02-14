@@ -25,6 +25,7 @@ func modifier_message_vertical_align(alignement : VerticalAlignment) -> void:
 func cacher_accueil():
 	$Message.hide()
 	$EditeurPlateau.hide()
+	$BoutonMenuPrincipal.hide()
 	$BoutonCommencer.hide()
 
 func _afficher_message(texte : String, temporaire : bool = true):
@@ -43,3 +44,6 @@ func _on_bouton_commencer_pressed() -> void:
 
 func _on_saisie_edition_plateau_text_submitted(new_text: String) -> void:
 	saisie_plateau.emit(new_text)
+
+func _on_bouton_menu_principal_pressed() -> void:
+	get_tree().change_scene_to_file("res://Scenes/MenuPrincipal/menu_principal.tscn")
