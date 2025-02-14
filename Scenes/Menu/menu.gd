@@ -18,7 +18,12 @@ func mettre_a_jour_infos_joueur() -> void:
 	var nom = GestionScore.lire_le_nom_du_joueur_actuel()
 	var niveau = str(GestionScore.lire_le_niveau_du_joueur_actuel())
 	var indice_plateau = str(GestionScore.lire_indice_plateau_du_joueur_actuel())
-	$InfosJoueur.text = "[center][font_size=30]Joueur: " + nom + " - Niveau: " + niveau + "." + indice_plateau + "[/font_size][/center]"
+	if nom.length() <= 6:
+		$InfosJoueur.text = "[center][font_size=30]Joueur: " + nom + " - Niveau: " + niveau + "." + indice_plateau + "[/font_size][/center]"
+	elif  nom.length() <= 10:
+		$InfosJoueur.text = "[center][font_size=30]Joueur: " + nom + " - Niv.: " + niveau + "." + indice_plateau + "[/font_size][/center]"
+	else:
+		$InfosJoueur.text = "[center][font_size=30]Joueur: " + nom.substr(0,8) + ". - Niv.: " + niveau + "." + indice_plateau + "[/font_size][/center]"
 
 # Méthodes d'ajustement de la scene
 func modifier_tempo_message(nouvelle_tempo: float) -> void:
