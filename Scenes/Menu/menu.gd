@@ -8,16 +8,17 @@ signal saisie_plateau
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
-	"[center][font_size=30][b]infos joueur[/b][/font_size][/center]"
-	var nom = GestionScore.lire_le_nom_du_joueur_actuel()
-	var niveau = str(GestionScore.lire_le_niveau_du_joueur_actuel())
-	var indice_plateau = str(GestionScore.lire_indice_plateau_du_joueur_actuel())
-	$InfosJoueur.text = "[center][font_size=30]Joueur: " + nom + " - Niveau: " + niveau + "." + indice_plateau + "[/font_size][/center]"
+	mettre_a_jour_infos_joueur()
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta: float) -> void:
 	pass
 
+func mettre_a_jour_infos_joueur() -> void:
+	var nom = GestionScore.lire_le_nom_du_joueur_actuel()
+	var niveau = str(GestionScore.lire_le_niveau_du_joueur_actuel())
+	var indice_plateau = str(GestionScore.lire_indice_plateau_du_joueur_actuel())
+	$InfosJoueur.text = "[center][font_size=30]Joueur: " + nom + " - Niveau: " + niveau + "." + indice_plateau + "[/font_size][/center]"
 
 # Méthodes d'ajustement de la scene
 func modifier_tempo_message(nouvelle_tempo: float) -> void:

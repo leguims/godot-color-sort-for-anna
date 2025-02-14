@@ -11,6 +11,7 @@ func afficher_accueil():
 	$Message.size.y = $Message.size.y + 100
 	
 	$BoutonMenuPrincipal.show()
+	super.mettre_a_jour_infos_joueur()
 	$InfosJoueur.show()
 	
 	_afficher_message("Mode Campagne!", false)
@@ -21,6 +22,7 @@ func afficher_accueil():
 func afficher_plateau_suivant():
 	$EditeurPlateau/SaisieEditionPlateau.text = GestionScore.lire_plateau_courant()
 	_afficher_message("Plateau suivant!", false)
+	super.mettre_a_jour_infos_joueur()
 	$BoutonMenuPrincipal.show()
 	$InfosJoueur.show()
 	$BoutonCommencer.show()
@@ -54,5 +56,6 @@ func afficher_fin_campagne():
 	_afficher_message("...de l'Everest!")
 	await $TempoMessage.timeout
 	$BoutonMenuPrincipal.show()
+	super.mettre_a_jour_infos_joueur()
 	$InfosJoueur.show()
 	$BoutonCommencer.show()
