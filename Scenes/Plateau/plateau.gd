@@ -13,14 +13,6 @@ static var ESPACE = 32
 
 var sauvegarde_indice_pile_depart : int = -1
 
-# Called when the node enters the scene tree for the first time.
-func _ready() -> void:
-	pass
-
-# Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(delta: float) -> void:
-	pass
-
 func  commencer_un_nouveau_plateau(plateau_texte : String) -> void:
 	if est_valide(plateau_texte):
 		var plateau = _decoder_plateau(plateau_texte)
@@ -122,10 +114,10 @@ func _calculer_la_position_de_la_pile(nb_piles : int, indice_pile : int) -> Vect
 			pass
 	else :
 		# Gérer 2 lignes de piles
-		nb_ecarts = int((nb_piles -1) / 2 + 2) # (nb_piles-1)/2 = ecarts + 2 marges
+		nb_ecarts = (nb_piles -1) / 2 + 2 # (nb_piles-1)/2 = ecarts + 2 marges
 		ecart_entre_piles_x = taille_fenetre_jeu.x / nb_ecarts
 		if 2*largeur_pile < ecart_entre_piles_x :
-			var indice_pile_2_colonnes = int(indice_pile / 2)
+			var indice_pile_2_colonnes = indice_pile / 2
 			position_pile.x = ecart_entre_piles_x * (1 + indice_pile_2_colonnes) - 0.5 * largeur_pile
 			if indice_pile % 2:
 				position_pile.y = taille_fenetre_jeu.y - marge_y

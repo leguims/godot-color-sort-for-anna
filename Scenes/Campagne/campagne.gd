@@ -13,10 +13,6 @@ func _ready() -> void:
 	$Menu.show()
 	$Menu.afficher_accueil()
 
-# Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(delta: float) -> void:
-	pass
-
 func _on_menu_commencer_plateau() -> void:
 	GestionScore.commencer()
 	_lancer_plateau_de_campagne($Menu/EditeurPlateau/SaisieEditionPlateau.text)
@@ -39,7 +35,7 @@ func _on_plateau_de_jeu_victoire() -> void:
 	if GestionScore.est_victoire_dernier_plateau():
 		$Menu.afficher_fin_campagne()
 	else:
-		$Menu.afficher_victoire(int(duree_en_ms/1000))
+		$Menu.afficher_victoire(duree_en_ms / 1000)
 	$SonFinDePartie.play()
 	$Musique.stop()
 

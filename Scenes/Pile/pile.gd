@@ -19,10 +19,6 @@ func _ready() -> void:
 	pass
 
 
-# Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(delta: float) -> void:
-	pass
-
 func choisir_reference(reference : int) -> void:
 	reference_parent = reference
 
@@ -60,7 +56,7 @@ func ajouter_les_jetons(jetons : Array) -> bool:
 	$Fond.set_size(size)
 	
 	# Definir la position du fond de pile
-	_choisir_position_fond(Vector2(0, 720))
+	_ajuster_position_fond()
 	return true # pile valide
 
 func ajouter_le_jeton_dans_le_vide(jeton_a_ajouter : int) -> bool:
@@ -99,9 +95,9 @@ func choisir_position(nouvelle_position : Vector2) -> void:
 		# print("Pile.choisir_position : position_jeton = ", position_jeton)
 		jeton_courant.choisir_position( position_jeton )
 		indice_jeton += 1
-	_choisir_position_fond(nouvelle_position)
+	_ajuster_position_fond()
 
-func _choisir_position_fond(nouvelle_position : Vector2) -> void:
+func _ajuster_position_fond() -> void:
 	if liste_jetons:
 		# Position du dernier jeton + Centrage de la pile
 		$Fond.set_position(liste_jetons[-1].position() - Vector2(marge, marge))
@@ -210,6 +206,6 @@ func _calculer_la_position_du_jeton(indice_jeton : int) -> Vector2:
 	position_jeton.y = position.y - indice_jeton * (liste_jetons[indice_jeton].hauteur() + 2)
 	return position_jeton
 
-func on_jeton_clique_gauche(indice_jeton : int) -> void:
-	# print("clique sur le jeton : ", indice_jeton)
+func on_jeton_clique_gauche(_indice_jeton : int) -> void:
+	# print("clique sur le jeton : ", _indice_jeton)
 	clique_gauche.emit(reference_parent)

@@ -12,12 +12,12 @@ var liste_format_scores = {
 
 func _ready() -> void:
 	# Remplir chaque score dans la liste des scores
-	var liste_score_bbcode : String
+	var liste_score_bbcode : String = ''
 	
 	# Realiser le classement des joueurs
 	var liste_score_croissant = []
 	var dico_score_nom_joueur = {}
-	for nom_joueur in GestionScore.liste_des_joueurs():
+	for nom_joueur in GestionScore.lire_la_liste_des_joueurs():
 		var score = GestionScore.lire_le_score_du_joueur(nom_joueur)
 		liste_score_croissant.append(score)
 		if score not in dico_score_nom_joueur:

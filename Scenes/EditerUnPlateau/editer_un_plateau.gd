@@ -10,10 +10,6 @@ func _ready() -> void:
 	$Menu.show()
 	$Menu.afficher_accueil()
 
-# Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(delta: float) -> void:
-	pass
-
 func _on_menu_commencer_plateau() -> void:
 	_editer_plateau_texte($Menu/EditeurPlateau/SaisieEditionPlateau.text)
 

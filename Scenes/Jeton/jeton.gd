@@ -68,11 +68,11 @@ func choisir_jeton(indice : int) -> void:
 			$Nom.add_theme_font_size_override("font_size", font_size - 2)
 			position_initiale_nom.y -= 3
 
-func choisir_position(position : Vector2) -> void:
-	$Carre.set_position(position_initiale_carre + position)
+func choisir_position(nouvelle_position : Vector2) -> void:
+	$Carre.set_position(position_initiale_carre + nouvelle_position)
 	# print("Jeton.choisir_position : $Carre.position = ", $Carre.get_position())
 	
-	$Nom.set_position(position_initiale_nom + position)
+	$Nom.set_position(position_initiale_nom + nouvelle_position)
 	# print("Jeton.choisir_position : $Nom.position = ", $Nom.get_position())
 
 func hauteur() -> int:

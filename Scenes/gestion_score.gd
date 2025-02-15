@@ -92,8 +92,7 @@ func _write_json_file(chemin, contenu) -> void:
 		print("write_json_file : ERREUR sur le chemin : ", chemin)
 		return
 	# Encodage JSON
-	var json = JSON.new()
-	var json_string = json.stringify(contenu)
+	var json_string = JSON.stringify(contenu)
 	# print("json_string = ", json_string)
 	# Ecriture du fichier
 	fichier.store_string(json_string)
@@ -263,7 +262,7 @@ func lire_le_score_du_joueur(nom_joueur : String) -> int:
 			score += score_niveau
 	return score
 
-func liste_des_joueurs() -> Variant:
+func lire_la_liste_des_joueurs() -> Variant:
 	var liste_des_joueurs = []
 	for joueur in liste_des_sauvegardes:
 		liste_des_joueurs.append(joueur.get('nom'))
@@ -274,7 +273,7 @@ func lire_le_temps_du_joueur(nom_joueur : String, niveau : int) -> String:
 	var joueur = _retourner_le_joueur(nom_joueur)
 	if joueur:
 		if str(niveau) in joueur.get('durees'):
-			var duree_sec = int(joueur.get('durees').get(str(niveau)) / 1000)
+			var duree_sec = joueur.get('durees').get(str(niveau)) / 1000
 			if duree_sec < 60:
 				return str(duree_sec) + " secondes"
 			else:

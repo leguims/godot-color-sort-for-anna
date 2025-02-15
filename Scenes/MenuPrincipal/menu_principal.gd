@@ -8,11 +8,6 @@ func _ready() -> void:
 	pass # Replace with function body.
 
 
-# Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(delta: float) -> void:
-	pass
-
-
 func _on_bouton_références_pressed() -> void:
 	get_tree().change_scene_to_file("res://Scenes/References/references.tscn")
 
@@ -53,7 +48,7 @@ func _mettre_a_jour_boutons_joueurs_campagne():
 
 func _creer_boutons_joueurs_campagne():
 	$Marge/HBoxContainer/VBoxContainer/Marge/VBoxContainer/JoueursCampagne.columns = 2
-	for nom_joueur in GestionScore.liste_des_joueurs():
+	for nom_joueur in GestionScore.lire_la_liste_des_joueurs():
 		# Ajouter des boutons ou des tuiles de sélection de profil
 		var button = Button.new()
 		button.text = nom_joueur

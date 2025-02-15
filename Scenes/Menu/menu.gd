@@ -10,10 +10,6 @@ signal saisie_plateau
 func _ready() -> void:
 	mettre_a_jour_infos_joueur()
 
-# Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(delta: float) -> void:
-	pass
-
 func mettre_a_jour_infos_joueur() -> void:
 	var nom = GestionScore.lire_le_nom_du_joueur_actuel()
 	var niveau = str(GestionScore.lire_le_niveau_du_joueur_actuel())
