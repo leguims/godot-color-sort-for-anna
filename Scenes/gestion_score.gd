@@ -9,8 +9,7 @@ var liste_des_sauvegardes = [
 		'niveau': 3,
 		'plateaux': { '3': 0 },
 		'nombre_de_parties': { '3': 0 },
-		'durees': { '3': 0 },
-		'plateau_victoire_dernier_plateau': false
+		'durees': { '3': 0 }
 	}
 ]
 var joueur_actuel = liste_des_sauvegardes[0]
@@ -121,10 +120,7 @@ func gagner(duree_en_ms : int) -> void:
 	# Enregistrer la duree de la partie
 	_ajouter_duree_de_partie(duree_en_ms)
 	# Augmenter le plateau du niveau courant
-	if _est_dernier_plateau():
-		joueur_actuel['plateau_victoire_dernier_plateau'] = true
-		sauvegarder = true
-	if joueur_actuel.get('plateaux').get(str_niveau) <= (len(plateau_liste_difficulte.get(str_niveau))-1):
+	if not _le_plateau_courant_est_le_dernier_du_niveau():
 		joueur_actuel['plateaux'][str_niveau] += 1
 		sauvegarder = true
 	
@@ -156,12 +152,16 @@ func lire_plateau_courant() -> String:
 		return plateau_liste_difficulte.get(str_niveau)[indice_plateau]
 	return ""
 
-func _est_dernier_plateau() -> bool:
+func _le_plateau_courant_est_le_dernier_du_niveau() -> bool:
 	var str_niveau = str(joueur_actuel.get('niveau'))
-	return lire_plateau_courant() == plateau_liste_difficulte.get(str_niveau).back()
+	return joueur_actuel.get('plateaux').get(str_niveau) >= len(plateau_liste_difficulte.get(str_niveau))
 
-func est_victoire_dernier_plateau() -> bool:
-	return joueur_actuel.get('plateau_victoire_dernier_plateau')
+func _le_niveau_courant_est_le_dernier() -> bool:
+	var str_niveau_plus_1 = str(joueur_actuel.get('niveau') + 1)
+	return str_niveau_plus_1 not in plateau_liste_difficulte
+
+func la_campagne_est_terminee() -> bool:
+	return _le_niveau_courant_est_le_dernier() and _le_plateau_courant_est_le_dernier_du_niveau()
 
 
 ###############################################
@@ -208,8 +208,7 @@ func ajouter_un_nouveau_joueur(nom_nouveau_joueur : String) -> bool:
 		'niveau': 3,
 		'plateaux': { '3': 0 },
 		'nombre_de_parties': { '3': 0 },
-		'durees': { '3': 0 },
-		'plateau_victoire_dernier_plateau': false
+		'durees': { '3': 0 }
 	}
 	liste_des_sauvegardes.append(compte.duplicate(true))
 	_enregistrer_sauvegarde_joueurs()
