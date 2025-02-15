@@ -241,24 +241,25 @@ func lire_le_score_du_joueur(nom_joueur : String) -> int:
 			var plateau = 0
 			if str_niveau in joueur.get('plateaux'):
 				plateau = joueur.get('plateaux').get(str_niveau)
-			var nb_parties = 0
-			if str_niveau in joueur.get('nombre_de_parties'):
-				nb_parties = joueur.get('nombre_de_parties').get(str_niveau)
-			var nb_parties_gagnees = plateau
-			# var nb_parties_perdues = nb_parties - nb_parties_gagnees
-			var duree = 0
-			if str_niveau in joueur.get('durees'):
-				duree = joueur.get('durees').get(str_niveau)
 				
-			var score_niveau = 0
-			if nb_parties and duree:
-				# Score sur le ratio des parties gagnées/jouées
-				var ratio_victoire = nb_parties_gagnees / nb_parties
-				# Score sur le ratio du temps référence/joué
-				var temps_reference = niveau * 7
-				var ratio_temps = temps_reference / duree
-				score_niveau = int(100 * niveau * (ratio_victoire + ratio_temps))
-			score += score_niveau
+				var nb_parties_jouees = 0
+				if str_niveau in joueur.get('nombre_de_parties'):
+					nb_parties_jouees = joueur.get('nombre_de_parties').get(str_niveau)
+				var nb_parties_gagnees = plateau
+				# var nb_parties_perdues = nb_parties_jouees - nb_parties_gagnees
+				
+				var duree = 0
+				if str_niveau in joueur.get('durees'):
+					duree = joueur.get('durees').get(str_niveau)
+					
+				if nb_parties_jouees and duree:
+					# Score sur le ratio des parties gagnées/jouées
+					var ratio_victoire = nb_parties_gagnees / nb_parties_jouees
+					# Score sur le ratio du temps référence/joué
+					var temps_reference = niveau * 7
+					var ratio_temps = temps_reference / duree
+					var score_niveau = int(100 * niveau * (ratio_victoire + ratio_temps))
+					score += score_niveau
 	return score
 
 func lire_la_liste_des_joueurs() -> Variant:
