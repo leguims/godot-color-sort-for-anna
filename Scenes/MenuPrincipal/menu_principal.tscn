@@ -86,8 +86,8 @@ theme_override_colors/font_color = Color(0.87451, 0, 0.87451, 1)
 theme_override_fonts/font = SubResource("SystemFont_jisel")
 theme_override_font_sizes/font_size = 42
 theme_override_styles/normal = SubResource("StyleBoxFlat_ruejn")
-text = "Ranger les
-couleurs !"
+text = "Range les couleurs
+pour Anna !"
 horizontal_alignment = 1
 vertical_alignment = 1
 

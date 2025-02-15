@@ -231,6 +231,54 @@ func lire_le_score_du_joueur_actuel() -> int:
 	"""Cette méthode retourne le score du joueur actuel"""
 	return lire_le_score_du_joueur(joueur_actuel.get('nom'))
 
+func lire_le_trophee_du_joueur_actuel() -> String:
+	"""Cette méthode retourne le trophé du joueur actuel"""
+	var trophees = {
+		1: String.chr(0x1F3C6),
+		2: String.chr(0x1F948),
+		3: String.chr(0x1F949)
+	}
+	var rang = lire_le_rang_du_joueur_actuel()
+	if rang in trophees:
+		return trophees.get(rang)
+	return ''
+
+func lire_le_rang_du_joueur_actuel() -> int:
+	"""Cette méthode retourne le rang du joueur actuel"""
+	return lire_le_rang_du_joueur(joueur_actuel.get('nom'))
+
+func lire_le_rang_du_joueur(nom_joueur : String) -> int:
+	"""Cette méthode retourne l'indice de plateau du joueur"""
+	var joueur = _retourner_le_joueur(nom_joueur)
+	var rang : int = 0
+	if joueur:
+		rang = lire_classement_des_joueurs().get(joueur.get('nom'))
+	return rang
+
+func lire_classement_des_joueurs() -> Dictionary:
+	"""Cette méthode retourne le rang de l'ensemble des joueurs"""
+	var liste_score_croissant = []
+	var dico_score_nom_joueur = {}
+	for nom_joueur in lire_la_liste_des_joueurs():
+		var score = lire_le_score_du_joueur(nom_joueur)
+		liste_score_croissant.append(score)
+		if score not in dico_score_nom_joueur:
+			dico_score_nom_joueur[score] = [nom_joueur]
+		else:
+			# Score égalité
+			dico_score_nom_joueur[score].append(nom_joueur)
+	liste_score_croissant.sort() # Classement croissant des scores
+	
+	# Dictionaire RANG => Nom Joueur
+	var dico_nom_joueur_rang = {}
+	for iteration in range(len(lire_la_liste_des_joueurs())):
+		var score = liste_score_croissant.pop_back()
+		if score != null:
+			var rang = len(dico_nom_joueur_rang) + len (dico_score_nom_joueur.get(score))
+			for nom in dico_score_nom_joueur.get(score):
+				dico_nom_joueur_rang[nom] = rang
+	return dico_nom_joueur_rang
+
 func lire_le_score_du_joueur(nom_joueur : String) -> int:
 	"""Cette méthode retourne le score du joueur"""
 	var joueur = _retourner_le_joueur(nom_joueur)
