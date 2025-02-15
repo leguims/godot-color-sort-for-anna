@@ -74,34 +74,39 @@
 
 
 ## V0.3 : Travaux pour la prochaine version
-   - jeu : réfléchir à l'utilisation des musiques.
-   - jeu : Page "Campagne" : faire apparaitre l'avancement dans la campagne. La distance jusqu'à la fin ... (peut-etre une jauge pour chaque niveau)
-   - jeu : Page "Campagne" : En même temps que le bouton "Commencer", faire des liens (en haut) vers chaque joueurs pour basculer d'une campagne à l'autre sans passer par le menu
-   - jeu : Lire les plateaux 'Solutions_classees.json' et enregistrer l'UUID. Si l'UUID n'est pas celui de la sauvegarde, effacer toutes les sauvegardes des joueurs.
-   - jeu : (option) enregistrer les dates de jeux et proposer une série de plateaux de chaque niveau. "Semaine 1", proposer les 1er plateaux de chaque niveau.
-   - jeu : (option) prévoir un json avec l'enregistrement des scores de chacun sur chaque semaine. Score total et score semaine.
-   - jeu : (option) détecter une position de plateau bloquée ou impossible.
-   - outillage : Définir le niveau de difficulté d'un plateau selon les critères suivants :
+
+### Jeu
+   réfléchir à l'utilisation des musiques.
+   Page "Campagne" : faire apparaitre l'avancement dans la campagne. La distance jusqu'à la fin ... (peut-etre une jauge pour chaque niveau)
+   Page "Campagne" : En même temps que le bouton "Commencer", faire des liens (en haut) vers chaque joueurs pour basculer d'une campagne à l'autre sans passer par le menu
+   Lire les plateaux 'Solutions_classees.json' et enregistrer l'UUID. Si l'UUID n'est pas celui de la sauvegarde, effacer toutes les sauvegardes des joueurs.
+   (option) enregistrer les dates de jeux et proposer une série de plateaux de chaque niveau. "Semaine 1", proposer les 1er plateaux de chaque niveau.
+   (option) prévoir un json avec l'enregistrement des scores de chacun sur chaque semaine. Score total et score semaine.
+   (option) détecter une position de plateau bloquée ou impossible.
+
+### Outillage
+   Définir le niveau de difficulté d'un plateau selon les critères suivants :
 	  - longueur solution et nombre de colonne sur le plateau (simpliste)
 	  - longueur solution et nombre de jetons sur le plateau (exhaustif)
 		- SurfacePlateau = NombreDePiles x NombreDeJetonParPile du plateau effectif
 		- SurfacePlateauMax = NombreDePilesMax x NombreDeJetonParPileMax (11x3 = max actuel; 12x12 = max théroique à court terme)
 		- ProfondeurSolution = Nombre de mouvements pour la solution
 		- Difficulté = Entier de ( ProfondeurSolution x SurfacePlateauMax / SurfacePlateau)
-   - outillage : Réaliser un script d'élagage des plateaux valides.
+   Réaliser un script d'élagage des plateaux valides.
 	  - 'ABC.CBA' ==(echange de piles)== 'CBA.ABC'
 	  - 'ABC.CBA' ==(A devient B)== 'BAC.CAB'
-   - outillage : pour les plateaux sans solution, lancer une recherche en ajoutant 1 colonne d'une seule ligne OU 1 case vide sur la derniere colonne.
+   pour les plateaux sans solution, lancer une recherche en ajoutant 1 colonne d'une seule ligne OU 1 case vide sur la derniere colonne.
    - outils : 'classer les solutions tronquer' produire un UUID dans le fichier des solutions.
    - outils : utiliser le module "logging" pour tracer l'avancement des threads dans leur tâches.
 
 
 ## V1.0 : Pour une version long terme
-  - jeu : faire une animation du bloc qui se déplace
-  - jeu : enregistrer dans les données immédiatement les déplacements, mais l'animation décide quand afficher/masquer les jetons selon son avancement. (idée, plusieurs coups sont enchaînés et joués même si l'animation n'est pas terminée. Le résultat donne une séquence d'animation magique)
-  - jeu : pour les jetons, dissocier les caractéristiques : indice de jeton, couleur, nom, famille. Une famille pourrait avoir plusieurs jetons avec un nom ou une couleur différente.
-  - jeu : réfléchir à une écriture de plateau qui porte l'organisation des piles dans le plateau. Par exemple '.' pour le changement de pile et '..' pour le changement de ligne.
-  - jeu : varier la représentation des jetons et le fond du plateau :
+### Jeu
+  faire une animation du bloc qui se déplace
+  enregistrer dans les données immédiatement les déplacements, mais l'animation décide quand afficher/masquer les jetons selon son avancement. (idée, plusieurs coups sont enchaînés et joués même si l'animation n'est pas terminée. Le résultat donne une séquence d'animation magique)
+  pour les jetons, dissocier les caractéristiques : indice de jeton, couleur, nom, famille. Une famille pourrait avoir plusieurs jetons avec un nom ou une couleur différente.
+  réfléchir à une écriture de plateau qui porte l'organisation des piles dans le plateau. Par exemple '.' pour le changement de pile et '..' pour le changement de ligne.
+  varier la représentation des jetons et le fond du plateau :
 	 - fruits avec fond de cuisine,
 	 - médicaments avec fond d'hôpital,
 	 - animaux avec un zoo,
