@@ -5,7 +5,6 @@
 
 - ~~Jeton : cube de couleur~~
   - ~~contient la repesentation d'un jeton~~:heavy_check_mark:
-
 - ~~Pile : Colonne sur un plateau de jeu~~
   - ~~Contient les regles de jeu subjectives :~~:heavy_check_mark:
 	- ~~Accepte un/des jeton(s) de couleur,~~:heavy_check_mark:
@@ -20,7 +19,6 @@
 	  - ~~"[0, 0, 0, 0]" = 4x'A' sur une pile de 4~~:heavy_check_mark:
 	  - ~~"[0, 0, 0, 0, 32, 32]" = 4x'A' + 2x' ' sur une pile de 6~~:heavy_check_mark:
 	  - ~~"[0, 1, 2, 32]" = 3x blocs et 1 case vide~~:heavy_check_mark:
-
 - ~~Plateau : ensemble des piles de jeu~~
   - ~~Associe plusieurs piles pour former le plateau~~:heavy_check_mark:
   - ~~Contient les regles subjectives :~~
@@ -37,7 +35,6 @@
 	  - ~~pile 2 : "BABA"~~:heavy_check_mark:
 	  - ~~pile 3 : vide (4 emplacements)~~:heavy_check_mark:
 	  - ~~pile 4 : vide (1 emplacement)~~:heavy_check_mark:
-
 - ~~Menu :~~
   - ~~Page d'accueil~~:heavy_check_mark:
   - ~~Liens entre les plateaux~~:heavy_check_mark:
@@ -71,6 +68,12 @@
    - ~~jeu : Détermination du score - Le nombre d'essais devrait être plus pénalisant que le temps passé. Car pour réussir du premier coup, il faut bien analyser le plateau.~~:heavy_check_mark:
    - ~~jeu : Mesure de temps : faut-il comptabiliser le temps pour les victoires uniquements ?~~:heavy_check_mark:
    - ~~jeu : Quand un niveau est terminé, faire pointer sur le suivant pour être hors borne et ne plus rejouer le dernier niveau indéfiniement (supprimer 'plateau_victoire_dernier_plateau')~~:heavy_check_mark:
+   - ~~outillage : produire un JSON des plateaux par niveau.~~:heavy_check_mark:
+   - ~~outillage : réécrire les plateaux avec les "." pour identifier les "colonnes x lignes" et mélanger les plateaux de forme différentes~~:heavy_check_mark:
+   - ~~outillage : construire un JSON selon une configuration qui indique le nombre de tableau de chaque niveau.~~:heavy_check_mark:
+
+
+## V0.3 : Travaux pour la prochaine version
    - jeu : réfléchir à l'utilisation des musiques.
    - jeu : Page "Campagne" : faire apparaitre l'avancement dans la campagne. La distance jusqu'à la fin ... (peut-etre une jauge pour chaque niveau)
    - jeu : Page "Campagne" : En même temps que le bouton "Commencer", faire des liens (en haut) vers chaque joueurs pour basculer d'une campagne à l'autre sans passer par le menu
@@ -78,9 +81,6 @@
    - jeu : (option) enregistrer les dates de jeux et proposer une série de plateaux de chaque niveau. "Semaine 1", proposer les 1er plateaux de chaque niveau.
    - jeu : (option) prévoir un json avec l'enregistrement des scores de chacun sur chaque semaine. Score total et score semaine.
    - jeu : (option) détecter une position de plateau bloquée ou impossible.
-   - ~~outillage : produire un JSON des plateaux par niveau.~~:heavy_check_mark:
-   - ~~outillage : réécrire les plateaux avec les "." pour identifier les "colonnes x lignes" et mélanger les plateaux de forme différentes~~:heavy_check_mark:
-   - ~~outillage : construire un JSON selon une configuration qui indique le nombre de tableau de chaque niveau.~~:heavy_check_mark:
    - outillage : Définir le niveau de difficulté d'un plateau selon les critères suivants :
 	  - longueur solution et nombre de colonne sur le plateau (simpliste)
 	  - longueur solution et nombre de jetons sur le plateau (exhaustif)
