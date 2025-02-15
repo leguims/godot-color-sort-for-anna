@@ -36,6 +36,7 @@ func _on_texte_joueur_text_submitted(nom_nouveau_joueur: String) -> void:
 		$Marge/HBoxContainer/VBoxContainer/Marge/VBoxContainer/TexteJoueur.placeholder_text = 'Erreur !'
 	else:
 		$Marge/HBoxContainer/VBoxContainer/Marge/VBoxContainer/TexteJoueur.placeholder_text = 'Ok !'
+		_mettre_a_jour_boutons_joueurs_campagne()
 
 
 func _on_bouton_campagne_pressed() -> void:
@@ -46,6 +47,9 @@ func _on_bouton_campagne_pressed() -> void:
 		_creer_boutons_joueurs_campagne()
 		$Marge/HBoxContainer/VBoxContainer/Marge/VBoxContainer/JoueursCampagne.show()
 
+func _mettre_a_jour_boutons_joueurs_campagne():
+	_effacer_boutons_joueurs_campagne()
+	_creer_boutons_joueurs_campagne()
 
 func _creer_boutons_joueurs_campagne():
 	$Marge/HBoxContainer/VBoxContainer/Marge/VBoxContainer/JoueursCampagne.columns = 2

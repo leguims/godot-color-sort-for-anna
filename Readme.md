@@ -61,7 +61,7 @@
    - ~~jeu : Page "Campagne" : lien vers jeu + calcul du score + gestion du plateau à jouer + lien vers menu principal~~:heavy_check_mark:
    - jeu : Page "Campagne" : En même temps que le bouton "Commencer", faire des liens (en haut) vers chaque joueurs pour basculer d'une campagne à l'autre sans passer par le menu
    - ~~jeu : Page "Campagne" : Le nom du joueur courant, Niveau courant apparait dans l'écran "Commencer"~~:heavy_check_mark:
-   - jeu : Page "Menu principal" : L'accès à la campagne se fait par un bouton sans édition de texte
+   - ~~jeu : Page "Menu principal" : L'accès à la campagne se fait par un bouton sans édition de texte~~:heavy_check_mark:
    - ~~jeu : Page "Scores" : apparence + calcul des scores + retour au menu principal~~:heavy_check_mark:
    - ~~jeu : Page "Editer un plateau" : apparence + edition plateau + jeu plateau + retour menu principal~~:heavy_check_mark:
    - ~~jeu : Page "Références" : apparence + retour menu principal~~:heavy_check_mark:
