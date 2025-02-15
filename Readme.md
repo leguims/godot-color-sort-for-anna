@@ -59,14 +59,28 @@
    - ~~jeu : Page d'accueil : Nouveau joueur, campagne, scores, éditer et références.~~:heavy_check_mark:
    - ~~jeu : Page "Nouveau joueur" : apparence + edition du nom.~~:heavy_check_mark:
    - ~~jeu : Page "Campagne" : lien vers jeu + calcul du score + gestion du plateau à jouer + lien vers menu principal~~:heavy_check_mark:
-   - jeu : Page "Campagne" : En même temps que le bouton "Commencer", faire des liens (en haut) vers chaque joueurs pour basculer d'une campagne à l'autre sans passer par le menu
    - ~~jeu : Page "Campagne" : Le nom du joueur courant, Niveau courant apparait dans l'écran "Commencer"~~:heavy_check_mark:
    - ~~jeu : Page "Menu principal" : L'accès à la campagne se fait par un bouton sans édition de texte~~:heavy_check_mark:
    - ~~jeu : Page "Scores" : apparence + calcul des scores + retour au menu principal~~:heavy_check_mark:
    - ~~jeu : Page "Editer un plateau" : apparence + edition plateau + jeu plateau + retour menu principal~~:heavy_check_mark:
    - ~~jeu : Page "Références" : apparence + retour menu principal~~:heavy_check_mark:
    - ~~jeu : Page "Références" : Lien vers les Crédits (GODOT, musique, effet sonore)~~:heavy_check_mark:
+   - ~~jeu : prévoir un code pour que chaque joueur s'identifie.~~:heavy_check_mark:
+   - ~~jeu : Détermination du score - Enregistrer le temps cumulé par niveau afin de le comptabiliser dans l'établissement du score. Rapide > lent~~:heavy_check_mark:
+   - ~~jeu : Détermination du score - Enregistrer le nombre de partie jouées par niveau afin de comptabiliser les essais dans l'établissement du score. 1 essai > n essais~~:heavy_check_mark:
+   - ~~jeu : Détermination du score - Le nombre d'essais devrait être plus pénalisant que le temps passé. Car pour réussir du premier coup, il faut bien analyser le plateau.~~:heavy_check_mark:
+   - ~~jeu : Mesure de temps : faut-il comptabiliser le temps pour les victoires uniquements ?~~:heavy_check_mark:
+   - ~~jeu : Quand un niveau est terminé, faire pointer sur le suivant pour être hors borne et ne plus rejouer le dernier niveau indéfiniement (supprimer 'plateau_victoire_dernier_plateau')~~:heavy_check_mark:
+   - jeu : réfléchir à l'utilisation des musiques.
+   - jeu : Page "Campagne" : faire apparaitre l'avancement dans la campagne. La distance jusqu'à la fin ... (peut-etre une jauge pour chaque niveau)
+   - jeu : Page "Campagne" : En même temps que le bouton "Commencer", faire des liens (en haut) vers chaque joueurs pour basculer d'une campagne à l'autre sans passer par le menu
+   - jeu : Lire les plateaux 'Solutions_classees.json' et enregistrer l'UUID. Si l'UUID n'est pas celui de la sauvegarde, effacer toutes les sauvegardes des joueurs.
+   - jeu : (option) enregistrer les dates de jeux et proposer une série de plateaux de chaque niveau. "Semaine 1", proposer les 1er plateaux de chaque niveau.
+   - jeu : (option) prévoir un json avec l'enregistrement des scores de chacun sur chaque semaine. Score total et score semaine.
+   - jeu : (option) détecter une position de plateau bloquée ou impossible.
    - ~~outillage : produire un JSON des plateaux par niveau.~~:heavy_check_mark:
+   - ~~outillage : réécrire les plateaux avec les "." pour identifier les "colonnes x lignes" et mélanger les plateaux de forme différentes~~:heavy_check_mark:
+   - ~~outillage : construire un JSON selon une configuration qui indique le nombre de tableau de chaque niveau.~~:heavy_check_mark:
    - outillage : Définir le niveau de difficulté d'un plateau selon les critères suivants :
 	  - longueur solution et nombre de colonne sur le plateau (simpliste)
 	  - longueur solution et nombre de jetons sur le plateau (exhaustif)
@@ -74,25 +88,11 @@
 		- SurfacePlateauMax = NombreDePilesMax x NombreDeJetonParPileMax (11x3 = max actuel; 12x12 = max théroique à court terme)
 		- ProfondeurSolution = Nombre de mouvements pour la solution
 		- Difficulté = Entier de ( ProfondeurSolution x SurfacePlateauMax / SurfacePlateau)
-   - ~~outillage : réécrire les plateaux avec les "." pour identifier les "colonnes x lignes" et mélanger les plateaux de forme différentes~~:heavy_check_mark:
    - outillage : Réaliser un script d'élagage des plateaux valides.
 	  - 'ABC.CBA' ==(echange de piles)== 'CBA.ABC'
 	  - 'ABC.CBA' ==(A devient B)== 'BAC.CAB'
-   - ~~outillage : construire un JSON selon une configuration qui indique le nombre de tableau de chaque niveau.~~:heavy_check_mark:
    - outillage : pour les plateaux sans solution, lancer une recherche en ajoutant 1 colonne d'une seule ligne OU 1 case vide sur la derniere colonne.
-   - jeu : enregistrer les dates de jeux et proposer une série de plateaux de chaque niveau. "Semaine 1", proposer les 1er plateaux de chaque niveau.
-   - jeu : prévoir un json avec l'enregistrement des scores de chacun sur chaque semaine. Score total et score semaine.
-   - ~~jeu : prévoir un code pour que chaque joueur s'identifie.~~:heavy_check_mark:
-   - jeu : réfléchir à l'utilisation des musiques.
-   - jeu : (option) détecter une position de plateau bloquée ou impossible.
-   - jeu : Page "Campagne" : faire apparaitre l'avancement dans la campagne. La distance jusqu'à la fin ... (peut-etre une jauge pour chaque niveau)
-   - jeu : Quand un niveau est terminé, faire pointer sur le suivant pour être hors borne et ne plus rejouer le dernier niveau indéfiniement (supprimer 'plateau_victoire_dernier_plateau')
-   - ~~jeu : Détermination du score - Enregistrer le temps cumulé par niveau afin de le comptabiliser dans l'établissement du score. Rapide > lent~~:heavy_check_mark:
-   - ~~jeu : Détermination du score - Enregistrer le nombre de partie jouées par niveau afin de comptabiliser les essais dans l'établissement du score. 1 essai > n essais~~:heavy_check_mark:
-   - ~~jeu : Détermination du score - Le nombre d'essais devrait être plus pénalisant que le temps passé. Car pour réussir du premier coup, il faut bien analyser le plateau.~~:heavy_check_mark:
    - outils : 'classer les solutions tronquer' produire un UUID dans le fichier des solutions.
-   - jeu : Lire les plateaux 'Solutions_classees.json' et enregistrer l'UUID. Si l'UUID n'est pas celui de la sauvegarde, effacer toutes les sauvegardes des joueurs.
-   - ~~jeu : Mesure de temps : faut-il comptabiliser le temps pour les victoires uniquements ?~~:heavy_check_mark:
    - outils : utiliser le module "logging" pour tracer l'avancement des threads dans leur tâches.
 
 
