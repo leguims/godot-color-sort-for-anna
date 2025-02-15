@@ -8,8 +8,8 @@ bg_color = Color(0, 0, 0, 1)
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_4v47e"]
 bg_color = Color(0, 0, 0, 1)
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_6o5nm"]
-bg_color = Color(0.807843, 0, 0.819608, 1)
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_11ehg"]
+bg_color = Color(0.996078, 0.333333, 1, 1)
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_1gckf"]
 bg_color = Color(0, 0, 0, 1)
@@ -32,16 +32,18 @@ theme_override_styles/hover = SubResource("StyleBoxFlat_w2jhv")
 theme_override_styles/normal = SubResource("StyleBoxFlat_4v47e")
 text = "Retour au menu"
 
-[node name="InfosJoueur" type="RichTextLabel" parent="."]
+[node name="InfosDuJoueur" type="VBoxContainer" parent="."]
 visible = false
-anchors_preset = 10
-anchor_right = 1.0
 offset_top = 100.0
-offset_bottom = 150.0
-grow_horizontal = 2
-theme_override_styles/normal = SubResource("StyleBoxFlat_6o5nm")
+offset_right = 480.0
+offset_bottom = 200.0
+
+[node name="TexteInfosDuJoueur" type="RichTextLabel" parent="InfosDuJoueur"]
+layout_mode = 2
+theme_override_styles/normal = SubResource("StyleBoxFlat_11ehg")
 bbcode_enabled = true
 text = "[center][font_size=30][b]infos joueur[/b][/font_size][/center]"
+fit_content = true
 
 [node name="Message" type="Label" parent="."]
 anchors_preset = 8

@@ -16,7 +16,7 @@ func afficher_accueil():
 	$EditeurPlateau.show()
 	await get_tree().create_timer(1.0).timeout
 	$BoutonMenuPrincipal.show()
-	$InfosJoueur.hide()
+	$InfosDuJoueur.hide()
 	$BoutonCommencer.show()
 
 func afficher_plateau_suivant():

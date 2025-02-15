@@ -12,7 +12,7 @@ func afficher_accueil():
 	
 	$BoutonMenuPrincipal.show()
 	super.mettre_a_jour_infos_joueur()
-	$InfosJoueur.show()
+	$InfosDuJoueur.show()
 	
 	_afficher_message("Mode Campagne!", false)
 	# Attendre l'échéance d'une temporisation libre
@@ -24,7 +24,7 @@ func afficher_plateau_suivant():
 	_afficher_message("Plateau suivant!", false)
 	super.mettre_a_jour_infos_joueur()
 	$BoutonMenuPrincipal.show()
-	$InfosJoueur.show()
+	$InfosDuJoueur.show()
 	$BoutonCommencer.show()
 
 func afficher_plateau_invalide():
@@ -57,5 +57,5 @@ func afficher_fin_campagne():
 	await $TempoMessage.timeout
 	$BoutonMenuPrincipal.show()
 	super.mettre_a_jour_infos_joueur()
-	$InfosJoueur.show()
+	$InfosDuJoueur.show()
 	$BoutonCommencer.show()
