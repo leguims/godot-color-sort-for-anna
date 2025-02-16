@@ -6,6 +6,7 @@ signal clique_gauche(reference_parent)
 
 var _jetons = {
 	0: ['A', Color('RED')],
+	#0: [String.chr(0x1F3C6), Color('RED')],
 	1: ['B', Color('BLUE_VIOLET')],
 	2: ['C', Color('FOREST_GREEN')],
 	3: ['D', Color('AQUA')],
@@ -55,18 +56,23 @@ func _process(_delta: float) -> void:
 func choisir_reference(reference : int) -> void:
 	reference_parent = reference
 
-func choisir_jeton(indice : int) -> void:
+func choisir_jeton(indice : int, redimensionner : bool = false) -> void:
 	if indice in _jetons:
 		indice_jeton = indice
 		nom = _jetons[indice_jeton][0]
 		couleur = _jetons[indice_jeton][1]
 		$Carre.color = couleur
 		$Nom.text = nom
-		if nom == 'J':
-			# La lettre 'J' sort de son carré
-			var font_size = $Nom.get_theme_font_size("font_size")
-			$Nom.add_theme_font_size_override("font_size", font_size - 2)
-			position_initiale_nom.y -= 3
+		if redimensionner:
+			if nom == 'J':
+				# La lettre 'J' sort de son carré
+				var font_size = $Nom.get_theme_font_size("font_size")
+				$Nom.add_theme_font_size_override("font_size", font_size - 2)
+				position_initiale_nom.y -= 3
+			#if String.chr(0x1F3C6):
+				## L'EMOJI sort de son carré
+				#var font_size = $Nom.get_theme_font_size("font_size")
+				#$Nom.add_theme_font_size_override("font_size", font_size - 8)
 
 func choisir_position(nouvelle_position : Vector2) -> void:
 	$Carre.set_position(position_initiale_carre + nouvelle_position)

@@ -49,7 +49,7 @@ func ajouter_les_jetons(jetons : Array) -> bool:
 		jeton.choisir_position( position_jeton )
 
 		# Definir le type du jeton
-		jeton.choisir_jeton(jeton_courant)
+		jeton.choisir_jeton(jeton_courant, true)
 	
 	# Definir la taille du fond de pile
 	var size = Vector2(largeur(), hauteur() )
@@ -64,7 +64,7 @@ func ajouter_le_jeton_dans_le_vide(jeton_a_ajouter : int) -> bool:
 	if accepte_jeton(jeton_a_ajouter, 1):
 		for jeton_courant in liste_jetons:
 			if jeton_courant.est_vide():
-				jeton_courant.choisir_jeton(jeton_a_ajouter)
+				jeton_courant.choisir_jeton(jeton_a_ajouter, false)
 				# TODO : Attention, le jeton 'J' posera un probleme !
 				# TODO : 'J' avant = jeton petit
 				# TODO : 'J' apres = ok
@@ -78,7 +78,7 @@ func retirer_le_dernier_jeton() -> bool:
 	liste_inversee.reverse()
 	for jeton_courant in liste_inversee:
 		if not jeton_courant.est_vide():
-			jeton_courant.choisir_jeton(Plateau.ESPACE)
+			jeton_courant.choisir_jeton(Plateau.ESPACE, false)
 			# TODO : Attention, le jeton 'J' posera un probleme !
 			# TODO : 'J' avant = jeton petit
 			# TODO : 'J' apres = ok
