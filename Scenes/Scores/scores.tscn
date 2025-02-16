@@ -1,7 +1,7 @@
 [gd_scene load_steps=3 format=3 uid="uid://syi3krptex2w"]
 
 [ext_resource type="Script" path="res://Scenes/Scores/scores.gd" id="1_4sbfv"]
-[ext_resource type="Texture2D" uid="uid://8g07gqo7rq7k" path="res://Art/Images/fond_scores_480x720.png" id="1_83lri"]
+[ext_resource type="Texture2D" uid="uid://dea50033w1jx6" path="res://Art/Images/fond_scores_2_480x720.png" id="2_63kir"]
 
 [node name="Scores" type="Node"]
 script = ExtResource("1_4sbfv")
@@ -12,7 +12,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-texture = ExtResource("1_83lri")
+texture = ExtResource("2_63kir")
 
 [node name="TitreScores" type="RichTextLabel" parent="."]
 anchors_preset = 10
@@ -37,9 +37,9 @@ grow_vertical = 2
 pivot_offset = Vector2(272, 144)
 bbcode_enabled = true
 text = "[outline_size=10][color=white][center]
-[font_size=60][color=gold]J2 - Niv 9.3 /15[/color][/font_size]
-[font_size=50][color=silver]J1 - Niv 9.3 /33[/color][/font_size]
-[font_size=40][color=#CD7F32]J3 - Niv 8.6 /7[/color][/font_size]
-[font_size=30]J5 -score 4
-J6 -score 5[/font_size]
+[font_size=60][color=gold]Anna 69666[/color][/font_size]
+[font_size=50][color=silver]Totolinoob 35123[/color][/font_size]
+[font_size=40][color=#CD7F32]GuiGuiQ 15123[/color][/font_size]
+[font_size=30]J5 13
+J6 5[/font_size]
 [/center][/color][/outline_size]"
