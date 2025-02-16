@@ -306,7 +306,7 @@ func lire_le_score_du_joueur(nom_joueur : String) -> int:
 					# Score sur le ratio du temps référence/joué
 					var temps_reference = niveau * 7
 					var ratio_temps = temps_reference * nb_parties_gagnees / duree
-					var score_niveau = int(100 * niveau * (ratio_victoire + ratio_temps))
+					var score_niveau = int(100 * niveau * nb_parties_gagnees * (ratio_victoire + ratio_temps))
 					score += score_niveau
 	if joueur.get('nom').to_lower() == 'Anna'.to_lower():
 		score *= 4
