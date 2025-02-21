@@ -99,6 +99,14 @@
    - ~~Réaliser un script d'élagage des plateaux valides.~~:heavy_check_mark:
 	  - ~~'ABC.CBA' ==(echange de piles)== 'CBA.ABC'~~ Déjà en place
 	  - ~~'ABC.CBA' ==(A devient B)== 'BAC.CAB'~~:heavy_check_mark:
+    - Etat des lieux :
+       - "ABA.CBA.CBC.   " : filtré :heavy_check_mark:
+       - "ACA.ACB.BCB.   " : conservé :heavy_check_mark:
+       - "BAB.CAB.CAC.   " : conservé => doublon. :heavy_exclamation_mark:
+       - "BAB.BAC.CAC.   " : filtré :heavy_check_mark:
+       - "ABA.ABC.CBC.   " : filtré :heavy_check_mark:
+       - "ACA.BCA.BCB.   " : filtré :heavy_check_mark:
+       - Pour filtrer ce doublon, il faut appliquer les permutations de jetons à chaque permutations de piles.
    - ~~'classer_les_solutions.py' Réaliser un script d'élagage des solutions quand un plateau de départ a déjà une colonne de résolue.~~:heavy_check_mark:
    - ~~'chercheur_de_plateaux.py' Ne pas considérer les plateaux avec une pile déjà résolue.~~:heavy_check_mark:
    - pour les plateaux sans solution, lancer une recherche en ajoutant 1 colonne d'une seule ligne OU 1 case vide sur la derniere colonne.
