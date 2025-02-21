@@ -72,6 +72,9 @@
    - ~~outillage : réécrire les plateaux avec les "." pour identifier les "colonnes x lignes" et mélanger les plateaux de forme différentes~~:heavy_check_mark:
    - ~~outillage : construire un JSON selon une configuration qui indique le nombre de tableau de chaque niveau.~~:heavy_check_mark:
 
+### Bug V0.2 :
+- Le Bandeau d'information joueur n'a pas le score à jour après avoir joué
+
 
 ## V0.3 : Travaux pour la prochaine version
 
@@ -86,19 +89,22 @@
    - (option) détecter une position de plateau bloquée ou impossible.
 
 ### Outillage
-   - Définir le niveau de difficulté d'un plateau selon les critères suivants :
-	  - longueur solution et nombre de colonne sur le plateau (simpliste)
-	  - longueur solution et nombre de jetons sur le plateau (exhaustif)
-		- SurfacePlateau = NombreDePiles x NombreDeJetonParPile du plateau effectif
-		- SurfacePlateauMax = NombreDePilesMax x NombreDeJetonParPileMax (11x3 = max actuel; 12x12 = max théroique à court terme)
-		- ProfondeurSolution = Nombre de mouvements pour la solution
-		- Difficulté = Entier de ( ProfondeurSolution x SurfacePlateauMax / SurfacePlateau)
-   - Réaliser un script d'élagage des plateaux valides.
-	  - 'ABC.CBA' ==(echange de piles)== 'CBA.ABC'
-	  - 'ABC.CBA' ==(A devient B)== 'BAC.CAB'
+   - ~~Définir le niveau de difficulté d'un plateau selon les critères suivants :~~:heavy_check_mark:
+	  - ~~longueur solution et nombre de colonne sur le plateau (simpliste)~~ Abandonné
+	  - ~~longueur solution et nombre de jetons sur le plateau (exhaustif)~~:heavy_check_mark:
+		- ~~SurfacePlateau = NombreDePiles x NombreDeJetonParPile du plateau effectif~~:heavy_check_mark:
+		- ~~SurfacePlateauMax = NombreDePilesMax x NombreDeJetonParPileMax (11x3 = max actuel; 12x12 = max théroique à court terme)~~:heavy_check_mark:
+		- ~~ProfondeurSolution = Nombre de mouvements pour la solution~~:heavy_check_mark:
+		- ~~Difficulté = Entier de ( ProfondeurSolution x SurfacePlateauMax / SurfacePlateau)~~:heavy_check_mark:
+   - ~~Réaliser un script d'élagage des plateaux valides.~~:heavy_check_mark:
+	  - ~~'ABC.CBA' ==(echange de piles)== 'CBA.ABC'~~ Déjà en place
+	  - ~~'ABC.CBA' ==(A devient B)== 'BAC.CAB'~~:heavy_check_mark:
+   - ~~'classer_les_solutions.py' Réaliser un script d'élagage des solutions quand un plateau de départ a déjà une colonne de résolue.~~:heavy_check_mark:
+   - ~~'chercheur_de_plateaux.py' Ne pas considérer les plateaux avec une pile déjà résolue.~~:heavy_check_mark:
    - pour les plateaux sans solution, lancer une recherche en ajoutant 1 colonne d'une seule ligne OU 1 case vide sur la derniere colonne.
    - outils : 'classer les solutions tronquer' produire un UUID dans le fichier des solutions.
    - outils : utiliser le module "logging" pour tracer l'avancement des threads dans leur tâches.
+   - ~~Enregistrer le format "plateau_ligne_texte_universel" dans tous les JSON.~~:heavy_check_mark:
 
 
 ## V1.0 : Pour une version long terme
