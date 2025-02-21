@@ -99,7 +99,7 @@
    - ~~Réaliser un script d'élagage des plateaux valides.~~:heavy_check_mark:
 	  - ~~'ABC.CBA' ==(echange de piles)== 'CBA.ABC'~~ Déjà en place
 	  - ~~'ABC.CBA' ==(A devient B)== 'BAC.CAB'~~:heavy_check_mark:
-    - Etat des lieux :
+	  - Etat des lieux :
        - "ABA.CBA.CBC.   " : filtré :heavy_check_mark:
        - "ACA.ACB.BCB.   " : conservé :heavy_check_mark:
        - "BAB.CAB.CAC.   " : conservé => doublon. :heavy_exclamation_mark:
