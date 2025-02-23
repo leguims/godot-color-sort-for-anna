@@ -116,7 +116,6 @@ func commencer() -> void:
 func gagner(duree_en_ms : int) -> void:
 	var sauvegarder = false
 	var str_niveau = str(joueur_actuel.get('niveau'))
-	var str_niveau_plus_1 = str(joueur_actuel.get('niveau') + 1)
 	# Enregistrer la duree de la partie
 	_ajouter_duree_de_partie(duree_en_ms)
 	# Augmenter le plateau du niveau courant
@@ -125,8 +124,9 @@ func gagner(duree_en_ms : int) -> void:
 		sauvegarder = true
 	
 	# Augmenter le niveau courant
-	if str_niveau_plus_1 in plateau_liste_difficulte:
-		joueur_actuel['niveau'] += 1
+	var niveau_superieur = _retourner_le_niveau_superieur(joueur_actuel.get('niveau'))
+	if niveau_superieur != joueur_actuel.get('niveau'):
+		joueur_actuel['niveau'] = niveau_superieur
 		str_niveau = str(joueur_actuel.get('niveau'))
 		if str_niveau not in joueur_actuel.get('plateaux'):
 			joueur_actuel['plateaux'][str_niveau] = 0
@@ -139,8 +139,9 @@ func gagner(duree_en_ms : int) -> void:
 func abandonner() -> void:
 	# En cas d'abandon, pas d'enrgistrement du temps.
 	# Diminuer le niveau courant
-	if str(joueur_actuel.get('niveau') - 1) in plateau_liste_difficulte:
-		joueur_actuel['niveau'] -= 1
+	var niveau_inferieur = _retourner_le_niveau_inferieur(joueur_actuel.get('niveau'))
+	if niveau_inferieur != joueur_actuel.get('niveau'):
+		joueur_actuel['niveau'] = niveau_inferieur
 		_enregistrer_sauvegarde_joueurs()
 	var str_niveau = str(joueur_actuel.get('niveau'))
 	print("Niveau = ", str_niveau, " - indice Plateau = ", joueur_actuel.get('plateaux').get(str_niveau))
@@ -157,8 +158,19 @@ func _le_plateau_courant_est_le_dernier_du_niveau() -> bool:
 	return joueur_actuel.get('plateaux').get(str_niveau) >= len(plateau_liste_difficulte.get(str_niveau))
 
 func _le_niveau_courant_est_le_dernier() -> bool:
-	var str_niveau_plus_1 = str(joueur_actuel.get('niveau') + 1)
-	return str_niveau_plus_1 not in plateau_liste_difficulte
+	return joueur_actuel.get('niveau') == _retourner_le_niveau_superieur(joueur_actuel.get('niveau'))
+
+func _retourner_le_niveau_superieur(niveau : int) -> int:
+	for niveau_superieur in range(niveau+1, 300):
+		if str(niveau_superieur) in plateau_liste_difficulte:
+			return niveau_superieur
+	return niveau
+
+func _retourner_le_niveau_inferieur(niveau : int) -> int:
+	for niveau_inferieur in range(niveau-1, 0, -1):
+		if str(niveau_inferieur) in plateau_liste_difficulte:
+			return niveau_inferieur
+	return niveau
 
 func la_campagne_est_terminee() -> bool:
 	return _le_niveau_courant_est_le_dernier() and _le_plateau_courant_est_le_dernier_du_niveau()
