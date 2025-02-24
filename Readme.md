@@ -87,6 +87,7 @@
    - (option) enregistrer les dates de jeux et proposer une série de plateaux de chaque niveau. "Semaine 1", proposer les 1er plateaux de chaque niveau.
    - (option) prévoir un json avec l'enregistrement des scores de chacun sur chaque semaine. Score total et score semaine.
    - (option) détecter une position de plateau bloquée ou impossible.
+   - ~~Gérer un fichier de plateaux avec des niveaux discontinus~~:heavy_check_mark:
 
 ### Outillage
    - ~~Définir le niveau de difficulté d'un plateau selon les critères suivants :~~:heavy_check_mark:
@@ -111,8 +112,16 @@
    - ~~'chercheur_de_plateaux.py' Ne pas considérer les plateaux avec une pile déjà résolue.~~:heavy_check_mark:
    - pour les plateaux sans solution, lancer une recherche en ajoutant 1 colonne d'une seule ligne OU 1 case vide sur la derniere colonne.
    - outils : 'classer les solutions tronquer' produire un UUID dans le fichier des solutions.
-   - outils : utiliser le module "logging" pour tracer l'avancement des threads dans leur tâches.
+   - ~~outils : utiliser le module "logging" pour tracer l'avancement des threads dans leur tâches.~~:heavy_check_mark:
+    - traces Plateau : utiliser le module "logging" pour tracer l'avancement dans la classe.
+    - traces LotDePlateaux : utiliser le module "logging" pour tracer l'avancement dans la classe.
+    - traces ResoudrePlateau : utiliser le module "logging" pour tracer l'avancement dans la classe.
+    - traces ExportJSON : utiliser le module "logging" pour tracer l'avancement dans la classe.
    - ~~Enregistrer le format "plateau_ligne_texte_universel" dans tous les JSON.~~:heavy_check_mark:
+   - classer_les_solutions_tronquer.py : Ajouter des filtres lors de la selection des plateaux:
+      - nombre de colonnes min/max
+      - nombre de lignes min/max
+      - nombre de coups de la solution min/max
 
 
 ## V1.0 : Pour une version long terme
