@@ -100,23 +100,23 @@
    - ~~Réaliser un script d'élagage des plateaux valides.~~:heavy_check_mark:
 	  - ~~'ABC.CBA' ==(echange de piles)== 'CBA.ABC'~~ Déjà en place
 	  - ~~'ABC.CBA' ==(A devient B)== 'BAC.CAB'~~:heavy_check_mark:
-	  - Etat des lieux :
-		    - "ABA.CBA.CBC.   " : filtré :heavy_check_mark:
-		    - "ACA.ACB.BCB.   " : conservé :heavy_check_mark:
-		    - "BAB.CAB.CAC.   " : conservé => doublon. :heavy_exclamation_mark:
-		    - "BAB.BAC.CAC.   " : filtré :heavy_check_mark:
-		    - "ABA.ABC.CBC.   " : filtré :heavy_check_mark:
-		    - "ACA.BCA.BCB.   " : filtré :heavy_check_mark:
-		    - Pour filtrer ce doublon, il faut appliquer les permutations de jetons à chaque permutations de piles.
+		- Etat des lieux :
+			- "ABA.CBA.CBC.   " : filtré :heavy_check_mark:
+			- "ACA.ACB.BCB.   " : conservé :heavy_check_mark:
+			- "BAB.CAB.CAC.   " : conservé => doublon. :heavy_exclamation_mark:
+			- "BAB.BAC.CAC.   " : filtré :heavy_check_mark:
+			- "ABA.ABC.CBC.   " : filtré :heavy_check_mark:
+			- "ACA.BCA.BCB.   " : filtré :heavy_check_mark:
+			- Pour filtrer ce doublon, il faut appliquer les permutations de jetons à chaque permutations de piles.
    - ~~'classer_les_solutions.py' Réaliser un script d'élagage des solutions quand un plateau de départ a déjà une colonne de résolue.~~:heavy_check_mark:
    - ~~'chercheur_de_plateaux.py' Ne pas considérer les plateaux avec une pile déjà résolue.~~:heavy_check_mark:
    - pour les plateaux sans solution, lancer une recherche en ajoutant 1 colonne d'une seule ligne OU 1 case vide sur la derniere colonne.
    - outils : 'classer les solutions tronquer' produire un UUID dans le fichier des solutions.
    - ~~outils : utiliser le module "logging" pour tracer l'avancement des threads dans leur tâches.~~:heavy_check_mark:
-    - traces Plateau : utiliser le module "logging" pour tracer l'avancement dans la classe.
-    - traces LotDePlateaux : utiliser le module "logging" pour tracer l'avancement dans la classe.
-    - traces ResoudrePlateau : utiliser le module "logging" pour tracer l'avancement dans la classe.
-    - traces ExportJSON : utiliser le module "logging" pour tracer l'avancement dans la classe.
+		- traces Plateau : utiliser le module "logging" pour tracer l'avancement dans la classe.
+		- traces LotDePlateaux : utiliser le module "logging" pour tracer l'avancement dans la classe.
+		- traces ResoudrePlateau : utiliser le module "logging" pour tracer l'avancement dans la classe.
+		- traces ExportJSON : utiliser le module "logging" pour tracer l'avancement dans la classe.
    - ~~Enregistrer le format "plateau_ligne_texte_universel" dans tous les JSON.~~:heavy_check_mark:
    - classer_les_solutions_tronquer.py : Ajouter des filtres lors de la selection des plateaux:
       - nombre de colonnes min/max
