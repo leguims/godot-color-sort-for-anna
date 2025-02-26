@@ -1,50 +1,6 @@
 
 # Liste des fonctionnalités
 
-## V0.1 : Liste et organisation pour Godot:
-
-- ~~Jeton : cube de couleur~~
-	- ~~contient la repesentation d'un jeton~~:heavy_check_mark:
-- ~~Pile : Colonne sur un plateau de jeu~~
-	- ~~Contient les regles de jeu subjectives :~~:heavy_check_mark:
-	- ~~Accepte un/des jeton(s) de couleur,~~:heavy_check_mark:
-	- ~~Donne un/des jeton(s) de couleur,~~:heavy_check_mark:
-	- ~~Est_terminé (colonne pleine mono-couleur),~~:heavy_check_mark:
-	- ~~Est_vide (aucun jeton dans la pile),~~:heavy_check_mark:
-	- ~~Est_pleine (aucune emplacement vide dans la pile)~~:heavy_check_mark:
-  - ~~Contient les caractéritstiques de la pile :~~:heavy_check_mark:
-	- ~~taille~~:heavy_check_mark:
-	- ~~Liste des jetons actuels~~:heavy_check_mark:
-	- ~~Encodage d'une pile:~~:heavy_check_mark:
-		- ~~"[0, 0, 0, 0]" = 4x'A' sur une pile de 4~~:heavy_check_mark:
-		- ~~"[0, 0, 0, 0, 32, 32]" = 4x'A' + 2x' ' sur une pile de 6~~:heavy_check_mark:
-		- ~~"[0, 1, 2, 32]" = 3x blocs et 1 case vide~~:heavy_check_mark:
-- ~~Plateau : ensemble des piles de jeu~~
-	- ~~Associe plusieurs piles pour former le plateau~~:heavy_check_mark:
-	- ~~Contient les regles subjectives :~~
-		- ~~Liste des mouvements autorisés,~~ ABANDON géré par le bouton 'Abandonner'
-		- ~~Est_terminé (toutes les colonnes sont terminées),~~:heavy_check_mark:
-		- ~~Est_bloqué (la liste des mouvements autorisés est vide)~~ ABANDON géré par le bouton 'Abandonner'
-	- ~~Encodage de plateau:~~:heavy_check_mark:
-		- ~~"AABB.BBAA.    " signifie :~~:heavy_check_mark:
-		- ~~pile 1 : "AABB"~~:heavy_check_mark:
-		- ~~pile 2 : "BBAA"~~:heavy_check_mark:
-		- ~~pile 3 : vide (4 emplacements)~~:heavy_check_mark:
-	- ~~"ABAB.BABA.    . "~~:heavy_check_mark:
-		- ~~pile 1 : "ABAB"~~:heavy_check_mark:
-		- ~~pile 2 : "BABA"~~:heavy_check_mark:
-		- ~~pile 3 : vide (4 emplacements)~~:heavy_check_mark:
-		- ~~pile 4 : vide (1 emplacement)~~:heavy_check_mark:
-- ~~Menu :~~
-	- ~~Page d'accueil~~:heavy_check_mark:
-	- ~~Liens entre les plateaux~~:heavy_check_mark:
-	- ~~Ligne de saisie pour générer un plateau à résoudre.~~:heavy_check_mark:
-	- ~~Lien vers les Crédits (GODOT, musique, effet sonore)~~ Reporté V0.2
-
-### Bug V0.1 :
-- ~~La recherche de solution n'implémente pas de déplacement obligatoire de plusieurs jetons~~:heavy_check_mark:
-	- ~~"ABBA.AB  .AB  " : ce plateau est impossible~~:heavy_check_mark:
-
 ## V0.2 : Travaux pour la prochaine version
 - ~~jeu : Changer la couleur ou mettre en surbrillance le jeton ou la colonne selectionnée pour un mouvement.~~:heavy_check_mark:
 - ~~jeu : lire un JSON des niveaux/plateaux JSON~~:heavy_check_mark:
@@ -88,6 +44,30 @@
 - (option) prévoir un json avec l'enregistrement des scores de chacun sur chaque semaine. Score total et score semaine.
 - (option) détecter une position de plateau bloquée ou impossible.
 - ~~Gérer un fichier de plateaux avec des niveaux discontinus~~:heavy_check_mark:
+- (Faro) Ajouter de la musique dans les menus (+1 Totol)
+- (Faro) Aligner les piles sur la même ligne pour que ca soit plus facile à jouer (-1 Totol)
+- Définir une notion d'ascension:
+	- Définition:
+		- Une ascension est une session de jeu qui commence au niveau le plus bas et se termine au niveau le plus haut.
+		- En cas de réussite d'un plateau lors d'une ascension, le joueur passe au niveau supérieur
+		- En cas d'échec d'un plateau lors d'une ascension, le joueur retourne au niveau inférieur (nouveau plateau)
+		- En cas de réussite sur un plateau du dernier niveau, l'ascension est terminée et le joueur est félicité.
+		- (option) En cas d'echec sur un plateau du premier niveau, l'ascension est terminée et le joueur est encouragé à recommencer.
+	- Gérer plusieurs 'ascensions' avec tous les plateaux:
+		- 1 ascension = Atteindre un niveau maximum et finir 1 plateau
+		- Afficher le message de felicitations "Everest"
+		- Réinitiliser le niveau au plus bas pour réaliser un autre "Everest" sur un autre chemin.
+	- Gérer la difficulté relative des différentes 'ascensions':
+		- Si un (ensemble de) niveau(x) elevé(s) est(sont) pauvres, les attribuer lors des dernieres ascensions
+		- Qualifier les félicitations en fonction de la hauteur de l'ascension (pic du midi, ... mont blanc ... Everest).
+		- Classement des ascensions :
+			- https://spherama.com/classements/montagnes/ascension/classement-des-montagnes-par-difficulte-ascension-monde.php
+			- https://climbfinder.com/fr/classement?l=415%3Fs%3Dhighest&s=cotacol
+		- Prévoir un algo pour programmer l'ascension et la mémoriser.
+	- Prévoir de donner le choix de l'ascension au départ en indiquant les quantités de chacunes des ascensions et le temps à prévoir.
+	- Faire apparaitre l'avancement dans l'ascension. La distance jusqu'à la fin ... (peut-etre une jauge pour chaque niveau)
+	- Musique : Attribuer des musiques en fonction de la phase ascensionnelle actuelle. 1 ascension fait défiler toutes les musiques.
+	- Enregistrer le score dans les infos 'joueur' quand l'ascension est terminée. Le score intermédiaire est calculé avec le score enregistré et le calcul partiel. "Score=f(essais, temps)"
 
 ### Outillage
 - ~~Définir le niveau de difficulté d'un plateau selon les critères suivants :~~:heavy_check_mark:
@@ -100,23 +80,23 @@
 - ~~Réaliser un script d'élagage des plateaux valides.~~:heavy_check_mark:
 	- ~~'ABC.CBA' ==(echange de piles)== 'CBA.ABC'~~ Déjà en place
 	- ~~'ABC.CBA' ==(A devient B)== 'BAC.CAB'~~:heavy_check_mark:
-	- Etat des lieux :
-		- "ABA.CBA.CBC.   " : filtré :heavy_check_mark:
-		- "ACA.ACB.BCB.   " : conservé :heavy_check_mark:
-		- "BAB.CAB.CAC.   " : conservé => doublon. :heavy_exclamation_mark:
-		- "BAB.BAC.CAC.   " : filtré :heavy_check_mark:
-		- "ABA.ABC.CBC.   " : filtré :heavy_check_mark:
-		- "ACA.BCA.BCB.   " : filtré :heavy_check_mark:
-		- Pour filtrer ce doublon, il faut appliquer les permutations de jetons à chaque permutations de piles.
+	- ~~Etat des lieux :~~
+		- ~~"ABA.CBA.CBC.   " : filtré~~ :heavy_check_mark:
+		- ~~"ACA.ACB.BCB.   " : conservé~~ :heavy_check_mark:
+		- ~~"BAB.CAB.CAC.   " : filtré~~ :heavy_check_mark:
+		- ~~"BAB.BAC.CAC.   " : filtré~~ :heavy_check_mark:
+		- ~~"ABA.ABC.CBC.   " : filtré~~ :heavy_check_mark:
+		- ~~"ACA.BCA.BCB.   " : filtré~~ :heavy_check_mark:
+		- ~~Pour filtrer ce doublon, il faut appliquer les permutations de jetons à chaque permutations de piles.~~
 - ~~'classer_les_solutions.py' Réaliser un script d'élagage des solutions quand un plateau de départ a déjà une colonne de résolue.~~:heavy_check_mark:
 - ~~'chercheur_de_plateaux.py' Ne pas considérer les plateaux avec une pile déjà résolue.~~:heavy_check_mark:
 - pour les plateaux sans solution, lancer une recherche en ajoutant 1 colonne d'une seule ligne OU 1 case vide sur la derniere colonne.
 - outils : 'classer les solutions tronquer' produire un UUID dans le fichier des solutions.
 - ~~outils : utiliser le module "logging" pour tracer l'avancement des threads dans leur tâches.~~:heavy_check_mark:
-	- traces Plateau : utiliser le module "logging" pour tracer l'avancement dans la classe.
-	- traces LotDePlateaux : utiliser le module "logging" pour tracer l'avancement dans la classe.
-	- traces ResoudrePlateau : utiliser le module "logging" pour tracer l'avancement dans la classe.
-	- traces ExportJSON : utiliser le module "logging" pour tracer l'avancement dans la classe.
+	- ~~traces Plateau : utiliser le module "logging" pour tracer l'avancement dans la classe.~~:heavy_check_mark:
+	- ~~traces LotDePlateaux : utiliser le module "logging" pour tracer l'avancement dans la classe.~~:heavy_check_mark:
+	- ~~traces ResoudrePlateau : utiliser le module "logging" pour tracer l'avancement dans la classe.~~:heavy_check_mark:
+	- ~~traces ExportJSON : utiliser le module "logging" pour tracer l'avancement dans la classe.~~:heavy_check_mark:
 - ~~Enregistrer le format "plateau_ligne_texte_universel" dans tous les JSON.~~:heavy_check_mark:
 - classer_les_solutions_tronquer.py : Ajouter des filtres lors de la selection des plateaux:
 	- nombre de colonnes min/max
@@ -136,7 +116,7 @@
 	- animaux avec un zoo,
 	- pacman/fantômes et le labyrinthe
 - Surement faisable avec des EMOJI : String.chr(unicode) (https://www.unicode.org/emoji/charts/emoji-list.html)
-
+- Idee de nouveau gameplay, chaque colonne est en mouvement, comme si les jetons étaient sur un tapis roulant. Le joueurs doit donner l'ordre d'échange au bon moment !
 
 ## V2.0 : Idées du futur:
 - Game play "Message" :
