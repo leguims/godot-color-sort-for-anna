@@ -68,6 +68,7 @@
 	- Faire apparaitre l'avancement dans l'ascension. La distance jusqu'à la fin ... (peut-etre une jauge pour chaque niveau)
 	- Musique : Attribuer des musiques en fonction de la phase ascensionnelle actuelle. 1 ascension fait défiler toutes les musiques.
 	- Enregistrer le score dans les infos 'joueur' quand l'ascension est terminée. Le score intermédiaire est calculé avec le score enregistré et le calcul partiel. "Score=f(essais, temps)"
+	- Prevoir une musique spéciale pour la réussite de la derniere ascension possible et le message de félicitations.
 
 ### Outillage
 - ~~Définir le niveau de difficulté d'un plateau selon les critères suivants :~~:heavy_check_mark:
@@ -102,6 +103,17 @@
 	- nombre de colonnes min/max
 	- nombre de lignes min/max
 	- nombre de coups de la solution min/max
+- Rénovation et Accélération des recherches:
+	- Dans les analyses JSON 'Analyses\Plateaux_*\Plateaux_*.json:
+		- Supprimer les champs 'debut' + 'fin' + 'durée'
+		- Ajouter un champs 'revalidation phase 1 terminee'
+		- Ajouter un champs 'revalidation phase 2 terminee'
+		- Ajouter un mecanisme de classement systématique des listes de plateaux avant de produire le JSON.
+		- implementer '__lt__()' dans la classe Plateau pour ce faire.
+		- Ajouter un champs 'dernier plateau revalide' pour reprise de validation.
+		- Modifier l'algorithme de reprise de recherche de plateau : boucler et itérer tant que toutes les solutions connues ne sont pas identifiées.
+	- Dans 'chercheur_de_plateaux.py', filtrer uniquement les plateaux valides et les plateaux avec un pile résolue.
+	- Dans 'revalider_les_plateaux.py', appliquer l'ensemble des filtre, dont ceux qui sont long (permutations de piles ou de jetons).
 
 
 ## V1.0 : Pour une version long terme
