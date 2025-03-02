@@ -69,6 +69,7 @@
 	- Musique : Attribuer des musiques en fonction de la phase ascensionnelle actuelle. 1 ascension fait défiler toutes les musiques.
 	- Enregistrer le score dans les infos 'joueur' quand l'ascension est terminée. Le score intermédiaire est calculé avec le score enregistré et le calcul partiel. "Score=f(essais, temps)"
 	- Prevoir une musique spéciale pour la réussite de la derniere ascension possible et le message de félicitations.
+	- Ajouter un champs 'Ascension' dans les infos joueur pour indiquer le niveau de terminaison de l'ascension actuelle.
 
 ### Outillage
 - ~~Définir le niveau de difficulté d'un plateau selon les critères suivants :~~:heavy_check_mark:
@@ -91,19 +92,13 @@
 		- ~~Pour filtrer ce doublon, il faut appliquer les permutations de jetons à chaque permutations de piles.~~
 - ~~'classer_les_solutions.py' Réaliser un script d'élagage des solutions quand un plateau de départ a déjà une colonne de résolue.~~:heavy_check_mark:
 - ~~'chercheur_de_plateaux.py' Ne pas considérer les plateaux avec une pile déjà résolue.~~:heavy_check_mark:
-- pour les plateaux sans solution, lancer une recherche en ajoutant 1 colonne d'une seule ligne OU 1 case vide sur la derniere colonne.
-- outils : 'classer les solutions tronquer' produire un UUID dans le fichier des solutions.
 - ~~outils : utiliser le module "logging" pour tracer l'avancement des threads dans leur tâches.~~:heavy_check_mark:
 	- ~~traces Plateau : utiliser le module "logging" pour tracer l'avancement dans la classe.~~:heavy_check_mark:
 	- ~~traces LotDePlateaux : utiliser le module "logging" pour tracer l'avancement dans la classe.~~:heavy_check_mark:
 	- ~~traces ResoudrePlateau : utiliser le module "logging" pour tracer l'avancement dans la classe.~~:heavy_check_mark:
 	- ~~traces ExportJSON : utiliser le module "logging" pour tracer l'avancement dans la classe.~~:heavy_check_mark:
 - ~~Enregistrer le format "plateau_ligne_texte_universel" dans tous les JSON.~~:heavy_check_mark:
-- classer_les_solutions_tronquer.py : Ajouter des filtres lors de la selection des plateaux:
-	- nombre de colonnes min/max
-	- nombre de lignes min/max
-	- nombre de coups de la solution min/max
-- Rénovation et Accélération des recherches:
+- ~~Rénovation et Accélération des recherches:~~:heavy_check_mark:
 	- ~~Dans les analyses JSON 'Analyses\Plateaux_*\Plateaux_*.json:~~:heavy_check_mark:
 		- ~~Supprimer les champs 'debut' + 'fin' + 'durée'~~:heavy_check_mark:
 		- ~~Ajouter un champs 'revalidation phase 1 terminee'~~:heavy_check_mark:
@@ -114,8 +109,14 @@
 		- ~~Modifier l'algorithme de reprise de recherche de plateau : boucler et itérer tant que toutes les solutions connues ne sont pas identifiées.~~:heavy_check_mark:
 	- ~~Dans 'chercheur_de_plateaux.py', filtrer uniquement les plateaux valides et les plateaux avec un pile résolue.~~:heavy_check_mark:
 	- ~~Dans 'revalider_les_plateaux.py', appliquer l'ensemble des filtre, dont ceux qui sont long (permutations de piles ou de jetons).~~:heavy_check_mark:
-	- Avec la simplification de la recherche, les compteurs de changements deviennent inutiles. (__compter_plateau_a_ignorer)
-	- (recherche) Pour la recherche de plateaux, voir si la reprise directement sur le dernier plateau trouvé permet de gagner du temps dans les itérations. Mais dans ce cas, il faut etre capable de s'arreter quand le tour du compteur est réalisé. C'est à dire que la permutation 'plateau.pour_permutations' apparait.
+	- ~~Avec la simplification de la recherche, les compteurs de changements deviennent inutiles. (compter_plateau_a_ignorer)~~:heavy_check_mark:
+	- ~~(recherche) Pour la recherche de plateaux, voir si la reprise directement sur le dernier plateau trouvé permet de gagner du temps dans les itérations. Mais dans ce cas, il faut etre capable de s'arreter quand le tour du compteur est réalisé. C'est à dire que la permutation 'plateau.pour_permutations' apparait.~~:heavy_check_mark:
+- pour les plateaux sans solution, lancer une recherche en ajoutant 1 colonne d'une seule ligne OU 1 case vide sur la derniere colonne.
+- classer_les_solutions_tronquer.py : produire un UUID dans le fichier des solutions.
+- classer_les_solutions_tronquer.py : Ajouter des filtres lors de la selection des plateaux:
+	- nombre de colonnes min/max
+	- nombre de lignes min/max
+	- nombre de coups de la solution min/max
 
 
 ## V1.0 : Pour une version long terme
