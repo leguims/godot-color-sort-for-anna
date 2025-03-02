@@ -104,16 +104,18 @@
 	- nombre de lignes min/max
 	- nombre de coups de la solution min/max
 - Rénovation et Accélération des recherches:
-	- Dans les analyses JSON 'Analyses\Plateaux_*\Plateaux_*.json:
-		- Supprimer les champs 'debut' + 'fin' + 'durée'
-		- Ajouter un champs 'revalidation phase 1 terminee'
-		- Ajouter un champs 'revalidation phase 2 terminee'
-		- Ajouter un mecanisme de classement systématique des listes de plateaux avant de produire le JSON.
-		- implementer '__lt__()' dans la classe Plateau pour ce faire.
-		- Ajouter un champs 'dernier plateau revalide' pour reprise de validation.
-		- Modifier l'algorithme de reprise de recherche de plateau : boucler et itérer tant que toutes les solutions connues ne sont pas identifiées.
-	- Dans 'chercheur_de_plateaux.py', filtrer uniquement les plateaux valides et les plateaux avec un pile résolue.
-	- Dans 'revalider_les_plateaux.py', appliquer l'ensemble des filtre, dont ceux qui sont long (permutations de piles ou de jetons).
+	- ~~Dans les analyses JSON 'Analyses\Plateaux_*\Plateaux_*.json:~~:heavy_check_mark:
+		- ~~Supprimer les champs 'debut' + 'fin' + 'durée'~~:heavy_check_mark:
+		- ~~Ajouter un champs 'revalidation phase 1 terminee'~~:heavy_check_mark:
+		- ~~Ajouter un champs 'revalidation phase 2 terminee'~~:heavy_check_mark:
+		- ~~Ajouter un mecanisme de classement systématique des listes de plateaux avant de produire le JSON.~~:heavy_check_mark:
+		- ~~implementer 'lt()' dans la classe Plateau pour ce faire.~~ Non necessaire.
+		- ~~Ajouter un champs 'dernier plateau revalide' pour reprise de validation.~~:heavy_check_mark:
+		- ~~Modifier l'algorithme de reprise de recherche de plateau : boucler et itérer tant que toutes les solutions connues ne sont pas identifiées.~~:heavy_check_mark:
+	- ~~Dans 'chercheur_de_plateaux.py', filtrer uniquement les plateaux valides et les plateaux avec un pile résolue.~~:heavy_check_mark:
+	- ~~Dans 'revalider_les_plateaux.py', appliquer l'ensemble des filtre, dont ceux qui sont long (permutations de piles ou de jetons).~~:heavy_check_mark:
+	- Avec la simplification de la recherche, les compteurs de changements deviennent inutiles. (__compter_plateau_a_ignorer)
+	- (recherche) Pour la recherche de plateaux, voir si la reprise directement sur le dernier plateau trouvé permet de gagner du temps dans les itérations. Mais dans ce cas, il faut etre capable de s'arreter quand le tour du compteur est réalisé. C'est à dire que la permutation 'plateau.pour_permutations' apparait.
 
 
 ## V1.0 : Pour une version long terme
