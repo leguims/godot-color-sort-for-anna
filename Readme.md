@@ -117,6 +117,15 @@
 	- nombre de colonnes min/max
 	- nombre de lignes min/max
 	- nombre de coups de la solution min/max
+- ~~BUG : la reprise de recherche s'arrête avant d'avoir tout essayé. (plateau initial produit à nouveau)~~ Corrigé ci-dessous (stop = absence de 'A')
+- ~~BUG : Encore trop de plateau avec une colonne déjà terminée sont validés~~ Corrigé
+- ~~Itération LotDePlateaux : Idée d'optimisation : Lors de la recherche, avant de tester la validité, passer toutes les itérations sans 'A' dans la première colonne.~~:heavy_check_mark:
+- ~~Itération LotDePlateaux : Idée d'optimisation : Lors de la recherche, avant de tester la validité, passer toutes les itérations avec la première colonne pleine de 'A'.~~:heavy_check_mark:
+- ~~LotDePlateaux : Idée d'optimisation : Réaliser cette optimisation sur la dernière colonne avec la case vide ' '~~:heavy_check_mark:
+- ~~Itération LotDePlateaux : Idée d'optimisation : Après étude, lorsque la premiere colonne est vidée de ses 'A', ils ne reviendront plus, c'est la fin de l'itération.~~:heavy_check_mark:
+- ~~Itération LotDePlateaux : Idée d'optimisation : Trouver la premiere permutation valide proposée par l'outil de permutation et en extraire une regle 'Colonnes x Lignes'~~:heavy_check_mark:
+- ~~Itération LotDePlateaux : Idée d'optimisation : Implémenter ce départ et évaluer le gain.~~:heavy_check_mark: "2x6" passe de 10mins à 5mins.
+- ~~Itération LotDePlateaux : Idée d'optimisation : Trouver la 1ere permutation valide devrait dispenser de faire les combinaisons avec la colonne 'A' pleine.~~:heavy_check_mark:
 
 
 ## V1.0 : Pour une version long terme
