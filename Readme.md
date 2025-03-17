@@ -2,31 +2,6 @@
 # Liste des fonctionnalités
 
 ## V0.2 : Travaux pour la prochaine version
-- ~~jeu : Changer la couleur ou mettre en surbrillance le jeton ou la colonne selectionnée pour un mouvement.~~:heavy_check_mark:
-- ~~jeu : lire un JSON des niveaux/plateaux JSON~~:heavy_check_mark:
-- ~~jeu : enregistrer/lire un JSON (ou autre) des niveaux en cours~~:heavy_check_mark:
-- ~~jeu : sondage sur difficulté du plateau trop facile, bien, trop difficile.~~ Abandon pour échec/réussite automatique
-- ~~jeu : si réussite, passer au niveau suivant, si échec descendre de niveau et passer au plateau suivant.~~:heavy_check_mark:
-- ~~jeu : prévoir un bouton de retour au menu pour abandonner~~:heavy_check_mark:
-- ~~jeu : menu en haut : campagne, éditer et références.~~ ABANDON géré par la page d'accueil
-- ~~jeu : Page d'accueil : Nouveau joueur, campagne, scores, éditer et références.~~:heavy_check_mark:
-- ~~jeu : Page "Nouveau joueur" : apparence + edition du nom.~~:heavy_check_mark:
-- ~~jeu : Page "Campagne" : lien vers jeu + calcul du score + gestion du plateau à jouer + lien vers menu principal~~:heavy_check_mark:
-- ~~jeu : Page "Campagne" : Le nom du joueur courant, Niveau courant apparait dans l'écran "Commencer"~~:heavy_check_mark:
-- ~~jeu : Page "Menu principal" : L'accès à la campagne se fait par un bouton sans édition de texte~~:heavy_check_mark:
-- ~~jeu : Page "Scores" : apparence + calcul des scores + retour au menu principal~~:heavy_check_mark:
-- ~~jeu : Page "Editer un plateau" : apparence + edition plateau + jeu plateau + retour menu principal~~:heavy_check_mark:
-- ~~jeu : Page "Références" : apparence + retour menu principal~~:heavy_check_mark:
-- ~~jeu : Page "Références" : Lien vers les Crédits (GODOT, musique, effet sonore)~~:heavy_check_mark:
-- ~~jeu : prévoir un code pour que chaque joueur s'identifie.~~:heavy_check_mark:
-- ~~jeu : Détermination du score - Enregistrer le temps cumulé par niveau afin de le comptabiliser dans l'établissement du score. Rapide > lent~~:heavy_check_mark:
-- ~~jeu : Détermination du score - Enregistrer le nombre de partie jouées par niveau afin de comptabiliser les essais dans l'établissement du score. 1 essai > n essais~~:heavy_check_mark:
-- ~~jeu : Détermination du score - Le nombre d'essais devrait être plus pénalisant que le temps passé. Car pour réussir du premier coup, il faut bien analyser le plateau.~~:heavy_check_mark:
-- ~~jeu : Mesure de temps : faut-il comptabiliser le temps pour les victoires uniquements ?~~:heavy_check_mark:
-- ~~jeu : Quand un niveau est terminé, faire pointer sur le suivant pour être hors borne et ne plus rejouer le dernier niveau indéfiniement (supprimer 'plateau_victoire_dernier_plateau')~~:heavy_check_mark:
-- ~~outillage : produire un JSON des plateaux par niveau.~~:heavy_check_mark:
-- ~~outillage : réécrire les plateaux avec les "." pour identifier les "colonnes x lignes" et mélanger les plateaux de forme différentes~~:heavy_check_mark:
-- ~~outillage : construire un JSON selon une configuration qui indique le nombre de tableau de chaque niveau.~~:heavy_check_mark:
 
 ### Bug V0.2 :
 - Le Bandeau d'information joueur n'a pas le score à jour après avoir joué (à reproduire)
