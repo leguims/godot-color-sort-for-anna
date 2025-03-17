@@ -172,6 +172,9 @@ func _retourner_le_niveau_inferieur(niveau : int) -> int:
 			return niveau_inferieur
 	return niveau
 
+func l_ascension_est_terminee() -> bool:
+	return _le_niveau_courant_est_le_dernier()
+
 func la_campagne_est_terminee() -> bool:
 	return _le_niveau_courant_est_le_dernier() and _le_plateau_courant_est_le_dernier_du_niveau()
 

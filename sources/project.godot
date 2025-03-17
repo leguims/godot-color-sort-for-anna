@@ -10,11 +10,12 @@ config_version=5
 
 [application]
 
-config/name="godot color wood sort"
-config/description="Jeu de tri de jeton de couleurs."
+config/name="Range les couleurs pour Anna mon amour"
+config/description="Jeu de tri de jeton de couleurs pour Anna mon amour."
 run/main_scene="res://Scenes/MenuPrincipal/menu_principal.tscn"
 config/features=PackedStringArray("4.3", "GL Compatibility")
 config/icon="res://icon.svg"
+config/windows_native_icon="res://icon.ico"
 
 [autoload]
 

@@ -19,6 +19,7 @@ func _ready() -> void:
 	# Remplir chaque score dans la liste des scores
 	var liste_score_bbcode : String = ''
 	
+	# TODO : Rallier 'GestionScore.lire_classement_des_joueurs'
 	# Realiser le classement des joueurs
 	var liste_score_croissant = []
 	var dico_score_nom_joueur = {}

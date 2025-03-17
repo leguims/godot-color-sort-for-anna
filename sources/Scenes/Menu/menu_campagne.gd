@@ -45,7 +45,7 @@ func afficher_victoire(duree : int) -> void:
 	await $TempoMessage.timeout
 	afficher_plateau_suivant()
 
-func afficher_fin_campagne():
+func afficher_fin_ascension():
 	_afficher_message("Bravo!")
 	# Attendre l'échéance de la temporisation
 	await $TempoMessage.timeout
@@ -54,6 +54,21 @@ func afficher_fin_campagne():
 	_afficher_message("Vous êtes au sommet...")
 	await $TempoMessage.timeout
 	_afficher_message("...de l'Everest!")
+	await $TempoMessage.timeout
+	$BoutonMenuPrincipal.show()
+	super.mettre_a_jour_infos_joueur()
+	$InfosDuJoueur.show()
+	$BoutonCommencer.show()
+
+func afficher_fin_campagne():
+	_afficher_message("Bravo!")
+	# Attendre l'échéance de la temporisation
+	await $TempoMessage.timeout
+	_afficher_message("C'était le dernier plateau...")
+	await $TempoMessage.timeout
+	_afficher_message("...de la dernière ascension.")
+	await $TempoMessage.timeout
+	_afficher_message("Félicitation! Savourez ce moment unique.")
 	await $TempoMessage.timeout
 	$BoutonMenuPrincipal.show()
 	super.mettre_a_jour_infos_joueur()

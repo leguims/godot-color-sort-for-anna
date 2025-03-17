@@ -29,7 +29,7 @@
 - ~~outillage : construire un JSON selon une configuration qui indique le nombre de tableau de chaque niveau.~~:heavy_check_mark:
 
 ### Bug V0.2 :
-- Le Bandeau d'information joueur n'a pas le score à jour après avoir joué
+- Le Bandeau d'information joueur n'a pas le score à jour après avoir joué (à reproduire)
 
 
 ## V0.3 : Travaux pour la prochaine version
@@ -111,12 +111,6 @@
 	- ~~Dans 'revalider_les_plateaux.py', appliquer l'ensemble des filtre, dont ceux qui sont long (permutations de piles ou de jetons).~~:heavy_check_mark:
 	- ~~Avec la simplification de la recherche, les compteurs de changements deviennent inutiles. (compter_plateau_a_ignorer)~~:heavy_check_mark:
 	- ~~(recherche) Pour la recherche de plateaux, voir si la reprise directement sur le dernier plateau trouvé permet de gagner du temps dans les itérations. Mais dans ce cas, il faut etre capable de s'arreter quand le tour du compteur est réalisé. C'est à dire que la permutation 'plateau.pour_permutations' apparait.~~:heavy_check_mark:
-- pour les plateaux sans solution, lancer une recherche en ajoutant 1 colonne d'une seule ligne OU 1 case vide sur la derniere colonne.
-- classer_les_solutions_tronquer.py : produire un UUID dans le fichier des solutions.
-- classer_les_solutions_tronquer.py : Ajouter des filtres lors de la selection des plateaux:
-	- nombre de colonnes min/max
-	- nombre de lignes min/max
-	- nombre de coups de la solution min/max
 - ~~BUG : la reprise de recherche s'arrête avant d'avoir tout essayé. (plateau initial produit à nouveau)~~ Corrigé ci-dessous (stop = absence de 'A')
 - ~~BUG : Encore trop de plateau avec une colonne déjà terminée sont validés~~ Corrigé
 - ~~Itération LotDePlateaux : Idée d'optimisation : Lors de la recherche, avant de tester la validité, passer toutes les itérations sans 'A' dans la première colonne.~~:heavy_check_mark:
@@ -126,6 +120,12 @@
 - ~~Itération LotDePlateaux : Idée d'optimisation : Trouver la premiere permutation valide proposée par l'outil de permutation et en extraire une regle 'Colonnes x Lignes'~~:heavy_check_mark:
 - ~~Itération LotDePlateaux : Idée d'optimisation : Implémenter ce départ et évaluer le gain.~~:heavy_check_mark: "2x6" passe de 10mins à 5mins.
 - ~~Itération LotDePlateaux : Idée d'optimisation : Trouver la 1ere permutation valide devrait dispenser de faire les combinaisons avec la colonne 'A' pleine.~~:heavy_check_mark:
+- pour les plateaux sans solution, lancer une recherche en ajoutant 1 colonne d'une seule ligne OU 1 case vide sur la derniere colonne.
+- classer_les_solutions_tronquer.py : produire un UUID dans le fichier des solutions.
+- classer_les_solutions_tronquer.py : Ajouter des filtres lors de la selection des plateaux:
+	- nombre de colonnes min/max
+	- nombre de lignes min/max
+	- nombre de coups de la solution min/max
 
 
 ## V1.0 : Pour une version long terme

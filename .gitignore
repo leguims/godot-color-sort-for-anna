@@ -5,3 +5,6 @@
 *.tmp
 /Export
 /addons/
+/.vscode
+/Archive_Solutions
+/Art
