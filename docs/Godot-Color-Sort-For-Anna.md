@@ -21,7 +21,7 @@ campagne.tscn --> GestionScore
 campagne.tscn --o plateau.tscn : PlateauDeJeu
 
 class editer_un_plateau.tscn {
-    menu_editer_un_plateau.g
+    menu_editer_un_plateau.gd
 }
 editer_un_plateau.tscn --o plateau.tscn : PlateauDeJeu
 
