@@ -20,7 +20,7 @@ class scores.tscn {
 }
 
     scores.tscn --> retour_menu_principal.gd
-    scores.tscn --o GestionScore
+    scores.tscn --> GestionScore
 
 class GestionScore {
     lire_la_liste_des_joueurs()
