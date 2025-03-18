@@ -2,6 +2,10 @@
 Outils de productions et de résolution des plateaux de jeux:
  - [Color sort for Anna TOOLS](https://github.com/leguims/color_sort_for_anna_tools)
 
+# Documentation de conception
+Documentation de l'architecture et la conception du jeu:
+ - [Document de conception](docs/Godot-Color-Sort-For-Anna.md)
+
 # Liste des fonctionnalités
 
 ## V0.2 : Travaux pour la prochaine version
