@@ -1,35 +1,44 @@
-# Scene "EditerUnPlateau"
+# Scene "Campagne"
 
 ## Description
 
-Cette classe correspond à la scène d'édition libre d'un plateau pour y jouer.
+Cette classe correspond à la scène de la campagne. Cette classe doit gerer les victoires, les defaites du joueur et lui faire suivre un chemin de plateaux en fonction de sa réussite. La campagne enregistre aussi des indicateurs (nombre de parties, avancement dans les plateaux, temps de résolution ...) afin de pouvoir calculer le score du joueur. C'est la campagne qui enregistre l'avancement du joueur dans l'ensemble des plateaux existants.
 
 ## Diagramme de classe
 
 ```mermaid
 classDiagram
-class editer_un_plateau.tscn {
+class campagne.tscn {
     |SCENE| PlateauDeJeu
     |SCENE| Menu
     Audio.Musique
     Audio.SonCommencer
     Audio.SonFinDePartie
     Audio.SonEchec
+    heure_debut_en_ms
+    duree_en_ms
     _ready()
     _on_menu_commencer_plateau()
-    _on_menu_saisie_plateau(String new_text)
-    _editer_plateau_texte(String plateau)
+    _lancer_plateau_de_campagne(String plateau)
     _on_plateau_de_jeu_victoire()
     _on_plateau_de_jeu_plateau_invalide()
     _on_plateau_de_jeu_abandon()
 }
 
-    Node --|> editer_un_plateau.tscn
-    editer_un_plateau.tscn --o plateau.tscn
-    editer_un_plateau.tscn --o menu_editer_un_plateau.gd : set_script(MenuEditerUnPlateau)
-    menu.gd --|> menu_editer_un_plateau.gd
-    editer_un_plateau.tscn --o Audio
+    Node --|> campagne.tscn
+    campagne.tscn --o plateau.tscn
+    campagne.tscn --o menu_campagne.gd : set_script(MenuCampagne)
+    menu.gd --|> menu_campagne.gd
+    campagne.tscn --o Audio
+    campagne.tscn --> GestionScore
 
+class GestionScore {
+    commencer()
+    gagner(duree_en_ms)
+    la_campagne_est_terminee()
+    l_ascension_est_terminee()
+    abandonner()
+}
 
 namespace menu.tscn {
     class menu.gd {
@@ -47,18 +56,18 @@ namespace menu.tscn {
         _on_bouton_menu_principal_pressed()
     }
     
-    class menu_editer_un_plateau.gd {
+    class menu_campagne.gd {
         modifier_tempo_message()
         modifier_message_vertical_align()
         show()
         afficher_accueil()
         cacher_accueil()
-        afficher_victoire()
-        afficher_plateau_invalide()
+        afficher_fin_campagne()
+        afficher_fin_ascension()
+        afficher_victoire(duree_en_ms / 1000)
         afficher_abandon()
     }
 }
-
 
 class plateau.tscn {
     SIGNAL--> victoire
