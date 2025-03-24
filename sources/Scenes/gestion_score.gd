@@ -19,17 +19,11 @@ var joueur_actuel = liste_des_sauvegardes[0]
 # Dico : {'difficulte': [liste_plateaux]}
 var plateau_liste_difficulte = {
 	'3': [
-		"AA .BB .CC .ABC",
-		"AB .BA .BA ",
-		"AB .AC .CBA.CB ",
-		"AAB .AB  .BBA ",
-		"ABB  .BA   .BBAAA",
-		"ABA.BAB.   ",
-		"ABA.ABC.CBC.   ",
-		"BABA.BA  .BA  ",
-		"ABAB .ABAB .AB   "
+		"AA .BB .CC .ABC"
 	]
 }
+
+var globale_ascension_terminee = false # Information transitoire. Ne pas sauvegarder.
 
 func initialiser_les_plateaux() -> void:
 	# Lire la liste des plateaux classés par niveaux
@@ -42,9 +36,7 @@ func initialiser_les_plateaux() -> void:
 			var dico_difficulte = fichier_plateaux.get('liste difficulte des plateaux')
 			for difficulte in dico_difficulte.keys():
 				# Copie tous les niveaux, sauf 'None'
-				if difficulte not in ['None', '0', '1', '2', '3'] :
-				# TODO : DEBUG - if difficulte not in ['None', '0', '1', '2', '5', '6', '7', '8', '9'] :
-					plateau_liste_difficulte[difficulte] = dico_difficulte.get(difficulte).duplicate(true)
+				plateau_liste_difficulte[difficulte] = dico_difficulte.get(difficulte).duplicate(true)
 				# Afficher un apercu du niveau
 				#print("Difficulté : ", difficulte)
 				#var cpt = 0
@@ -119,7 +111,7 @@ func gagner(duree_en_ms : int) -> void:
 	# Enregistrer la duree de la partie
 	_ajouter_duree_de_partie(duree_en_ms)
 	# Augmenter le plateau du niveau courant
-	if not _le_plateau_courant_est_le_dernier_du_niveau():
+	if not _le_niveau_courant_est_termine():
 		joueur_actuel['plateaux'][str_niveau] += 1
 		sauvegarder = true
 	
@@ -131,6 +123,8 @@ func gagner(duree_en_ms : int) -> void:
 		if str_niveau not in joueur_actuel.get('plateaux'):
 			joueur_actuel['plateaux'][str_niveau] = 0
 		sauvegarder = true
+	else:
+		globale_ascension_terminee = true
 	
 	print("Niveau = ", str_niveau, " - indice Plateau = ", joueur_actuel.get('plateaux').get(str_niveau), " - Nombre de parties = ", joueur_actuel.get('nombre_de_parties').get(str_niveau))
 	if sauvegarder:
@@ -146,6 +140,16 @@ func abandonner() -> void:
 	var str_niveau = str(joueur_actuel.get('niveau'))
 	print("Niveau = ", str_niveau, " - indice Plateau = ", joueur_actuel.get('plateaux').get(str_niveau))
 
+func initialiser_une_nouvelle_ascension() -> void:
+	globale_ascension_terminee = false
+	# Remettre au plus bas le niveau courant pour commencer une nouvelle ascension
+	var niveau_depart_ascension = _retourner_le_niveau_le_plus_bas_du_joueur_actuel()
+	if niveau_depart_ascension != joueur_actuel.get('niveau'):
+		joueur_actuel['niveau'] = niveau_depart_ascension
+		_enregistrer_sauvegarde_joueurs()
+	var str_niveau = str(joueur_actuel.get('niveau'))
+	print("Niveau = ", str_niveau, " - indice Plateau = ", joueur_actuel.get('plateaux').get(str_niveau))	
+
 func lire_plateau_courant() -> String:
 	var str_niveau = str(joueur_actuel.get('niveau'))
 	var indice_plateau = joueur_actuel.get('plateaux').get(str_niveau)
@@ -153,9 +157,14 @@ func lire_plateau_courant() -> String:
 		return plateau_liste_difficulte.get(str_niveau)[indice_plateau]
 	return ""
 
-func _le_plateau_courant_est_le_dernier_du_niveau() -> bool:
-	var str_niveau = str(joueur_actuel.get('niveau'))
-	return joueur_actuel.get('plateaux').get(str_niveau) >= len(plateau_liste_difficulte.get(str_niveau))
+func _le_niveau_courant_est_termine() -> bool:
+	var niveau = joueur_actuel.get('niveau')
+	var indice_plateau = joueur_actuel.get('plateaux').get(str(niveau))
+	return _le_niveau_est_termine(niveau, indice_plateau)
+
+func _le_niveau_est_termine(niveau : int, indice_plateau : int) -> bool:
+	var str_niveau = str(niveau)
+	return indice_plateau >= len(plateau_liste_difficulte.get(str_niveau))
 
 func _le_niveau_courant_est_le_dernier() -> bool:
 	return joueur_actuel.get('niveau') == _retourner_le_niveau_superieur(joueur_actuel.get('niveau'))
@@ -163,20 +172,30 @@ func _le_niveau_courant_est_le_dernier() -> bool:
 func _retourner_le_niveau_superieur(niveau : int) -> int:
 	for niveau_superieur in range(niveau+1, 300):
 		if str(niveau_superieur) in plateau_liste_difficulte:
-			return niveau_superieur
+			# Vérifier s'il reste des plateaux à jouer sur ce niveau
+			if str(niveau_superieur) not in joueur_actuel.get('plateaux'):
+				# Le niveau n'a jamais ete joué
+				return niveau_superieur
+			var indice_plateau = joueur_actuel.get('plateaux').get(str(niveau_superieur))
+			if not _le_niveau_est_termine(niveau_superieur, indice_plateau):
+				return niveau_superieur
 	return niveau
 
 func _retourner_le_niveau_inferieur(niveau : int) -> int:
 	for niveau_inferieur in range(niveau-1, 0, -1):
 		if str(niveau_inferieur) in plateau_liste_difficulte:
-			return niveau_inferieur
+			# Vérifier s'il reste des plateaux à jouer sur ce niveau
+			var indice_plateau = joueur_actuel.get('plateaux').get(str(niveau_inferieur))
+			if not _le_niveau_est_termine(niveau_inferieur, indice_plateau):
+				return niveau_inferieur
 	return niveau
 
 func l_ascension_est_terminee() -> bool:
-	return _le_niveau_courant_est_le_dernier()
+	return globale_ascension_terminee
 
 func la_campagne_est_terminee() -> bool:
-	return _le_niveau_courant_est_le_dernier() and _le_plateau_courant_est_le_dernier_du_niveau()
+	return _retourner_le_niveau_le_plus_bas_du_joueur_actuel() == -1
+
 
 
 ###############################################
@@ -229,6 +248,10 @@ func ajouter_un_nouveau_joueur(nom_nouveau_joueur : String) -> bool:
 	_enregistrer_sauvegarde_joueurs()
 	return true
 
+###############################################
+# Gestion du joueur actuel (courant)
+###############################################
+
 func lire_le_nom_du_joueur_actuel() -> String:
 	"""Cette méthode retourne le nom du joueur"""
 	return joueur_actuel.get('nom')
@@ -241,6 +264,9 @@ func lire_indice_plateau_du_joueur_actuel() -> int:
 	"""Cette méthode retourne l'indice de plateau du joueur"""
 	var str_niveau = str(joueur_actuel.get('niveau'))
 	return joueur_actuel.get('plateaux').get(str_niveau)
+
+func _retourner_le_niveau_le_plus_bas_du_joueur_actuel() -> int:
+	return _retourner_le_niveau_le_plus_bas_du_joueur(joueur_actuel.get('nom'))
 
 func lire_le_score_du_joueur_actuel() -> int:
 	"""Cette méthode retourne le score du joueur actuel"""
@@ -262,6 +288,10 @@ func lire_le_rang_du_joueur_actuel() -> int:
 	"""Cette méthode retourne le rang du joueur actuel"""
 	return lire_le_rang_du_joueur(joueur_actuel.get('nom'))
 
+###############################################
+# Gestion des infos des joueurs
+###############################################
+
 func lire_le_rang_du_joueur(nom_joueur : String) -> int:
 	"""Cette méthode retourne l'indice de plateau du joueur"""
 	var joueur = _retourner_le_joueur(nom_joueur)
@@ -269,6 +299,21 @@ func lire_le_rang_du_joueur(nom_joueur : String) -> int:
 	if joueur:
 		rang = lire_classement_des_joueurs().get(joueur.get('nom'))
 	return rang
+
+func _retourner_le_niveau_le_plus_bas_du_joueur(nom_joueur : String) -> int:
+	var joueur = _retourner_le_joueur(nom_joueur)
+	# Chercher le niveau le plus bas qui a un plateau à résoudre.
+	for niveau_le_plus_bas in range(0, 300):
+		var str_niveau_le_plus_bas = str(niveau_le_plus_bas)
+		if str_niveau_le_plus_bas in plateau_liste_difficulte:
+			# Le niveau existe ==> Vérifier s'il reste des plateaux à jouer
+			var indice_plateau = joueur.get('plateaux').get(str(str_niveau_le_plus_bas))
+			if not _le_niveau_est_termine(niveau_le_plus_bas, indice_plateau):
+				return niveau_le_plus_bas
+	return -1
+
+func la_campagne_du_joueur_est_terminee(nom_joueur : String) -> bool:
+	return _retourner_le_niveau_le_plus_bas_du_joueur(nom_joueur) == -1
 
 func lire_classement_des_joueurs() -> Dictionary:
 	"""Cette méthode retourne le rang de l'ensemble des joueurs"""

@@ -1,4 +1,4 @@
-# Scene "Godot-Color-Sort-For-Anna"
+# Architecture globale de "Godot-Color-Sort-For-Anna"
 
 ## Description
 

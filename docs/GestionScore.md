@@ -14,7 +14,7 @@ namespace gestion_score.gd {
         <<pseudo class>> 
         joueur_actuel
         plateau_liste_difficulte
-        func initialiser_les_plateaux()
+        initialiser_les_plateaux()
         _read_json_file(chemin)
         _write_json_file(chemin, contenu)
         _ajouter_duree_de_partie(duree_en_ms : int)
@@ -38,12 +38,20 @@ namespace gestion_score.gd {
         _retourner_le_joueur(nom_joueur)
         choisir_le_joueur(nom_joueur)
         ajouter_un_nouveau_joueur(nom_nouveau_joueur : String)
+    }
+
+    class Gestion_du_joueur_actuel {
+        <<pseudo class>> 
         lire_le_nom_du_joueur_actuel()
         lire_le_niveau_du_joueur_actuel()
         lire_indice_plateau_du_joueur_actuel()
         lire_le_score_du_joueur_actuel()
         lire_le_trophee_du_joueur_actuel()
         lire_le_rang_du_joueur_actuel()
+    }
+
+    class Gestion_des_infos_des_joueurs {
+        <<pseudo class>> 
         lire_classement_des_joueurs()
         lire_le_rang_du_joueur(nom_joueur : String)
         lire_le_score_du_joueur(nom_joueur : String)

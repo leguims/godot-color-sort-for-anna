@@ -34,8 +34,9 @@ func _on_plateau_de_jeu_victoire() -> void:
 	$Menu.show()
 	if GestionScore.la_campagne_est_terminee():
 		$Menu.afficher_fin_campagne()
-	if GestionScore.l_ascension_est_terminee():
+	elif GestionScore.l_ascension_est_terminee():
 		$Menu.afficher_fin_ascension()
+		GestionScore.initialiser_une_nouvelle_ascension()
 	else:
 		$Menu.afficher_victoire(duree_en_ms / 1000)
 	$SonFinDePartie.play()

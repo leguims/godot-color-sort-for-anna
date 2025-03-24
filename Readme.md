@@ -1,10 +1,10 @@
-# Outils
-Outils de productions et de résolution des plateaux de jeux:
- - [Color sort for Anna TOOLS](https://github.com/leguims/color_sort_for_anna_tools)
-
 # Documentation de conception
 Documentation de l'architecture et la conception du jeu:
  - [Document de conception](docs/Godot-Color-Sort-For-Anna.md)
+
+# Outils
+Outils de productions et de résolution des plateaux de jeux:
+ - [Color sort for Anna TOOLS](https://github.com/leguims/color_sort_for_anna_tools)
 
 # Liste des fonctionnalités
 
@@ -12,6 +12,8 @@ Documentation de l'architecture et la conception du jeu:
 
 ### Bug V0.2 :
 - Le Bandeau d'information joueur n'a pas le score à jour après avoir joué (à reproduire)
+- L'affichage "Niveau = 5 - indice Plateau = 0 - Nombre de parties = <null>" est en erreur !
+- l'algorithme de difficulté est mauvais pour un plateau 3x5 qui est surclassé ! ("AABAA.A    .BBBB " 3x5 en X coups = difficulté 28) bien plus facile que ("BCA.CDB.CDA.BDA.   " 5x3 en X coups = 10)
 
 
 ## V0.3 : Travaux pour la prochaine version
@@ -52,6 +54,9 @@ Documentation de l'architecture et la conception du jeu:
 	- Enregistrer le score dans les infos 'joueur' quand l'ascension est terminée. Le score intermédiaire est calculé avec le score enregistré et le calcul partiel. "Score=f(essais, temps)"
 	- Prevoir une musique spéciale pour la réussite de la derniere ascension possible et le message de félicitations.
 	- Ajouter un champs 'Ascension' dans les infos joueur pour indiquer le niveau de terminaison de l'ascension actuelle.
+	- Dictionnaire pour les musiques en fonction des niveaux.
+	- Calculer les populations restantes de chaque difficulté et attribuer un nombre de plateau par niveaux à réaliser par ascension au minimum. Le chemin se rallonge en cas d'echecs.
+- Découper "Gestion_Score" en plusieurs modules indépendants. Campagne, sauvegarde, traitement des données.
 
 ### Outillage
 - ~~Définir le niveau de difficulté d'un plateau selon les critères suivants :~~:heavy_check_mark:

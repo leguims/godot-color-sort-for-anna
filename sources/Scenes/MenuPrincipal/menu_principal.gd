@@ -55,15 +55,22 @@ func _creer_boutons_joueurs_campagne():
 		button.add_theme_font_size_override("font_size", 21)
 		
 		# Créer un StyleBoxFlat pour le hover et normal
+		# La couleur de la tuile est grise si la campagne est terminée
 		var normal_style = StyleBoxFlat.new()
-		normal_style.bg_color = Color.html("df00df")
+		if GestionScore.la_campagne_du_joueur_est_terminee(nom_joueur):
+			normal_style.bg_color = Color.html("404040")
+		else:
+			normal_style.bg_color = Color.html("df00df")
 		normal_style.content_margin_left = 10
 		normal_style.content_margin_right = 10
 		normal_style.content_margin_top = 5
 		normal_style.content_margin_bottom = 5
 		button.add_theme_stylebox_override("normal", normal_style)
 		var hover_style = StyleBoxFlat.new()
-		hover_style.bg_color = Color.html("890089")
+		if GestionScore.la_campagne_du_joueur_est_terminee(nom_joueur):
+			hover_style.bg_color = Color.html("202020")
+		else:
+			hover_style.bg_color = Color.html("890089")
 		hover_style.content_margin_left = 10
 		hover_style.content_margin_right = 10
 		hover_style.content_margin_top = 5
@@ -85,8 +92,10 @@ func _on_joueurs_campagne_pressed(nom_joueur: String) -> void:
 	print("Campagne avec le joueur : ", nom_joueur)
 	if not GestionScore.choisir_le_joueur(nom_joueur):
 		print("Erreur : Le nom '" + nom_joueur + "' n'existe pas")
-	else:
+	elif not GestionScore.la_campagne_est_terminee():
 		get_tree().change_scene_to_file("res://Scenes/Campagne/campagne.tscn")
+	else:
+		print("Erreur : Le joueur '" + nom_joueur + "' a terminé la campagne")
 
 
 func _on_bouton_editer_plateau_pressed() -> void:
