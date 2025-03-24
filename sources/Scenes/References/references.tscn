@@ -21,16 +21,18 @@ grow_horizontal = 2
 grow_vertical = 2
 theme_override_styles/normal = SubResource("StyleBoxTexture_cte4r")
 bbcode_enabled = true
-text = "[left][outline_size=5][color=#ef00ef][b]Moteur : [url]https://godotengine.org[/url][/b]
-[ul]Godot[/ul]
+text = "[left][outline_size=10][color=#ef00ef][font_size=25][b]Moteur : [url]godotengine.org[/url][/b]
+[ul] Godot[/ul]
 
-[b]Musique : [url]https://patrickdearteaga.com[/url][/b]
-[ul]Solve The Puzzle[/ul]
+[b]Musique : [url]patrickdearteaga.com[/url][/b]
+[ul] Solve The Puzzle[/ul]
 
-[b]Effet sonore : [url]https://pixabay.com[/url][/b]
-[ul]freesound_community : game-start-6104
-freesound_community : fail-jingle-stereo-mix-88784
-floraphonic : marimba-win-f-2-209688[/ul]
+[b]Effet sonore : [url]pixabay.com[/url][/b]
+[ul] freesound_community : 
+[ul] game-start-6104
+ fail-jingle-stereo-mix-88784[/ul]
+ floraphonic : 
+[ul] marimba-win-f-2-209688[/ul][/ul]
 
-[b]didacticiel :[/b]
-[ul]Baba Des bois - [url]https://www.youtube.com/@BabaDesBois[/url][/ul][/color][/outline_size][/left]"
+[b]didacticiel : www.youtube.com[/b]
+[ul] Baba Des bois - [url]@BabaDesBois[/url][/ul][/font_size][/color][/outline_size][/left]"

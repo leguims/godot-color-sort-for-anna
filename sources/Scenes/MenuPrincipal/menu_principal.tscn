@@ -87,7 +87,7 @@ theme_override_fonts/font = SubResource("SystemFont_jisel")
 theme_override_font_sizes/font_size = 42
 theme_override_styles/normal = SubResource("StyleBoxFlat_ruejn")
 text = "Range les couleurs
-pour Anna !"
+pour Anna d'Amour !"
 horizontal_alignment = 1
 vertical_alignment = 1
 
