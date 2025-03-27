@@ -98,7 +98,7 @@ func _creer_un_plateau(piles : Array) -> void:
 
 func _calculer_la_position_de_la_pile(nb_piles : int, indice_pile : int) -> Vector2:
 	var marge_y = 50
-	var taille_fenetre_jeu = DisplayServer.window_get_size()
+	var taille_fenetre_jeu = get_viewport().get_visible_rect().size
 	var nb_ecarts = nb_piles + 1 # (nb_piles-1) = ecarts + 2 marges
 	var largeur_pile = liste_piles[0].largeur()
 	var ecart_entre_piles_x = taille_fenetre_jeu.x / nb_ecarts
@@ -114,10 +114,10 @@ func _calculer_la_position_de_la_pile(nb_piles : int, indice_pile : int) -> Vect
 			pass
 	else :
 		# Gérer 2 lignes de piles
-		nb_ecarts = (nb_piles -1) / 2 + 2 # (nb_piles-1)/2 = ecarts + 2 marges
+		nb_ecarts = roundi((nb_piles -1) / 2.0 + 2) # (nb_piles-1)/2 = ecarts + 2 marges
 		ecart_entre_piles_x = taille_fenetre_jeu.x / nb_ecarts
 		if 2*largeur_pile < ecart_entre_piles_x :
-			var indice_pile_2_colonnes = indice_pile / 2
+			var indice_pile_2_colonnes = roundi(indice_pile / 2.0)
 			position_pile.x = ecart_entre_piles_x * (1 + indice_pile_2_colonnes) - 0.5 * largeur_pile
 			if indice_pile % 2:
 				position_pile.y = taille_fenetre_jeu.y - marge_y

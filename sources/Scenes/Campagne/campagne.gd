@@ -38,7 +38,7 @@ func _on_plateau_de_jeu_victoire() -> void:
 		$Menu.afficher_fin_ascension()
 		GestionScore.initialiser_une_nouvelle_ascension()
 	else:
-		$Menu.afficher_victoire(duree_en_ms / 1000)
+		$Menu.afficher_victoire(roundi(duree_en_ms / 1000.0))
 	$SonFinDePartie.play()
 	$Musique.stop()
 

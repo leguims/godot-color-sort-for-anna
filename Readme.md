@@ -14,7 +14,25 @@ Outils de productions et de résolution des plateaux de jeux:
 - Le Bandeau d'information joueur n'a pas le score à jour après avoir joué (à reproduire)
 - L'affichage "Niveau = 5 - indice Plateau = 0 - Nombre de parties = <null>" est en erreur !
 - l'algorithme de difficulté est mauvais pour un plateau 3x5 qui est surclassé ! ("AABAA.A    .BBBB " 3x5 en X coups = difficulté 28) bien plus facile que ("BCA.CDB.CDA.BDA.   " 5x3 en X coups = 10)
+- BUG ancien : Sur le plateau de jeu, agrandir la fenetre preserve les piles. Par contre, si l'agrandissement a lieu avant d'appuyer sur le bouton commencer, les piles ne vont pas apparaitre.
 
+Trace pour une fenetre de taille normale:
+~~~
+	calculer_la_position_de_la_pile : nb_piles = 3
+	_creer_un_plateau : position_pile = (100, 670)
+	_creer_un_plateau : position_pile = (220, 670)
+	_creer_un_plateau : position_pile = (340, 670)
+~~~
+
+Trace pour une fenetre de taille geante:
+~~~
+calculer_la_position_de_la_pile : nb_piles = 3
+_creer_un_plateau : position_pile = (580, 1211)
+_creer_un_plateau : position_pile = (1180, 1211)
+_creer_un_plateau : position_pile = (1780, 1211)
+~~~
+
+Pour avoir une taille invariable selon la fenetre, la methode "get_viewport().get_visible_rect().size" retourne une dimension satisfaisante pour les calculs de l'appli.
 
 ## V0.3 : Travaux pour la prochaine version
 
