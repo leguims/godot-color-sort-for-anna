@@ -11,3 +11,5 @@ jeton_scene = ExtResource("2_qesri")
 offset_right = 40.0
 offset_bottom = 40.0
 color = Color(0.345098, 0, 0.345098, 1)
+
+[connection signal="gui_input" from="Fond" to="." method="_on_fond_gui_input"]

@@ -137,15 +137,17 @@ func _calculer_la_position_de_la_pile(nb_piles : int, indice_pile : int) -> Vect
 
 func on_pile_clique_gauche(indice_pile : int) -> void:
 	# print("clique sur la pile : ", indice_pile)
-	if sauvegarde_indice_pile_depart == -1:
+	var pile_cible = liste_piles[indice_pile]
+	if sauvegarde_indice_pile_depart == -1 \
+		and pile_de_depart_de_tansfert_valide(indice_pile):
 		$SelectionPile.start()
 		sauvegarde_indice_pile_depart = indice_pile
 		# Selecitonner la pile de depart
-		liste_piles[sauvegarde_indice_pile_depart].selectionner()
+		pile_cible.selectionner()
 	else:
 		$SelectionPile.stop()
 		if realiser_le_tansfert_de_pile(sauvegarde_indice_pile_depart, indice_pile):
-			if liste_piles[indice_pile].est_termine():
+			if pile_cible.est_termine():
 				# Vérifier si la partie est achevée
 				if _est_termine():
 					$BoutonAbandon.hide()
@@ -156,7 +158,8 @@ func _est_termine() -> bool:
 	# Vérifier si la partie est achevée
 	var termine = true
 	for pile in liste_piles:
-		if not pile.est_termine():
+		# Vérifier que les piles qui ne sont pas vides sont terminées.
+		if not pile.est_vide() and not pile.est_termine():
 			termine = false
 			break
 	return termine
@@ -168,14 +171,19 @@ func _on_selection_pile_timeout() -> void:
 	sauvegarde_indice_pile_depart = -1
 	# print("Annulation du coup en cours")
 
+func pile_de_depart_de_tansfert_valide(indice_pile_depart : int) -> bool:
+	var pile_depart = liste_piles[indice_pile_depart]
+	if pile_depart.est_vide():
+		print("Pile de départ vide")
+		return false
+	if pile_depart.est_termine():
+		print("Pile de départ terminée")
+		return false
+	return true
+
 func realiser_le_tansfert_de_pile(indice_pile_depart : int, indice_pile_arrivee : int) -> bool:
 	if indice_pile_depart == indice_pile_arrivee:
 		print("Pile de départ et d'arrivée sont les mêmes")
-		return false
-
-	var pile_depart = liste_piles[indice_pile_depart]
-	if pile_depart.est_vide() or pile_depart.est_termine():
-		print("Pile de départ vide ou terminée")
 		return false
 
 	var pile_arrivee = liste_piles[indice_pile_arrivee]
@@ -183,6 +191,7 @@ func realiser_le_tansfert_de_pile(indice_pile_depart : int, indice_pile_arrivee 
 		print("Pile d'arrivée pleine")
 		return false
 
+	var pile_depart = liste_piles[indice_pile_depart]
 	var indice_jeton_depart = pile_depart.quelle_est_la_couleur_au_sommet()
 	var nb_jeton_depart = pile_depart.combien_de_jetons_identiques_au_sommet()
 

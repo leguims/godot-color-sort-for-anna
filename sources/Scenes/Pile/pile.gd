@@ -147,6 +147,8 @@ func est_pleine() -> bool:
 
 func est_termine() -> bool:
 	# Terminée = pleine monocouleur
+	if not est_pleine():
+		return false
 	# Tous les jetons sont identiques
 	var jeton_precedent = null
 	for jeton in liste_jetons:
@@ -208,4 +210,12 @@ func _calculer_la_position_du_jeton(indice_jeton : int) -> Vector2:
 
 func on_jeton_clique_gauche(_indice_jeton : int) -> void:
 	# print("clique sur le jeton : ", _indice_jeton)
-	clique_gauche.emit(reference_parent)
+	# Ne pas selectionner une pile terminee
+	if not est_termine():
+		clique_gauche.emit(reference_parent)
+
+func _on_fond_gui_input(event: InputEvent) -> void:
+	# Pour elargir la zone de clique
+	if event is InputEventMouseButton:
+		if event.button_index == MOUSE_BUTTON_LEFT and event.pressed:
+			on_jeton_clique_gauche(0)

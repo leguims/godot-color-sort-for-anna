@@ -6,10 +6,10 @@ extends Node
 var liste_des_sauvegardes = [
 	{
 		'nom': 'Alain Konu',
-		'niveau': 3,
-		'plateaux': { '3': 0 },
-		'nombre_de_parties': { '3': 0 },
-		'durees': { '3': 0 }
+		'niveau': null,
+		'plateaux': {  },
+		'nombre_de_parties': {  },
+		'durees': {  }
 	}
 ]
 var joueur_actuel = liste_des_sauvegardes[0]
@@ -18,9 +18,9 @@ var joueur_actuel = liste_des_sauvegardes[0]
 
 # Dico : {'difficulte': [liste_plateaux]}
 var plateau_liste_difficulte = {
-	'3': [
-		"AA .BB .CC .ABC"
-	]
+	#'3': [
+	#	"AA .BB .CC .ABC"
+	#]
 }
 
 var globale_ascension_terminee = false # Information transitoire. Ne pas sauvegarder.
@@ -239,10 +239,10 @@ func ajouter_un_nouveau_joueur(nom_nouveau_joueur : String) -> bool:
 	# Crée le compte et l'enregistre
 	var compte = {
 		'nom': nom_nouveau_joueur,
-		'niveau': 3,
-		'plateaux': { '3': 0 },
-		'nombre_de_parties': { '3': 0 },
-		'durees': { '3': 0 }
+		'niveau': null,
+		'plateaux': {  },
+		'nombre_de_parties': {  },
+		'durees': {  }
 	}
 	liste_des_sauvegardes.append(compte.duplicate(true))
 	_enregistrer_sauvegarde_joueurs()
@@ -258,11 +258,15 @@ func lire_le_nom_du_joueur_actuel() -> String:
 
 func lire_le_niveau_du_joueur_actuel() -> int:
 	"""Cette méthode retourne le niveau du joueur"""
+	if not joueur_actuel.get('niveau'):
+		joueur_actuel['niveau'] = _retourner_le_niveau_le_plus_bas_du_joueur_actuel()
 	return joueur_actuel.get('niveau')
 
 func lire_indice_plateau_du_joueur_actuel() -> int:
 	"""Cette méthode retourne l'indice de plateau du joueur"""
 	var str_niveau = str(joueur_actuel.get('niveau'))
+	if str_niveau not in joueur_actuel.get('plateaux'):
+		joueur_actuel['plateaux'][str_niveau] = 0
 	return joueur_actuel.get('plateaux').get(str_niveau)
 
 func _retourner_le_niveau_le_plus_bas_du_joueur_actuel() -> int:
@@ -307,8 +311,12 @@ func _retourner_le_niveau_le_plus_bas_du_joueur(nom_joueur : String) -> int:
 		var str_niveau_le_plus_bas = str(niveau_le_plus_bas)
 		if str_niveau_le_plus_bas in plateau_liste_difficulte:
 			# Le niveau existe ==> Vérifier s'il reste des plateaux à jouer
-			var indice_plateau = joueur.get('plateaux').get(str(str_niveau_le_plus_bas))
-			if not _le_niveau_est_termine(niveau_le_plus_bas, indice_plateau):
+			if joueur:
+				var indice_plateau = joueur.get('plateaux').get(str(str_niveau_le_plus_bas))
+				if not indice_plateau \
+					or not _le_niveau_est_termine(niveau_le_plus_bas, indice_plateau):
+					return niveau_le_plus_bas
+			else:
 				return niveau_le_plus_bas
 	return -1
 

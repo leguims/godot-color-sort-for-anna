@@ -12,27 +12,11 @@ Outils de productions et de résolution des plateaux de jeux:
 
 ### Bug V0.2 :
 - Le Bandeau d'information joueur n'a pas le score à jour après avoir joué (à reproduire)
+- ~~Quand une pile est pleine, elle peut encore être selectionnée alors qu'elle devient immuable.~~:heavy_check_mark:
+- ~~Les cliques entre 2 jetons ne sont pas pris en compte.~~:heavy_check_mark:
 - L'affichage "Niveau = 5 - indice Plateau = 0 - Nombre de parties = <null>" est en erreur !
-- l'algorithme de difficulté est mauvais pour un plateau 3x5 qui est surclassé ! ("AABAA.A    .BBBB " 3x5 en X coups = difficulté 28) bien plus facile que ("BCA.CDB.CDA.BDA.   " 5x3 en X coups = 10)
-- BUG ancien : Sur le plateau de jeu, agrandir la fenetre preserve les piles. Par contre, si l'agrandissement a lieu avant d'appuyer sur le bouton commencer, les piles ne vont pas apparaitre.
-
-Trace pour une fenetre de taille normale:
-~~~
-	calculer_la_position_de_la_pile : nb_piles = 3
-	_creer_un_plateau : position_pile = (100, 670)
-	_creer_un_plateau : position_pile = (220, 670)
-	_creer_un_plateau : position_pile = (340, 670)
-~~~
-
-Trace pour une fenetre de taille geante:
-~~~
-calculer_la_position_de_la_pile : nb_piles = 3
-_creer_un_plateau : position_pile = (580, 1211)
-_creer_un_plateau : position_pile = (1180, 1211)
-_creer_un_plateau : position_pile = (1780, 1211)
-~~~
-
-Pour avoir une taille invariable selon la fenetre, la methode "get_viewport().get_visible_rect().size" retourne une dimension satisfaisante pour les calculs de l'appli.
+- ~~l'algorithme de difficulté est mauvais pour un plateau 3x5 qui est surclassé ! ("AABAA.A    .BBBB " 3x5 en X coups = difficulté 28) bien plus facile que ("BCA.CDB.CDA.BDA.   " 5x3 en X coups = 10)~~ Abandon (c'est la cohabitation de l'ancienne échelle de difficulté de 1 à 10 qui cause cette discontinuité.)
+- ~~BUG ancien : Sur le plateau de jeu, agrandir la fenetre preserve les piles. Par contre, si l'agrandissement a lieu avant d'appuyer sur le bouton commencer, les piles ne vont pas apparaitre.~~:heavy_check_mark:
 
 ## V0.3 : Travaux pour la prochaine version
 
@@ -75,6 +59,20 @@ Pour avoir une taille invariable selon la fenetre, la methode "get_viewport().ge
 	- Dictionnaire pour les musiques en fonction des niveaux.
 	- Calculer les populations restantes de chaque difficulté et attribuer un nombre de plateau par niveaux à réaliser par ascension au minimum. Le chemin se rallonge en cas d'echecs.
 - Découper "Gestion_Score" en plusieurs modules indépendants. Campagne, sauvegarde, traitement des données.
+- (Aleksandar): tuto pour le 1er tableau
+- (Aleksandar): thème sur le fond du décors. Trop austère.
+- (Aleksandar): +1 sur le mode avec des mots.
+- Pour Android : réorganiser les piles au centre de l'écran
+- Pour Android : élargir la zone de clique pour les piles. Trop de frustration avec des cliques doigts dans le vide.
+- Pour Android : essayer un export Web pour voir si cela fonctionne
+- Pour Android : voir si une astuce de zoom existe sur Godot pour grandir les piles suivant la taille des piles.
+- Difficulté : 
+    - (Anna) Pour la difficulté d'un plateau, inclure l'inverse du nombre de solutions existantes.
+    - Il est possible que l'ordre des difficulté soit mal classé
+    - Il est possible que les anciens "ordre" de 1 à 10 soient encore dans la liste alors qu'ils sont hors borne
+    - Diagnostic : Vérifier les difficultés calculées
+    - Diagnostic : Vérifier l'ordre des plateaux dans le jeu
+    - Diagnostic : Vérifier la longueur de la solution minimale
 
 ### Outillage
 - ~~Définir le niveau de difficulté d'un plateau selon les critères suivants :~~:heavy_check_mark:
@@ -131,7 +129,11 @@ Pour avoir une taille invariable selon la fenetre, la methode "get_viewport().ge
 	- nombre de colonnes min/max
 	- nombre de lignes min/max
 	- nombre de coups de la solution min/max
-
+- Vérifier sur un petit plateau (ex: 3x6) :
+	- le parcours des combinaisons
+	- l'arrêt du parcours
+	- la reprise
+	- le changement de statuts "terminé = vrai"
 
 ## V1.0 : Pour une version long terme
 ### Jeu
