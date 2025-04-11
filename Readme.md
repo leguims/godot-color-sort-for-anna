@@ -11,7 +11,7 @@ Outils de productions et de résolution des plateaux de jeux:
 ## V0.2 : Travaux pour la prochaine version
 
 ### Bug V0.2 :
-- Le Bandeau d'information joueur n'a pas le score à jour après avoir joué (à reproduire)
+- Le Bandeau d'information joueur n'a pas le score à jour après avoir joué (avéré sur l'affichage en fin d'ascension)
 - ~~Quand une pile est pleine, elle peut encore être selectionnée alors qu'elle devient immuable.~~:heavy_check_mark:
 - ~~Les cliques entre 2 jetons ne sont pas pris en compte.~~:heavy_check_mark:
 - L'affichage "Niveau = 5 - indice Plateau = 0 - Nombre de parties = <null>" est en erreur !
@@ -21,7 +21,7 @@ Outils de productions et de résolution des plateaux de jeux:
 ## V0.3 : Travaux pour la prochaine version
 
 ### Jeu
-- réfléchir à l'utilisation des musiques.
+- Réfléchir à l'utilisation des musiques.
 - Page "Campagne" : faire apparaitre l'avancement dans la campagne. La distance jusqu'à la fin ... (peut-etre une jauge pour chaque niveau)
 - Page "Campagne" : En même temps que le bouton "Commencer", faire des liens (en haut) vers chaque joueurs pour basculer d'une campagne à l'autre sans passer par le menu
 - Lire les plateaux 'Solutions_classees.json' et enregistrer l'UUID. Si l'UUID n'est pas celui de la sauvegarde, effacer toutes les sauvegardes des joueurs.
@@ -51,7 +51,9 @@ Outils de productions et de résolution des plateaux de jeux:
 			- https://climbfinder.com/fr/classement?l=415%3Fs%3Dhighest&s=cotacol
 		- Prévoir un algo pour programmer l'ascension et la mémoriser.
 	- Prévoir de donner le choix de l'ascension au départ en indiquant les quantités de chacunes des ascensions et le temps à prévoir.
-	- Faire apparaitre l'avancement dans l'ascension. La distance jusqu'à la fin ... (peut-etre une jauge pour chaque niveau)
+	- ~~Faire apparaitre l'avancement dans l'ascension. La distance jusqu'à la fin ... (peut-etre une jauge pour chaque niveau)~~:heavy_check_mark:
+    	- ~~Remplacer "Niveau X.Y" par "Campagne : XX%" avant de commencer une nouvelle ascension~~:heavy_check_mark:
+    	- ~~Remplacer "Niveau X.Y" par "Ascension : XX%" pendant une ascension~~:heavy_check_mark:
 	- Musique : Attribuer des musiques en fonction de la phase ascensionnelle actuelle. 1 ascension fait défiler toutes les musiques.
 	- Enregistrer le score dans les infos 'joueur' quand l'ascension est terminée. Le score intermédiaire est calculé avec le score enregistré et le calcul partiel. "Score=f(essais, temps)"
 	- Prevoir une musique spéciale pour la réussite de la derniere ascension possible et le message de félicitations.
@@ -134,6 +136,7 @@ Outils de productions et de résolution des plateaux de jeux:
 	- l'arrêt du parcours
 	- la reprise
 	- le changement de statuts "terminé = vrai"
+- Ajouter un champs "Dernier plateau a valider" pour reprendre la recherche de plateau plus efficacement.
 
 ## V1.0 : Pour une version long terme
 ### Jeu

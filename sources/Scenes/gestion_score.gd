@@ -151,8 +151,8 @@ func initialiser_une_nouvelle_ascension() -> void:
 	print("Niveau = ", str_niveau, " - indice Plateau = ", joueur_actuel.get('plateaux').get(str_niveau))	
 
 func lire_plateau_courant() -> String:
-	var str_niveau = str(joueur_actuel.get('niveau'))
-	var indice_plateau = joueur_actuel.get('plateaux').get(str_niveau)
+	var str_niveau = str(lire_le_niveau_du_joueur_actuel())
+	var indice_plateau = lire_indice_plateau_du_joueur_actuel()
 	if indice_plateau < len(plateau_liste_difficulte.get(str_niveau)):
 		return plateau_liste_difficulte.get(str_niveau)[indice_plateau]
 	return ""
@@ -196,7 +196,21 @@ func l_ascension_est_terminee() -> bool:
 func la_campagne_est_terminee() -> bool:
 	return _retourner_le_niveau_le_plus_bas_du_joueur_actuel() == -1
 
+func _retourner_le_nombre_de_plateaux_total() -> int:
+	var nb_plateaux : int = 0
+	for niveau in range(0, 300):
+		var str_niveau = str(niveau)
+		if str_niveau in plateau_liste_difficulte:
+			nb_plateaux += len(plateau_liste_difficulte.get(str_niveau))
+	return nb_plateaux
 
+func _retourner_le_nombre_de_niveaux_total() -> int:
+	var nb_niveaux : int = 0
+	for niveau in range(0, 300):
+		var str_niveau = str(niveau)
+		if str_niveau in plateau_liste_difficulte:
+			nb_niveaux += 1
+	return nb_niveaux
 
 ###############################################
 # Gestion des sauvegardes
@@ -264,7 +278,7 @@ func lire_le_niveau_du_joueur_actuel() -> int:
 
 func lire_indice_plateau_du_joueur_actuel() -> int:
 	"""Cette méthode retourne l'indice de plateau du joueur"""
-	var str_niveau = str(joueur_actuel.get('niveau'))
+	var str_niveau = str(lire_le_niveau_du_joueur_actuel())
 	if str_niveau not in joueur_actuel.get('plateaux'):
 		joueur_actuel['plateaux'][str_niveau] = 0
 	return joueur_actuel.get('plateaux').get(str_niveau)
@@ -286,11 +300,37 @@ func lire_le_trophee_du_joueur_actuel() -> String:
 	var rang = lire_le_rang_du_joueur_actuel()
 	if rang in trophees:
 		return trophees.get(rang)
-	return ''
+	# return ''
+	return String.chr(0x25FD)
 
 func lire_le_rang_du_joueur_actuel() -> int:
 	"""Cette méthode retourne le rang du joueur actuel"""
 	return lire_le_rang_du_joueur(joueur_actuel.get('nom'))
+
+func _lire_le_nombre_de_plateaux_termines_du_joueur_actuel() -> int:
+	var nb_plateau_joueur : int = 0
+	for niveau in range(0, 300):
+		var str_niveau = str(niveau)
+		if str_niveau in joueur_actuel.get('plateaux'):
+			nb_plateau_joueur += joueur_actuel.get('plateaux').get(str_niveau)
+	return nb_plateau_joueur
+
+func lire_pourcentage_campagne_realisee_du_joueur_actuel() -> float:
+	var nb_plateaux_total = _retourner_le_nombre_de_plateaux_total()
+	var nb_plateaux_realises = _lire_le_nombre_de_plateaux_termines_du_joueur_actuel()
+	return roundi(100. * nb_plateaux_realises / nb_plateaux_total)
+
+func lire_pourcentage_ascension_realise_du_joueur_actuel() -> float:
+	if 'niveau' not in joueur_actuel or not joueur_actuel.get('niveau'):
+		return 0.0
+	var nb_niveaux_total = _retourner_le_nombre_de_niveaux_total()
+	var nb_niveaux_realises : int = -1
+	var plateaux_joueur = joueur_actuel.get('plateaux')
+	for niveau in range(0, joueur_actuel.get('niveau')+1):
+		var str_niveau = str(niveau)
+		if str_niveau in plateaux_joueur:
+			nb_niveaux_realises += 1
+	return roundi(100. * nb_niveaux_realises / nb_niveaux_total)
 
 ###############################################
 # Gestion des infos des joueurs

@@ -10,17 +10,30 @@ signal saisie_plateau
 func _ready() -> void:
 	mettre_a_jour_infos_joueur()
 
+func _pourcentage_en_led(pourcentage : int) -> String:
+	var led_sombre = String.chr(0x25FE)
+	var led_lumineuse = String.chr(0x25FD)
+	var nb_max_leds = 10
+	var tranche_pourcentage = 100/nb_max_leds
+	var leds : String = ''
+	for i in range(roundi(1.*pourcentage/tranche_pourcentage)):
+		leds += led_lumineuse
+	for i in range(roundi(1.*pourcentage/tranche_pourcentage), nb_max_leds):
+		leds += led_sombre
+	return leds
+
 func mettre_a_jour_infos_joueur() -> void:
 	var trophee = GestionScore.lire_le_trophee_du_joueur_actuel()
 	var nom = GestionScore.lire_le_nom_du_joueur_actuel()
-	var niveau = str(GestionScore.lire_le_niveau_du_joueur_actuel())
-	var indice_plateau = str(GestionScore.lire_indice_plateau_du_joueur_actuel())
+	var campagne = _pourcentage_en_led(GestionScore.lire_pourcentage_campagne_realisee_du_joueur_actuel())
+	var ascension = _pourcentage_en_led(GestionScore.lire_pourcentage_ascension_realise_du_joueur_actuel())
 	var score = str(GestionScore.lire_le_score_du_joueur_actuel())
-
+	
 	var texte = "[center][font_size=30]"
-	texte += "Joueur: " + nom + " " + trophee + "\n"
-	texte += "Niveau: " + niveau + "." + indice_plateau
-	texte += " - Score: " + score
+	texte += nom + " " + trophee + " Score: " + score + "\n"
+	texte += "Progression:" + "\n"
+	texte += String.chr(0x1F3D4) + ascension + "\n"
+	texte += String.chr(0x1F30D) + campagne + "\n"
 	texte += "[/font_size][/center]"
 	$InfosDuJoueur/TexteInfosDuJoueur.bbcode_text = texte
 	
