@@ -17,6 +17,8 @@ Outils de productions et de résolution des plateaux de jeux:
 - L'affichage "Niveau = 5 - indice Plateau = 0 - Nombre de parties = <null>" est en erreur !
 - ~~l'algorithme de difficulté est mauvais pour un plateau 3x5 qui est surclassé ! ("AABAA.A    .BBBB " 3x5 en X coups = difficulté 28) bien plus facile que ("BCA.CDB.CDA.BDA.   " 5x3 en X coups = 10)~~ Abandon (c'est la cohabitation de l'ancienne échelle de difficulté de 1 à 10 qui cause cette discontinuité.)
 - ~~BUG ancien : Sur le plateau de jeu, agrandir la fenetre preserve les piles. Par contre, si l'agrandissement a lieu avant d'appuyer sur le bouton commencer, les piles ne vont pas apparaitre.~~:heavy_check_mark:
+-  ~~Ajout d'un nouveau joueur sans nom est accepté.~~:heavy_check_mark:
+-  ~~Ajout d'un nouveau joueur puis clique sur campagne double tous les joeurs.~~:heavy_check_mark:
 
 ## V0.3 : Travaux pour la prochaine version
 
@@ -75,6 +77,10 @@ Outils de productions et de résolution des plateaux de jeux:
     - Diagnostic : Vérifier les difficultés calculées
     - Diagnostic : Vérifier l'ordre des plateaux dans le jeu
     - Diagnostic : Vérifier la longueur de la solution minimale
+- ~~(Anna) retour au menu devient menu~~:heavy_check_mark:
+- ~~(Anna) supprimer score dans les infos joueur~~:heavy_check_mark:
+- ~~(Anna) progression campagne : carré blanc = montagne.~~:heavy_check_mark:
+- ~~(Anna) Remplacer la progression campagne par le nombre d'ascensions des dernières 24h.~~:heavy_check_mark:
 
 ### Outillage
 - ~~Définir le niveau de difficulté d'un plateau selon les critères suivants :~~:heavy_check_mark:

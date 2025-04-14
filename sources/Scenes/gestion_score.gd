@@ -9,7 +9,8 @@ var liste_des_sauvegardes = [
 		'niveau': null,
 		'plateaux': {  },
 		'nombre_de_parties': {  },
-		'durees': {  }
+		'durees': {  },
+		'ascensions': [ ]
 	}
 ]
 var joueur_actuel = liste_des_sauvegardes[0]
@@ -125,6 +126,7 @@ func gagner(duree_en_ms : int) -> void:
 		sauvegarder = true
 	else:
 		globale_ascension_terminee = true
+		enregistrer_date_ascension_du_joueur_actuel()
 	
 	print("Niveau = ", str_niveau, " - indice Plateau = ", joueur_actuel.get('plateaux').get(str_niveau), " - Nombre de parties = ", joueur_actuel.get('nombre_de_parties').get(str_niveau))
 	if sauvegarder:
@@ -248,6 +250,8 @@ func choisir_le_joueur(nom_joueur) -> bool:
 func ajouter_un_nouveau_joueur(nom_nouveau_joueur : String) -> bool:
 	"""Crée un nouveau joueur si le nom est libre"""
 	# Vérifie que le nom est libre
+	if not nom_nouveau_joueur:
+		return false
 	if _retourner_le_joueur(nom_nouveau_joueur):
 		return false
 	# Crée le compte et l'enregistre
@@ -256,7 +260,8 @@ func ajouter_un_nouveau_joueur(nom_nouveau_joueur : String) -> bool:
 		'niveau': null,
 		'plateaux': {  },
 		'nombre_de_parties': {  },
-		'durees': {  }
+		'durees': {  },
+		'ascensions': [ ]
 	}
 	liste_des_sauvegardes.append(compte.duplicate(true))
 	_enregistrer_sauvegarde_joueurs()
@@ -331,6 +336,21 @@ func lire_pourcentage_ascension_realise_du_joueur_actuel() -> float:
 		if str_niveau in plateaux_joueur:
 			nb_niveaux_realises += 1
 	return roundi(100. * nb_niveaux_realises / nb_niveaux_total)
+
+func enregistrer_date_ascension_du_joueur_actuel():
+	"""Cette méthode enregistre la date courante dans les ascensions"""
+	joueur_actuel['ascensions'].append(Time.get_unix_time_from_system()) # Timestamp
+
+func lire_ascension_du_joueur_actuel():
+	return joueur_actuel.get('ascensions')
+
+func compter_ascensions_du_joueur_actuel_depuis(age: float = 0):
+	var compteur = 0
+	var heure_courante = Time.get_unix_time_from_system()
+	for timestamp in lire_ascension_du_joueur_actuel():
+		if (heure_courante - age) < timestamp:
+			compteur += 1
+	return compteur
 
 ###############################################
 # Gestion des infos des joueurs

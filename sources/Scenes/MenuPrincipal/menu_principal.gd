@@ -43,8 +43,11 @@ func _on_bouton_campagne_pressed() -> void:
 		$Marge/HBoxContainer/VBoxContainer/Marge/VBoxContainer/JoueursCampagne.show()
 
 func _mettre_a_jour_boutons_joueurs_campagne():
-	_effacer_boutons_joueurs_campagne()
-	_creer_boutons_joueurs_campagne()
+	if $Marge/HBoxContainer/VBoxContainer/Marge/VBoxContainer/JoueursCampagne.is_visible_in_tree():
+		$Marge/HBoxContainer/VBoxContainer/Marge/VBoxContainer/JoueursCampagne.hide()
+		_effacer_boutons_joueurs_campagne()
+		_creer_boutons_joueurs_campagne()
+		$Marge/HBoxContainer/VBoxContainer/Marge/VBoxContainer/JoueursCampagne.show()
 
 func _creer_boutons_joueurs_campagne():
 	$Marge/HBoxContainer/VBoxContainer/Marge/VBoxContainer/JoueursCampagne.columns = 2
