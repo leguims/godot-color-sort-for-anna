@@ -47,7 +47,7 @@ Outils de productions et de résolution des plateaux de jeux:
 		- En cas de réussite d'un plateau lors d'une ascension, le joueur passe au niveau supérieur
 		- En cas d'échec d'un plateau lors d'une ascension, le joueur retourne au niveau inférieur (nouveau plateau)
 		- En cas de réussite sur un plateau du dernier niveau, l'ascension est terminée et le joueur est félicité.
-		- ~~(option) En cas d'echec sur un plateau du premier niveau, l'ascension est terminée et le joueur est encouragé à recommencer.~~Abandonné ! Quel interet ?
+		- ~~(option) En cas d'echec sur un plateau du premier niveau, l'ascension est terminée et le joueur est encouragé à recommencer.~~ Abandonné ! Quel interet ?
 	- Gérer plusieurs 'ascensions' avec tous les plateaux:
 		- 1 ascension = Atteindre un niveau maximum et finir 1 plateau
 		- ~~Afficher le message de felicitations "Everest"~~:heavy_check_mark:
