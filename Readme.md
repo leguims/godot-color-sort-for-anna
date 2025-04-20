@@ -99,13 +99,16 @@ Outils de productions et de résolution des plateaux de jeux:
 
 #### Android
 - Pour Android : réorganiser les piles au centre de l'écran
-- Pour Android : élargir la zone de clique pour les piles. Trop de frustration avec des cliques doigts dans le vide.
-- Pour Android : essayer un export Web pour voir si cela fonctionne
+  - Programmer en dur des positions selon le format du plateau.
+  - { '2x3': {'x':10, 'y': 10, ...0}, '3x3': {...}, ... }
+- ~~Pour Android : élargir la zone de clique pour les piles. Trop de frustration avec des cliques doigts dans le vide.~~:heavy_check_mark:
+- ~~Pour Android : essayer un export Web pour voir si cela fonctionne~~:heavy_check_mark:
 - Pour Android : voir si une astuce de zoom existe sur Godot pour grandir les piles suivant la taille des piles.
 
 #### Graphisme
 - Représenter 2 jetons identiques l'un sur l'autre comme soudés
 - Lors de la sélection, colorer que les jetons candidats au mouvement.
+- voir si une astuce de zoom existe sur Godot pour grandir les piles suivant la taille des piles.
 
 #### Ambiance
 - (Faro) Ajouter de la musique dans les menus (+1 Totol)
@@ -157,6 +160,7 @@ Outils de productions et de résolution des plateaux de jeux:
 - Revalidation Phase 2 : il faut décomposer en plusieurs phases, car en 8x3, après 90 minutes, il est toujours bloqué dans la première sous boucle.
 	- Vérifier à chaque étape de revalidation que le fichier est enregistré
 	- Comparer le resultat avec l'ancien algo
+- À chaque itération, repartir sur la nouvelle base et ne pas vérifier les plateaux effacés précedemment
 
 #### Accélération de recherche
 - ~~Rénovation et Accélération des recherches:~~:heavy_check_mark:
