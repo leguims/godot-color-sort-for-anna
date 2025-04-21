@@ -1,6 +1,86 @@
 # Liste des fonctionnalités
 
-## V0.2 : Travaux pour la prochaine version
+## V0.3 : Travaux réalisés
+
+### Jeu
+- Ajouter un pictogramme dans les scores pour le TOP 3. Ajouter ce pictogramme dans les infos joueurs de la campagne.
+- Gérer un fichier de plateaux avec des niveaux discontinus
+- (Anna) retour au menu devient menu
+- (Anna) supprimer score dans les infos joueur
+- (Anna) progression campagne : carré blanc = montagne.
+- (Anna) Remplacer la progression campagne par le nombre d'ascensions des dernières 24h.
+
+#### Ascensions
+- Gérer plusieurs 'ascensions' avec tous les plateaux:
+  - 1 ascension = Atteindre un niveau maximum et finir 1 plateau
+  - Afficher le message de felicitations "Everest"
+  - Réinitiliser le niveau au plus bas pour réaliser un autre "Everest" sur un autre chemin.
+- Faire apparaitre l'avancement dans l'ascension. La distance jusqu'à la fin ... (peut-etre une jauge pour chaque niveau)
+  	- Remplacer "Niveau X.Y" par "Campagne : XX%" avant de commencer une nouvelle ascension
+  	- Remplacer "Niveau X.Y" par "Ascension : XX%" pendant une ascension
+- Ajouter un champs 'Ascension' dans les infos joueur pour indiquer le niveau de terminaison de l'ascension actuelle.
+
+#### Android
+- Pour Android : élargir la zone de clique pour les piles. Trop de frustration avec des cliques doigts dans le vide.
+- Pour Android : essayer un export Web pour voir si cela fonctionne
+
+### Outillage
+- outils : utiliser le module "logging" pour tracer l'avancement des threads dans leur tâches.
+	- traces Plateau : utiliser le module "logging" pour tracer l'avancement dans la classe.
+	- traces LotDePlateaux : utiliser le module "logging" pour tracer l'avancement dans la classe.
+	- traces ResoudrePlateau : utiliser le module "logging" pour tracer l'avancement dans la classe.
+	- traces ExportJSON : utiliser le module "logging" pour tracer l'avancement dans la classe.
+- Enregistrer le format "plateau_ligne_texte_universel" dans tous les JSON.
+- Vérifier sur un petit plateau (ex: 3x6) :
+	- le parcours des combinaisons
+	- l'arrêt du parcours
+	- la reprise
+
+#### Revalidation
+- Réaliser un script d'élagage des plateaux valides.
+	- 'ABC.CBA' ==(A devient B)== 'BAC.CAB'
+	- Etat des lieux :
+		- "ABA.CBA.CBC.   " : filtré
+		- "ACA.ACB.BCB.   " : conservé
+		- "BAB.CAB.CAC.   " : filtré
+		- "BAB.BAC.CAC.   " : filtré
+		- "ABA.ABC.CBC.   " : filtré
+		- "ACA.BCA.BCB.   " : filtré
+		- Pour filtrer ce doublon, il faut appliquer les permutations de jetons à chaque permutations de piles.~~
+- 'classer_les_solutions.py' Réaliser un script d'élagage des solutions quand un plateau de départ a déjà une colonne de résolue.
+- 'chercheur_de_plateaux.py' Ne pas considérer les plateaux avec une pile déjà résolue.
+
+#### Accélération de recherche
+- Rénovation et Accélération des recherches:
+	- Dans les analyses JSON 'Analyses\Plateaux_*\Plateaux_*.json:
+		- Supprimer les champs 'debut' + 'fin' + 'durée'
+		- Ajouter un champs 'revalidation phase 1 terminee'
+		- Ajouter un champs 'revalidation phase 2 terminee'
+		- Ajouter un mecanisme de classement systématique des listes de plateaux avant de produire le JSON.
+		- Ajouter un champs 'dernier plateau revalide' pour reprise de validation.
+		- Modifier l'algorithme de reprise de recherche de plateau : boucler et itérer tant que toutes les solutions connues ne sont pas identifiées.
+	- Dans 'chercheur_de_plateaux.py', filtrer uniquement les plateaux valides et les plateaux avec un pile résolue.
+	- Dans 'revalider_les_plateaux.py', appliquer l'ensemble des filtre, dont ceux qui sont long (permutations de piles ou de jetons).
+	- Avec la simplification de la recherche, les compteurs de changements deviennent inutiles. (compter_plateau_a_ignorer)
+	- (recherche) Pour la recherche de plateaux, voir si la reprise directement sur le dernier plateau trouvé permet de gagner du temps dans les itérations. Mais dans ce cas, il faut etre capable de s'arreter quand le tour du compteur est réalisé. C'est à dire que la permutation 'plateau.pour_permutations' apparait.
+- Itération LotDePlateaux : Idée d'optimisation : Lors de la recherche, avant de tester la validité, passer toutes les itérations avec la première colonne pleine de 'A'.
+- LotDePlateaux : Idée d'optimisation : Réaliser cette optimisation sur la dernière colonne avec la case vide ' '
+- Itération LotDePlateaux : Idée d'optimisation : Après étude, lorsque la premiere colonne est vidée de ses 'A', ils ne reviendront plus, c'est la fin de l'itération.
+- Itération LotDePlateaux : Idée d'optimisation : Trouver la premiere permutation valide proposée par l'outil de permutation et en extraire une regle 'Colonnes x Lignes'
+- Itération LotDePlateaux : Idée d'optimisation : Implémenter ce départ et évaluer le gain. "2x6" passe de 10mins à 5mins.
+- Itération LotDePlateaux : Idée d'optimisation : Trouver la 1ere permutation valide devrait dispenser de faire les combinaisons avec la colonne 'A' pleine.
+- Itération LotDePlateaux : Idée d'optimisation : Lors de la recherche, avant de tester la validité, passer toutes les itérations sans 'A' dans la première colonne.
+- Ajouter un champs "Dernier plateau a valider" pour reprendre la recherche de plateau plus efficacement.
+
+#### Difficulté de plateau
+- Définir le niveau de difficulté d'un plateau selon les critères suivants :
+	- longueur solution et nombre de jetons sur le plateau (exhaustif)
+		- SurfacePlateau = NombreDePiles x NombreDeJetonParPile du plateau effectif
+		- SurfacePlateauMax = NombreDePilesMax x NombreDeJetonParPileMax (11x3 = max actuel; 12x12 = max théroique à court terme)
+		- ProfondeurSolution = Nombre de mouvements pour la solution
+		- Difficulté = Entier de ( ProfondeurSolution x SurfacePlateauMax / SurfacePlateau)
+
+## V0.2 : Travaux réalisés
 - jeu : Changer la couleur ou mettre en surbrillance le jeton ou la colonne selectionnée pour un mouvement.
 - jeu : lire un JSON des niveaux/plateaux JSON
 - jeu : enregistrer/lire un JSON (ou autre) des niveaux en cours
@@ -26,6 +106,16 @@
 - outillage : produire un JSON des plateaux par niveau.
 - outillage : réécrire les plateaux avec les "." pour identifier les "colonnes x lignes" et mélanger les plateaux de forme différentes
 - outillage : construire un JSON selon une configuration qui indique le nombre de tableau de chaque niveau.
+
+### Bug V0.2 :
+- ~~Le Bandeau d'information joueur n'a pas le score à jour après avoir joué (avéré sur l'affichage en fin d'ascension)~~:heavy_check_mark:
+  - ~~RAZ memoire + premier tableau fini. Score (bandeau info joueur) = 3600; Score (écran score) = 3776; Score (retour bandeau info joueur) = 3776~~:heavy_check_mark:
+- ~~Quand une pile est pleine, elle peut encore être selectionnée alors qu'elle devient immuable.~~:heavy_check_mark:
+- ~~Les cliques entre 2 jetons ne sont pas pris en compte.~~:heavy_check_mark:
+- ~~l'algorithme de difficulté est mauvais pour un plateau 3x5 qui est surclassé ! ("AABAA.A    .BBBB " 3x5 en X coups = difficulté 28) bien plus facile que ("BCA.CDB.CDA.BDA.   " 5x3 en X coups = 10)~~ Abandon (c'est la cohabitation de l'ancienne échelle de difficulté de 1 à 10 qui cause cette discontinuité.)
+- ~~BUG ancien : Sur le plateau de jeu, agrandir la fenetre preserve les piles. Par contre, si l'agrandissement a lieu avant d'appuyer sur le bouton commencer, les piles ne vont pas apparaitre.~~:heavy_check_mark:
+-  ~~Ajout d'un nouveau joueur sans nom est accepté.~~:heavy_check_mark:
+-  ~~Ajout d'un nouveau joueur puis clique sur campagne double tous les joeurs.~~:heavy_check_mark:
 
 ## V0.1 : Liste et organisation pour Godot:
 
