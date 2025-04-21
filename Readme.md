@@ -12,6 +12,7 @@ Outils de productions et de résolution des plateaux de jeux:
 
 ### Bug V0.2 :
 - Le Bandeau d'information joueur n'a pas le score à jour après avoir joué (avéré sur l'affichage en fin d'ascension)
+  - RAZ memoire + premier tableau fini. Score (bandeau info joueur) = 3600; Score (écran score) = 3776; Score (retour bandeau info joueur) = 3776
 - ~~Quand une pile est pleine, elle peut encore être selectionnée alors qu'elle devient immuable.~~:heavy_check_mark:
 - ~~Les cliques entre 2 jetons ne sont pas pris en compte.~~:heavy_check_mark:
 - L'affichage "Niveau = 5 - indice Plateau = 0 - Nombre de parties = <null>" est en erreur !
@@ -63,7 +64,6 @@ Outils de productions et de résolution des plateaux de jeux:
 	- ~~Faire apparaitre l'avancement dans l'ascension. La distance jusqu'à la fin ... (peut-etre une jauge pour chaque niveau)~~:heavy_check_mark:
     	- ~~Remplacer "Niveau X.Y" par "Campagne : XX%" avant de commencer une nouvelle ascension~~:heavy_check_mark:
     	- ~~Remplacer "Niveau X.Y" par "Ascension : XX%" pendant une ascension~~:heavy_check_mark:
-	- Musique : Attribuer des musiques en fonction de la phase ascensionnelle actuelle. 1 ascension fait défiler toutes les musiques.
 	- Enregistrer le score dans les infos 'joueur' quand l'ascension est terminée. Le score intermédiaire est calculé avec le score enregistré et le calcul partiel. "Score=f(essais, temps)"
 	- Prevoir une musique spéciale pour la réussite de la derniere ascension possible et le message de félicitations.
 	- Ajouter un champs 'Ascension' dans les infos joueur pour indiquer le niveau de terminaison de l'ascension actuelle.
@@ -105,6 +105,13 @@ Outils de productions et de résolution des plateaux de jeux:
 - ~~Pour Android : essayer un export Web pour voir si cela fonctionne~~:heavy_check_mark:
 - Pour Android : voir si une astuce de zoom existe sur Godot pour grandir les piles suivant la taille des piles.
 
+#### Deploiement de versions
+- changement de version : les nouveaux tableaux et les anciens tableaux sont en collision.
+- définir le modèle de mise à jour : tout à zéro, on poursuit en cumulé, on poursuit en perdant l'ancien
+- Sauvegarder le numéro de version dans la sauvegarde et l'utiliser lors du lancement d'une nouvelle version pour réaliser tous les travaux de mise à jour de changement de version nécessaire.
+- prévoir un champs de sauvegarde avec les infos : plateau courant (niveau, indice, nom et "nom" actuel).
+- enregistrer la liste des nom de plateaux achevés ?
+
 #### Graphisme
 - Représenter 2 jetons identiques l'un sur l'autre comme soudés
 - Lors de la sélection, colorer que les jetons candidats au mouvement.
@@ -118,9 +125,10 @@ Outils de productions et de résolution des plateaux de jeux:
 
 #### Musique
 - Réfléchir à l'utilisation des musiques.
-- Option 1 : 1 musique aléatoire à chaque plateau
-- Option 2 : 1 musique par tranche de progression dans l'ascension
-- Option 3 : 1 musique de debut d'ascension et de fin d'ascension constantes et de l'aléatoire sur le chemin
+  - Option 1 : 1 musique aléatoire à chaque plateau
+  - Option 2 : 1 musique par tranche de progression dans l'ascension
+  - Option 3 : 1 musique de debut d'ascension et de fin d'ascension constantes et de l'aléatoire sur le chemin
+- Musique : (option 2) Attribuer des musiques en fonction de la phase ascensionnelle actuelle. 1 ascension fait défiler toutes les musiques.
 
 ### Outillage
 - ~~outils : utiliser le module "logging" pour tracer l'avancement des threads dans leur tâches.~~:heavy_check_mark:

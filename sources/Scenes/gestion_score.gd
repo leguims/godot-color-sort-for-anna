@@ -361,7 +361,7 @@ func lire_le_rang_du_joueur(nom_joueur : String) -> int:
 	var joueur = _retourner_le_joueur(nom_joueur)
 	var rang : int = 0
 	if joueur:
-		rang = lire_classement_des_joueurs().get(joueur.get('nom'))
+		rang = _lire_classement_des_joueurs().get(joueur.get('nom'))
 	return rang
 
 func _retourner_le_niveau_le_plus_bas_du_joueur(nom_joueur : String) -> int:
@@ -383,8 +383,36 @@ func _retourner_le_niveau_le_plus_bas_du_joueur(nom_joueur : String) -> int:
 func la_campagne_du_joueur_est_terminee(nom_joueur : String) -> bool:
 	return _retourner_le_niveau_le_plus_bas_du_joueur(nom_joueur) == -1
 
-func lire_classement_des_joueurs() -> Dictionary:
-	"""Cette méthode retourne le rang de l'ensemble des joueurs"""
+func _lire_classement_des_joueurs() -> Dictionary:
+	"""Cette méthode retourne le rang de l'ensemble des joueurs (clé = nom joueur)"""
+	var liste_score_croissant = []
+	var dico_score_nom_joueur = {}
+	for nom_joueur in lire_la_liste_des_joueurs():
+		var score = lire_le_score_du_joueur(nom_joueur)
+		liste_score_croissant.append(score)
+		if score not in dico_score_nom_joueur:
+			dico_score_nom_joueur[score] = [nom_joueur]
+		else:
+			# Score égalité
+			dico_score_nom_joueur[score].append(nom_joueur)
+	liste_score_croissant.sort() # Classement croissant des scores
+	
+	# Dictionaire Nom Joueur => RANG
+	var dico_nom_joueur_rang = {}
+	for iteration in range(len(lire_la_liste_des_joueurs())):
+		var score = liste_score_croissant.pop_back()
+		if score != null:
+			var rang = len(dico_nom_joueur_rang) + len (dico_score_nom_joueur.get(score))
+			for nom in dico_score_nom_joueur.get(score):
+				dico_nom_joueur_rang[nom] = rang
+	return dico_nom_joueur_rang
+
+func lire_rang_des_joueurs() -> Dictionary:
+	"""Cette méthode retourne le rang et le score de l'ensemble des joueurs (clé = rang)
+	Retour : {
+		'1': {'score': 12345, 'liste_joueurs': ['Joueur1']},
+		'3': {'score': 2345, 'liste_joueurs': ['Joueur2', 'Joueur3']}
+	}"""
 	var liste_score_croissant = []
 	var dico_score_nom_joueur = {}
 	for nom_joueur in lire_la_liste_des_joueurs():
@@ -398,14 +426,16 @@ func lire_classement_des_joueurs() -> Dictionary:
 	liste_score_croissant.sort() # Classement croissant des scores
 	
 	# Dictionaire RANG => Nom Joueur
-	var dico_nom_joueur_rang = {}
+	var dico_rang_nom_joueur = {}
 	for iteration in range(len(lire_la_liste_des_joueurs())):
 		var score = liste_score_croissant.pop_back()
 		if score != null:
-			var rang = len(dico_nom_joueur_rang) + len (dico_score_nom_joueur.get(score))
-			for nom in dico_score_nom_joueur.get(score):
-				dico_nom_joueur_rang[nom] = rang
-	return dico_nom_joueur_rang
+			# Effacer les scores en double
+			while score in liste_score_croissant:
+				liste_score_croissant.erase(score)
+			var rang = len(dico_rang_nom_joueur) + len (dico_score_nom_joueur.get(score))
+			dico_rang_nom_joueur[rang] = {'score': score, 'liste_joueurs': dico_score_nom_joueur.get(score)}
+	return dico_rang_nom_joueur
 
 func lire_le_score_du_joueur(nom_joueur : String) -> int:
 	"""Cette méthode retourne le score du joueur"""
@@ -424,16 +454,16 @@ func lire_le_score_du_joueur(nom_joueur : String) -> int:
 				var nb_parties_gagnees = plateau
 				# var nb_parties_perdues = nb_parties_jouees - nb_parties_gagnees
 				
-				var duree = 0
+				var duree_en_s = 0
 				if str_niveau in joueur.get('durees'):
-					duree = joueur.get('durees').get(str_niveau)
+					duree_en_s = joueur.get('durees').get(str_niveau) / 1000.
 					
-				if nb_parties_jouees and duree:
+				if nb_parties_jouees and duree_en_s:
 					# Score sur le ratio des parties gagnées/jouées
-					var ratio_victoire = nb_parties_gagnees / nb_parties_jouees
+					var ratio_victoire = 1. * nb_parties_gagnees / nb_parties_jouees
 					# Score sur le ratio du temps référence/joué
-					var temps_reference = niveau * 7
-					var ratio_temps = temps_reference * nb_parties_gagnees / duree
+					var temps_reference = niveau * 1. # 1s par valeur de niveau
+					var ratio_temps = temps_reference * nb_parties_gagnees / duree_en_s
 					var score_niveau = int(100 * niveau * nb_parties_gagnees * (ratio_victoire + ratio_temps))
 					score += score_niveau
 	if joueur.get('nom').to_lower() == 'Anna'.to_lower():
