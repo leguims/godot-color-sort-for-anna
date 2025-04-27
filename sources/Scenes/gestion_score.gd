@@ -295,6 +295,17 @@ func lire_le_score_du_joueur_actuel() -> int:
 	"""Cette méthode retourne le score du joueur actuel"""
 	return lire_le_score_du_joueur(joueur_actuel.get('nom'))
 
+func nombre_avec_separateur_de_milliers(nombre : int, separateur : String) -> String:
+	var nombre_texte = ''
+	for division in [1_000_000_000, 1_000_000, 1_000, 1]:
+		var dividende = roundi(nombre / division)
+		if dividende:
+			if nombre_texte:
+				nombre_texte +=separateur
+			nombre_texte += str(dividende)
+			nombre -= dividende * division
+	return nombre_texte
+
 func lire_le_trophee_du_joueur_actuel() -> String:
 	"""Cette méthode retourne le trophé du joueur actuel"""
 	var trophees = {

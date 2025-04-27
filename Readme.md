@@ -23,6 +23,7 @@ Outils de productions et de résolution des plateaux de jeux:
 - ~~(Anna) supprimer score dans les infos joueur~~:heavy_check_mark:
 - ~~(Anna) progression campagne : carré blanc = montagne.~~:heavy_check_mark:
 - ~~(Anna) Remplacer la progression campagne par le nombre d'ascensions des dernières 24h.~~:heavy_check_mark:
+- Laisser le nombre d'ascensions de manière permanente dans les infos joueurs (trop difficile pour etre volatile)
 - Sauvegarder l'état du plateau en cours après chaque coup. Le joueur qui quitte le jeu, reprend là où il était. Quand il revient, il commence avec son temps moyen sur ce type de niveau.
 
 #### Ascensions
@@ -201,6 +202,7 @@ Outils de productions et de résolution des plateaux de jeux:
   - Programmer en dur des positions selon le format du plateau.
   - { '2x3': {'x':10, 'y': 10, ...0}, '3x3': {...}, ... }
 - Pour Android : voir si une astuce de zoom existe sur Godot pour grandir les piles suivant la taille des piles.
+- Editeur de plateau : La ligne de saisie est masquée par le clavier. Elle doit être en haut de l'écran.
 
 #### Deploiement de versions
 - changement de version : les nouveaux tableaux et les anciens tableaux sont en collision.
@@ -252,6 +254,11 @@ Outils de productions et de résolution des plateaux de jeux:
     - Diagnostic : Vérifier les difficultés calculées
     - Diagnostic : Vérifier l'ordre des plateaux dans le jeu
     - Diagnostic : Vérifier la longueur de la solution minimale
+
+#### Accessibilité
+- Le tremblement peut faire selectioner/désélectionner une pile dans le même temps. Faire une tempo pour sélectionner une pile afin de se protéger des tremblements.
+- Quand une sélection de pile est faite, montrer les piles destination possible.
+- Faire une sorte de buzz pour les mouvements interdits. Pas de son si la selection périme.
 
 ## V1.0 : Pour une version long terme
 ### Jeu

@@ -25,8 +25,9 @@ func _ready() -> void:
 	for rang in range(1, 6):
 		if rang in dico_rang_nom_joueur:
 			var score = dico_rang_nom_joueur.get(rang).get('score')
+			var score_texte = GestionScore.nombre_avec_separateur_de_milliers(score, '.')
 			for nom_joueur in  dico_rang_nom_joueur.get(rang).get('liste_joueurs'):
-				var score_texte = nom_joueur + " " + str(score)
+				score_texte = nom_joueur + " " + score_texte
 				var texte_bbcode = liste_format_scores.get(rang)
 				texte_bbcode = texte_bbcode.replace('score', score_texte)
 				liste_score_bbcode += texte_bbcode

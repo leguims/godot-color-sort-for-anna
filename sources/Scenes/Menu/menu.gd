@@ -12,7 +12,7 @@ func _ready() -> void:
 
 func _pourcentage_en_led(pourcentage : int, led_sombre, led_lumineuse) -> String:
 	var nb_max_leds = 10
-	var tranche_pourcentage = 100/nb_max_leds
+	var tranche_pourcentage = 100./nb_max_leds
 	var leds : String = ''
 	for i in range(roundi(1.*pourcentage/tranche_pourcentage)):
 		leds += led_lumineuse
@@ -27,14 +27,14 @@ func mettre_a_jour_infos_joueur() -> void:
 	var trophee = GestionScore.lire_le_trophee_du_joueur_actuel()
 	var nom = GestionScore.lire_le_nom_du_joueur_actuel()
 	var ascension = _pourcentage_en_led(
-		GestionScore.lire_pourcentage_ascension_realise_du_joueur_actuel(),
+		roundi(GestionScore.lire_pourcentage_ascension_realise_du_joueur_actuel()),
 		emoji_carre_noir,
 		emoji_carre_blanc)
 	var nb_ascensions_recentes =  GestionScore.compter_ascensions_du_joueur_actuel_depuis(24 * 3600.0)
-	var score = str(GestionScore.lire_le_score_du_joueur_actuel())
-	
+	var score = GestionScore.lire_le_score_du_joueur_actuel()
+	var score_texte = GestionScore.nombre_avec_separateur_de_milliers(score, ' ')
 	var texte = "[center][font_size=30]"
-	texte += nom + " " + trophee + " " + score + "\n"
+	texte += nom + " " + trophee + " " + score_texte + "\n"
 	texte += ascension + "\n"
 	if nb_ascensions_recentes:
 		for i in range(nb_ascensions_recentes):
