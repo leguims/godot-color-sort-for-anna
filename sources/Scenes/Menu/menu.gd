@@ -30,7 +30,7 @@ func mettre_a_jour_infos_joueur() -> void:
 		roundi(GestionScore.lire_pourcentage_ascension_realise_du_joueur_actuel()),
 		emoji_carre_noir,
 		emoji_carre_blanc)
-	var nb_ascensions_recentes =  GestionScore.compter_ascensions_du_joueur_actuel_depuis(24 * 3600.0)
+	var nb_ascensions_recentes =  GestionScore.compter_ascensions_du_joueur_actuel_depuis(0.0)
 	var score = GestionScore.lire_le_score_du_joueur_actuel()
 	var score_texte = GestionScore.nombre_avec_separateur_de_milliers(score, ' ')
 	var texte = "[center][font_size=30]"

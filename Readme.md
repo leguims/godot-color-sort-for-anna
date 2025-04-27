@@ -23,7 +23,7 @@ Outils de productions et de résolution des plateaux de jeux:
 - ~~(Anna) supprimer score dans les infos joueur~~:heavy_check_mark:
 - ~~(Anna) progression campagne : carré blanc = montagne.~~:heavy_check_mark:
 - ~~(Anna) Remplacer la progression campagne par le nombre d'ascensions des dernières 24h.~~:heavy_check_mark:
-- Laisser le nombre d'ascensions de manière permanente dans les infos joueurs (trop difficile pour etre volatile)
+- ~~Laisser le nombre d'ascensions de manière permanente dans les infos joueurs (trop difficile pour etre volatile)~~:heavy_check_mark:
 - Sauvegarder l'état du plateau en cours après chaque coup. Le joueur qui quitte le jeu, reprend là où il était. Quand il revient, il commence avec son temps moyen sur ce type de niveau.
 
 #### Ascensions

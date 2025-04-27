@@ -356,10 +356,14 @@ func lire_ascension_du_joueur_actuel():
 	return joueur_actuel.get('ascensions')
 
 func compter_ascensions_du_joueur_actuel_depuis(age: float = 0):
+	"Compte le nombre d'ascension dans un délai. Si age est nul, aucun filtrage."
 	var compteur = 0
-	var heure_courante = Time.get_unix_time_from_system()
+	var timestamp_courant = Time.get_unix_time_from_system()
 	for timestamp in lire_ascension_du_joueur_actuel():
-		if (heure_courante - age) < timestamp:
+		if not age:
+			# age = 0.0 : pas de filtrage
+			compteur += 1
+		elif (timestamp_courant - age) < timestamp:
 			compteur += 1
 	return compteur
 
