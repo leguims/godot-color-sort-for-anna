@@ -13,6 +13,7 @@ var marge = 4
 
 var couleur_de_deselection = Color("580058")
 var couleur_de_selection = Color("d800d8")
+var couleur_de_deplacement_valide = Color("980098")
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
@@ -107,7 +108,15 @@ func selectionner() -> void:
 	$Fond.color = couleur_de_selection
 
 func deselectionner() -> void:
-	$Fond.color = couleur_de_deselection
+	if not est_termine():
+		$Fond.color = couleur_de_deselection
+
+func selectionner_deplacement_valide() -> void:
+	$Fond.color = couleur_de_deplacement_valide
+
+func bloquer() -> void:
+	if liste_jetons:
+		$Fond.color = liste_jetons[0].couleur().darkened(0.2)
 
 func largeur() -> int:
 	if liste_jetons:

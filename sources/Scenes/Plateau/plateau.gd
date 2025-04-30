@@ -155,10 +155,17 @@ func on_pile_clique_gauche(indice_pile : int) -> void:
 		sauvegarde_indice_pile_depart = indice_pile
 		# Selecitonner la pile de depart
 		pile_cible.selectionner()
+		
+		# Parcourir chaque pile pour voir si elle peut etre destination
+		for pile_arrivee in range(len(liste_piles)):
+			if pile_arrivee != indice_pile \
+				and _est_valide_le_tansfert_de_pile(indice_pile, pile_arrivee):
+				liste_piles[pile_arrivee].selectionner_deplacement_valide()
 	else:
 		$SelectionPile.stop()
 		if realiser_le_tansfert_de_pile(sauvegarde_indice_pile_depart, indice_pile):
 			if pile_cible.est_termine():
+				pile_cible.bloquer()
 				# Vérifier si la partie est achevée
 				if _est_termine():
 					$BoutonAbandon.hide()
@@ -184,8 +191,9 @@ func _est_termine() -> bool:
 	return termine
 
 func _on_selection_pile_timeout() -> void:
-	# Deselecitonner la pile de depart
-	liste_piles[sauvegarde_indice_pile_depart].deselectionner()
+	# Deselecitonner toutes les piles
+	for pile in liste_piles:
+			pile.deselectionner()
 	# Annulation du coup en cours
 	sauvegarde_indice_pile_depart = -1
 	# print("Annulation du coup en cours")
@@ -200,14 +208,14 @@ func pile_de_depart_de_tansfert_valide(indice_pile_depart : int) -> bool:
 		return false
 	return true
 
-func realiser_le_tansfert_de_pile(indice_pile_depart : int, indice_pile_arrivee : int) -> bool:
+func _est_valide_le_tansfert_de_pile(indice_pile_depart : int, indice_pile_arrivee : int) -> bool:
 	if indice_pile_depart == indice_pile_arrivee:
-		print("Pile de départ et d'arrivée sont les mêmes")
+		#print("Pile de départ et d'arrivée sont les mêmes")
 		return false
 
 	var pile_arrivee = liste_piles[indice_pile_arrivee]
 	if pile_arrivee.est_pleine():
-		print("Pile d'arrivée pleine")
+		#print("Pile d'arrivée pleine")
 		return false
 
 	var pile_depart = liste_piles[indice_pile_depart]
@@ -215,14 +223,23 @@ func realiser_le_tansfert_de_pile(indice_pile_depart : int, indice_pile_arrivee 
 	var nb_jeton_depart = pile_depart.combien_de_jetons_identiques_au_sommet()
 
 	if pile_arrivee.accepte_jeton(indice_jeton_depart, nb_jeton_depart):
+		return true
+	else:
+		#print("La pile d'arrivée refuse le(s) ", nb_jeton_depart, " jeton(s)")
+		return false
+
+func realiser_le_tansfert_de_pile(indice_pile_depart : int, indice_pile_arrivee : int) -> bool:
+	if _est_valide_le_tansfert_de_pile(indice_pile_depart, indice_pile_arrivee):
+		var pile_arrivee = liste_piles[indice_pile_arrivee]
+		var pile_depart = liste_piles[indice_pile_depart]
+		var indice_jeton_depart = pile_depart.quelle_est_la_couleur_au_sommet()
+		var nb_jeton_depart = pile_depart.combien_de_jetons_identiques_au_sommet()
+
 		for i in range(nb_jeton_depart):
 			pile_depart.retirer_le_dernier_jeton()
 			pile_arrivee.ajouter_le_jeton_dans_le_vide(indice_jeton_depart)
 		return true
-	else:
-		print("La pile d'arrivée refuse le(s) ", nb_jeton_depart, " jeton(s)")
-		return false
-
+	return false
 
 func _on_bouton_abandon_pressed() -> void:
 	$BoutonAbandon.hide()

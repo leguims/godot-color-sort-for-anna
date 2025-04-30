@@ -25,9 +25,14 @@
 - Pour Android : réorganiser les piles au centre de l'écran
 - Pour Android : élargir la zone de clique pour les piles. Trop de frustration avec des cliques doigts dans le vide.
 - Pour Android : essayer un export Web pour voir si cela fonctionne
+- Editeur de plateau : La ligne de saisie est masquée par le clavier. Elle doit être en haut de l'écran.
 - Faire vibrer le telephone lors de déplacement
 - Faire vibrer FORT le telephone lors d'une pile achevée et bloquée.
 - Faire vibrer plus FORT le telephone lorsque la partie est gagnée.
+
+#### Graphisme
+- Lors de la selection, eclairer le contours des piles d'arrivées valides.
+- Quand une pile est bloquée, entourer la pile avec la couleur de jeton assombrie (inverse de la selection). Elle n'est plus selectionnable.
 
 ### Outillage
 - outils : utiliser le module "logging" pour tracer l'avancement des threads dans leur tâches.

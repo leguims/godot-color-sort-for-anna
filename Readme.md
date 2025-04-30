@@ -23,6 +23,7 @@ Outils de productions et de résolution des plateaux de jeux:
 - ~~(Anna) Remplacer la progression campagne par le nombre d'ascensions des dernières 24h.~~:heavy_check_mark:
 - ~~Laisser le nombre d'ascensions de manière permanente dans les infos joueurs (trop difficile pour etre volatile)~~:heavy_check_mark:
 - Sauvegarder l'état du plateau en cours après chaque coup. Le joueur qui quitte le jeu, reprend là où il était. Quand il revient, il commence avec son temps moyen sur ce type de niveau.
+- ~~(Aleksandar): tuto pour le 1er tableau~~ Abandonné pour colorier les piles valides lors de déplacement.
 
 #### Ascensions
 - Définir une notion d'ascension:
@@ -50,6 +51,7 @@ Outils de productions et de résolution des plateaux de jeux:
   - ~~{ '2x3': {'x':10, 'y': 10, ...0}, '3x3': {...}, ... }~~:heavy_check_mark:
 - ~~Pour Android : élargir la zone de clique pour les piles. Trop de frustration avec des cliques doigts dans le vide.~~:heavy_check_mark:
 - ~~Pour Android : essayer un export Web pour voir si cela fonctionne~~:heavy_check_mark:
+- ~~Editeur de plateau : La ligne de saisie est masquée par le clavier. Elle doit être en haut de l'écran.~~:heavy_check_mark:
 
 #### Deploiement de versions
 - changement de version : les nouveaux tableaux et les anciens tableaux sont en collision.
@@ -58,15 +60,16 @@ Outils de productions et de résolution des plateaux de jeux:
 - prévoir un champs de sauvegarde avec les infos : plateau courant (niveau, indice, nom et "nom" actuel).
 - enregistrer la liste des nom de plateaux achevés ?
 
-#### Ambiance
-- (Anna) Le score est animé quand il augmente. Comme une machine à sous.
-
 #### Musique
 - Réfléchir à l'utilisation des musiques.
   - Option 1 : 1 musique aléatoire à chaque plateau
   - Option 2 : 1 musique par tranche de progression dans l'ascension
   - Option 3 : 1 musique de debut d'ascension et de fin d'ascension constantes et de l'aléatoire sur le chemin
 - Musique : (option 2) Attribuer des musiques en fonction de la phase ascensionnelle actuelle. 1 ascension fait défiler toutes les musiques.
+
+#### Graphisme
+- ~~Lors de la selection, eclairer le contours des piles d'arrivées valides.~~:heavy_check_mark:
+- ~~Quand une pile est bloquée, entourer la pile avec la couleur de jeton assombrie (inverse de la selection). Elle n'est plus selectionnable.~~:heavy_check_mark:
 
 ### Outillage
 - ~~outils : utiliser le module "logging" pour tracer l'avancement des threads dans leur tâches.~~:heavy_check_mark:
@@ -145,7 +148,6 @@ Outils de productions et de résolution des plateaux de jeux:
 - (option) prévoir un json avec l'enregistrement des scores de chacun sur chaque semaine. Score total et score semaine.
 - (Faro) Aligner les piles sur la même ligne pour que ca soit plus facile à jouer (-1 Totol)
 - Découper "Gestion_Score" en plusieurs modules indépendants. Campagne, sauvegarde, traitement des données.
-- (Aleksandar): tuto pour le 1er tableau
 - Sauvegarder l'état du plateau en cours après chaque coup. Le joueur qui quitte le jeu, reprend là où il était. Quand il revient, il commence avec son temps moyen sur ce type de niveau.
 - (Aleksandar): thème sur le fond du décors. Trop austère.
 
@@ -199,7 +201,6 @@ Outils de productions et de résolution des plateaux de jeux:
 
 #### Android
 - Pour Android : voir si une astuce de zoom existe sur Godot pour grandir les piles suivant la taille des piles.
-- Editeur de plateau : La ligne de saisie est masquée par le clavier. Elle doit être en haut de l'écran.
 
 #### Deploiement de versions
 - changement de version : les nouveaux tableaux et les anciens tableaux sont en collision.
@@ -216,6 +217,7 @@ Outils de productions et de résolution des plateaux de jeux:
 - Quand une pile est bloquée, activée une couleur sombre autours (inverse de la selection). Elle n'est plus selectionnable.
 
 #### Ambiance
+- (Anna) Le score est animé quand il augmente. Comme une machine à sous.
 - (Faro) Ajouter de la musique dans les menus (+1 Totol)
 - (option) détecter une position de plateau bloquée ou impossible.
 - (Anna) Le score est animé quand il augmente. Comme une machine à sous.

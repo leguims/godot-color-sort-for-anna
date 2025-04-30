@@ -36,7 +36,7 @@ var _jetons = {
 }
 
 @export var indice_jeton = Plateau.ESPACE
-var couleur
+var _couleur
 var nom
 var position_initiale_carre : Vector2 #(0,0)
 var position_initiale_nom : Vector2 #(0,-16)
@@ -60,8 +60,8 @@ func choisir_jeton(indice : int, redimensionner : bool = false) -> void:
 	if indice in _jetons:
 		indice_jeton = indice
 		nom = _jetons[indice_jeton][0]
-		couleur = _jetons[indice_jeton][1]
-		$Carre.color = couleur
+		_couleur = _jetons[indice_jeton][1]
+		$Carre.color = _couleur
 		$Nom.text = nom
 		if redimensionner:
 			if nom == 'J':
@@ -86,6 +86,9 @@ func hauteur() -> int:
 
 func largeur() -> int:
 	return $Carre.size.x
+
+func couleur() -> Color:
+	return _couleur
 
 func position() -> Vector2:
 	return $Carre.position
