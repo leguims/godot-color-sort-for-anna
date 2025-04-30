@@ -17,8 +17,6 @@ Outils de productions et de résolution des plateaux de jeux:
 - ~~Page "Campagne" : faire apparaitre l'avancement dans la campagne. La distance jusqu'à la fin ... (peut-etre une jauge pour chaque niveau)~~ Déplacé dans les statistiques.
 - ~~Ajouter un pictogramme dans les scores pour le TOP 3. Ajouter ce pictogramme dans les infos joueurs de la campagne.~~:heavy_check_mark:
 - ~~Gérer un fichier de plateaux avec des niveaux discontinus~~:heavy_check_mark:
-- (Faro) Aligner les piles sur la même ligne pour que ca soit plus facile à jouer (-1 Totol)
-- (Aleksandar): tuto pour le 1er tableau
 - ~~(Anna) retour au menu devient menu~~:heavy_check_mark:
 - ~~(Anna) supprimer score dans les infos joueur~~:heavy_check_mark:
 - ~~(Anna) progression campagne : carré blanc = montagne.~~:heavy_check_mark:
@@ -47,9 +45,9 @@ Outils de productions et de résolution des plateaux de jeux:
 	- Dictionnaire pour les musiques en fonction des niveaux.
 
 #### Android
-- Pour Android : réorganiser les piles au centre de l'écran
-  - Programmer en dur des positions selon le format du plateau.
-  - { '2x3': {'x':10, 'y': 10, ...0}, '3x3': {...}, ... }
+- ~~Pour Android : réorganiser les piles au centre de l'écran~~:heavy_check_mark:
+  - ~~Programmer en dur des positions selon le format du plateau.~~:heavy_check_mark:
+  - ~~{ '2x3': {'x':10, 'y': 10, ...0}, '3x3': {...}, ... }~~:heavy_check_mark:
 - ~~Pour Android : élargir la zone de clique pour les piles. Trop de frustration avec des cliques doigts dans le vide.~~:heavy_check_mark:
 - ~~Pour Android : essayer un export Web pour voir si cela fonctionne~~:heavy_check_mark:
 
@@ -189,6 +187,8 @@ Outils de productions et de résolution des plateaux de jeux:
     - durée moyenne d'ascension (temps, plateaux), 
     - nombre d'ascension achevées 
   - Niveau (notion artificielle à construire):
+    - Idée de représentation graphique : Dessiner une courbe avec x=niveaux et y=f(x)=echecs, taux de réussite ...
+    - Idée : Representer les courbes sur 1 mois d'activité et comparer au dernier mois (en pointillé) 
     - échecs par niveau, 
     - taux de réussite par niveau, 
     - temps moyen par niveau,
@@ -198,9 +198,6 @@ Outils de productions et de résolution des plateaux de jeux:
     - le plus long (temps, profondeur) 
 
 #### Android
-- Pour Android : réorganiser les piles au centre de l'écran
-  - Programmer en dur des positions selon le format du plateau.
-  - { '2x3': {'x':10, 'y': 10, ...0}, '3x3': {...}, ... }
 - Pour Android : voir si une astuce de zoom existe sur Godot pour grandir les piles suivant la taille des piles.
 - Editeur de plateau : La ligne de saisie est masquée par le clavier. Elle doit être en haut de l'écran.
 
@@ -214,7 +211,9 @@ Outils de productions et de résolution des plateaux de jeux:
 #### Graphisme
 - Représenter 2 jetons identiques l'un sur l'autre comme soudés
 - Lors de la sélection, colorer que les jetons candidats au mouvement.
+- Lors de la sélection, faire clignoter les piles valides pour recevoir les jetons.
 - voir si une astuce de zoom existe sur Godot pour grandir les piles suivant la taille des piles.
+- Quand une pile est bloquée, activée une couleur sombre autours (inverse de la selection). Elle n'est plus selectionnable.
 
 #### Ambiance
 - (Faro) Ajouter de la musique dans les menus (+1 Totol)

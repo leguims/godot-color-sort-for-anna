@@ -9,6 +9,7 @@
 - (Anna) supprimer score dans les infos joueur
 - (Anna) progression campagne : carré blanc = montagne.
 - (Anna) Remplacer la progression campagne par le nombre d'ascensions des dernières 24h.
+- (Anna) Laisser le nombre d'ascensions de manière permanente dans les infos joueurs (trop difficile pour etre volatile)
 
 #### Ascensions
 - Gérer plusieurs 'ascensions' avec tous les plateaux:
@@ -21,8 +22,12 @@
 - Ajouter un champs 'Ascension' dans les infos joueur pour indiquer le niveau de terminaison de l'ascension actuelle.
 
 #### Android
+- Pour Android : réorganiser les piles au centre de l'écran
 - Pour Android : élargir la zone de clique pour les piles. Trop de frustration avec des cliques doigts dans le vide.
 - Pour Android : essayer un export Web pour voir si cela fonctionne
+- Faire vibrer le telephone lors de déplacement
+- Faire vibrer FORT le telephone lors d'une pile achevée et bloquée.
+- Faire vibrer plus FORT le telephone lorsque la partie est gagnée.
 
 ### Outillage
 - outils : utiliser le module "logging" pour tracer l'avancement des threads dans leur tâches.

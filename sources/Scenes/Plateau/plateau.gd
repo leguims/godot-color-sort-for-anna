@@ -97,43 +97,54 @@ func _creer_un_plateau(piles : Array) -> void:
 		pile.choisir_position( position_pile )
 
 func _calculer_la_position_de_la_pile(nb_piles : int, indice_pile : int) -> Vector2:
-	var marge_y = 50
+	# en haut à gauche (0,0)
+	# en bas à droite (infini, infini)
+	var taille_bouton_abandonner = $BoutonAbandon.size.y * 0.5
+	# TODO : Facteur 0,5 ajouté par bricolage, car la hauteur de la pile ne semble pas être
+	#        ... exactement celle retournée par liste_piles[0].hauteur()
+	#        ... ou sinon, son affichage est décallé
 	var taille_fenetre_jeu = get_viewport().get_visible_rect().size
-	var nb_ecarts = nb_piles + 1 # (nb_piles-1) = ecarts + 2 marges
-	var largeur_pile = liste_piles[0].largeur()
-	var ecart_entre_piles_x = taille_fenetre_jeu.x / nb_ecarts
-	var position_pile : Vector2
-	# 13 piles max par ligne, mais rendu surchargé
-	# 6 piles par ligne = rendu agréable. Correspond à un écart d'une pile vide entre chaque pile.
-	if 2*largeur_pile < ecart_entre_piles_x :
-		# Gérer 1 ligne de piles
-		position_pile.x = ecart_entre_piles_x * (1 + indice_pile) - 0.5 * largeur_pile
-		position_pile.y = taille_fenetre_jeu.y - marge_y
-		if indice_pile == 0:
-			#print("calculer_la_position_de_la_pile : nb_piles = ", nb_piles)
-			pass
-	else :
-		# Gérer 2 lignes de piles
-		nb_ecarts = roundi((nb_piles -1) / 2.0 + 2) # (nb_piles-1)/2 = ecarts + 2 marges
-		ecart_entre_piles_x = taille_fenetre_jeu.x / nb_ecarts
-		if 2*largeur_pile < ecart_entre_piles_x :
-			var indice_pile_2_colonnes = roundi(indice_pile / 2.0)
-			position_pile.x = ecart_entre_piles_x * (1 + indice_pile_2_colonnes) - 0.5 * largeur_pile
-			if indice_pile % 2:
-				position_pile.y = taille_fenetre_jeu.y - marge_y
-			else:
-				position_pile.y = (taille_fenetre_jeu.y / 2) - marge_y
-			if indice_pile == 0:
-				#print("calculer_la_position_de_la_pile : nb_piles = ", nb_piles)
-				pass
-		else:
-			if indice_pile == 0:
-				# TODO : Gérer N lignes en fonction de la hauteur de pile !
-				# TODO : Gérer les piles de tailes différentes
-				#print("calculer_la_position_de_la_pile : Trop de piles ! nb_piles = ", nb_piles)
-				pass
-		pass
+	var taille_pile_pixels = Vector2(liste_piles[0].largeur(), liste_piles[0].hauteur())
+	var taille_plateau = convertir_indice_pile_coordonnees_max(nb_piles, indice_pile)
+	var coordonnees_pile = convertir_indice_pile_coordonnees(nb_piles, indice_pile)
+	var position_pile = Vector2()
+	if taille_plateau.y == 1:
+		# 1 ligne de piles : 'y' constant
+		position_pile.y = taille_bouton_abandonner + (taille_fenetre_jeu.y - taille_bouton_abandonner) / 2 + taille_pile_pixels.y / 2
+		var nb_ecarts_x = nb_piles + 1
+		var vide_x = (taille_fenetre_jeu.x - (nb_piles * taille_pile_pixels.x)) / nb_ecarts_x
+		var ecart_x = vide_x + taille_pile_pixels.x
+		var taille_plateau_totale_x = nb_piles * taille_pile_pixels.x + (nb_piles - 1) * vide_x
+		position_pile.x = taille_fenetre_jeu.x / 2 - taille_plateau_totale_x / 2 + ecart_x * (indice_pile)
+	else:
+		# N lignes de piles
+		var nb_ecarts = Vector2i(taille_plateau.x + 1, taille_plateau.y + 1)
+		var vide = Vector2( (taille_fenetre_jeu.x - (taille_plateau.x * taille_pile_pixels.x)) / nb_ecarts.x,
+							 (taille_fenetre_jeu.y - taille_bouton_abandonner - (taille_plateau.y * taille_pile_pixels.y)) / nb_ecarts.y)
+		var ecart = Vector2( vide.x + taille_pile_pixels.x,
+							 vide.y + taille_pile_pixels.y)
+		var taille_plateau_totale = Vector2( taille_plateau.x * taille_pile_pixels.x + (taille_plateau.x - 1) * vide.x,
+												taille_plateau.y * taille_pile_pixels.y + (taille_plateau.y - 1) * vide.y)
+		position_pile = Vector2( taille_fenetre_jeu.x / 2 - taille_plateau_totale.x / 2 + ecart.x * (coordonnees_pile.x),
+									taille_bouton_abandonner + (taille_fenetre_jeu.y - taille_bouton_abandonner) / 2 + taille_plateau_totale.y / 2 - ecart.y * (coordonnees_pile.y) )
 	return position_pile
+
+func convertir_indice_pile_coordonnees(nb_piles : int, indice_pile : int) -> Vector2i:
+	var coordonnees = Vector2i(0,0)
+	var nb_pile_par_ligne = convertir_indice_pile_coordonnees_max(nb_piles, indice_pile).x
+	if nb_pile_par_ligne != 0:
+		coordonnees.y = floori(indice_pile / nb_pile_par_ligne) # Division entiere
+		coordonnees.x = indice_pile - coordonnees.y * nb_pile_par_ligne # Reste de la division entiere
+	return coordonnees
+
+func convertir_indice_pile_coordonnees_max(nb_piles : int, indice_pile : int) -> Vector2i:
+	var max = Vector2i(0,0)
+	if nb_piles:
+		# 13 piles max par ligne, mais rendu surchargé
+		# 6 piles par ligne = rendu agréable. Correspond à un écart d'une pile vide entre chaque pile.
+		max.y = ceili(nb_piles / 6.) # Nombre de ligne necessaires
+		max.x = roundi(1. * nb_piles / max.y) # Nombre de pile par ligne
+	return max
 
 func on_pile_clique_gauche(indice_pile : int) -> void:
 	# print("clique sur la pile : ", indice_pile)
@@ -152,6 +163,14 @@ func on_pile_clique_gauche(indice_pile : int) -> void:
 				if _est_termine():
 					$BoutonAbandon.hide()
 					victoire.emit()
+					# Grosse vibration
+					Input.vibrate_handheld(800, 1.0)
+				else:
+					# Petite vibration
+					Input.vibrate_handheld(200, 0.5)
+			else:
+				# Toute petite vibration
+				Input.vibrate_handheld(50, 0.2)
 		_on_selection_pile_timeout()
 
 func _est_termine() -> bool:

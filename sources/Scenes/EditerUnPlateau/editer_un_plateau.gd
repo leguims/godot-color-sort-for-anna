@@ -6,7 +6,7 @@ class_name EditerUnPlateau
 func _ready() -> void:
 	$Menu.set_script(MenuEditerUnPlateau)
 	$Menu.modifier_tempo_message(2.0)
-	$Menu.modifier_message_vertical_align(VERTICAL_ALIGNMENT_BOTTOM)
+	# $Menu.modifier_message_vertical_align(VERTICAL_ALIGNMENT_BOTTOM)
 	$Menu.show()
 	$Menu.afficher_accueil()
 

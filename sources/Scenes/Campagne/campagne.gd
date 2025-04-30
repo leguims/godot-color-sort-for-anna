@@ -9,7 +9,7 @@ var duree_en_ms : int
 func _ready() -> void:
 	$Menu.set_script(MenuCampagne)
 	$Menu.modifier_tempo_message(1.0)
-	$Menu.modifier_message_vertical_align(VERTICAL_ALIGNMENT_CENTER)
+	# $Menu.modifier_message_vertical_align(VERTICAL_ALIGNMENT_CENTER)
 	$Menu.show()
 	$Menu.afficher_accueil()
 
