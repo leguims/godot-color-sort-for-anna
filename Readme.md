@@ -25,6 +25,11 @@ Outils de productions et de résolution des plateaux de jeux:
 - Sauvegarder l'état du plateau en cours après chaque coup. Le joueur qui quitte le jeu, reprend là où il était. Quand il revient, il commence avec son temps moyen sur ce type de niveau.
 - ~~(Aleksandar): tuto pour le 1er tableau~~ Abandonné pour colorier les piles valides lors de déplacement.
 
+#### Menu principal
+- ~~Supprimer la tuile "Nouveau Joueur"~~:heavy_check_mark:
+- ~~Dans le menu "Campagne", ajouter après la liste des joueurs une tuile " + "~~:heavy_check_mark:
+- ~~Dans le menu "Campagne, la tuile " + " est éditable, réalise la vérification du nom et ajoute le nouveau joueur~~:heavy_check_mark:
+
 #### Ascensions
 - Définir une notion d'ascension:
 	- Définition:

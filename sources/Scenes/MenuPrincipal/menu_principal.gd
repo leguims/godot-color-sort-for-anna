@@ -16,77 +16,92 @@ func _on_bouton_scores_pressed() -> void:
 	get_tree().change_scene_to_file("res://Scenes/Scores/scores.tscn")
 
 
-func _on_bouton_joueur_pressed() -> void:
-	if $Marge/HBoxContainer/VBoxContainer/Marge/VBoxContainer/TexteJoueur.is_visible_in_tree():
-		$Marge/HBoxContainer/VBoxContainer/Marge/VBoxContainer/TexteJoueur.hide()
-	else:
-		$Marge/HBoxContainer/VBoxContainer/Marge/VBoxContainer/TexteJoueur.show()
-
-
-func _on_texte_joueur_text_submitted(nom_nouveau_joueur: String) -> void:
+func _on_nouveau_joueur_text_submitted(nom_nouveau_joueur: String) -> void:
 	print("Nouveau joueur : ", nom_nouveau_joueur)
-	$Marge/HBoxContainer/VBoxContainer/Marge/VBoxContainer/TexteJoueur.clear()
+	$Marge/HBoxContainer/VBoxContainer/Marge/VBoxContainer/JoueursCampagne.get_node("nouveau_joueur").clear()
 	if not GestionScore.ajouter_un_nouveau_joueur(nom_nouveau_joueur):
 		print("Erreur : Le nom '" + nom_nouveau_joueur + "' n'est pas libre")
-		$Marge/HBoxContainer/VBoxContainer/Marge/VBoxContainer/TexteJoueur.placeholder_text = 'Erreur !'
+		$Marge/HBoxContainer/VBoxContainer/Marge/VBoxContainer/JoueursCampagne.get_node("nouveau_joueur").placeholder_text = 'Erreur !'
 	else:
-		$Marge/HBoxContainer/VBoxContainer/Marge/VBoxContainer/TexteJoueur.placeholder_text = 'Ok !'
-		_mettre_a_jour_boutons_joueurs_campagne()
+		$Marge/HBoxContainer/VBoxContainer/Marge/VBoxContainer/JoueursCampagne.get_node("nouveau_joueur").placeholder_text = 'Ok !'
+		_mettre_a_jour_tuiles_joueurs_campagne()
+		$Marge/HBoxContainer/VBoxContainer/Marge/VBoxContainer/JoueursCampagne.get_node("nouveau_joueur").placeholder_text = " Ajouter "
 
 
 func _on_bouton_campagne_pressed() -> void:
 	if $Marge/HBoxContainer/VBoxContainer/Marge/VBoxContainer/JoueursCampagne.is_visible_in_tree():
 		$Marge/HBoxContainer/VBoxContainer/Marge/VBoxContainer/JoueursCampagne.hide()
-		_effacer_boutons_joueurs_campagne()
+		_effacer_tuiles_joueurs_campagne()
 	else:
-		_creer_boutons_joueurs_campagne()
+		_creer_tuiles_joueurs_campagne()
 		$Marge/HBoxContainer/VBoxContainer/Marge/VBoxContainer/JoueursCampagne.show()
 
-func _mettre_a_jour_boutons_joueurs_campagne():
+
+func _mettre_a_jour_tuiles_joueurs_campagne():
 	if $Marge/HBoxContainer/VBoxContainer/Marge/VBoxContainer/JoueursCampagne.is_visible_in_tree():
 		$Marge/HBoxContainer/VBoxContainer/Marge/VBoxContainer/JoueursCampagne.hide()
-		_effacer_boutons_joueurs_campagne()
-		_creer_boutons_joueurs_campagne()
+		_effacer_tuiles_joueurs_campagne()
+		_creer_tuiles_joueurs_campagne()
 		$Marge/HBoxContainer/VBoxContainer/Marge/VBoxContainer/JoueursCampagne.show()
 
-func _creer_boutons_joueurs_campagne():
+
+func _creer_tuiles_joueurs_campagne():
 	$Marge/HBoxContainer/VBoxContainer/Marge/VBoxContainer/JoueursCampagne.columns = 2
 	for nom_joueur in GestionScore.lire_la_liste_des_joueurs():
 		# Ajouter des boutons ou des tuiles de sélection de profil
 		var button = Button.new()
+		_creer_style_tuile_joueur_campagne(button, nom_joueur, GestionScore.la_campagne_du_joueur_est_terminee(nom_joueur))
 		button.text = nom_joueur
-		button.add_theme_font_size_override("font_size", 21)
-		
-		# Créer un StyleBoxFlat pour le hover et normal
-		# La couleur de la tuile est grise si la campagne est terminée
-		var normal_style = StyleBoxFlat.new()
-		if GestionScore.la_campagne_du_joueur_est_terminee(nom_joueur):
-			normal_style.bg_color = Color.html("404040")
-		else:
-			normal_style.bg_color = Color.html("df00df")
-		normal_style.content_margin_left = 10
-		normal_style.content_margin_right = 10
-		normal_style.content_margin_top = 5
-		normal_style.content_margin_bottom = 5
-		button.add_theme_stylebox_override("normal", normal_style)
-		var hover_style = StyleBoxFlat.new()
-		if GestionScore.la_campagne_du_joueur_est_terminee(nom_joueur):
-			hover_style.bg_color = Color.html("202020")
-		else:
-			hover_style.bg_color = Color.html("890089")
-		hover_style.content_margin_left = 10
-		hover_style.content_margin_right = 10
-		hover_style.content_margin_top = 5
-		hover_style.content_margin_bottom = 5
-		button.add_theme_stylebox_override("hover", hover_style)
-
 		button.connect("pressed", _on_joueurs_campagne_pressed.bind(nom_joueur))
 		$Marge/HBoxContainer/VBoxContainer/Marge/VBoxContainer/JoueursCampagne.add_child(button)
 
+	# Ajouter la tuile pour ajouter un nouveau joueur
+	var nouveau_joueur = LineEdit.new()
+	_creer_style_tuile_joueur_campagne(nouveau_joueur, "nouveau_joueur", false)
+	nouveau_joueur.placeholder_text = " Ajouter "
+	nouveau_joueur.text_submitted.connect(_on_nouveau_joueur_text_submitted)
+	$Marge/HBoxContainer/VBoxContainer/Marge/VBoxContainer/JoueursCampagne.add_child(nouveau_joueur)
 
-func _effacer_boutons_joueurs_campagne():
+
+# "Control" = parent de "Button" et "LineEdit"
+func _creer_style_tuile_joueur_campagne(tuile : Control, nom : String, campagne_terminee : bool):
+	tuile.name = nom
+	tuile.add_theme_font_size_override("font_size", 21)
+	
+	# Code conditionnel
+	if tuile is Button:
+		pass
+	if tuile is LineEdit:
+		pass
+	
+	# Créer un StyleBoxFlat pour le hover et normal
+	# La couleur de la tuile est grise si la campagne est terminée
+	var normal_style = StyleBoxFlat.new()
+	if campagne_terminee:
+		normal_style.bg_color = Color.html("404040")
+	else:
+		normal_style.bg_color = Color.html("df00df")
+	normal_style.content_margin_left = 10
+	normal_style.content_margin_right = 10
+	normal_style.content_margin_top = 5
+	normal_style.content_margin_bottom = 5
+	tuile.add_theme_stylebox_override("normal", normal_style)
+	var hover_style = StyleBoxFlat.new()
+	if campagne_terminee:
+		hover_style.bg_color = Color.html("202020")
+	else:
+		hover_style.bg_color = Color.html("890089")
+	hover_style.content_margin_left = 10
+	hover_style.content_margin_right = 10
+	hover_style.content_margin_top = 5
+	hover_style.content_margin_bottom = 5
+	tuile.add_theme_stylebox_override("hover", hover_style)
+
+
+func _effacer_tuiles_joueurs_campagne():
 	for child in $Marge/HBoxContainer/VBoxContainer/Marge/VBoxContainer/JoueursCampagne.get_children():
-		if child is Button:
+		# "Control" = parent de "Button" et "LineEdit"
+		if child is Control:
 			remove_child(child)
 			child.queue_free()
 

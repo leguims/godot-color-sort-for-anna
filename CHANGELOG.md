@@ -11,6 +11,11 @@
 - (Anna) Remplacer la progression campagne par le nombre d'ascensions des dernières 24h.
 - (Anna) Laisser le nombre d'ascensions de manière permanente dans les infos joueurs (trop difficile pour etre volatile)
 
+#### Menu principal
+- Supprimer la tuile "Nouveau Joueur"
+- Dans le menu "Campagne", ajouter après la liste des joueurs une tuile " + "
+- Dans le menu "Campagne, la tuile " + " est éditable, réalise la vérification du nom et ajoute le nouveau joueur
+
 #### Ascensions
 - Gérer plusieurs 'ascensions' avec tous les plateaux:
   - 1 ascension = Atteindre un niveau maximum et finir 1 plateau
