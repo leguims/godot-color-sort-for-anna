@@ -301,8 +301,11 @@ func nombre_avec_separateur_de_milliers(nombre : int, separateur : String) -> St
 		var dividende = roundi(nombre / division)
 		if dividende:
 			if nombre_texte:
-				nombre_texte +=separateur
-			nombre_texte += str(dividende)
+				nombre_texte += separateur
+				nombre_texte += str(dividende).pad_zeros(3)
+			else :
+				# Premiere partie du nombre : pas de séparateur entre milliers ou de remplissage de zero.
+				nombre_texte += str(dividende)
 			nombre -= dividende * division
 	return nombre_texte
 

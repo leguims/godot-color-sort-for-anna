@@ -5,6 +5,7 @@ extends Control
 func _ready() -> void:
 	GestionScore.initialiser_les_plateaux()
 	GestionScore.lire_sauvegarde_joueurs()
+	_creer_tuiles_joueurs_campagne()
 	pass # Replace with function body.
 
 
@@ -24,24 +25,14 @@ func _on_nouveau_joueur_text_submitted(nom_nouveau_joueur: String) -> void:
 		$Marge/HBoxContainer/VBoxContainer/Marge/VBoxContainer/JoueursCampagne.get_node("nouveau_joueur").placeholder_text = 'Erreur !'
 	else:
 		$Marge/HBoxContainer/VBoxContainer/Marge/VBoxContainer/JoueursCampagne.get_node("nouveau_joueur").placeholder_text = 'Ok !'
-		_mettre_a_jour_tuiles_joueurs_campagne()
+		_ajouter_une_tuile_pour_nouveau_joueur_campagne(nom_nouveau_joueur)
 		$Marge/HBoxContainer/VBoxContainer/Marge/VBoxContainer/JoueursCampagne.get_node("nouveau_joueur").placeholder_text = " Ajouter "
 
 
 func _on_bouton_campagne_pressed() -> void:
 	if $Marge/HBoxContainer/VBoxContainer/Marge/VBoxContainer/JoueursCampagne.is_visible_in_tree():
 		$Marge/HBoxContainer/VBoxContainer/Marge/VBoxContainer/JoueursCampagne.hide()
-		_effacer_tuiles_joueurs_campagne()
 	else:
-		_creer_tuiles_joueurs_campagne()
-		$Marge/HBoxContainer/VBoxContainer/Marge/VBoxContainer/JoueursCampagne.show()
-
-
-func _mettre_a_jour_tuiles_joueurs_campagne():
-	if $Marge/HBoxContainer/VBoxContainer/Marge/VBoxContainer/JoueursCampagne.is_visible_in_tree():
-		$Marge/HBoxContainer/VBoxContainer/Marge/VBoxContainer/JoueursCampagne.hide()
-		_effacer_tuiles_joueurs_campagne()
-		_creer_tuiles_joueurs_campagne()
 		$Marge/HBoxContainer/VBoxContainer/Marge/VBoxContainer/JoueursCampagne.show()
 
 
@@ -61,6 +52,17 @@ func _creer_tuiles_joueurs_campagne():
 	nouveau_joueur.placeholder_text = " Ajouter "
 	nouveau_joueur.text_submitted.connect(_on_nouveau_joueur_text_submitted)
 	$Marge/HBoxContainer/VBoxContainer/Marge/VBoxContainer/JoueursCampagne.add_child(nouveau_joueur)
+
+
+func _ajouter_une_tuile_pour_nouveau_joueur_campagne(nom_joueur : String):
+	# Ajouter la tuile de sélection du nouveau profil
+	var button = Button.new()
+	_creer_style_tuile_joueur_campagne(button, nom_joueur, GestionScore.la_campagne_du_joueur_est_terminee(nom_joueur))
+	button.text = nom_joueur
+	button.connect("pressed", _on_joueurs_campagne_pressed.bind(nom_joueur))
+	$Marge/HBoxContainer/VBoxContainer/Marge/VBoxContainer/JoueursCampagne.add_child(button)
+	# Mettre en avant derniere position la tuile pour que l'ajout de nouveau joueur soit toujours dernier
+	$Marge/HBoxContainer/VBoxContainer/Marge/VBoxContainer/JoueursCampagne.move_child(button, -2)
 
 
 # "Control" = parent de "Button" et "LineEdit"
@@ -96,14 +98,6 @@ func _creer_style_tuile_joueur_campagne(tuile : Control, nom : String, campagne_
 	hover_style.content_margin_top = 5
 	hover_style.content_margin_bottom = 5
 	tuile.add_theme_stylebox_override("hover", hover_style)
-
-
-func _effacer_tuiles_joueurs_campagne():
-	for child in $Marge/HBoxContainer/VBoxContainer/Marge/VBoxContainer/JoueursCampagne.get_children():
-		# "Control" = parent de "Button" et "LineEdit"
-		if child is Control:
-			remove_child(child)
-			child.queue_free()
 
 
 func _on_joueurs_campagne_pressed(nom_joueur: String) -> void:
