@@ -15,7 +15,7 @@ config/description="Jeu de tri de jeton de couleurs pour Anna mon amour."
 run/main_scene="res://Scenes/MenuPrincipal/menu_principal.tscn"
 config/features=PackedStringArray("4.3", "GL Compatibility")
 boot_splash/fullsize=false
-config/icon="res://icon.svg"
+config/icon="res://icon_128x128.svg"
 config/windows_native_icon="res://icon.ico"
 
 [autoload]

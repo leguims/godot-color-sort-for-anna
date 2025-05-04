@@ -144,6 +144,20 @@ Outils de productions et de résolution des plateaux de jeux:
     - Diagnostic : Vérifier l'ordre des plateaux dans le jeu
     - Diagnostic : Vérifier la longueur de la solution minimale
 
+### Retour de phase de tests internes
+
+#### Dorian
+- Frustrant de rebondir sur un plateau difficile et de ne pas pouvoir défaire un coup perdant.
+- La barre d'avancement est imprécise, j'aimerais savoir combien de plateaux reussir pour allumer la case suivante.
+- Le score manque de pédagogie, il pourrait être décomposé selon le temps et le ratio de réussite pour montrer au joueur comment performer.
+  - [À FAIRE] À chaque fin de plateau, afficher:
+    - Bravo !
+    - Score pour le temps : xxxx points
+    - Score pour le ratio win/lose : yyy points
+    - Score pour l'ascension : zzz points
+- Le score est conservé pour toutes les ascensions, cela ne permet pas de comparer les ascensions entre elles. Pour voir les progrès, il serait bien de repartir à zéro et de pouvoir mettre des statistiques à disposition.
+- Au sein d'un même niveau, il y a trop de similarité entre les plateaux. On a le sentiment de refaire le même.
+
 ## V0.4 : Travaux pour la prochaine version
 
 ### Jeu
@@ -155,6 +169,8 @@ Outils de productions et de résolution des plateaux de jeux:
 - Découper "Gestion_Score" en plusieurs modules indépendants. Campagne, sauvegarde, traitement des données.
 - Sauvegarder l'état du plateau en cours après chaque coup. Le joueur qui quitte le jeu, reprend là où il était. Quand il revient, il commence avec son temps moyen sur ce type de niveau.
 - (Aleksandar): thème sur le fond du décors. Trop austère.
+- Ajouter des points au score par ascension terminée.
+- Quand le jeu est terminé (campagne 100%), afficher un globe à coté du nom du joueur dans le menu principal
 
 #### Ascensions
 - Définir une notion d'ascension:
@@ -279,6 +295,7 @@ Outils de productions et de résolution des plateaux de jeux:
 	- pacman/fantômes et le labyrinthe
 - Surement faisable avec des EMOJI : String.chr(unicode) (https://www.unicode.org/emoji/charts/emoji-list.html)
 - Idee de nouveau gameplay, chaque colonne est en mouvement, comme si les jetons étaient sur un tapis roulant. Le joueurs doit donner l'ordre d'échange au bon moment !
+- (Anna) Réaliser une version portugaise.
 
 ## V2.0 : Idées du futur:
 - Game play "Message" :
