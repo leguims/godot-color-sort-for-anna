@@ -1,5 +1,21 @@
 # Liste des fonctionnalités
 
+## V0.3.1 : Travaux réalisés
+
+### Jeu
+Sans objet
+
+### Outillage
+
+#### Revalidation
+- Revalidation Phase 2 : il faut décomposer en plusieurs phases, car en 8x3, après 90 minutes, il est toujours bloqué dans la première sous boucle.
+	- Vérifier à chaque étape de revalidation que le fichier est enregistré
+	- Comparer le resultat avec l'ancien algo
+- À chaque itération, repartir sur la nouvelle base et ne pas vérifier les plateaux effacés précedemment
+
+#### Accélération de recherche
+- Ajouter un champs "Dernier plateau recherche" pour reprendre la recherche de plateau plus efficacement.
+
 ## V0.3 : Travaux réalisés
 
 ### Jeu
