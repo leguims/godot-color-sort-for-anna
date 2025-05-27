@@ -6,7 +6,13 @@ Documentation de l'architecture et la conception du jeu:
 Outils de productions et de résolution des plateaux de jeux:
 - [Color sort for Anna TOOLS](https://github.com/leguims/color_sort_for_anna_tools)
 
+# Demandes d'évolutions
+Listes des évolutions votées par les testeurs:
+- [Evolutions](Evolutions.md)
+
 # Liste des fonctionnalités
+
+Depuis la phase de tests internes de la version V0.3.0, les fonctionnalités sont votées par les testeurs. L'attribution des fonctionnailités par versions ci-dessous devrait devenir obsolète pour préférer un classement global des testeurs. Cependant, les deux vont vivre pendant une phase de transition.
 
 ## V0.3.1 : Travaux pour la prochaine version
 
@@ -117,11 +123,17 @@ Outils de productions et de résolution des plateaux de jeux:
 
 ### Outillage
 
+- Rendre parametrable depuis les scripts "outil_*" les chemins vers "Analyses" et "Solutions"
+
+#### Recherche de plateaux
+- Ajouter un "outil_divers" pour reset les parametres de recherche de plateaux
+
 #### Revalidation
 - ~~Revalidation Phase 2 : il faut décomposer en plusieurs phases, car en 8x3, après 90 minutes, il est toujours bloqué dans la première sous boucle.~~:heavy_check_mark:
 	- ~~Vérifier à chaque étape de revalidation que le fichier est enregistré~~:heavy_check_mark:
 	- ~~Comparer le resultat avec l'ancien algo~~:heavy_check_mark:
 - ~~À chaque itération, repartir sur la nouvelle base et ne pas vérifier les plateaux effacés précedemment~~:heavy_check_mark:
+- Ajouter un "outil_divers" pour reset les parametres de revalidation des plateaux
 
 #### Accélération de recherche
 - ~~Ajouter un champs "Dernier plateau recherche" pour reprendre la recherche de plateau plus efficacement.~~:heavy_check_mark:
@@ -174,40 +186,3 @@ Outils de productions et de résolution des plateaux de jeux:
 
 ## V0.3
 - [Phase de tests internes](Tests_internes_V0.3.0.md)
-
-# Demandes d'évolutions
-
-Voici la liste ordonnées des évolutions votées lors de la version V0.3.0 (Rang | Score | Description):
-
-1.	Score: 1,4	- Ajouter une option pour activer/désactiver la musique
-2.	Score: 1,4	- Ajouter une option pour activer/désactiver les vibrations
-3.	Score: 1,4	- Annuler la sélection de pile lors d'un pointage sur le fond d'écran
-4.	Score: 1,4	- Des plateaux encore plus difficiles !
-5.	Score: 1,6	- Ajouter une option pour activer/désactiver les bruitages
-6.	Score: 1,7	- Au commencement d'une ascension, permettre à l'utilisateur de choisir la longueur de son ascension.
-7.	Score: 1,7	- Réduire la similitude des plateaux de faible niveaux qui se ressemblent trop.
-8.	Score: 1,9	- Baser la difficulté sur le nombre d'alternatives (les occasions de faire une erreur) de la solution
-9.	Score: 2,0	- Lors d'un abandon, ne pas rejouer le même plateau abandonné, mais proposer un autre plateau de même difficulté.
-10.	Score: 2,0	- Améliorer la précision de l'avancement dans l'ascension
-11.	Score: 2,0	- La sélection ne met en surbrillance que les jetons concernés et pas la pile complète
-12.	Score: 2,1	- Dans le menu principal, donner accès à des statistiques de jeu des joueurs.
-13.	Score: 2,1	- Dans la page de statistiques, présenter des statistiques de "Campagne" : Pourcentage de complétion,  Temps de jeu, Nombre de parties, Nombre de défaites, Taux de. réussite, Série maximum de succès
-14.	Score: 2,1	- Dans la page de statistiques, présenter des statistiques de "Ascension" : Pourcentage de complétion de l'ascension en cours, nombre d'ascension sans détour, la pl.us longue (temps, dépassement de plateaux) durée moyenne d'ascension (temps, plateaux), nombre d'ascension achevées
-15.	Score: 2,1	- Prévoir 2 tableaux de scores : un classement globale et cumulatif de tous les plateaux joués et un classement par ascension.
-16.	Score: 2,1	- Implémenter le "GLISSER" pour le déplacement de jeton en plus du mécanisme actuel.
-17.	Score: 2,2	- Sauvegarder le jeu pendant la résolution d'un plateau pour reprendre au milieu d'un plateau.
-18.	Score: 2,3	- Ajouter une description du but du jeu dans la description de l'application
-19.	Score: 2,3	- Ajouter une description des règles du jeu dans la description de l'application.
-20.	Score: 2,4	- Agrandir la zone de sélection autours de la pile, car elle est trop étroite..
-21.	Score: 2,6	- Dans la page de statistiques, présenter des graphiques de statistiques de "Difficulté" : échecs par difficulté, taux de réussite, temps moyen, complétion.
-22.	Score: 2,6	- Après une résolution ou abandon, représenter la variation du score avec sa composante "taux de réussite" et "temps de résolution" pour que le joueur comprenne les ressorts d'amélioration du score.
-23.	Score: 2,9	- Ajouter une musique dans les menus
-24.	Score: 3,0	- Prévoir des musiques différentes selon l'avancement dans l'ascension.
-25.	Score: 3,0	- Ajouter des points spécifiques à la réussite d'une ascension dans le score..
-26.	Score: 3,0	- En jeu, représenter les jetons contigus identiques comme "soudés"..
-27.	Score: 3,0	- Quand un joueur tarde à résoudre un plateau, faire une animation pour l'inviter à abandonner (troll).
-28.	Score: 3,2	- Réaliser une animation de jeton qui se déplace
-29.	Score: 3,3	- Dans la page "Campagne" à coté du bouton "Menu", prévoir un bouton pour changer de joueur sans retourner au menu principal.
-30.	Score: 3,3	- Ajouter des fonds et des emojis de plateaux à thème (exemple : une cuisine avec des jetons d'aliments)
-31.	Score: 3,4	- Le score augmente comme sur une machine à sous.
-32.	Score: 3,8	- Afficher une image en fond plutôt que le fond uni.
