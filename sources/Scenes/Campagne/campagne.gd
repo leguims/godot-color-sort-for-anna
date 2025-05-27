@@ -22,8 +22,10 @@ func _lancer_plateau_de_campagne(plateau : String) -> void:
 		$Menu.cacher_accueil()
 		$PlateauDeJeu.effacer_le_plateau()
 		$PlateauDeJeu.commencer_un_nouveau_plateau(plateau)
-		$SonCommencer.play()
-		$Musique.play()
+		if GestionScore.effets_sonores_sont_actifs():
+			$SonCommencer.play()
+		if GestionScore.musiques_sont_actives():
+			$Musique.play()
 		heure_debut_en_ms = Time.get_ticks_msec()
 	else:
 		_on_plateau_de_jeu_plateau_invalide()
@@ -39,8 +41,10 @@ func _on_plateau_de_jeu_victoire() -> void:
 		GestionScore.initialiser_une_nouvelle_ascension()
 	else:
 		$Menu.afficher_victoire(roundi(duree_en_ms / 1000.0))
-	$SonFinDePartie.play()
-	$Musique.stop()
+	if GestionScore.effets_sonores_sont_actifs():
+		$SonFinDePartie.play()
+	if GestionScore.musiques_sont_actives():
+		$Musique.stop()
 
 func _on_plateau_de_jeu_plateau_invalide() -> void:
 	# Pas de plateau invalide en campagne
@@ -52,5 +56,7 @@ func _on_plateau_de_jeu_abandon() -> void:
 	GestionScore.abandonner()
 	$Menu.show()
 	$Menu.afficher_abandon()
-	$SonEchec.play()
-	$Musique.stop()
+	if GestionScore.effets_sonores_sont_actifs():
+		$SonEchec.play()
+	if GestionScore.musiques_sont_actives():
+		$Musique.stop()

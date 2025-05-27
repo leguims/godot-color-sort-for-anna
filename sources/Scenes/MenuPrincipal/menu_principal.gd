@@ -3,9 +3,11 @@ extends Control
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
+	GestionScore.initialiser_la_configuration()
 	GestionScore.initialiser_les_plateaux()
 	GestionScore.lire_sauvegarde_joueurs()
 	_creer_tuiles_joueurs_campagne()
+	_mettre_a_jour_configuration()
 	pass # Replace with function body.
 
 
@@ -112,3 +114,26 @@ func _on_joueurs_campagne_pressed(nom_joueur: String) -> void:
 
 func _on_bouton_editer_plateau_pressed() -> void:
 	get_tree().change_scene_to_file("res://Scenes/EditerUnPlateau/editer_un_plateau.tscn")
+
+func _mettre_a_jour_configuration():
+	$Marge/HBoxContainer/VBoxContainer/Marge/VBoxContainer/VBoxContainer/BoutonMusiques.button_pressed = GestionScore.musiques_sont_actives()
+	$Marge/HBoxContainer/VBoxContainer/Marge/VBoxContainer/VBoxContainer/BoutonEffetsSonores.button_pressed = GestionScore.effets_sonores_sont_actifs()
+	$Marge/HBoxContainer/VBoxContainer/Marge/VBoxContainer/VBoxContainer/BoutonVibrations.button_pressed = GestionScore.vibrations_sont_actives()
+
+func _on_bouton_musiques_toggled(toggled_on: bool) -> void:
+	if toggled_on:
+		GestionScore.activer_musiques()
+	else:
+		GestionScore.desactiver_musiques()
+
+func _on_bouton_effets_sonores_toggled(toggled_on: bool) -> void:
+	if toggled_on:
+		GestionScore.activer_effets_sonores()
+	else:
+		GestionScore.desactiver_effets_sonores()
+
+func _on_bouton_vibrations_toggled(toggled_on: bool) -> void:
+	if toggled_on:
+		GestionScore.activer_vibrations()
+	else:
+		GestionScore.desactiver_vibrations()

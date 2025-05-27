@@ -3,7 +3,12 @@
 ## V0.3.1 : Travaux réalisés
 
 ### Jeu
-Sans objet
+
+#### Congiguration du jeu
+
+- Ajouter une option pour activer/désactiver la musique
+- Ajouter une option pour activer/désactiver les vibrations
+- Ajouter une option pour activer/désactiver les bruitages
 
 ### Outillage
 
@@ -16,7 +21,7 @@ Sans objet
 #### Accélération de recherche
 - Ajouter un champs "Dernier plateau recherche" pour reprendre la recherche de plateau plus efficacement.
 
-## V0.3 : Travaux réalisés
+## V0.3.0 : Travaux réalisés
 
 ### Jeu
 - Ajouter un pictogramme dans les scores pour le TOP 3. Ajouter ce pictogramme dans les infos joueurs de la campagne.

@@ -2,11 +2,11 @@
 
 Voici la liste ordonnées des évolutions votées lors de la version V0.3.0 (Rang | Score | Description):
 
-1.	Score: 1,4	- Ajouter une option pour activer/désactiver la musique
-2.	Score: 1,4	- Ajouter une option pour activer/désactiver les vibrations
+1.	Score: 1,4	- ~~Ajouter une option pour activer/désactiver la musique~~:heavy_check_mark:
+2.	Score: 1,4	- ~~Ajouter une option pour activer/désactiver les vibrations~~:heavy_check_mark:
 3.	Score: 1,4	- Annuler la sélection de pile lors d'un pointage sur le fond d'écran
 4.	Score: 1,4	- Des plateaux encore plus difficiles !
-5.	Score: 1,6	- Ajouter une option pour activer/désactiver les bruitages
+5.	Score: 1,6	- ~~Ajouter une option pour activer/désactiver les bruitages~~:heavy_check_mark:
 6.	Score: 1,7	- Au commencement d'une ascension, permettre à l'utilisateur de choisir la longueur de son ascension.
 7.	Score: 1,7	- Réduire la similitude des plateaux de faible niveaux qui se ressemblent trop.
 8.	Score: 1,9	- Baser la difficulté sur le nombre d'alternatives (les occasions de faire une erreur) de la solution

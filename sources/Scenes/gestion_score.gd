@@ -1,5 +1,73 @@
 extends Node
 
+####################################
+# Gestion de la confiruation du jeu
+####################################
+
+# Dico : {'caracteristique': reglage}
+var configuration_du_jeu = {
+	'musiques': true,
+	'effets sonores': true,
+	'vibrations': true
+}
+
+func initialiser_la_configuration() -> void:
+	# Lire la configuration du jeu
+	var fichier_configuration = _read_json_file("user://configuration_du_jeu.json")
+	# print(fichier_configuration)
+	
+	# Copier les niveaux lus
+	if fichier_configuration:
+		if 'musiques' in fichier_configuration:
+			configuration_du_jeu['musiques'] = fichier_configuration.get('musiques')
+		if 'effets sonores' in fichier_configuration:
+			configuration_du_jeu['effets sonores'] = fichier_configuration.get('effets sonores')
+		if 'vibrations' in fichier_configuration:
+			configuration_du_jeu['vibrations'] = fichier_configuration.get('vibrations')
+
+func _enregistrer_la_configuration() -> void:
+	_write_json_file("user://configuration_du_jeu.json", configuration_du_jeu.duplicate(true))
+	print("Configuration sauvegardée")
+
+func activer_musiques() -> void:
+	if not configuration_du_jeu.get('musiques', true):
+		configuration_du_jeu['musiques'] = true
+		_enregistrer_la_configuration()
+
+func activer_effets_sonores() -> void:
+	if not configuration_du_jeu.get('effets sonores', true):
+		configuration_du_jeu['effets sonores'] = true
+		_enregistrer_la_configuration()
+
+func activer_vibrations() -> void:
+	if not configuration_du_jeu.get('vibrations', true):
+		configuration_du_jeu['vibrations'] = true
+		_enregistrer_la_configuration()
+
+func desactiver_musiques() -> void:
+	if configuration_du_jeu.get('musiques', true):
+		configuration_du_jeu['musiques'] = false
+		_enregistrer_la_configuration()
+
+func desactiver_effets_sonores() -> void:
+	if configuration_du_jeu.get('effets sonores', true):
+		configuration_du_jeu['effets sonores'] = false
+		_enregistrer_la_configuration()
+
+func desactiver_vibrations() -> void:
+	if configuration_du_jeu.get('vibrations', true):
+		configuration_du_jeu['vibrations'] = false
+		_enregistrer_la_configuration()
+
+func musiques_sont_actives() -> bool:
+	return configuration_du_jeu.get('musiques', true)
+
+func effets_sonores_sont_actifs() -> bool:
+	return configuration_du_jeu.get('effets sonores', true)
+
+func vibrations_sont_actives() -> bool:
+	return configuration_du_jeu.get('vibrations', true)
+
 ###############################################
 # Gestion des niveaux et des plateaux à jouer
 ###############################################
@@ -14,8 +82,6 @@ var liste_des_sauvegardes = [
 	}
 ]
 var joueur_actuel = liste_des_sauvegardes[0]
-
-# TODO : Prevoir le nom d'un joueur et charger le profil en consequence
 
 # Dico : {'difficulte': [liste_plateaux]}
 var plateau_liste_difficulte = {

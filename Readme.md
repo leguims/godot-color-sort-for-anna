@@ -184,5 +184,5 @@ Depuis la phase de tests internes de la version V0.3.0, les fonctionnalités son
 
 # Phases de tests
 
-## V0.3
+## V0.3.0
 - [Phase de tests internes](Tests_internes_V0.3.0.md)

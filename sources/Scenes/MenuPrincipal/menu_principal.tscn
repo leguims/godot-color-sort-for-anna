@@ -129,7 +129,31 @@ theme_override_styles/hover = SubResource("StyleBoxFlat_dfj4a")
 theme_override_styles/normal = SubResource("StyleBoxFlat_p4mar")
 text = "Références"
 
+[node name="VBoxContainer" type="VBoxContainer" parent="Marge/HBoxContainer/VBoxContainer/Marge/VBoxContainer"]
+layout_mode = 2
+
+[node name="BoutonMusiques" type="CheckButton" parent="Marge/HBoxContainer/VBoxContainer/Marge/VBoxContainer/VBoxContainer"]
+layout_mode = 2
+button_pressed = true
+action_mode = 0
+text = "Musiques"
+
+[node name="BoutonEffetsSonores" type="CheckButton" parent="Marge/HBoxContainer/VBoxContainer/Marge/VBoxContainer/VBoxContainer"]
+layout_mode = 2
+button_pressed = true
+action_mode = 0
+text = "Effets sonores"
+
+[node name="BoutonVibrations" type="CheckButton" parent="Marge/HBoxContainer/VBoxContainer/Marge/VBoxContainer/VBoxContainer"]
+layout_mode = 2
+button_pressed = true
+action_mode = 0
+text = "Vibrations"
+
 [connection signal="pressed" from="Marge/HBoxContainer/VBoxContainer/Marge/VBoxContainer/BoutonCampagne" to="." method="_on_bouton_campagne_pressed"]
 [connection signal="pressed" from="Marge/HBoxContainer/VBoxContainer/Marge/VBoxContainer/BoutonScores" to="." method="_on_bouton_scores_pressed"]
 [connection signal="pressed" from="Marge/HBoxContainer/VBoxContainer/Marge/VBoxContainer/BoutonEditerPlateau" to="." method="_on_bouton_editer_plateau_pressed"]
 [connection signal="pressed" from="Marge/HBoxContainer/VBoxContainer/Marge/VBoxContainer/BoutonRéférences" to="." method="_on_bouton_références_pressed"]
+[connection signal="toggled" from="Marge/HBoxContainer/VBoxContainer/Marge/VBoxContainer/VBoxContainer/BoutonMusiques" to="." method="_on_bouton_musiques_toggled"]
+[connection signal="toggled" from="Marge/HBoxContainer/VBoxContainer/Marge/VBoxContainer/VBoxContainer/BoutonEffetsSonores" to="." method="_on_bouton_effets_sonores_toggled"]
+[connection signal="toggled" from="Marge/HBoxContainer/VBoxContainer/Marge/VBoxContainer/VBoxContainer/BoutonVibrations" to="." method="_on_bouton_vibrations_toggled"]
