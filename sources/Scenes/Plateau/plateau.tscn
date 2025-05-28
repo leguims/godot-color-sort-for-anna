@@ -27,5 +27,6 @@ theme_override_colors/font_color = Color(0.675529, 0.00038495, 0.685483, 1)
 theme_override_font_sizes/font_size = 60
 text = "Abandonner"
 
+[connection signal="gui_input" from="Fond" to="." method="_on_fond_gui_input"]
 [connection signal="timeout" from="SelectionPile" to="." method="_on_selection_pile_timeout"]
 [connection signal="pressed" from="BoutonAbandon" to="." method="_on_bouton_abandon_pressed"]

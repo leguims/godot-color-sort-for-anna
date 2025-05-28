@@ -150,6 +150,21 @@ button_pressed = true
 action_mode = 0
 text = "Vibrations"
 
+[node name="Version" type="Label" parent="."]
+layout_mode = 1
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -47.0
+offset_top = -23.0
+grow_horizontal = 0
+grow_vertical = 0
+text = "V0.3.1"
+horizontal_alignment = 2
+vertical_alignment = 2
+
 [connection signal="pressed" from="Marge/HBoxContainer/VBoxContainer/Marge/VBoxContainer/BoutonCampagne" to="." method="_on_bouton_campagne_pressed"]
 [connection signal="pressed" from="Marge/HBoxContainer/VBoxContainer/Marge/VBoxContainer/BoutonScores" to="." method="_on_bouton_scores_pressed"]
 [connection signal="pressed" from="Marge/HBoxContainer/VBoxContainer/Marge/VBoxContainer/BoutonEditerPlateau" to="." method="_on_bouton_editer_plateau_pressed"]

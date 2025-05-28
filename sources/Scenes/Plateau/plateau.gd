@@ -247,3 +247,11 @@ func realiser_le_tansfert_de_pile(indice_pile_depart : int, indice_pile_arrivee 
 func _on_bouton_abandon_pressed() -> void:
 	$BoutonAbandon.hide()
 	abandon.emit()
+
+func _on_fond_gui_input(event: InputEvent) -> void:
+	if event is InputEventMouseButton:
+		if event.button_index == MOUSE_BUTTON_LEFT and event.pressed:
+			# print("Clique souris sur le fond du plateau")
+			# Parcourir les piles et déselectionner la pile (comme "timeout" sur la selection)
+			_on_selection_pile_timeout()
+			
