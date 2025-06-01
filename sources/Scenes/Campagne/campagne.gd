@@ -10,21 +10,22 @@ func _ready() -> void:
 	$Menu.set_script(MenuCampagne)
 	$Menu.modifier_tempo_message(1.0)
 	# $Menu.modifier_message_vertical_align(VERTICAL_ALIGNMENT_CENTER)
+	enregistrer_infos_joueur_pour_menu()
 	$Menu.show()
 	$Menu.afficher_accueil()
 
 func _on_menu_commencer_plateau() -> void:
-	GestionScore.commencer()
-	_lancer_plateau_de_campagne($Menu/EditeurPlateau/SaisieEditionPlateau.text)
+	commencer_un_plateau()
+	_lancer_plateau_de_campagne(lire_plateau_courant())
 
 func _lancer_plateau_de_campagne(plateau : String) -> void:
 	if $PlateauDeJeu.est_valide(plateau):
 		$Menu.cacher_accueil()
 		$PlateauDeJeu.effacer_le_plateau()
 		$PlateauDeJeu.commencer_un_nouveau_plateau(plateau)
-		if GestionScore.effets_sonores_sont_actifs():
+		if SauvegardeConfiguration.effets_sonores_sont_actifs():
 			$SonCommencer.play()
-		if GestionScore.musiques_sont_actives():
+		if SauvegardeConfiguration.musiques_sont_actives():
 			$Musique.play()
 		heure_debut_en_ms = Time.get_ticks_msec()
 	else:
@@ -32,18 +33,18 @@ func _lancer_plateau_de_campagne(plateau : String) -> void:
 
 func _on_plateau_de_jeu_victoire() -> void:
 	duree_en_ms = Time.get_ticks_msec() - heure_debut_en_ms
-	GestionScore.gagner(duree_en_ms)
+	gagner_un_plateau(duree_en_ms)
 	$Menu.show()
-	if GestionScore.la_campagne_est_terminee():
+	if la_campagne_est_terminee():
 		$Menu.afficher_fin_campagne()
-	elif GestionScore.l_ascension_est_terminee():
+	elif l_ascension_est_terminee():
 		$Menu.afficher_fin_ascension()
-		GestionScore.initialiser_une_nouvelle_ascension()
+		initialiser_une_nouvelle_ascension()
 	else:
 		$Menu.afficher_victoire(roundi(duree_en_ms / 1000.0))
-	if GestionScore.effets_sonores_sont_actifs():
+	if SauvegardeConfiguration.effets_sonores_sont_actifs():
 		$SonFinDePartie.play()
-	if GestionScore.musiques_sont_actives():
+	if SauvegardeConfiguration.musiques_sont_actives():
 		$Musique.stop()
 
 func _on_plateau_de_jeu_plateau_invalide() -> void:
@@ -53,10 +54,289 @@ func _on_plateau_de_jeu_plateau_invalide() -> void:
 
 func _on_plateau_de_jeu_abandon() -> void:
 	# Mettre à jour les plateaux à jouer
-	GestionScore.abandonner()
+	abandonner_un_plateau()
 	$Menu.show()
 	$Menu.afficher_abandon()
-	if GestionScore.effets_sonores_sont_actifs():
+	if SauvegardeConfiguration.effets_sonores_sont_actifs():
 		$SonEchec.play()
-	if GestionScore.musiques_sont_actives():
+	if SauvegardeConfiguration.musiques_sont_actives():
 		$Musique.stop()
+
+func enregistrer_infos_joueur_pour_menu():
+	# Transmet les infos pour mettre à jour la banniere 'infos joueur' du menu
+	var nom = SauvegardeBddJoueurs.lire_nom_joueur()
+	var trophee = SauvegardeScores.lire_le_trophee_du_joueur(nom)
+	var pourcentage_ascension_realise = lire_pourcentage_ascension_realise()
+	var nb_ascensions = SauvegardeBddJoueurs.lire_nombre_ascension_joueur()
+	var score_texte = SauvegardeScores.lire_score_txt_joueur(nom)
+	$Menu.enregistrer_infos_joueur(	nom, trophee, pourcentage_ascension_realise,
+									 nb_ascensions, score_texte)
+
+####################################
+# Gestion des mécaniques de jeu
+####################################
+
+# Evenements de jeu du plateau
+##############################
+
+func commencer_un_plateau() -> void:
+	# Incrémenter le compteur de parties du niveau courant
+	SauvegardeBddJoueurs.incrementer_nombre_de_parties_joueur_pour_niveau_courant()
+	print("Nombre de parties = ", SauvegardeBddJoueurs.lire_nombre_de_parties_joueur_pour_niveau_courant())
+
+func gagner_un_plateau(duree_en_ms : int) -> void:
+	# Ajouter le temps de jeu dans le niveau courant
+	SauvegardeBddJoueurs.ajouter_duree_de_partie_joueur_pour_niveau_courant(duree_en_ms)
+	# Valider le plateau courant (pointer sur le suivant)
+	SauvegardeBddJoueurs.incrementer_indice_plateau_joueur_pour_niveau_courant()
+
+	# Calculer le niveau supérieur
+	var niveau_superieur = retourner_le_niveau_superieur()
+	# Déterminer si l'ascension est achevée (pas de niveau suivant)
+	if niveau_superieur == SauvegardeBddJoueurs.lire_niveau_joueur():
+		terminer_l_ascension()
+		SauvegardeBddJoueurs.ajouter_ascension_joueur()
+	
+	# Calculer le score du plateau
+	var score = mettre_a_jour_score_pour_victoire(duree_en_ms)
+	
+	# Passer au niveau suivant
+	if niveau_superieur > SauvegardeBddJoueurs.lire_niveau_joueur():
+		SauvegardeBddJoueurs.modifier_niveau_joueur(niveau_superieur)
+	enregistrer_infos_joueur_pour_menu()
+	afficher_niveau_plateau_parties()
+
+func abandonner_un_plateau() -> void:
+	# En cas d'abandon, pas d'enrgistrement du temps.
+	# Diminuer le niveau courant (si c'est possible)
+	var niveau_inferieur = retourner_le_niveau_inferieur()
+	if niveau_inferieur < SauvegardeBddJoueurs.lire_niveau_joueur():
+		SauvegardeBddJoueurs.modifier_niveau_joueur(niveau_inferieur)
+	enregistrer_infos_joueur_pour_menu()
+	afficher_niveau_plateau_parties()
+
+func afficher_niveau_plateau_parties():
+	print("[Campagne] Niveau = ", str(SauvegardeBddJoueurs.lire_niveau_joueur()),
+	 " - indice Plateau = ", str(SauvegardeBddJoueurs.lire_indice_plateau_joueur_pour_niveau_courant()),
+	 " - Nombre de parties = ", str(SauvegardeBddJoueurs.lire_nombre_de_parties_joueur_pour_niveau_courant()))
+
+# Traitement d'un plateau
+#########################
+
+func lire_plateau_courant() -> String:
+	var niveau = SauvegardeBddJoueurs.lire_niveau_joueur()
+	var indice_plateau = SauvegardeBddJoueurs.lire_indice_plateau_joueur_pour_niveau_courant()
+	return SauvegardeBddPlateaux.lire_plateau(niveau, indice_plateau) 
+
+func mettre_a_jour_score_pour_victoire(duree_en_ms : int):
+	"Calculer le score suite à une victoire (duree, ratio réussites, ascension, campagne)"
+	var score_duree = mettre_a_jour_score_duree(duree_en_ms)
+	var score_ratio_reussite = mettre_a_jour_score_ratio_reussite()
+	var score_ascension = mettre_a_jour_score_ascension()
+	var score_ascension_sans_detour = mettre_a_jour_score_ascension_sans_detour()
+	var score_campagne = mettre_a_jour_score_campagne()
+	var score = score_duree \
+		+ score_ratio_reussite \
+		+ score_ascension \
+		+ score_ascension_sans_detour \
+		+ score_campagne
+
+	# Bonus spécifique pour Anna d'Amour, la déesse de ce jeu.
+	if SauvegardeBddJoueurs.lire_nom_joueur().to_lower() == 'Anna'.to_lower():
+		score *= 4
+	return score
+
+func mettre_a_jour_score_duree(duree_en_ms : int) -> int:
+	"Calculer le score relatif au temps"
+	var temps_reference_par_niveau = {
+		25 : 10.,
+		50 : 15.,
+		60 : 20.,
+		100 : 25.,
+		125 : 40.
+		}
+
+	var niveau = SauvegardeBddJoueurs.lire_niveau_joueur()
+	var temps_reference_en_s = temps_reference_par_niveau[25]
+	if niveau <= 25:
+		temps_reference_en_s = temps_reference_par_niveau[25]
+	elif niveau <= 50:
+		temps_reference_en_s = temps_reference_par_niveau[50]
+	elif niveau <= 60:
+		temps_reference_en_s = temps_reference_par_niveau[60]
+	elif niveau <= 100:
+		temps_reference_en_s = temps_reference_par_niveau[100]
+	elif niveau <= 125:
+		temps_reference_en_s = temps_reference_par_niveau[125]
+	else :
+		print("Erreur : Niveau inattendu pour le score !")
+
+	var bonus_duree = 0
+	var nom_joueur = SauvegardeBddJoueurs.lire_nom_joueur()
+	var duree_en_s = duree_en_ms / 1000.
+	# Score sur le ratio du temps référence/joué
+	var ratio_temps = temps_reference_en_s / duree_en_s
+	bonus_duree = roundi(100 * niveau * ratio_temps)
+	SauvegardeScores.incrementer_score_joueur(nom_joueur, bonus_duree)
+	return bonus_duree
+
+func mettre_a_jour_score_ratio_reussite() -> int:
+	"Calculer le score relatif au temps"
+	var bonus_ratio_reussite = 0
+	var nom_joueur = SauvegardeBddJoueurs.lire_nom_joueur()
+	var niveau = SauvegardeBddJoueurs.lire_niveau_joueur()
+	var nb_parties_jouees = SauvegardeBddJoueurs.lire_nombre_de_parties_joueur_pour_niveau_courant()
+	var nb_reussite = SauvegardeBddJoueurs.lire_indice_plateau_joueur_pour_niveau_courant() + 1
+	var ratio_reussite = 1. * nb_reussite / nb_parties_jouees
+	bonus_ratio_reussite = roundi(100 * niveau * ratio_reussite)
+	SauvegardeScores.incrementer_score_joueur(nom_joueur, bonus_ratio_reussite)
+	return bonus_ratio_reussite
+
+func mettre_a_jour_score_ascension() -> int:
+	"Calculer le score suite à une ascension achevée"
+	var bonus_ascension = 0
+	if l_ascension_est_terminee():
+		var nom_joueur = SauvegardeBddJoueurs.lire_nom_joueur()
+		# TODO : Identifier la longueur de l'ascension pour le score
+		var niveau_depart_ascension = 0
+		var niveau_arrivee_ascension = SauvegardeBddJoueurs.lire_niveau_joueur()
+		# bonus = 100 x Dénivelé ^2 (bonus non linéaire)
+		bonus_ascension = roundi(50 * pow(niveau_arrivee_ascension - niveau_depart_ascension, 2))
+		SauvegardeScores.incrementer_score_joueur(nom_joueur, bonus_ascension)
+	return bonus_ascension
+
+func mettre_a_jour_score_ascension_sans_detour() -> int:
+	"Calculer le score suite à une ascension parfaite achevée"
+	var bonus_ascension_sans_detour = 0
+	return bonus_ascension_sans_detour
+
+func mettre_a_jour_score_campagne() -> int:
+	"Calculer le score suite à la campagne achevée"
+	var bonus_campagne = 0
+	if la_campagne_est_terminee():
+		var nom_joueur = SauvegardeBddJoueurs.lire_nom_joueur()
+		bonus_campagne = 2_000_000
+		SauvegardeScores.incrementer_score_joueur(nom_joueur, bonus_campagne)
+	return bonus_campagne
+
+# Traitement de niveau
+######################
+
+func retourner_le_niveau_le_plus_bas() -> int:
+	# Retourner le plus bas niveau réalisable
+	for niveau_le_plus_bas in range(0, 300):
+		# Vérifier qu'il existe dans la BDD de plateaux
+		if SauvegardeBddPlateaux.niveau_existe(niveau_le_plus_bas):
+			# Vérifier qu'il reste des plateaux à réaliser par le joueur
+			if not le_niveau_est_termine(niveau_le_plus_bas):
+				return niveau_le_plus_bas
+	return -1
+
+func retourner_le_niveau_superieur() -> int:
+	# Parcourir les niveaux supérieurs
+	for niveau_superieur in range(SauvegardeBddJoueurs.lire_niveau_joueur()+1, 300):
+		# Vérifier qu'il existe dans la BDD de plateaux
+		if SauvegardeBddPlateaux.niveau_existe(niveau_superieur):
+			# Vérifier qu'il reste des plateaux à réaliser par le joueur
+			if not le_niveau_est_termine(niveau_superieur):
+				return niveau_superieur
+	return SauvegardeBddJoueurs.lire_niveau_joueur()
+
+func retourner_le_niveau_inferieur() -> int:
+	# Parcourir les niveaux supérieurs
+	for niveau_inferieur in range(SauvegardeBddJoueurs.lire_niveau_joueur()-1, 0, -1):
+		# Vérifier qu'il existe dans la BDD de plateaux
+		if SauvegardeBddPlateaux.niveau_existe(niveau_inferieur):
+			# Vérifier qu'il reste des plateaux à réaliser par le joueur
+			if not le_niveau_est_termine(niveau_inferieur):
+				return niveau_inferieur
+	return SauvegardeBddJoueurs.lire_niveau_joueur()
+
+func retourner_le_nombre_de_niveaux_realises() -> int:
+	var nb_niveaux_realises : int = 0
+	var niveau_courant = SauvegardeBddJoueurs.lire_niveau_joueur()
+	for niveau in range(0, niveau_courant+1):
+		if SauvegardeBddPlateaux.niveau_existe(niveau):
+			nb_niveaux_realises += 1
+	return nb_niveaux_realises
+
+func le_niveau_est_termine(niveau : int) -> bool:
+	var nb_plateau = SauvegardeBddPlateaux.nombre_plateaux_pour_le_niveau(niveau)
+	var plateau_courant = SauvegardeBddJoueurs.lire_indice_plateau_joueur_pour_niveau(niveau)
+	return plateau_courant >= nb_plateau
+
+# Traitement d'ascension
+#########################
+
+var globale_ascension_terminee = false # Information transitoire. Ne pas sauvegarder.
+
+func terminer_l_ascension():
+	globale_ascension_terminee = true
+
+func commencer_l_ascension():
+	globale_ascension_terminee = false
+
+func initialiser_une_nouvelle_ascension() -> void:
+	commencer_l_ascension()
+	# Remettre au plus bas le niveau courant pour commencer une nouvelle ascension
+	var niveau_depart_ascension = retourner_le_niveau_le_plus_bas()
+	if niveau_depart_ascension != -1:
+		SauvegardeBddJoueurs.modifier_niveau_joueur(niveau_depart_ascension)
+	else:
+		print("Erreur : Pas de niveau disponible pour une nouvelle ascension")
+	afficher_niveau_plateau_parties()
+
+func lire_pourcentage_ascension_realise() -> int:
+	if not SauvegardeBddJoueurs.lire_niveau_joueur():
+		return 0
+	var nb_niveaux_totaux = SauvegardeBddPlateaux.nb_niveaux()
+	var nb_niveaux_realises = retourner_le_nombre_de_niveaux_realises()
+	return roundi(100. * nb_niveaux_realises / nb_niveaux_totaux)
+
+func l_ascension_est_terminee() -> bool:
+	return globale_ascension_terminee
+
+# Traitement de campagne
+#########################
+
+func la_campagne_est_terminee() -> bool:
+	return retourner_le_niveau_le_plus_bas() == -1
+
+func la_campagne_est_terminee_pour_joueur(nom_joueur : String) -> bool:
+	if SauvegardeListeJoueurs.le_joueur_existe(nom_joueur):
+		# Choisir le joueur pour la campagne
+		var nom_fichier = SauvegardeListeJoueurs.retourner_le_fichier_de_sauvegarde(nom_joueur)
+		SauvegardeBddJoueurs.choisir_le_joueur(nom_joueur, nom_fichier)
+		return retourner_le_niveau_le_plus_bas() == -1
+	return false
+
+func choisir_le_joueur_pour_la_campagne(nom_joueur : String) -> bool:
+	if SauvegardeListeJoueurs.le_joueur_existe(nom_joueur):
+		# Choisir le joueur pour la campagne
+		var nom_fichier = SauvegardeListeJoueurs.retourner_le_fichier_de_sauvegarde(nom_joueur)
+		if SauvegardeBddJoueurs.choisir_le_joueur(nom_joueur, nom_fichier):
+			# Initiliser son niveau
+			if not SauvegardeBddJoueurs.lire_niveau_joueur():
+				SauvegardeBddJoueurs.modifier_niveau_joueur(SauvegardeBddPlateaux.niveau_min())
+			return true
+	return false
+
+func liberer_le_joueur_pour_la_campagne():
+	SauvegardeBddJoueurs.liberer_le_joueur()
+
+func ajouter_un_nouveau_joueur_pour_la_campagne(nom_nouveau_joueur : String) -> bool:
+	return not SauvegardeListeJoueurs.le_joueur_existe(nom_nouveau_joueur)
+
+func initialiser_le_nouveau_joueur_pour_la_campagne(nom_nouveau_joueur : String) -> bool:
+	if not SauvegardeListeJoueurs.le_joueur_existe(nom_nouveau_joueur):
+		# Ajouter le joueur dans la liste des joueurs
+		if SauvegardeListeJoueurs.ajouter_un_nouveau_joueur(nom_nouveau_joueur):
+			var nom_fichier = SauvegardeListeJoueurs.retourner_le_fichier_de_sauvegarde(nom_nouveau_joueur)
+			# Ajouter la sauvegarde personnelle du joueur
+			if SauvegardeBddJoueurs.ajouter_un_nouveau_joueur(nom_nouveau_joueur, nom_fichier, SauvegardeBddPlateaux.niveau_min()):
+				# Initialiser le niveau
+				SauvegardeBddJoueurs.modifier_niveau_joueur(SauvegardeBddPlateaux.niveau_min())
+				# Ajouter le joueur dans le tableau des scores
+				if SauvegardeScores.ajouter_un_nouveau_joueur(nom_nouveau_joueur):
+					return true
+	return false

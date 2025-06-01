@@ -21,9 +21,9 @@ func _editer_plateau_texte(plateau : String) -> void:
 		$Menu.cacher_accueil()
 		$PlateauDeJeu.effacer_le_plateau()
 		$PlateauDeJeu.commencer_un_nouveau_plateau(plateau)
-		if GestionScore.effets_sonores_sont_actifs():
+		if SauvegardeConfiguration.effets_sonores_sont_actifs():
 			$SonCommencer.play()
-		if GestionScore.musiques_sont_actives():
+		if SauvegardeConfiguration.musiques_sont_actives():
 			$Musique.play()
 	else:
 		_on_plateau_de_jeu_plateau_invalide()
@@ -31,21 +31,21 @@ func _editer_plateau_texte(plateau : String) -> void:
 func _on_plateau_de_jeu_victoire() -> void:
 	$Menu.show()
 	$Menu.afficher_victoire()
-	if GestionScore.effets_sonores_sont_actifs():
+	if SauvegardeConfiguration.effets_sonores_sont_actifs():
 		$SonFinDePartie.play()
-	if GestionScore.musiques_sont_actives():
+	if SauvegardeConfiguration.musiques_sont_actives():
 		$Musique.stop()
 
 func _on_plateau_de_jeu_plateau_invalide() -> void:
 	$Menu.show()
 	$Menu.afficher_plateau_invalide()
-	if GestionScore.effets_sonores_sont_actifs():
+	if SauvegardeConfiguration.effets_sonores_sont_actifs():
 		$SonEchec.play()
 
 func _on_plateau_de_jeu_abandon() -> void:
 	$Menu.show()
 	$Menu.afficher_abandon()
-	if GestionScore.effets_sonores_sont_actifs():
+	if SauvegardeConfiguration.effets_sonores_sont_actifs():
 		$SonEchec.play()
-	if GestionScore.musiques_sont_actives():
+	if SauvegardeConfiguration.musiques_sont_actives():
 		$Musique.stop()

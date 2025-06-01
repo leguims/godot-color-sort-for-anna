@@ -1,0 +1,2 @@
+Les scripts de "Sauvegarde" sont des singletons.
+Ils sont utiles pour toutes les scenes et doivent persister pendant les changements de scene.

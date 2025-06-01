@@ -7,7 +7,6 @@ func afficher_accueil():
 	# En campagne, le plateau n'est ni visible, ni éditable
 	$EditeurPlateau.hide()
 	$EditeurPlateau/SaisieEditionPlateau.editable = false
-	$EditeurPlateau/SaisieEditionPlateau.text = GestionScore.lire_plateau_courant()
 	$Message.size.y = $Message.size.y + 100
 	
 	$BoutonMenuPrincipal.show()
@@ -20,7 +19,6 @@ func afficher_accueil():
 	$BoutonCommencer.show()
 
 func afficher_plateau_suivant(texte : String):
-	$EditeurPlateau/SaisieEditionPlateau.text = GestionScore.lire_plateau_courant()
 	_afficher_message(texte, false)
 	super.mettre_a_jour_infos_joueur()
 	$BoutonMenuPrincipal.show()

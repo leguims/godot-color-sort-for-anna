@@ -20,7 +20,11 @@ config/windows_native_icon="res://icon.ico"
 
 [autoload]
 
-GestionScore="*res://Scenes/gestion_score.gd"
+SauvegardeConfiguration="*res://Scenes/Sauvegarde/configuration.gd"
+SauvegardeBddPlateaux="*res://Scenes/Sauvegarde/bdd_plateaux.gd"
+SauvegardeListeJoueurs="*res://Scenes/Sauvegarde/liste_joueurs.gd"
+SauvegardeBddJoueurs="*res://Scenes/Sauvegarde/bdd_joueurs.gd"
+SauvegardeScores="*res://Scenes/Sauvegarde/scores.gd"
 
 [display]
 

@@ -24,20 +24,20 @@ func mettre_a_jour_infos_joueur() -> void:
 	var emoji_carre_blanc = String.chr(0x25FD)
 	var emoji_carre_noir = String.chr(0x25FE)
 	var emoji_montagne = String.chr(0x1F3D4)
-	var trophee = GestionScore.lire_le_trophee_du_joueur_actuel()
-	var nom = GestionScore.lire_le_nom_du_joueur_actuel()
+	var nom = SauvegardeBddJoueurs.lire_nom_joueur()
+	var trophee = SauvegardeScores.lire_le_trophee_du_joueur(nom)
 	var ascension = _pourcentage_en_led(
-		roundi(GestionScore.lire_pourcentage_ascension_realise_du_joueur_actuel()),
+		roundi(SauvegardeAnalyses.lire_pourcentage_ascension_realise()),
 		emoji_carre_noir,
 		emoji_carre_blanc)
-	var nb_ascensions_recentes =  GestionScore.compter_ascensions_du_joueur_actuel_depuis(0.0)
-	var score = GestionScore.lire_le_score_du_joueur_actuel()
-	var score_texte = GestionScore.nombre_avec_separateur_de_milliers(score, ' ')
+	var nb_ascensions =  SauvegardeBddJoueurs.lire_nombre_ascension_joueur()
+	var score_texte = SauvegardeScores.lire_score_txt_joueur(nom)
 	var texte = "[center][font_size=30]"
 	texte += nom + " " + trophee + " " + score_texte + "\n"
 	texte += ascension + "\n"
-	if nb_ascensions_recentes:
-		for i in range(nb_ascensions_recentes):
+	#texte += campagne + "\n"
+	if nb_ascensions:
+		for i in range(nb_ascensions):
 			texte += emoji_montagne
 		texte += "\n"
 	texte += "[/font_size][/center]"

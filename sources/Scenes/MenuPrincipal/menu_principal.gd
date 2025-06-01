@@ -1,11 +1,16 @@
 extends Control
 
+# Pour acceder à la méthode :
+# - ajouter_un_nouveau_joueur_pour_la_campagne(nom_joueur : String)
+# - initialiser_le_nouveau_joueur_pour_la_campagne(nom_joueur : String)
+# - choisir_le_joueur_pour_la_campagne(nom_joueur : String)
+# - liberer_le_joueur_pour_la_campagne()
+# - la_campagne_est_terminee_pour_joueur(nom_joueur : String)
+var campagne_script = load("res://Scenes/Campagne/campagne.gd").new()
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
-	GestionScore.initialiser_la_configuration()
-	GestionScore.initialiser_les_plateaux()
-	GestionScore.lire_sauvegarde_joueurs()
+	campagne_script.liberer_le_joueur_pour_la_campagne()
 	_creer_tuiles_joueurs_campagne()
 	_mettre_a_jour_configuration()
 	pass # Replace with function body.
@@ -22,10 +27,11 @@ func _on_bouton_scores_pressed() -> void:
 func _on_nouveau_joueur_text_submitted(nom_nouveau_joueur: String) -> void:
 	print("Nouveau joueur : ", nom_nouveau_joueur)
 	$Marge/HBoxContainer/VBoxContainer/Marge/VBoxContainer/JoueursCampagne.get_node("nouveau_joueur").clear()
-	if not GestionScore.ajouter_un_nouveau_joueur(nom_nouveau_joueur):
+	if not campagne_script.ajouter_un_nouveau_joueur_pour_la_campagne(nom_nouveau_joueur):
 		print("Erreur : Le nom '" + nom_nouveau_joueur + "' n'est pas libre")
 		$Marge/HBoxContainer/VBoxContainer/Marge/VBoxContainer/JoueursCampagne.get_node("nouveau_joueur").placeholder_text = 'Erreur !'
 	else:
+		campagne_script.initialiser_le_nouveau_joueur_pour_la_campagne(nom_nouveau_joueur)
 		$Marge/HBoxContainer/VBoxContainer/Marge/VBoxContainer/JoueursCampagne.get_node("nouveau_joueur").placeholder_text = 'Ok !'
 		_ajouter_une_tuile_pour_nouveau_joueur_campagne(nom_nouveau_joueur)
 		$Marge/HBoxContainer/VBoxContainer/Marge/VBoxContainer/JoueursCampagne.get_node("nouveau_joueur").placeholder_text = " Ajouter "
@@ -40,10 +46,10 @@ func _on_bouton_campagne_pressed() -> void:
 
 func _creer_tuiles_joueurs_campagne():
 	$Marge/HBoxContainer/VBoxContainer/Marge/VBoxContainer/JoueursCampagne.columns = 2
-	for nom_joueur in GestionScore.lire_la_liste_des_joueurs():
+	for nom_joueur in SauvegardeListeJoueurs.retourner_la_liste_des_joueurs():
 		# Ajouter des boutons ou des tuiles de sélection de profil
 		var button = Button.new()
-		_creer_style_tuile_joueur_campagne(button, nom_joueur, GestionScore.la_campagne_du_joueur_est_terminee(nom_joueur))
+		_creer_style_tuile_joueur_campagne(button, nom_joueur, campagne_script.la_campagne_est_terminee_pour_joueur(nom_joueur))
 		button.text = nom_joueur
 		button.connect("pressed", _on_joueurs_campagne_pressed.bind(nom_joueur))
 		$Marge/HBoxContainer/VBoxContainer/Marge/VBoxContainer/JoueursCampagne.add_child(button)
@@ -59,7 +65,7 @@ func _creer_tuiles_joueurs_campagne():
 func _ajouter_une_tuile_pour_nouveau_joueur_campagne(nom_joueur : String):
 	# Ajouter la tuile de sélection du nouveau profil
 	var button = Button.new()
-	_creer_style_tuile_joueur_campagne(button, nom_joueur, GestionScore.la_campagne_du_joueur_est_terminee(nom_joueur))
+	_creer_style_tuile_joueur_campagne(button, nom_joueur, campagne_script.la_campagne_est_terminee_pour_joueur(nom_joueur))
 	button.text = nom_joueur
 	button.connect("pressed", _on_joueurs_campagne_pressed.bind(nom_joueur))
 	$Marge/HBoxContainer/VBoxContainer/Marge/VBoxContainer/JoueursCampagne.add_child(button)
@@ -104,9 +110,11 @@ func _creer_style_tuile_joueur_campagne(tuile : Control, nom : String, campagne_
 
 func _on_joueurs_campagne_pressed(nom_joueur: String) -> void:
 	print("Campagne avec le joueur : ", nom_joueur)
-	if not GestionScore.choisir_le_joueur(nom_joueur):
+	if not SauvegardeListeJoueurs.le_joueur_existe(nom_joueur):
 		print("Erreur : Le nom '" + nom_joueur + "' n'existe pas")
-	elif not GestionScore.la_campagne_est_terminee():
+	elif not campagne_script.la_campagne_est_terminee_pour_joueur(nom_joueur):
+		# Choisir le joueur pour la campagne
+		campagne_script.choisir_le_joueur_pour_la_campagne(nom_joueur)
 		get_tree().change_scene_to_file("res://Scenes/Campagne/campagne.tscn")
 	else:
 		print("Erreur : Le joueur '" + nom_joueur + "' a terminé la campagne")
@@ -116,24 +124,24 @@ func _on_bouton_editer_plateau_pressed() -> void:
 	get_tree().change_scene_to_file("res://Scenes/EditerUnPlateau/editer_un_plateau.tscn")
 
 func _mettre_a_jour_configuration():
-	$Marge/HBoxContainer/VBoxContainer/Marge/VBoxContainer/VBoxContainer/BoutonMusiques.button_pressed = GestionScore.musiques_sont_actives()
-	$Marge/HBoxContainer/VBoxContainer/Marge/VBoxContainer/VBoxContainer/BoutonEffetsSonores.button_pressed = GestionScore.effets_sonores_sont_actifs()
-	$Marge/HBoxContainer/VBoxContainer/Marge/VBoxContainer/VBoxContainer/BoutonVibrations.button_pressed = GestionScore.vibrations_sont_actives()
+	$Marge/HBoxContainer/VBoxContainer/Marge/VBoxContainer/VBoxContainer/BoutonMusiques.button_pressed = SauvegardeConfiguration.musiques_sont_actives()
+	$Marge/HBoxContainer/VBoxContainer/Marge/VBoxContainer/VBoxContainer/BoutonEffetsSonores.button_pressed = SauvegardeConfiguration.effets_sonores_sont_actifs()
+	$Marge/HBoxContainer/VBoxContainer/Marge/VBoxContainer/VBoxContainer/BoutonVibrations.button_pressed = SauvegardeConfiguration.vibrations_sont_actives()
 
 func _on_bouton_musiques_toggled(toggled_on: bool) -> void:
 	if toggled_on:
-		GestionScore.activer_musiques()
+		SauvegardeConfiguration.activer_musiques()
 	else:
-		GestionScore.desactiver_musiques()
+		SauvegardeConfiguration.desactiver_musiques()
 
 func _on_bouton_effets_sonores_toggled(toggled_on: bool) -> void:
 	if toggled_on:
-		GestionScore.activer_effets_sonores()
+		SauvegardeConfiguration.activer_effets_sonores()
 	else:
-		GestionScore.desactiver_effets_sonores()
+		SauvegardeConfiguration.desactiver_effets_sonores()
 
 func _on_bouton_vibrations_toggled(toggled_on: bool) -> void:
 	if toggled_on:
-		GestionScore.activer_vibrations()
+		SauvegardeConfiguration.activer_vibrations()
 	else:
-		GestionScore.desactiver_vibrations()
+		SauvegardeConfiguration.desactiver_vibrations()

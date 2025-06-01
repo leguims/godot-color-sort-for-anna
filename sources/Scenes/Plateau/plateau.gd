@@ -170,15 +170,15 @@ func on_pile_clique_gauche(indice_pile : int) -> void:
 				if _est_termine():
 					$BoutonAbandon.hide()
 					victoire.emit()
-					if GestionScore.vibrations_sont_actives():
+					if SauvegardeConfiguration.vibrations_sont_actives():
 						# Grosse vibration
 						Input.vibrate_handheld(800, 1.0)
 				else:
-					if GestionScore.vibrations_sont_actives():
+					if SauvegardeConfiguration.vibrations_sont_actives():
 						# Petite vibration
 						Input.vibrate_handheld(200, 0.5)
 			else:
-				if GestionScore.vibrations_sont_actives():
+				if SauvegardeConfiguration.vibrations_sont_actives():
 					# Toute petite vibration
 					Input.vibrate_handheld(50, 0.2)
 		_on_selection_pile_timeout()
