@@ -105,7 +105,7 @@ func _calculer_la_position_de_la_pile(nb_piles : int, indice_pile : int) -> Vect
 	#        ... ou sinon, son affichage est décallé
 	var taille_fenetre_jeu = get_viewport().get_visible_rect().size
 	var taille_pile_pixels = Vector2(liste_piles[0].largeur(), liste_piles[0].hauteur())
-	var taille_plateau = convertir_indice_pile_coordonnees_max(nb_piles, indice_pile)
+	var taille_plateau = convertir_nb_piles_en_taille_plateau(nb_piles)
 	var coordonnees_pile = convertir_indice_pile_coordonnees(nb_piles, indice_pile)
 	var position_pile = Vector2()
 	if taille_plateau.y == 1:
@@ -131,20 +131,20 @@ func _calculer_la_position_de_la_pile(nb_piles : int, indice_pile : int) -> Vect
 
 func convertir_indice_pile_coordonnees(nb_piles : int, indice_pile : int) -> Vector2i:
 	var coordonnees = Vector2i(0,0)
-	var nb_pile_par_ligne = convertir_indice_pile_coordonnees_max(nb_piles, indice_pile).x
+	var nb_pile_par_ligne = convertir_nb_piles_en_taille_plateau(nb_piles).x
 	if nb_pile_par_ligne != 0:
-		coordonnees.y = floori(indice_pile / nb_pile_par_ligne) # Division entiere
+		coordonnees.y = floori(1. * indice_pile / nb_pile_par_ligne) # Division entiere
 		coordonnees.x = indice_pile - coordonnees.y * nb_pile_par_ligne # Reste de la division entiere
 	return coordonnees
 
-func convertir_indice_pile_coordonnees_max(nb_piles : int, indice_pile : int) -> Vector2i:
-	var max = Vector2i(0,0)
+func convertir_nb_piles_en_taille_plateau(nb_piles : int) -> Vector2i:
+	var taille_plateau = Vector2i(0,0)
 	if nb_piles:
 		# 13 piles max par ligne, mais rendu surchargé
 		# 6 piles par ligne = rendu agréable. Correspond à un écart d'une pile vide entre chaque pile.
-		max.y = ceili(nb_piles / 6.) # Nombre de ligne necessaires
-		max.x = roundi(1. * nb_piles / max.y) # Nombre de pile par ligne
-	return max
+		taille_plateau.y = ceili(nb_piles / 6.) # Nombre de ligne necessaires
+		taille_plateau.x = roundi(1. * nb_piles / taille_plateau.y) # Nombre de pile par ligne
+	return taille_plateau
 
 func on_pile_clique_gauche(indice_pile : int) -> void:
 	# print("clique sur la pile : ", indice_pile)

@@ -14,9 +14,9 @@ func _pourcentage_en_led(pourcentage : int, led_sombre, led_lumineuse) -> String
 	var nb_max_leds = 10
 	var tranche_pourcentage = 100./nb_max_leds
 	var leds : String = ''
-	for i in range(roundi(1.*pourcentage/tranche_pourcentage)):
+	for i in range(floori(1.*pourcentage/tranche_pourcentage)):
 		leds += led_lumineuse
-	for i in range(roundi(1.*pourcentage/tranche_pourcentage), nb_max_leds):
+	for i in range(floori(1.*pourcentage/tranche_pourcentage), nb_max_leds):
 		leds += led_sombre
 	return leds
 
