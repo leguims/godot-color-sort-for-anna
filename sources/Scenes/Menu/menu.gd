@@ -20,18 +20,33 @@ func _pourcentage_en_led(pourcentage : int, led_sombre, led_lumineuse) -> String
 		leds += led_sombre
 	return leds
 
+# Infos joueur
+###############
+var nom : String = ""
+var trophee : String = ""
+var pourcentage_ascension_realise : int = 0
+var nb_ascensions : int = 0
+var score_texte : String = "0"
+
+func enregistrer_infos_joueur(	_nom : String = "",
+								_trophee : String = "",
+								_pourcentage_ascension_realise : int = 0,
+								_nb_ascensions : int = 0,
+								_score_texte : String = "0") -> void:
+	nom = _nom
+	trophee = _trophee
+	pourcentage_ascension_realise = _pourcentage_ascension_realise
+	nb_ascensions = _nb_ascensions
+	score_texte = _score_texte
+
 func mettre_a_jour_infos_joueur() -> void:
 	var emoji_carre_blanc = String.chr(0x25FD)
 	var emoji_carre_noir = String.chr(0x25FE)
 	var emoji_montagne = String.chr(0x1F3D4)
-	var nom = SauvegardeBddJoueurs.lire_nom_joueur()
-	var trophee = SauvegardeScores.lire_le_trophee_du_joueur(nom)
 	var ascension = _pourcentage_en_led(
-		roundi(SauvegardeAnalyses.lire_pourcentage_ascension_realise()),
+		pourcentage_ascension_realise,
 		emoji_carre_noir,
 		emoji_carre_blanc)
-	var nb_ascensions =  SauvegardeBddJoueurs.lire_nombre_ascension_joueur()
-	var score_texte = SauvegardeScores.lire_score_txt_joueur(nom)
 	var texte = "[center][font_size=30]"
 	texte += nom + " " + trophee + " " + score_texte + "\n"
 	texte += ascension + "\n"

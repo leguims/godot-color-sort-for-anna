@@ -1,3 +1,7 @@
+# Implemente toutes les spécificité de la campagnes:
+# Lectures des "Sauvegarde*" + synthese en croisant les données
+# Il gere tous les mecanismes de regles, de donnees et de comportements de la campagne.
+
 extends Node
 
 class_name Campagne
