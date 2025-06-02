@@ -3,6 +3,13 @@ extends Object
 func json_file_exists(chemin) -> Variant:
 	return FileAccess.file_exists(chemin)
 
+func remove_json_file(chemin) -> void:
+	if FileAccess.file_exists(chemin):
+		var erreur = DirAccess.remove_absolute(chemin)
+		if erreur != OK:
+			printerr("Erreur : Effacement du fichier : ", chemin,
+					 " avec l'erreur : ", erreur)
+
 func read_json_file(chemin) -> Variant:
 	var fichier = null
 	var contenu_texte = null

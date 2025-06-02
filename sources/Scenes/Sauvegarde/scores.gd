@@ -20,6 +20,11 @@ func _initialiser_la_liste_des_scores() -> void:
 	if lecture_liste_des_scores:
 		liste_des_scores = lecture_liste_des_scores.duplicate(true)
 		print("liste_des_scores = ", liste_des_scores)
+		
+		# CONVERSION [V0.3.0 -> V0.3.1]
+		# 'Score' est le dernier lecteur de "user://sauvegarde.json" à s'initialiser
+		# Effacer le fichier de sauvegarde obsolete "user://sauvegarde.json"
+		fichiers_json_gd.remove_json_file("user://sauvegarde.json")
 	else:
 		# CONVERSION [V0.3.0 -> V0.3.1]
 		var ancienne_sauvegarde = fichiers_json_gd.read_json_file("user://sauvegarde.json")
