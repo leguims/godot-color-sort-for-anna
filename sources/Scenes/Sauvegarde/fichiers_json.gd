@@ -11,11 +11,11 @@ func read_json_file(chemin) -> Variant:
 	if FileAccess.file_exists(chemin):
 		fichier = FileAccess.open(chemin, FileAccess.READ)
 		if not fichier:
-			print("read_json_file : ERREUR sur le chemin : ", chemin)
+			printerr("read_json_file : ERREUR sur le chemin : ", chemin)
 			return null
 		contenu_texte = fichier.get_as_text()
 		if not contenu_texte :
-			print("read_json_file : ERREUR sur le contenu : ", chemin, " erreur = ", fichier.get_as_text())
+			printerr("read_json_file : ERREUR sur le contenu : ", chemin, " erreur = ", fichier.get_as_text())
 			return null
 		fichier.close()
 		# print("contenu_texte = ", contenu_texte)
@@ -26,9 +26,9 @@ func read_json_file(chemin) -> Variant:
 		# print("error = ", error)
 		if error == OK:
 			return json.get_data()
-		print("read_json_file : ERREUR sur le décodage JSON: ", json.get_error_message(), " in ", chemin, " at line ", json.get_error_line())
+		printerr("read_json_file : ERREUR sur le décodage JSON: ", json.get_error_message(), " in ", chemin, " at line ", json.get_error_line())
 	else:
-		print("read_json_file : ERREUR, le fichier '", chemin, "' n'existe pas ")
+		printerr("read_json_file : ERREUR, le fichier '", chemin, "' n'existe pas ")
 	return null
 
 func write_json_file(chemin, contenu) -> void:
@@ -37,7 +37,7 @@ func write_json_file(chemin, contenu) -> void:
 	# Ouverture du fichier
 	fichier = FileAccess.open(chemin, FileAccess.WRITE)
 	if not fichier:
-		print("write_json_file : ERREUR sur le chemin : ", chemin)
+		printerr("write_json_file : ERREUR sur le chemin : ", chemin)
 		return
 	# Encodage JSON
 	var json_string = JSON.stringify(contenu)

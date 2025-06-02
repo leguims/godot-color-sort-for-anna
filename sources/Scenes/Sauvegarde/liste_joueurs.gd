@@ -36,7 +36,7 @@ func _initialiser_la_liste_des_joueurs() -> void:
 				SauvegardeBddJoueurs.choisir_le_joueur(nom, nom_fichier)
 				print('fin')
 		else:
-			print("Erreur de lecture de la sauvegarde de la liste des joueurs")
+			printerr("Erreur de lecture de la sauvegarde de la liste des joueurs")
 
 func _enregistrer_la_liste_des_joueurs() -> void:
 	fichiers_json_gd.write_json_file("user://liste_des_joueurs.json", liste_des_joueurs.duplicate(true))

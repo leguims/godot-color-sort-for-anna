@@ -58,7 +58,7 @@ func _lire_sauvegarde_joueur(fichier : String) -> bool:
 				return true
 		else:
 			fichier_sauvegarde = ""
-			print("Erreur de lecture de la sauvegarde du joueur actuel (user://" + fichier + ")")
+			printerr("Erreur de lecture de la sauvegarde du joueur actuel (user://" + fichier + ")")
 	return false
 
 func _enregistrer_sauvegarde_joueur() -> void:

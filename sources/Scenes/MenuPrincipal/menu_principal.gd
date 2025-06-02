@@ -21,7 +21,7 @@ func _on_nouveau_joueur_text_submitted(nom_nouveau_joueur: String) -> void:
 	print("Nouveau joueur : ", nom_nouveau_joueur)
 	$Marge/HBoxContainer/VBoxContainer/Marge/VBoxContainer/JoueursCampagne.get_node("nouveau_joueur").clear()
 	if not menu_principal___ajouter_un_nouveau_joueur_pour_la_campagne(nom_nouveau_joueur):
-		print("Erreur : Le nom '" + nom_nouveau_joueur + "' n'est pas libre")
+		printerr("Erreur : Le nom '" + nom_nouveau_joueur + "' n'est pas libre")
 		$Marge/HBoxContainer/VBoxContainer/Marge/VBoxContainer/JoueursCampagne.get_node("nouveau_joueur").placeholder_text = 'Erreur !'
 	else:
 		menu_principal___initialiser_le_nouveau_joueur_pour_la_campagne(nom_nouveau_joueur)
@@ -104,13 +104,13 @@ func _creer_style_tuile_joueur_campagne(tuile : Control, nom : String, campagne_
 func _on_joueurs_campagne_pressed(nom_joueur: String) -> void:
 	print("Campagne avec le joueur : ", nom_joueur)
 	if not SauvegardeListeJoueurs.le_joueur_existe(nom_joueur):
-		print("Erreur : Le nom '" + nom_joueur + "' n'existe pas")
+		printerr("Erreur : Le nom '" + nom_joueur + "' n'existe pas")
 	elif not _la_campagne_est_terminee_pour_joueur(nom_joueur):
 		# Choisir le joueur pour la campagne
 		menu_principal___choisir_le_joueur_pour_la_campagne(nom_joueur)
 		get_tree().change_scene_to_file("res://Scenes/Campagne/campagne.tscn")
 	else:
-		print("Erreur : Le joueur '" + nom_joueur + "' a terminé la campagne")
+		printerr("Erreur : Le joueur '" + nom_joueur + "' a terminé la campagne")
 
 
 func _on_bouton_editer_plateau_pressed() -> void:

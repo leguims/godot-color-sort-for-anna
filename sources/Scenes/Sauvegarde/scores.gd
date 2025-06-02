@@ -32,7 +32,7 @@ func _initialiser_la_liste_des_scores() -> void:
 			print("[V0.3.0 -> V0.3.1] Conversion de l'ancien fichier 'sauvegarde.json' vers 'scores.json'")
 			# TODO : Effacer l'ancien fichier 'sauvegarde.json'
 		else:
-			print("Erreur de lecture de la sauvegarde des scores")
+			printerr("Erreur de lecture de la sauvegarde des scores")
 
 func _enregistrer_la_liste_des_scores() -> void:
 	fichiers_json_gd.write_json_file("user://scores.json", liste_des_scores.duplicate(true))

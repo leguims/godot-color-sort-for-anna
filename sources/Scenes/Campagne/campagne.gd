@@ -173,7 +173,7 @@ func mettre_a_jour_score_duree(duree_en_ms : int) -> int:
 	elif niveau <= 125:
 		temps_reference_en_s = temps_reference_par_niveau[125]
 	else :
-		print("Erreur : Niveau inattendu pour le score !")
+		printerr("Erreur : Niveau inattendu pour le score !")
 
 	var bonus_duree = 0
 	var nom_joueur = SauvegardeBddJoueurs.lire_nom_joueur()
@@ -287,7 +287,7 @@ func initialiser_une_nouvelle_ascension() -> void:
 	if niveau_depart_ascension != -1:
 		SauvegardeBddJoueurs.modifier_niveau_joueur(niveau_depart_ascension)
 	else:
-		print("Erreur : Pas de niveau disponible pour une nouvelle ascension")
+		printerr("Erreur : Pas de niveau disponible pour une nouvelle ascension")
 	afficher_niveau_plateau_parties()
 
 func lire_pourcentage_ascension_realise() -> int:
