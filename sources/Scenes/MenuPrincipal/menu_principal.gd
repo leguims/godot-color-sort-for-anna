@@ -1,16 +1,9 @@
 extends Control
 
-# Pour acceder à la méthode :
-# - ajouter_un_nouveau_joueur_pour_la_campagne(nom_joueur : String)
-# - initialiser_le_nouveau_joueur_pour_la_campagne(nom_joueur : String)
-# - choisir_le_joueur_pour_la_campagne(nom_joueur : String)
-# - liberer_le_joueur_pour_la_campagne()
-# - la_campagne_est_terminee_pour_joueur(nom_joueur : String)
-var campagne_script = load("res://Scenes/Campagne/campagne.gd").new()
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
-	campagne_script.liberer_le_joueur_pour_la_campagne()
+	menu_principal___liberer_le_joueur_pour_la_campagne()
 	_creer_tuiles_joueurs_campagne()
 	_mettre_a_jour_configuration()
 	pass # Replace with function body.
@@ -27,11 +20,11 @@ func _on_bouton_scores_pressed() -> void:
 func _on_nouveau_joueur_text_submitted(nom_nouveau_joueur: String) -> void:
 	print("Nouveau joueur : ", nom_nouveau_joueur)
 	$Marge/HBoxContainer/VBoxContainer/Marge/VBoxContainer/JoueursCampagne.get_node("nouveau_joueur").clear()
-	if not campagne_script.ajouter_un_nouveau_joueur_pour_la_campagne(nom_nouveau_joueur):
+	if not menu_principal___ajouter_un_nouveau_joueur_pour_la_campagne(nom_nouveau_joueur):
 		print("Erreur : Le nom '" + nom_nouveau_joueur + "' n'est pas libre")
 		$Marge/HBoxContainer/VBoxContainer/Marge/VBoxContainer/JoueursCampagne.get_node("nouveau_joueur").placeholder_text = 'Erreur !'
 	else:
-		campagne_script.initialiser_le_nouveau_joueur_pour_la_campagne(nom_nouveau_joueur)
+		menu_principal___initialiser_le_nouveau_joueur_pour_la_campagne(nom_nouveau_joueur)
 		$Marge/HBoxContainer/VBoxContainer/Marge/VBoxContainer/JoueursCampagne.get_node("nouveau_joueur").placeholder_text = 'Ok !'
 		_ajouter_une_tuile_pour_nouveau_joueur_campagne(nom_nouveau_joueur)
 		$Marge/HBoxContainer/VBoxContainer/Marge/VBoxContainer/JoueursCampagne.get_node("nouveau_joueur").placeholder_text = " Ajouter "
@@ -49,7 +42,7 @@ func _creer_tuiles_joueurs_campagne():
 	for nom_joueur in SauvegardeListeJoueurs.retourner_la_liste_des_joueurs():
 		# Ajouter des boutons ou des tuiles de sélection de profil
 		var button = Button.new()
-		_creer_style_tuile_joueur_campagne(button, nom_joueur, campagne_script.la_campagne_est_terminee_pour_joueur(nom_joueur))
+		_creer_style_tuile_joueur_campagne(button, nom_joueur, _la_campagne_est_terminee_pour_joueur(nom_joueur))
 		button.text = nom_joueur
 		button.connect("pressed", _on_joueurs_campagne_pressed.bind(nom_joueur))
 		$Marge/HBoxContainer/VBoxContainer/Marge/VBoxContainer/JoueursCampagne.add_child(button)
@@ -65,7 +58,7 @@ func _creer_tuiles_joueurs_campagne():
 func _ajouter_une_tuile_pour_nouveau_joueur_campagne(nom_joueur : String):
 	# Ajouter la tuile de sélection du nouveau profil
 	var button = Button.new()
-	_creer_style_tuile_joueur_campagne(button, nom_joueur, campagne_script.la_campagne_est_terminee_pour_joueur(nom_joueur))
+	_creer_style_tuile_joueur_campagne(button, nom_joueur, _la_campagne_est_terminee_pour_joueur(nom_joueur))
 	button.text = nom_joueur
 	button.connect("pressed", _on_joueurs_campagne_pressed.bind(nom_joueur))
 	$Marge/HBoxContainer/VBoxContainer/Marge/VBoxContainer/JoueursCampagne.add_child(button)
@@ -112,9 +105,9 @@ func _on_joueurs_campagne_pressed(nom_joueur: String) -> void:
 	print("Campagne avec le joueur : ", nom_joueur)
 	if not SauvegardeListeJoueurs.le_joueur_existe(nom_joueur):
 		print("Erreur : Le nom '" + nom_joueur + "' n'existe pas")
-	elif not campagne_script.la_campagne_est_terminee_pour_joueur(nom_joueur):
+	elif not _la_campagne_est_terminee_pour_joueur(nom_joueur):
 		# Choisir le joueur pour la campagne
-		campagne_script.choisir_le_joueur_pour_la_campagne(nom_joueur)
+		menu_principal___choisir_le_joueur_pour_la_campagne(nom_joueur)
 		get_tree().change_scene_to_file("res://Scenes/Campagne/campagne.tscn")
 	else:
 		print("Erreur : Le joueur '" + nom_joueur + "' a terminé la campagne")
@@ -145,3 +138,64 @@ func _on_bouton_vibrations_toggled(toggled_on: bool) -> void:
 		SauvegardeConfiguration.activer_vibrations()
 	else:
 		SauvegardeConfiguration.desactiver_vibrations()
+
+
+# Traitement de données 'Sauvegarde*'
+# spécifiques au menu principal pour la campagne
+################################################
+
+# DOUBLON : deja defini dans 'campagne.gd'
+func doublon_campagne_gd___le_niveau_est_termine(niveau : int) -> bool:
+	var nb_plateau = SauvegardeBddPlateaux.nombre_plateaux_pour_le_niveau(niveau)
+	var plateau_courant = SauvegardeBddJoueurs.lire_indice_plateau_joueur_pour_niveau(niveau)
+	return plateau_courant >= nb_plateau
+
+# DOUBLON : deja defini dans 'campagne.gd'
+func doublon_campagne_gd___retourner_le_niveau_le_plus_bas() -> int:
+	# Retourner le plus bas niveau réalisable
+	for niveau_le_plus_bas in range(0, 300):
+		# Vérifier qu'il existe dans la BDD de plateaux
+		if SauvegardeBddPlateaux.niveau_existe(niveau_le_plus_bas):
+			# Vérifier qu'il reste des plateaux à réaliser par le joueur
+			if not doublon_campagne_gd___le_niveau_est_termine(niveau_le_plus_bas):
+				return niveau_le_plus_bas
+	return -1
+
+func _la_campagne_est_terminee_pour_joueur(nom_joueur : String) -> bool:
+	if SauvegardeListeJoueurs.le_joueur_existe(nom_joueur):
+		# Choisir le joueur pour la campagne
+		var nom_fichier = SauvegardeListeJoueurs.retourner_le_fichier_de_sauvegarde(nom_joueur)
+		SauvegardeBddJoueurs.choisir_le_joueur(nom_joueur, nom_fichier)
+		return doublon_campagne_gd___retourner_le_niveau_le_plus_bas() == -1
+	return false
+
+func menu_principal___choisir_le_joueur_pour_la_campagne(nom_joueur : String) -> bool:
+	if SauvegardeListeJoueurs.le_joueur_existe(nom_joueur):
+		# Choisir le joueur pour la campagne
+		var nom_fichier = SauvegardeListeJoueurs.retourner_le_fichier_de_sauvegarde(nom_joueur)
+		if SauvegardeBddJoueurs.choisir_le_joueur(nom_joueur, nom_fichier):
+			# Initiliser son niveau
+			if not SauvegardeBddJoueurs.lire_niveau_joueur():
+				SauvegardeBddJoueurs.modifier_niveau_joueur(SauvegardeBddPlateaux.niveau_min())
+			return true
+	return false
+
+func menu_principal___liberer_le_joueur_pour_la_campagne():
+	SauvegardeBddJoueurs.liberer_le_joueur()
+
+func menu_principal___ajouter_un_nouveau_joueur_pour_la_campagne(nom_nouveau_joueur : String) -> bool:
+	return not SauvegardeListeJoueurs.le_joueur_existe(nom_nouveau_joueur)
+
+func menu_principal___initialiser_le_nouveau_joueur_pour_la_campagne(nom_nouveau_joueur : String) -> bool:
+	if not SauvegardeListeJoueurs.le_joueur_existe(nom_nouveau_joueur):
+		# Ajouter le joueur dans la liste des joueurs
+		if SauvegardeListeJoueurs.ajouter_un_nouveau_joueur(nom_nouveau_joueur):
+			var nom_fichier = SauvegardeListeJoueurs.retourner_le_fichier_de_sauvegarde(nom_nouveau_joueur)
+			# Ajouter la sauvegarde personnelle du joueur
+			if SauvegardeBddJoueurs.ajouter_un_nouveau_joueur(nom_nouveau_joueur, nom_fichier, SauvegardeBddPlateaux.niveau_min()):
+				# Initialiser le niveau
+				SauvegardeBddJoueurs.modifier_niveau_joueur(SauvegardeBddPlateaux.niveau_min())
+				# Ajouter le joueur dans le tableau des scores
+				if SauvegardeScores.ajouter_un_nouveau_joueur(nom_nouveau_joueur):
+					return true
+	return false
