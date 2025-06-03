@@ -2,7 +2,7 @@
 
 [ext_resource type="Script" path="res://Scenes/Campagne/campagne.gd" id="1_4bhsb"]
 [ext_resource type="PackedScene" uid="uid://cfqcdseqsuy1l" path="res://Scenes/Plateau/plateau.tscn" id="1_h65nu"]
-[ext_resource type="PackedScene" uid="uid://xsrt777ms37l" path="res://Scenes/Menu/menu.tscn" id="2_7600w"]
+[ext_resource type="PackedScene" uid="uid://xsrt777ms37l" path="res://Scenes/MenuCampagne/menu_campagne.tscn" id="2_7600w"]
 [ext_resource type="AudioStream" uid="uid://b0xpcrpr7dos3" path="res://Art/Musique/Solve The Puzzle.ogg" id="3_3nkxa"]
 [ext_resource type="AudioStream" uid="uid://1yo7r2c0gaqs" path="res://Art/EffetSonore/game-start.mp3" id="4_v42vo"]
 [ext_resource type="AudioStream" uid="uid://bta65s8emibd3" path="res://Art/EffetSonore/win.mp3" id="5_06ouw"]

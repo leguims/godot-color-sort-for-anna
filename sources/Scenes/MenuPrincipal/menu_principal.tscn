@@ -1,4 +1,4 @@
-[gd_scene load_steps=13 format=3 uid="uid://due674pwfguqp"]
+[gd_scene load_steps=11 format=3 uid="uid://due674pwfguqp"]
 
 [ext_resource type="Script" path="res://Scenes/MenuPrincipal/menu_principal.gd" id="1_64slw"]
 [ext_resource type="Texture2D" uid="uid://bl3jiqwpmmvbq" path="res://Art/Images/fond_cubes_480x720.png" id="2_wsrww"]
@@ -20,12 +20,6 @@ bg_color = Color(0.537255, 0, 0.537255, 1)
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_urgqo"]
 bg_color = Color(0.873002, 0.000607988, 0.872996, 1)
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_3elix"]
-bg_color = Color(0.537255, 0, 0.537255, 1)
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_yyhke"]
-bg_color = Color(0.87451, 0, 0.87451, 1)
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_dfj4a"]
 bg_color = Color(0.537255, 0, 0.537255, 1)
@@ -115,13 +109,6 @@ theme_override_styles/hover = SubResource("StyleBoxFlat_0rh52")
 theme_override_styles/normal = SubResource("StyleBoxFlat_urgqo")
 text = "Scores"
 
-[node name="BoutonEditerPlateau" type="Button" parent="Marge/HBoxContainer/VBoxContainer/Marge/VBoxContainer"]
-layout_mode = 2
-theme_override_font_sizes/font_size = 21
-theme_override_styles/hover = SubResource("StyleBoxFlat_3elix")
-theme_override_styles/normal = SubResource("StyleBoxFlat_yyhke")
-text = "Editer un plateau"
-
 [node name="BoutonRéférences" type="Button" parent="Marge/HBoxContainer/VBoxContainer/Marge/VBoxContainer"]
 layout_mode = 2
 theme_override_font_sizes/font_size = 21
@@ -167,7 +154,6 @@ vertical_alignment = 2
 
 [connection signal="pressed" from="Marge/HBoxContainer/VBoxContainer/Marge/VBoxContainer/BoutonCampagne" to="." method="_on_bouton_campagne_pressed"]
 [connection signal="pressed" from="Marge/HBoxContainer/VBoxContainer/Marge/VBoxContainer/BoutonScores" to="." method="_on_bouton_scores_pressed"]
-[connection signal="pressed" from="Marge/HBoxContainer/VBoxContainer/Marge/VBoxContainer/BoutonEditerPlateau" to="." method="_on_bouton_editer_plateau_pressed"]
 [connection signal="pressed" from="Marge/HBoxContainer/VBoxContainer/Marge/VBoxContainer/BoutonRéférences" to="." method="_on_bouton_références_pressed"]
 [connection signal="toggled" from="Marge/HBoxContainer/VBoxContainer/Marge/VBoxContainer/VBoxContainer/BoutonMusiques" to="." method="_on_bouton_musiques_toggled"]
 [connection signal="toggled" from="Marge/HBoxContainer/VBoxContainer/Marge/VBoxContainer/VBoxContainer/BoutonEffetsSonores" to="." method="_on_bouton_effets_sonores_toggled"]

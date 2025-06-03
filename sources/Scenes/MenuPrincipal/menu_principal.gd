@@ -113,9 +113,6 @@ func _on_joueurs_campagne_pressed(nom_joueur: String) -> void:
 		printerr("Erreur : Le joueur '" + nom_joueur + "' a terminé la campagne")
 
 
-func _on_bouton_editer_plateau_pressed() -> void:
-	get_tree().change_scene_to_file("res://Scenes/EditerUnPlateau/editer_un_plateau.tscn")
-
 func _mettre_a_jour_configuration():
 	$Marge/HBoxContainer/VBoxContainer/Marge/VBoxContainer/VBoxContainer/BoutonMusiques.button_pressed = SauvegardeConfiguration.musiques_sont_actives()
 	$Marge/HBoxContainer/VBoxContainer/Marge/VBoxContainer/VBoxContainer/BoutonEffetsSonores.button_pressed = SauvegardeConfiguration.effets_sonores_sont_actifs()

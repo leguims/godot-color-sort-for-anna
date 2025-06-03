@@ -132,7 +132,7 @@ func abandonner_un_plateau() -> void:
 
 func afficher_niveau_plateau_parties():
 	print("[Campagne] Niveau = ", str(SauvegardeBddJoueurs.lire_niveau_joueur()),
-	 " - Plateau = ", str(SauvegardeBddJoueurs.lire_nom_plateau()),
+	 " - Plateau = '", str(SauvegardeBddJoueurs.lire_nom_plateau()).replace(' ', '-'), "'",
 	 " - Nombre de parties = ", str(SauvegardeBddJoueurs.lire_nombre_plateaux()))
 
 # Traitement d'un plateau

@@ -1,6 +1,6 @@
 [gd_scene load_steps=7 format=3 uid="uid://xsrt777ms37l"]
 
-[ext_resource type="Script" path="res://Scenes/Menu/menu.gd" id="1_d2lp0"]
+[ext_resource type="Script" path="res://Scenes/MenuCampagne/menu_campagne.gd" id="1_88fpq"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_w2jhv"]
 bg_color = Color(0, 0, 0, 1)
@@ -18,7 +18,7 @@ bg_color = Color(0, 0, 0, 1)
 bg_color = Color(0, 0, 0, 1)
 
 [node name="Menu" type="CanvasLayer"]
-script = ExtResource("1_d2lp0")
+script = ExtResource("1_88fpq")
 
 [node name="BoutonMenuPrincipal" type="Button" parent="."]
 anchors_preset = 10
@@ -44,40 +44,6 @@ theme_override_styles/normal = SubResource("StyleBoxFlat_11ehg")
 bbcode_enabled = true
 text = "[center][font_size=30][b]infos joueur[/b][/font_size][/center]"
 fit_content = true
-
-[node name="EditeurPlateau" type="ColorRect" parent="."]
-anchors_preset = 12
-anchor_top = 1.0
-anchor_right = 1.0
-anchor_bottom = 1.0
-offset_top = -620.0
-offset_bottom = -520.0
-grow_horizontal = 2
-grow_vertical = 0
-color = Color(0.808707, 0.00056236, 0.818096, 1)
-
-[node name="DescriptionEditionPlateau" type="Label" parent="EditeurPlateau"]
-layout_mode = 1
-anchors_preset = 10
-anchor_right = 1.0
-offset_bottom = 42.0
-grow_horizontal = 2
-theme_override_font_sizes/font_size = 30
-text = " Editer un nouveau plateau :"
-vertical_alignment = 2
-
-[node name="SaisieEditionPlateau" type="LineEdit" parent="EditeurPlateau"]
-layout_mode = 1
-anchors_preset = 12
-anchor_top = 1.0
-anchor_right = 1.0
-anchor_bottom = 1.0
-offset_top = -50.0
-grow_horizontal = 2
-grow_vertical = 0
-theme_override_font_sizes/font_size = 30
-text = "AA .BB .CC .ABC"
-alignment = 1
 
 [node name="Message" type="Label" parent="."]
 anchors_preset = 8
@@ -117,6 +83,5 @@ theme_override_styles/normal = SubResource("StyleBoxFlat_j78cs")
 text = "Commencer"
 
 [connection signal="pressed" from="BoutonMenuPrincipal" to="." method="_on_bouton_menu_principal_pressed"]
-[connection signal="text_submitted" from="EditeurPlateau/SaisieEditionPlateau" to="." method="_on_saisie_edition_plateau_text_submitted"]
 [connection signal="timeout" from="TempoMessage" to="." method="_on_tempo_message_timeout"]
 [connection signal="pressed" from="BoutonCommencer" to="." method="_on_bouton_commencer_pressed"]
