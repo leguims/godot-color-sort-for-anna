@@ -174,9 +174,7 @@ func menu_principal___choisir_le_joueur_pour_la_campagne(nom_joueur : String) ->
 		# Choisir le joueur pour la campagne
 		var nom_fichier = SauvegardeListeJoueurs.retourner_le_fichier_de_sauvegarde(nom_joueur)
 		if SauvegardeBddJoueurs.choisir_le_joueur(nom_joueur, nom_fichier):
-			# Initiliser son niveau
-			if not SauvegardeBddJoueurs.lire_niveau_joueur():
-				SauvegardeBddJoueurs.modifier_niveau_joueur(SauvegardeBddPlateaux.niveau_min())
+			# Initialiser son niveau
 			return true
 	return false
 
@@ -192,9 +190,7 @@ func menu_principal___initialiser_le_nouveau_joueur_pour_la_campagne(nom_nouveau
 		if SauvegardeListeJoueurs.ajouter_un_nouveau_joueur(nom_nouveau_joueur):
 			var nom_fichier = SauvegardeListeJoueurs.retourner_le_fichier_de_sauvegarde(nom_nouveau_joueur)
 			# Ajouter la sauvegarde personnelle du joueur
-			if SauvegardeBddJoueurs.ajouter_un_nouveau_joueur(nom_nouveau_joueur, nom_fichier, SauvegardeBddPlateaux.niveau_min()):
-				# Initialiser le niveau
-				SauvegardeBddJoueurs.modifier_niveau_joueur(SauvegardeBddPlateaux.niveau_min())
+			if SauvegardeBddJoueurs.ajouter_un_nouveau_joueur(nom_nouveau_joueur, nom_fichier):
 				# Ajouter le joueur dans le tableau des scores
 				if SauvegardeScores.ajouter_un_nouveau_joueur(nom_nouveau_joueur):
 					return true
