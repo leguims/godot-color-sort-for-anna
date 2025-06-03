@@ -21,7 +21,6 @@ func _ready() -> void:
 
 
 func _initialiser_la_configuration() -> void:
-	print("configuration.gd : _initialiser_la_configuration")
 	# Lire la configuration du jeu
 	var fichier_configuration = fichiers_json_gd.read_json_file("user://configuration_du_jeu.json")
 	# print(fichier_configuration)
@@ -34,6 +33,7 @@ func _initialiser_la_configuration() -> void:
 			configuration_du_jeu['effets sonores'] = fichier_configuration.get('effets sonores')
 		if 'vibrations' in fichier_configuration:
 			configuration_du_jeu['vibrations'] = fichier_configuration.get('vibrations')
+	print("fichier_configuration = ", fichier_configuration)
 
 func _enregistrer_la_configuration() -> void:
 	print("configuration.gd : _enregistrer_la_configuration")

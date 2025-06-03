@@ -13,7 +13,7 @@ script = ExtResource("1_4bhsb")
 
 [node name="PlateauDeJeu" parent="." instance=ExtResource("1_h65nu")]
 
-[node name="Menu" parent="." instance=ExtResource("2_7600w")]
+[node name="MenuCampagne" parent="." instance=ExtResource("2_7600w")]
 
 [node name="Musique" type="AudioStreamPlayer" parent="."]
 stream = ExtResource("3_3nkxa")
@@ -30,4 +30,4 @@ stream = ExtResource("6_dmm43")
 [connection signal="abandon" from="PlateauDeJeu" to="." method="_on_plateau_de_jeu_abandon"]
 [connection signal="plateau_invalide" from="PlateauDeJeu" to="." method="_on_plateau_de_jeu_plateau_invalide"]
 [connection signal="victoire" from="PlateauDeJeu" to="." method="_on_plateau_de_jeu_victoire"]
-[connection signal="commencer_plateau" from="Menu" to="." method="_on_menu_commencer_plateau"]
+[connection signal="commencer_plateau" from="MenuCampagne" to="." method="_on_menu_commencer_plateau"]

@@ -7,7 +7,7 @@ Voici la liste ordonnées des évolutions votées lors de la version V0.3.0 (Ran
 3.	Score: 1,4	- ~~Annuler la sélection de pile lors d'un pointage sur le fond d'écran~~:heavy_check_mark: V0.3.1
 4.	Score: 1,4	- Des plateaux encore plus difficiles !
 5.	Score: 1,6	- ~~Ajouter une option pour activer/désactiver les bruitages~~:heavy_check_mark: V0.3.1
-6.	Score: 1,7	- Au commencement d'une ascension, permettre à l'utilisateur de choisir la longueur de son ascension.
+6.	Score: 1,7	- ~~Au commencement d'une ascension, permettre à l'utilisateur de choisir la longueur de son ascension.~~:heavy_check_mark: V0.3.1
 7.	Score: 1,7	- Réduire la similitude des plateaux de faible niveaux qui se ressemblent trop.
 8.	Score: 1,9	- Baser la difficulté sur le nombre d'alternatives (les occasions de faire une erreur) de la solution
 9.	Score: 2,0	- Lors d'un abandon, ne pas rejouer le même plateau abandonné, mais proposer un autre plateau de même difficulté.
@@ -26,7 +26,7 @@ Voici la liste ordonnées des évolutions votées lors de la version V0.3.0 (Ran
 22.	Score: 2,6	- Après une résolution ou abandon, représenter la variation du score avec sa composante "taux de réussite" et "temps de résolution" pour que le joueur comprenne les ressorts d'amélioration du score.
 23.	Score: 2,9	- Ajouter une musique dans les menus
 24.	Score: 3,0	- Prévoir des musiques différentes selon l'avancement dans l'ascension.
-25.	Score: 3,0	- Ajouter des points spécifiques à la réussite d'une ascension dans le score..
+25.	Score: 3,0	- ~~Ajouter des points spécifiques à la réussite d'une ascension dans le score.~~:heavy_check_mark: V0.3.1
 26.	Score: 3,0	- En jeu, représenter les jetons contigus identiques comme "soudés"..
 27.	Score: 3,0	- Quand un joueur tarde à résoudre un plateau, faire une animation pour l'inviter à abandonner (troll).
 28.	Score: 3,2	- Réaliser une animation de jeton qui se déplace

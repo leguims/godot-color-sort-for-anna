@@ -4,8 +4,6 @@ class_name MenuCampagne
 
 # Notifie la scene `Plateau` que le bouton est pressé
 signal commencer_plateau
-# TODO : Effacer partout 'saisie_plateau' !!
-#signal saisie_plateau
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
@@ -104,20 +102,29 @@ func modifier_message_vertical_align(alignement : VerticalAlignment) -> void:
 
 
 func cacher_accueil():
-	$Message.hide()
 	$BoutonMenuPrincipal.hide()
 	$InfosDuJoueur.hide()
+	$Message.hide()
 	$BoutonCommencer.hide()
+	$LongueurAscension.hide()
 
-func afficher_accueil():
-	# Initialisation du menu de campagne
-	$Message.size.y = $Message.size.y + 100
+func afficher_accueil_nouvelle_ascension():
+	$BoutonMenuPrincipal.show()
+	# Reset le max de la jauge de plateaux
+	reset_jauge_LongueurAscension()
+	$LongueurAscension.show()
 	
+	_afficher_message("", false)
+	# Attendre l'échéance d'une temporisation libre
+	await get_tree().create_timer(1.0).timeout
+	$BoutonCommencer.show()
+
+func afficher_accueil_ascension_en_cours():
 	$BoutonMenuPrincipal.show()
 	mettre_a_jour_infos_joueur()
 	$InfosDuJoueur.show()
 	
-	_afficher_message("Mode Campagne!", false)
+	_afficher_message("Poursuivre l'ascension!", false)
 	# Attendre l'échéance d'une temporisation libre
 	await get_tree().create_timer(1.0).timeout
 	$BoutonCommencer.show()
@@ -179,6 +186,8 @@ func afficher_fin_ascension():
 	await $TempoMessage.timeout
 	modifier_tempo_message(1.0)
 	afficher_plateau_suivant("Ascension suivante!")
+	modifier_tempo_message(1.0)
+	afficher_accueil_nouvelle_ascension()
 
 func afficher_fin_campagne():
 	_afficher_message("Félicitation!")
@@ -196,3 +205,32 @@ func afficher_fin_campagne():
 	mettre_a_jour_infos_joueur()
 	$InfosDuJoueur.show()
 	#$BoutonCommencer.show()
+
+
+
+var longueur_max_ascension : int = 0
+
+func enregistrer_longueur_max_ascension(max : int) -> void:
+	longueur_max_ascension = max
+
+func reset_jauge_LongueurAscension():
+	var pourcentage_min = 100. / longueur_max_ascension
+	# Incrément par plateau
+	$LongueurAscension/VBox/Curseur.step = pourcentage_min
+	# 1 plateau minimum
+	$LongueurAscension/VBox/Curseur.min_value = pourcentage_min
+	
+	# Initialisé à 100% par défaut
+	$LongueurAscension/VBox/Curseur.value = 100
+	$LongueurAscension/VBox/Pourcentage.value = 100
+	_on_h_slider_value_changed(100.)
+
+func _on_h_slider_value_changed(value: float) -> void:
+	# Repercuter sur la valeur
+	$LongueurAscension/VBox/Pourcentage.value = value
+	# Repercuter sur le nombre de plateaux
+	var nb_plateaux = roundi(value / 100. * longueur_max_ascension)
+	if nb_plateaux > 1:
+		$LongueurAscension/VBox/NombreDePlateaux.text = str(nb_plateaux) +" plateaux"
+	else:
+		$LongueurAscension/VBox/NombreDePlateaux.text = str(nb_plateaux) +" plateau"

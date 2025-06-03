@@ -1,4 +1,4 @@
-[gd_scene load_steps=7 format=3 uid="uid://xsrt777ms37l"]
+[gd_scene load_steps=8 format=3 uid="uid://xsrt777ms37l"]
 
 [ext_resource type="Script" path="res://Scenes/MenuCampagne/menu_campagne.gd" id="1_88fpq"]
 
@@ -17,7 +17,10 @@ bg_color = Color(0, 0, 0, 1)
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_j78cs"]
 bg_color = Color(0, 0, 0, 1)
 
-[node name="Menu" type="CanvasLayer"]
+[sub_resource type="LabelSettings" id="LabelSettings_3y2ap"]
+font_size = 30
+
+[node name="MenuCampagne" type="CanvasLayer"]
 script = ExtResource("1_88fpq")
 
 [node name="BoutonMenuPrincipal" type="Button" parent="."]
@@ -46,6 +49,7 @@ text = "[center][font_size=30][b]infos joueur[/b][/font_size][/center]"
 fit_content = true
 
 [node name="Message" type="Label" parent="."]
+visible = false
 anchors_preset = 8
 anchor_left = 0.5
 anchor_top = 0.5
@@ -58,7 +62,7 @@ offset_bottom = 240.0
 grow_horizontal = 2
 grow_vertical = 2
 theme_override_font_sizes/font_size = 60
-text = "Range les couleurs!"
+text = "Poursuivre l'ascension!"
 horizontal_alignment = 1
 vertical_alignment = 1
 autowrap_mode = 2
@@ -82,6 +86,46 @@ theme_override_styles/hover = SubResource("StyleBoxFlat_1gckf")
 theme_override_styles/normal = SubResource("StyleBoxFlat_j78cs")
 text = "Commencer"
 
+[node name="LongueurAscension" type="MarginContainer" parent="."]
+offset_top = 269.0
+offset_right = 480.0
+offset_bottom = 309.0
+theme_override_constants/margin_left = 40
+theme_override_constants/margin_right = 40
+
+[node name="ColorRect" type="ColorRect" parent="LongueurAscension"]
+layout_mode = 2
+color = Color(0.13, 0.13, 0.13, 1)
+
+[node name="VBox" type="VBoxContainer" parent="LongueurAscension"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="Description" type="Label" parent="LongueurAscension/VBox"]
+layout_mode = 2
+text = "Nouvelle ascension
+Définissez sa longueur :"
+label_settings = SubResource("LabelSettings_3y2ap")
+horizontal_alignment = 1
+
+[node name="Curseur" type="HSlider" parent="LongueurAscension/VBox"]
+layout_mode = 2
+min_value = 1.0
+value = 100.0
+
+[node name="Pourcentage" type="ProgressBar" parent="LongueurAscension/VBox"]
+layout_mode = 2
+min_value = 1.0
+step = 1.0
+value = 100.0
+
+[node name="NombreDePlateaux" type="Label" parent="LongueurAscension/VBox"]
+layout_mode = 2
+text = "1 plateau"
+label_settings = SubResource("LabelSettings_3y2ap")
+horizontal_alignment = 1
+
 [connection signal="pressed" from="BoutonMenuPrincipal" to="." method="_on_bouton_menu_principal_pressed"]
 [connection signal="timeout" from="TempoMessage" to="." method="_on_tempo_message_timeout"]
 [connection signal="pressed" from="BoutonCommencer" to="." method="_on_bouton_commencer_pressed"]
+[connection signal="value_changed" from="LongueurAscension/VBox/Curseur" to="." method="_on_h_slider_value_changed"]

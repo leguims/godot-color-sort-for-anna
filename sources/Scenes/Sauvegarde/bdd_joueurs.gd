@@ -16,6 +16,38 @@ var sauvegarde_joueur = {
 	'ascensions': [ ]
 }
 
+# Exemple de sauvegarde avec une ascension en cours
+# {
+# 	"nom": "nom joueur",
+# 	"nombre_de_parties": { "18": 5, "20": 4, "24": 4 },
+# 	"plateaux": { "18": 4, "20": 4, "24": 4 },
+# 	"ascensions": [ 
+# 		{
+# 			'niveau_debut': 18,
+# 			'niveau_fin': 24,
+# 			'niveau_courant': 20,
+# 			'date_debut': 1748785865.997,
+# 			'date_fin': 0.,
+# 			'longueur_detour': 0,
+# 			'score': { 'ascension': 500000, 'ascension_sans_detour': 500000},
+# 			'plateaux': [
+# 				{
+# 					'nom': "AA .BB .AB ",
+# 					'date_debut': 1748785865.997,
+# 					'date_fin': 1748785855.0,
+# 					'niveau': 18,
+# 					'statut': 'reussi', # 'en cours', 'abandonné', 'reussi'
+# 					'duree': 0,
+# 					'score': { 'duree': 4000, 'ratio_reussite': 2000 },
+# 					'coups joués': [
+# 						{'depart': 2, 'arrivee': 1},
+# 						{'depart': 2, 'arrivee': 0}
+# 					]
+# 				}
+# 			]
+# 		}
+# 	]
+# }
 
 var fichier_sauvegarde = ""
 
@@ -47,12 +79,21 @@ func _lire_sauvegarde_joueur(fichier : String) -> bool:
 			lecture_sauvegarde_joueur = fichiers_json_gd.read_json_file("user://" + fichier)
 		
 		sauvegarde_joueur = lecture_sauvegarde_joueur.duplicate(true)
-		print("sauvegarde_joueur = ", sauvegarde_joueur)
+		_print_bdd_joueurs()
 		return true
 	else:
 		fichier_sauvegarde = ""
 		printerr("Erreur de lecture de la sauvegarde du joueur actuel (user://" + fichier + ")")
 	return false
+
+func _print_bdd_joueurs() -> void:
+	#print("sauvegarde_joueur '", sauvegarde_joueur['nom'],"' = ", sauvegarde_joueur)
+	print("sauvegarde_joueur '", sauvegarde_joueur.get('nom'),"' :")
+	print('\t', "plateaux=", sauvegarde_joueur.get('plateaux'))
+	print('\t', "nombre_de_parties=", sauvegarde_joueur.get('nombre_de_parties'))
+	print('\t', "len(ascensions)=", len(sauvegarde_joueur.get('ascensions')))
+	#if len(sauvegarde_joueur.get('ascensions')):
+	#	print('\t', "derniere ascensions=", sauvegarde_joueur.get('ascensions').back())
 
 func _enregistrer_sauvegarde_joueur() -> void:
 	if fichier_sauvegarde:

@@ -171,7 +171,6 @@ func menu_principal___choisir_le_joueur_pour_la_campagne(nom_joueur : String) ->
 		# Choisir le joueur pour la campagne
 		var nom_fichier = SauvegardeListeJoueurs.retourner_le_fichier_de_sauvegarde(nom_joueur)
 		if SauvegardeBddJoueurs.choisir_le_joueur(nom_joueur, nom_fichier):
-			# Initialiser son niveau
 			return true
 	return false
 
