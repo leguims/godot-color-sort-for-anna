@@ -20,7 +20,7 @@ var sauvegarde_joueur = {
 # {
 # 	"nom": "nom joueur",
 # 	"nombre_de_parties": { "18": 5, "20": 4, "24": 4 },
-# 	"plateaux": { "18": 4, "20": 4, "24": 4 },
+# 	"plateaux": { "18": ['AA .BB .AB ', 'ABA.BAB.  '], "20": ['A .B .AB'], "24": ['AA .BB .CC .ABC'] },
 # 	"ascensions": [ 
 # 		{
 # 			'niveau_debut': 18,
@@ -71,7 +71,7 @@ func _lire_sauvegarde_joueur(fichier : String) -> bool:
 		if 'niveau' in lecture_sauvegarde_joueur and 'durees' in lecture_sauvegarde_joueur:
 			sauvegarde_joueur['nom'] = lecture_sauvegarde_joueur.get('nom')
 			# Reset des informations 'plateaux' et 'nombre_de_parties'
-			sauvegarde_joueur['plateaux'] = {}
+			sauvegarde_joueur['plateaux'] = SauvegardeBddPlateaux.plateau_liste_difficulte_duplicate()
 			sauvegarde_joueur['nombre_de_parties'] = {}
 			# La conversion 'niveau' et 'durees' vers 'ascensions' n'est pas possible.
 			sauvegarde_joueur['ascensions'] = []
@@ -89,7 +89,7 @@ func _lire_sauvegarde_joueur(fichier : String) -> bool:
 func _print_bdd_joueurs() -> void:
 	#print("sauvegarde_joueur '", sauvegarde_joueur['nom'],"' = ", sauvegarde_joueur)
 	print("sauvegarde_joueur '", sauvegarde_joueur.get('nom'),"' :")
-	print('\t', "plateaux=", sauvegarde_joueur.get('plateaux'))
+	print('\t', "plateaux=", lire_nom_plateau())
 	print('\t', "nombre_de_parties=", sauvegarde_joueur.get('nombre_de_parties'))
 	print('\t', "len(ascensions)=", len(sauvegarde_joueur.get('ascensions')))
 	#if len(sauvegarde_joueur.get('ascensions')):
@@ -123,6 +123,9 @@ func ajouter_un_nouveau_joueur(nom_nouveau_joueur : String, nom_nouveau_fichier 
 		'nombre_de_parties': {  },
 		'ascensions': [ ]
 	}
+	# Initialiser les plateaux avec 'BDD Plateaux'
+	sauvegarde_joueur['plateaux'] = SauvegardeBddPlateaux.plateau_liste_difficulte_duplicate()
+	
 	fichier_sauvegarde = nom_nouveau_fichier
 	_enregistrer_sauvegarde_joueur()
 	return true
@@ -140,31 +143,51 @@ func lire_nom_joueur() -> String:
 
 ###############################################
 # Indice des plateaux non joués
-# "plateaux": { "18": 4, "20": 4, "24": 4 }
+# "plateaux": { "18": ['AA .BB .AB ', 'ABA.BAB.  '], "20": ['A .B .AB'], "24": ['AA .BB .CC .ABC'] },
 ###############################################
 
-func incrementer_indice_plateau_joueur_pour_niveau_courant() -> void:
+func lire_plateau_aleatoire_pour_niveau_courant() -> String:
+	"Désigne un plateau aléatoire du niveau courant"
 	if le_joueur_existe():
 		var str_niveau = str(lire_niveau_joueur())
-		if str_niveau not in sauvegarde_joueur.get('plateaux'):
-			sauvegarde_joueur['plateaux'][str_niveau] = -1
-		sauvegarde_joueur['plateaux'][str_niveau] += 1
+		return sauvegarde_joueur.get('plateaux').get(str_niveau).pick_random()
+	return ''
+
+func supprimer_plateau_courant() -> bool:
+	"Efface le plateau courant."
+	if le_joueur_existe() and lire_statut_plateau() == 'en cours':
+		var str_niveau = str(lire_niveau_joueur())
+		var nom_plateau = lire_nom_plateau()
+		sauvegarde_joueur.get('plateaux').get(str_niveau).erase(nom_plateau)
+		if sauvegarde_joueur.get('plateaux').get(str_niveau).is_empty():
+			# Le niveau est terminé, effacer sa reference dans les plateaux restants.
+			sauvegarde_joueur.get('plateaux').erase(str_niveau)
 		_enregistrer_sauvegarde_joueur()
+		return true
+	return false
 
-func lire_indice_plateau_joueur_pour_niveau_courant() -> int:
+func lire_nombre_de_plateaux_realisables_pour_niveau_courant() -> int:
 	if le_joueur_existe():
 		var str_niveau = str(lire_niveau_joueur())
-		if str_niveau in sauvegarde_joueur.get('plateaux'):
-			return sauvegarde_joueur.get('plateaux').get(str_niveau)
-	return -1
+		return len(sauvegarde_joueur.get('plateaux').get(str_niveau))
+	return 0
 
-func lire_indice_plateau_joueur_pour_niveau(niveau : int) -> int:
+func lire_nombre_de_niveaux_realisables() -> int:
+	if le_joueur_existe():
+		return len(sauvegarde_joueur.get('plateaux'))
+	return 0
+
+func le_niveau_est_termine(niveau : int) -> bool:
 	if le_joueur_existe():
 		var str_niveau = str(niveau)
-		if str_niveau in sauvegarde_joueur.get('plateaux'):
-			return sauvegarde_joueur.get('plateaux').get(str_niveau)
-	return -1
+		return str_niveau not in sauvegarde_joueur.get('plateaux') \
+				or sauvegarde_joueur.get('plateaux').get(str_niveau).is_empty()
+	return true
 
+func la_campagne_est_terminee() -> bool:
+	if le_joueur_existe():
+		return sauvegarde_joueur.get('plateaux').is_empty()
+	return true
 
 ###############################################
 # Nombre de parties
@@ -300,6 +323,49 @@ func lire_niveau_fin_ascension() -> int:
 	if ascension_existe():
 		var ascension = sauvegarde_joueur.get('ascensions').back()
 		return ascension.get('niveau_fin')
+	return 0
+
+func lire_niveau_ascension_longueur_totale() -> int:
+	var longueur_totale = 0
+	if ascension_existe():
+		var ascension = sauvegarde_joueur.get('ascensions').back()
+		for niveau in range(ascension.get('niveau_debut'), ascension.get('niveau_fin')+1):
+			if str(niveau) in sauvegarde_joueur.get('plateaux'):
+				longueur_totale += 1
+	return longueur_totale
+
+func lire_niveau_ascension_longueur_realisee() -> int:
+	if plateau_existe():
+		var ascension = sauvegarde_joueur.get('ascensions').back()
+		var liste_niveaux = []
+		for plateau in ascension.get('plateaux'):
+			var niveau = plateau.get('niveau')
+			if not le_niveau_est_termine(niveau) :
+				if niveau not in liste_niveaux \
+					and plateau.get('statut') == 'reussi':
+					 # Ajouter le niveau réussi
+					liste_niveaux.append(niveau)
+				elif plateau.get('statut') == 'abandonné':
+					 # Supprimer le precedent niveau quand le niveau courant est abandonné
+					liste_niveaux.pop_back()
+		return len(liste_niveaux)
+	return 0
+
+func lire_niveau_ascension_longueur_restante() -> int:
+	var longueur_totale = 0
+	if ascension_en_cours():
+		var ascension = sauvegarde_joueur.get('ascensions').back()
+		for niveau in range(ascension.get('niveau_courant'), ascension.get('niveau_fin')+1):
+			if str(niveau) in sauvegarde_joueur.get('plateaux'):
+				longueur_totale += 1
+	return longueur_totale
+
+func lire_pourcentage_ascension_realise() -> int:
+	"Pourcentage de réalisation (retourne 99 pour 99%, 15 pour 15% ...)"
+	if ascension_en_cours():
+		var nb_niveaux_totaux = lire_niveau_ascension_longueur_totale()
+		var nb_niveaux_realises = lire_niveau_ascension_longueur_realisee()
+		return roundi(100. * nb_niveaux_realises / nb_niveaux_totaux)
 	return 0
 
 ###############################################
@@ -516,7 +582,7 @@ func lire_duree_plateau() -> int:
 		return plateau.get('duree')
 	return 0
 
-func lire_le_temps_du_joueur(niveau : int) -> String:
+func lire_le_temps_du_joueur() -> String:
 	"""Formater la durée en une chaîne de caractères lisible."""
 	if plateau_existe():
 		var ascension = sauvegarde_joueur.get('ascensions').back()
@@ -599,7 +665,7 @@ func ajouter_un_nouveau_coup(depart : int,
 	if plateau_en_cours():
 		var nouveau_coup = {'depart': depart, 'arrivee': arrivee}
 		var ascension = sauvegarde_joueur.get('ascensions').back()
-		var plateau = sauvegarde_joueur.get('plateaux').back()
+		var plateau = ascension.get('plateaux').back()
 		var coups = plateau.get('coups joués')
 		coups.append(nouveau_coup)
 		_enregistrer_sauvegarde_joueur()

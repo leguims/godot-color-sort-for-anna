@@ -34,6 +34,9 @@ func _initialiser_les_plateaux() -> void:
 				# 	if cpt >= 5:
 				# 		break
 
+func plateau_liste_difficulte_duplicate() -> Dictionary:
+	return plateau_liste_difficulte.duplicate(true)
+
 func niveau_min() -> int:
 	for i in range(0, 300):
 		if niveau_existe(i):

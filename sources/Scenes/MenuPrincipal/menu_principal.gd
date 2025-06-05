@@ -141,29 +141,12 @@ func _on_bouton_vibrations_toggled(toggled_on: bool) -> void:
 # spécifiques au menu principal pour la campagne
 ################################################
 
-# DOUBLON : deja defini dans 'campagne.gd'
-func doublon_campagne_gd___le_niveau_est_termine(niveau : int) -> bool:
-	var nb_plateau = SauvegardeBddPlateaux.nombre_plateaux_pour_le_niveau(niveau)
-	var plateau_courant = SauvegardeBddJoueurs.lire_indice_plateau_joueur_pour_niveau(niveau)
-	return plateau_courant >= nb_plateau
-
-# DOUBLON : deja defini dans 'campagne.gd'
-func doublon_campagne_gd___retourner_le_niveau_le_plus_bas() -> int:
-	# Retourner le plus bas niveau réalisable
-	for niveau_le_plus_bas in range(0, 300):
-		# Vérifier qu'il existe dans la BDD de plateaux
-		if SauvegardeBddPlateaux.niveau_existe(niveau_le_plus_bas):
-			# Vérifier qu'il reste des plateaux à réaliser par le joueur
-			if not doublon_campagne_gd___le_niveau_est_termine(niveau_le_plus_bas):
-				return niveau_le_plus_bas
-	return -1
-
 func _la_campagne_est_terminee_pour_joueur(nom_joueur : String) -> bool:
 	if SauvegardeListeJoueurs.le_joueur_existe(nom_joueur):
 		# Choisir le joueur pour la campagne
 		var nom_fichier = SauvegardeListeJoueurs.retourner_le_fichier_de_sauvegarde(nom_joueur)
 		SauvegardeBddJoueurs.choisir_le_joueur(nom_joueur, nom_fichier)
-		return doublon_campagne_gd___retourner_le_niveau_le_plus_bas() == -1
+		return SauvegardeBddJoueurs.la_campagne_est_terminee()
 	return false
 
 func menu_principal___choisir_le_joueur_pour_la_campagne(nom_joueur : String) -> bool:

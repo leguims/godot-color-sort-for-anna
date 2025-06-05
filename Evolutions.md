@@ -10,7 +10,7 @@ Voici la liste ordonnées des évolutions votées lors de la version V0.3.0 (Ran
 6.	Score: 1,7	- ~~Au commencement d'une ascension, permettre à l'utilisateur de choisir la longueur de son ascension.~~:heavy_check_mark: V0.3.1
 7.	Score: 1,7	- Réduire la similitude des plateaux de faible niveaux qui se ressemblent trop.
 8.	Score: 1,9	- Baser la difficulté sur le nombre d'alternatives (les occasions de faire une erreur) de la solution
-9.	Score: 2,0	- Lors d'un abandon, ne pas rejouer le même plateau abandonné, mais proposer un autre plateau de même difficulté.
+9.	Score: 2,0	- ~~Lors d'un abandon, ne pas rejouer le même plateau abandonné, mais proposer un autre plateau de même difficulté.~~:heavy_check_mark: V0.3.1
 10.	Score: 2,0	- Améliorer la précision de l'avancement dans l'ascension
 11.	Score: 2,0	- La sélection ne met en surbrillance que les jetons concernés et pas la pile complète
 12.	Score: 2,1	- Dans le menu principal, donner accès à des statistiques de jeu des joueurs.
