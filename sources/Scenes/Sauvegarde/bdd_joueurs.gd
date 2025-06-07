@@ -401,6 +401,14 @@ func lire_longueur_detour_ascension() -> int:
 		return ascension.get('longueur_detour')
 	return 0
 
+func lire_ratio_reussite_ascension() -> int:
+	"Pourcentage de réussite de l'ascension (retourne 99 pour 99%, 15 pour 15% ...)"
+	if ascension_existe():
+		var nb_essais  = lire_nombre_plateaux()
+		var nb_detours  = lire_longueur_detour_ascension()
+		return roundi(100. * (nb_essais - nb_detours) / nb_essais)
+	return 0
+
 ###############################################
 # Ascensions / Score / Ascension et Ascension sans détour
 # 'score': { 'ascension': 500000, 'ascension_sans_detour': 500000},

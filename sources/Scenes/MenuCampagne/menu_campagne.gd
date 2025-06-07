@@ -107,6 +107,7 @@ func cacher_accueil():
 	$Message.hide()
 	$BoutonCommencer.hide()
 	$LongueurAscension.hide()
+	$MessageRiche.hide()
 
 func afficher_accueil_nouvelle_ascension():
 	$BoutonMenuPrincipal.show()
@@ -171,12 +172,18 @@ func afficher_victoire(duree : int) -> void:
 	await $TempoMessage.timeout
 	_afficher_message("Gagné en " + str(duree) + "s")
 	await $TempoMessage.timeout
+	$MessageRiche.show()
+	await get_tree().create_timer(5.0).timeout
+	$MessageRiche.hide()
 	afficher_plateau_suivant("Plateau suivant!")
 
 func afficher_fin_ascension():
 	_afficher_message("Bravo!")
 	# Attendre l'échéance de la temporisation
 	await $TempoMessage.timeout
+	$MessageRiche.show()
+	await get_tree().create_timer(5.0).timeout
+	$MessageRiche.hide()
 	modifier_tempo_message(3.0)
 	_afficher_message("C'était le dernier plateau!")
 	await $TempoMessage.timeout
@@ -193,6 +200,9 @@ func afficher_fin_campagne():
 	_afficher_message("Félicitation!")
 	# Attendre l'échéance de la temporisation
 	await $TempoMessage.timeout
+	$MessageRiche.show()
+	await get_tree().create_timer(5.0).timeout
+	$MessageRiche.hide()
 	modifier_tempo_message(5.0)
 	_afficher_message("C'était le dernier plateau...")
 	await $TempoMessage.timeout
@@ -207,6 +217,8 @@ func afficher_fin_campagne():
 	#$BoutonCommencer.show()
 
 
+# LongueurAscension
+###################
 
 var longueur_max_ascension : int = 0
 
@@ -234,3 +246,77 @@ func _on_h_slider_value_changed(value: float) -> void:
 		$LongueurAscension/VBox/NombreDePlateaux.text = str(nb_plateaux) +" plateaux"
 	else:
 		$LongueurAscension/VBox/NombreDePlateaux.text = str(nb_plateaux) +" plateau"
+
+
+# MessageRiche
+##############
+
+func afficher_detail_score(detail_score : Dictionary) -> void:
+	# Afficher le détail du score.
+	var bbcode_complet = ''
+	var score_total = 0
+
+	# Entete
+	bbcode_complet += """[color=#efefef][font_size=30][center][b]Score[/b][/center][/font_size]"""
+
+	# 'duree'
+	var bbcode_duree = """[left][font_size=20][b]Temps[/b] :
+[ul] Référence: #duree_ref#s[/ul]
+[ul] Réalisé: #duree_real#s[/ul]
+[ul] #duree_pts# points[/ul]"""
+	bbcode_duree = bbcode_duree.replace('#duree_ref#', str(detail_score.get('duree').get('reference')))
+	bbcode_duree = bbcode_duree.replace('#duree_real#', str(detail_score.get('duree').get('realise')))
+	var points_txt = SauvegardeScores.nombre_avec_separateur_de_milliers(detail_score.get('duree').get('points'), '.')
+	bbcode_duree = bbcode_duree.replace('#duree_pts#', points_txt)
+	bbcode_complet += bbcode_duree
+	score_total += detail_score.get('duree').get('points')
+
+	# ratio_reussite
+	var bbcode_ratio_reussite = """[b]Ratio[/b]
+[ul] Réalisé: #ratio_real#%[/ul]
+[ul] #ratio_pts# points[/ul]"""
+	bbcode_ratio_reussite = bbcode_ratio_reussite.replace('#ratio_real#', str(detail_score.get('ratio_reussite').get('ratio')))
+	points_txt = SauvegardeScores.nombre_avec_separateur_de_milliers(detail_score.get('ratio_reussite').get('points'), '.')
+	bbcode_ratio_reussite = bbcode_ratio_reussite.replace('#ratio_pts#', points_txt)
+	bbcode_complet += bbcode_ratio_reussite
+	score_total += detail_score.get('ratio_reussite').get('points')
+
+	# ascension
+	if detail_score.get('ascension'):
+		var bbcode_ascension = """[b]Ascension[/b]
+[ul] Longueur: #asc_long# plateaux[/ul]
+[ul] #asc_pts# points[/ul]"""
+		bbcode_ascension = bbcode_ascension.replace('#asc_long#', str(detail_score.get('ascension').get('longueur')))
+		points_txt = SauvegardeScores.nombre_avec_separateur_de_milliers(detail_score.get('ascension').get('points'), '.')
+		bbcode_ascension = bbcode_ascension.replace('#asc_pts#', points_txt)
+		bbcode_complet += bbcode_ascension
+		score_total += detail_score.get('ascension').get('points')
+
+	# ascension_sans_detour
+	if detail_score.get('ascension_sans_detour'):
+		var bbcode_ascension_sans_detour = """[b]Ascension sans détour[/b]
+[ul] Bonus: #asc_detour_bonus#[/ul]
+[ul] #asc_detour_pts# points[/ul]"""
+		bbcode_ascension_sans_detour = bbcode_ascension_sans_detour.replace('#asc_detour_bonus#', str(detail_score.get('ascension_sans_detour').get('bonus')))
+		points_txt = SauvegardeScores.nombre_avec_separateur_de_milliers(detail_score.get('ascension_sans_detour').get('points'), '.')
+		bbcode_ascension_sans_detour = bbcode_ascension_sans_detour.replace('#asc_detour_pts#', points_txt)
+		bbcode_complet += bbcode_ascension_sans_detour
+		score_total += detail_score.get('ascension_sans_detour').get('points')
+
+	# campagne
+	if  detail_score.get('campagne'):
+		var bbcode_campagne = """[b]Campagne[/b]
+[ul] #campag_pts# points[/ul]"""
+		points_txt = SauvegardeScores.nombre_avec_separateur_de_milliers(detail_score.get('campagne').get('points'), '.')
+		bbcode_campagne = bbcode_campagne.replace('#campag_pts#', points_txt)
+		bbcode_complet += bbcode_campagne
+		score_total += detail_score.get('campagne').get('points')
+
+	# total
+	var bbcode_total = """[/font_size][/left][font_size=30][center][b]Total : #total_pts#[/b][/center][/font_size][/color]"""
+	points_txt = SauvegardeScores.nombre_avec_separateur_de_milliers(score_total, '.')
+	bbcode_total = bbcode_total.replace('#total_pts#', points_txt)
+	bbcode_complet += bbcode_total
+
+	# Afficher le score
+	$MessageRiche.text = bbcode_complet

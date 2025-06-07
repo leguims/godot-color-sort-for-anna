@@ -127,7 +127,7 @@ func gagner_un_plateau(duree_en_ms : int) -> void:
 		enregistrer_longueur_max_plateaux_pour_menu()
 	
 	# Calculer le score du plateau et l'enregistrer dans l'historique de l'ascension
-	var score = mettre_a_jour_score_pour_victoire(duree_en_ms)
+	mettre_a_jour_score_pour_victoire(duree_en_ms)
 	
 	# Passer au niveau suivant
 	if niveau_superieur > SauvegardeBddJoueurs.lire_niveau_joueur():
@@ -170,26 +170,26 @@ func mettre_a_jour_score_pour_victoire(duree_en_ms : int):
 	var score_ascension = mettre_a_jour_score_ascension()
 	var score_ascension_sans_detour = mettre_a_jour_score_ascension_sans_detour()
 	var score_campagne = mettre_a_jour_score_campagne()
-	var score = score_duree \
-		+ score_ratio_reussite \
-		+ score_ascension \
-		+ score_ascension_sans_detour \
-		+ score_campagne
 
 	# Bonus spécifique pour Anna d'Amour, la déesse de ce jeu.
 	if SauvegardeBddJoueurs.lire_nom_joueur().to_lower() == 'Anna'.to_lower():
+		var score = score_duree.get('points') \
+			+ score_ratio_reussite.get('points') \
+			+ score_ascension.get('points') \
+			+ score_ascension_sans_detour.get('points') \
+			+ score_campagne.get('points')
 		var nom_joueur = SauvegardeBddJoueurs.lire_nom_joueur()
 		var bonus_anna = score * 3
 		SauvegardeScores.incrementer_score_joueur(nom_joueur, bonus_anna)
-	return {
-		'duree': score_duree,
-		'ratio_reussite': score_ratio_reussite,
-		'ascension': score_ascension,
-		'ascension_sans_detour': score_ascension_sans_detour,
-		'campagne': score_campagne
-		}
+	$MenuCampagne.afficher_detail_score({
+					'duree': score_duree,
+					'ratio_reussite': score_ratio_reussite,
+					'ascension': score_ascension,
+					'ascension_sans_detour': score_ascension_sans_detour,
+					'campagne': score_campagne
+					})
 
-func mettre_a_jour_score_duree(duree_en_ms : int) -> int:
+func mettre_a_jour_score_duree(duree_en_ms : int) -> Dictionary:
 	"Calculer le score relatif au temps"
 	var temps_reference_par_niveau = {
 		25 : 10.,
@@ -222,47 +222,55 @@ func mettre_a_jour_score_duree(duree_en_ms : int) -> int:
 	bonus_duree = roundi(100 * niveau * ratio_temps)
 	SauvegardeBddJoueurs.modifier_score_duree_plateau(bonus_duree)
 	SauvegardeScores.incrementer_score_joueur(nom_joueur, bonus_duree)
-	return bonus_duree
+	return {'type':'duree', 'reference': temps_reference_en_s, 'realise': duree_en_s, 'points': bonus_duree}
 
-func mettre_a_jour_score_ratio_reussite() -> int:
+func mettre_a_jour_score_ratio_reussite() -> Dictionary:
 	"Calculer le score relatif au temps"
 	var bonus_ratio_reussite = 0
 	var nom_joueur = SauvegardeBddJoueurs.lire_nom_joueur()
 	var niveau = SauvegardeBddJoueurs.lire_niveau_joueur()
-	var ratio_reussite = SauvegardeBddJoueurs.lire_pourcentage_ascension_realise() / 100.
+	var int_ratio_reussite = SauvegardeBddJoueurs.lire_ratio_reussite_ascension()
+	var ratio_reussite = SauvegardeBddJoueurs.lire_ratio_reussite_ascension() / 100.
 	bonus_ratio_reussite = roundi(100 * niveau * ratio_reussite)
 	SauvegardeBddJoueurs.modifier_score_ratio_reussite_plateau(bonus_ratio_reussite)
 	SauvegardeScores.incrementer_score_joueur(nom_joueur, bonus_ratio_reussite)
-	return bonus_ratio_reussite
+	return {'type':'ratio_reussite', 'ratio': int_ratio_reussite, 'points': bonus_ratio_reussite}
 
-func mettre_a_jour_score_ascension() -> int:
+func mettre_a_jour_score_ascension() -> Dictionary:
 	"Calculer le score suite à une ascension achevée"
 	var bonus_ascension = 0
+	var niveau_ascension_longueur_totale = 0
 	if not SauvegardeBddJoueurs.ascension_en_cours():
 		var nom_joueur = SauvegardeBddJoueurs.lire_nom_joueur()
-		var niveau_ascension_longueur_totale = SauvegardeBddJoueurs.lire_niveau_ascension_longueur_totale()
+		niveau_ascension_longueur_totale = SauvegardeBddJoueurs.lire_niveau_ascension_longueur_totale()
 		# bonus = 100 x Dénivelé ^2 (bonus non linéaire)
 		bonus_ascension = roundi(50 * pow(niveau_ascension_longueur_totale, 2))
 		SauvegardeBddJoueurs.modifier_score_ascension(bonus_ascension)
 		SauvegardeScores.incrementer_score_joueur(nom_joueur, bonus_ascension)
-	return bonus_ascension
+		return {'type':'ascension', 'longueur': niveau_ascension_longueur_totale, 'points': bonus_ascension}
+	return{}
 
-func mettre_a_jour_score_ascension_sans_detour() -> int:
+func mettre_a_jour_score_ascension_sans_detour() -> Dictionary:
 	"Calculer le score suite à une ascension parfaite achevée"
 	var bonus_ascension_sans_detour = 0
-	if SauvegardeBddJoueurs.lire_longueur_detour_ascension() == 0:
+	if not SauvegardeBddJoueurs.ascension_en_cours() \
+		and SauvegardeBddJoueurs.lire_longueur_detour_ascension() == 0:
+		var nom_joueur = SauvegardeBddJoueurs.lire_nom_joueur()
 		bonus_ascension_sans_detour = SauvegardeBddJoueurs.lire_score_ascension()
 		SauvegardeBddJoueurs.modifier_score_ascension_sans_detour(bonus_ascension_sans_detour)
-	return bonus_ascension_sans_detour
+		SauvegardeScores.incrementer_score_joueur(nom_joueur, bonus_ascension_sans_detour)
+		return {'type':'ascension_sans_detour', 'bonus': 'x2', 'points': bonus_ascension_sans_detour}
+	return{}
 
-func mettre_a_jour_score_campagne() -> int:
+func mettre_a_jour_score_campagne() -> Dictionary:
 	"Calculer le score suite à la campagne achevée"
 	var bonus_campagne = 0
 	if SauvegardeBddJoueurs.la_campagne_est_terminee():
 		var nom_joueur = SauvegardeBddJoueurs.lire_nom_joueur()
 		bonus_campagne = 2_000_000
 		SauvegardeScores.incrementer_score_joueur(nom_joueur, bonus_campagne)
-	return bonus_campagne
+		return {'type':'campagne', 'points': bonus_campagne}
+	return {}
 
 # Traitement de niveau
 ######################

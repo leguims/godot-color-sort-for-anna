@@ -109,14 +109,14 @@ func modifier_score_joueur(nom_joueur : String, nouveau_score : int) -> void:
 	var joueur = _retourner_le_joueur(nom_joueur)
 	if joueur:
 		joueur['score'] = nouveau_score
-		joueur['score_txt'] = _nombre_avec_separateur_de_milliers(nouveau_score, '.')
+		joueur['score_txt'] = nombre_avec_separateur_de_milliers(nouveau_score, '.')
 		_mettre_a_jour_les_rangs()
 
 func incrementer_score_joueur(nom_joueur : String, increment_score : int) -> void:
 	var joueur = _retourner_le_joueur(nom_joueur)
 	if joueur:
 		joueur['score'] += increment_score
-		joueur['score_txt'] = _nombre_avec_separateur_de_milliers(joueur.get('score'), '.')
+		joueur['score_txt'] = nombre_avec_separateur_de_milliers(joueur.get('score'), '.')
 		_mettre_a_jour_les_rangs()
 
 func retourner_classement() -> Array:
@@ -162,11 +162,12 @@ func _mettre_a_jour_les_rangs() -> void:
 	
 	_enregistrer_la_liste_des_scores()
 
-func _nombre_avec_separateur_de_milliers(nombre : int, separateur : String) -> String:
+func nombre_avec_separateur_de_milliers(nombre : int, separateur : String) -> String:
 	var nombre_texte = ''
 	for division in [1_000_000_000, 1_000_000, 1_000, 1]:
 		var dividende = roundi(nombre / division)
-		if dividende:
+		if dividende or nombre_texte:
+			# Dès que nombre_texte est peuplé, écrire les zéros.
 			if nombre_texte:
 				nombre_texte += separateur
 				nombre_texte += str(dividende).pad_zeros(3)

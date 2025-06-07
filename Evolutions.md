@@ -23,7 +23,7 @@ Voici la liste ordonnées des évolutions votées lors de la version V0.3.0 (Ran
 19.	Score: 2,3	- Ajouter une description des règles du jeu dans la description de l'application.
 20.	Score: 2,4	- Agrandir la zone de sélection autours de la pile, car elle est trop étroite..
 21.	Score: 2,6	- Dans la page de statistiques, présenter des graphiques de statistiques de "Difficulté" : échecs par difficulté, taux de réussite, temps moyen, complétion.
-22.	Score: 2,6	- Après une résolution ou abandon, représenter la variation du score avec sa composante "taux de réussite" et "temps de résolution" pour que le joueur comprenne les ressorts d'amélioration du score.
+22.	Score: 2,6	- ~~Après une résolution ou abandon, représenter la variation du score avec sa composante "taux de réussite" et "temps de résolution" pour que le joueur comprenne les ressorts d'amélioration du score.~~:heavy_check_mark: V0.3.1
 23.	Score: 2,9	- Ajouter une musique dans les menus
 24.	Score: 3,0	- Prévoir des musiques différentes selon l'avancement dans l'ascension.
 25.	Score: 3,0	- ~~Ajouter des points spécifiques à la réussite d'une ascension dans le score.~~:heavy_check_mark: V0.3.1

@@ -1,4 +1,4 @@
-[gd_scene load_steps=8 format=3 uid="uid://xsrt777ms37l"]
+[gd_scene load_steps=9 format=3 uid="uid://xsrt777ms37l"]
 
 [ext_resource type="Script" path="res://Scenes/MenuCampagne/menu_campagne.gd" id="1_88fpq"]
 
@@ -19,6 +19,9 @@ bg_color = Color(0, 0, 0, 1)
 
 [sub_resource type="LabelSettings" id="LabelSettings_3y2ap"]
 font_size = 30
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_apfrx"]
+bg_color = Color(0.35, 0, 0.35, 0.843137)
 
 [node name="MenuCampagne" type="CanvasLayer"]
 script = ExtResource("1_88fpq")
@@ -124,6 +127,37 @@ layout_mode = 2
 text = "1 plateau"
 label_settings = SubResource("LabelSettings_3y2ap")
 horizontal_alignment = 1
+
+[node name="MessageRiche" type="RichTextLabel" parent="."]
+anchors_preset = 14
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+offset_left = 90.0
+offset_top = -260.0
+offset_right = -90.0
+offset_bottom = 260.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/normal = SubResource("StyleBoxFlat_apfrx")
+bbcode_enabled = true
+text = "[color=#efefef][font_size=30][center][b]Score[/b][/center][/font_size]
+[left][font_size=20][b]Temps[/b] :
+[ul] Référence = XXs[/ul]
+[ul] Réalisé = YYs[/ul]
+[ul] YY.XXX points[/ul]
+[b]Ratio[/b]
+[ul] Réalisé: YY%[/ul]
+[ul] YY.XXX points[/ul]
+[b]Ascension[/b]
+[ul] Longueur: XX plateaux[/ul]
+[ul] YY.XXX points[/ul]
+[b]Ascension sans détour[/b]
+[ul] Bonus: x2[/ul]
+[ul] YY.XXX points[/ul]
+[b]Campagne[/b]
+[ul] YY.XXX points[/ul]
+[/font_size][/left][font_size=30][center][b]Total : ZZ.YYY.XXX[/b][/center][/font_size][/color]"
 
 [connection signal="pressed" from="BoutonMenuPrincipal" to="." method="_on_bouton_menu_principal_pressed"]
 [connection signal="timeout" from="TempoMessage" to="." method="_on_tempo_message_timeout"]
