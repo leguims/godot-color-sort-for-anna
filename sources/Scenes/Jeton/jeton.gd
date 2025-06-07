@@ -48,7 +48,6 @@ func _ready() -> void:
 	position_initiale_carre = $Carre.position
 	position_initiale_nom = $Nom.position
 
-
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(_delta: float) -> void:
 	pass
@@ -61,7 +60,9 @@ func choisir_jeton(indice : int, redimensionner : bool = false) -> void:
 		indice_jeton = indice
 		nom = _jetons[indice_jeton][0]
 		_couleur = _jetons[indice_jeton][1]
+		$SoudureHaute.color = _couleur.darkened(0.2)
 		$Carre.color = _couleur
+		$SoudureBasse.color = _couleur.darkened(0.2)
 		$Nom.text = nom
 		if redimensionner:
 			if nom == 'J':
@@ -75,7 +76,9 @@ func choisir_jeton(indice : int, redimensionner : bool = false) -> void:
 				#$Nom.add_theme_font_size_override("font_size", font_size - 8)
 
 func choisir_position(nouvelle_position : Vector2) -> void:
+	$SoudureHaute.set_position(position_initiale_carre + Vector2(0, -2) + nouvelle_position)
 	$Carre.set_position(position_initiale_carre + nouvelle_position)
+	$SoudureBasse.set_position(position_initiale_carre + Vector2(0, $Carre.size.y) + nouvelle_position)
 	# print("Jeton.choisir_position : $Carre.position = ", $Carre.get_position())
 	
 	$Nom.set_position(position_initiale_nom + nouvelle_position)
@@ -95,6 +98,16 @@ func position() -> Vector2:
 
 func est_vide() -> bool:
 	return indice_jeton == Plateau.ESPACE
+
+func souder_en_haut() -> void:
+	$SoudureHaute.show()
+
+func souder_en_bas() -> void:
+	$SoudureBasse.show()
+
+func dessouder() -> void:
+	$SoudureHaute.hide()
+	$SoudureBasse.hide()
 
 func _on_carre_gui_input(event: InputEvent) -> void:
 	if event is InputEventMouseButton:

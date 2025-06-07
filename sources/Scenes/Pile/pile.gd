@@ -52,6 +52,9 @@ func ajouter_les_jetons(jetons : Array) -> bool:
 		# Definir le type du jeton
 		jeton.choisir_jeton(jeton_courant, true)
 	
+	# Réaliser les soudures
+	mettre_a_jour_les_soudures()
+	
 	# Definir la taille du fond de pile
 	var size = Vector2(largeur(), hauteur() )
 	$Fond.set_size(size)
@@ -71,6 +74,7 @@ func ajouter_le_jeton_dans_le_vide(jeton_a_ajouter : int) -> bool:
 				# TODO : 'J' apres = ok
 				ajoute = true
 				break
+		mettre_a_jour_les_soudures()
 	return ajoute
 
 func retirer_le_dernier_jeton() -> bool:
@@ -85,7 +89,33 @@ func retirer_le_dernier_jeton() -> bool:
 			# TODO : 'J' apres = ok
 			retire = true
 			break
+	mettre_a_jour_les_soudures()
 	return retire
+
+func mettre_a_jour_les_soudures():
+	dessouder_les_jetons()
+	souder_les_jetons()
+
+func souder_les_jetons():
+	"Soude les jetons de même couleur"
+	if not est_vide():
+		# Pourcourir les N-1 jetons et les souder 2 à 2 avec leur suivant
+		var nb_jetons = len(liste_jetons)
+		# Parcour les jetons du bas vers le haut
+		for indice_jeton in range(nb_jetons - 1):
+			if not liste_jetons[indice_jeton].est_vide():
+				var jeton = liste_jetons[indice_jeton]
+				var jeton_au_dessus = liste_jetons[indice_jeton+1]
+				if jeton.indice_jeton == jeton_au_dessus.indice_jeton:
+					jeton.souder_en_haut()
+					jeton_au_dessus.souder_en_bas()
+
+func dessouder_les_jetons():
+	"Dessoude sans conditions"
+	if not est_vide():
+		var nb_jetons = len(liste_jetons)
+		for jeton in liste_jetons:
+			jeton.dessouder()
 
 func choisir_position(nouvelle_position : Vector2) -> void:
 	position = nouvelle_position

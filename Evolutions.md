@@ -11,7 +11,7 @@ Voici la liste ordonnées des évolutions votées lors de la version V0.3.0 (Ran
 7.	Score: 1,7	- Réduire la similitude des plateaux de faible niveaux qui se ressemblent trop.
 8.	Score: 1,9	- Baser la difficulté sur le nombre d'alternatives (les occasions de faire une erreur) de la solution
 9.	Score: 2,0	- ~~Lors d'un abandon, ne pas rejouer le même plateau abandonné, mais proposer un autre plateau de même difficulté.~~:heavy_check_mark: V0.3.1
-10.	Score: 2,0	- Améliorer la précision de l'avancement dans l'ascension
+10.	Score: 2,0	- ~~Améliorer la précision de l'avancement dans l'ascension~~ABANDON  V0.3.1(moins utile maintenant que la longueur de l’ascension est définie au départ)
 11.	Score: 2,0	- La sélection ne met en surbrillance que les jetons concernés et pas la pile complète
 12.	Score: 2,1	- Dans le menu principal, donner accès à des statistiques de jeu des joueurs.
 13.	Score: 2,1	- Dans la page de statistiques, présenter des statistiques de "Campagne" : Pourcentage de complétion,  Temps de jeu, Nombre de parties, Nombre de défaites, Taux de. réussite, Série maximum de succès
@@ -27,7 +27,7 @@ Voici la liste ordonnées des évolutions votées lors de la version V0.3.0 (Ran
 23.	Score: 2,9	- Ajouter une musique dans les menus
 24.	Score: 3,0	- Prévoir des musiques différentes selon l'avancement dans l'ascension.
 25.	Score: 3,0	- ~~Ajouter des points spécifiques à la réussite d'une ascension dans le score.~~:heavy_check_mark: V0.3.1
-26.	Score: 3,0	- En jeu, représenter les jetons contigus identiques comme "soudés"..
+26.	Score: 3,0	- ~~En jeu, représenter les jetons contigus identiques comme "soudés".~~:heavy_check_mark: V0.3.1
 27.	Score: 3,0	- Quand un joueur tarde à résoudre un plateau, faire une animation pour l'inviter à abandonner (troll).
 28.	Score: 3,2	- Réaliser une animation de jeton qui se déplace
 29.	Score: 3,3	- Dans la page "Campagne" à coté du bouton "Menu", prévoir un bouton pour changer de joueur sans retourner au menu principal.
