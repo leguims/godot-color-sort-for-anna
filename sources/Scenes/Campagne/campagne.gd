@@ -98,12 +98,13 @@ func commencer_un_plateau() -> void:
 	if SauvegardeBddJoueurs.plateau_en_cours():
 		# Si un plateau était en cours, mais pas terminé, le considérer abandonné
 		abandonner_un_plateau()
+
 	# Ajouter le nouveau plateau
 	SauvegardeBddJoueurs.initialiser_un_nouveau_plateau(
-					SauvegardeBddJoueurs.lire_plateau_aleatoire_pour_niveau_courant(),
-					SauvegardeBddJoueurs.lire_niveau_joueur()
-					)
-	
+				SauvegardeBddJoueurs.lire_plateau_aleatoire_pour_niveau_courant(),
+				SauvegardeBddJoueurs.lire_niveau_joueur()
+				)
+
 	# Incrémenter le compteur de parties du niveau courant
 	SauvegardeBddJoueurs.incrementer_nombre_de_parties_joueur_pour_niveau_courant()
 	print("Nombre de parties = ", SauvegardeBddJoueurs.lire_nombre_de_parties_joueur_pour_niveau_courant())
