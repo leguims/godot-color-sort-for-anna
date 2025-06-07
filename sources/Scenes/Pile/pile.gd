@@ -50,10 +50,13 @@ func ajouter_les_jetons(jetons : Array) -> bool:
 
 		# Definir le type du jeton
 		jeton.choisir_jeton(jeton_courant, true)
+		
+		# Si le jeton est vide, le mettre en arriere plan devant '$Fond'(=0)
+		if jeton.est_vide():
+			move_child(jeton, 1)
 
 	# Réaliser les soudures
 	mettre_a_jour_les_soudures()
-	mettre_les_jetons_vides_dans_le_fond_du_champs()
 	
 	# Definir la taille du fond de pile
 	var size = Vector2(largeur(), hauteur() )
@@ -63,27 +66,20 @@ func ajouter_les_jetons(jetons : Array) -> bool:
 	_ajuster_position_fond()
 	return true # pile valide
 
-func mettre_les_jetons_vides_dans_le_fond_du_champs():
-	# Si le jeton est vide, le reculer dans la profondeur de champs
-	# ... mais devant '$Fond'
-	if not est_pleine():
-		for jeton_courant in liste_jetons:
-			if jeton_courant.est_vide():
-				move_child(jeton_courant, 1)
-
 func ajouter_le_jeton_dans_le_vide(jeton_a_ajouter : int) -> bool:
 	var ajoute = false
 	if accepte_jeton(jeton_a_ajouter, 1):
 		for jeton_courant in liste_jetons:
 			if jeton_courant.est_vide():
 				jeton_courant.choisir_jeton(jeton_a_ajouter, false)
+				# Le jeton est mis au premier plan
+				move_child(jeton_courant, -1)
 				# TODO : Attention, le jeton 'J' posera un probleme !
 				# TODO : 'J' avant = jeton petit
 				# TODO : 'J' apres = ok
 				ajoute = true
 				break
 		mettre_a_jour_les_soudures()
-		mettre_les_jetons_vides_dans_le_fond_du_champs()
 	return ajoute
 
 func retirer_le_dernier_jeton() -> bool:
@@ -93,13 +89,14 @@ func retirer_le_dernier_jeton() -> bool:
 	for jeton_courant in liste_inversee:
 		if not jeton_courant.est_vide():
 			jeton_courant.choisir_jeton(Plateau.ESPACE, false)
+			# Le jeton est vide, le mettre en arriere plan devant '$Fond'(=0)
+			move_child(jeton_courant, 1)
 			# TODO : Attention, le jeton 'J' posera un probleme !
 			# TODO : 'J' avant = jeton petit
 			# TODO : 'J' apres = ok
 			retire = true
 			break
 	mettre_a_jour_les_soudures()
-	mettre_les_jetons_vides_dans_le_fond_du_champs()
 	return retire
 
 func mettre_a_jour_les_soudures():
