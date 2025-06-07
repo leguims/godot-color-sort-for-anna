@@ -60,6 +60,7 @@ func choisir_jeton(indice : int, redimensionner : bool = false) -> void:
 		indice_jeton = indice
 		nom = _jetons[indice_jeton][0]
 		_couleur = _jetons[indice_jeton][1]
+		$Selection.color = _couleur.lightened(0.2)
 		$SoudureHaute.color = _couleur.darkened(0.2)
 		$Carre.color = _couleur
 		$SoudureBasse.color = _couleur.darkened(0.2)
@@ -76,6 +77,7 @@ func choisir_jeton(indice : int, redimensionner : bool = false) -> void:
 				#$Nom.add_theme_font_size_override("font_size", font_size - 8)
 
 func choisir_position(nouvelle_position : Vector2) -> void:
+	$Selection.set_position(position_initiale_carre + Vector2(-4, -4) + nouvelle_position)
 	$SoudureHaute.set_position(position_initiale_carre + Vector2(0, -2) + nouvelle_position)
 	$Carre.set_position(position_initiale_carre + nouvelle_position)
 	$SoudureBasse.set_position(position_initiale_carre + Vector2(0, $Carre.size.y) + nouvelle_position)
@@ -108,6 +110,12 @@ func souder_en_bas() -> void:
 func dessouder() -> void:
 	$SoudureHaute.hide()
 	$SoudureBasse.hide()
+
+func selectionner():
+	$Selection.show()
+
+func deselectionner():
+	$Selection.hide()
 
 func _on_carre_gui_input(event: InputEvent) -> void:
 	if event is InputEventMouseButton:

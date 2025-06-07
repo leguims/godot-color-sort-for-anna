@@ -5,6 +5,15 @@
 [node name="Jeton" type="Node"]
 script = ExtResource("1_lccag")
 
+[node name="Selection" type="ColorRect" parent="."]
+editor_description = "CRIMSON"
+visible = false
+offset_left = -4.0
+offset_top = -4.0
+offset_right = 36.0
+offset_bottom = 36.0
+color = Color(0.862745, 0.0784314, 0.235294, 1)
+
 [node name="SoudureHaute" type="ColorRect" parent="."]
 editor_description = "CRIMSON"
 visible = false
@@ -37,6 +46,7 @@ text = "A"
 horizontal_alignment = 1
 vertical_alignment = 1
 
+[connection signal="gui_input" from="Selection" to="." method="_on_carre_gui_input"]
 [connection signal="gui_input" from="SoudureHaute" to="." method="_on_carre_gui_input"]
 [connection signal="gui_input" from="Carre" to="." method="_on_carre_gui_input"]
 [connection signal="gui_input" from="SoudureBasse" to="." method="_on_carre_gui_input"]
