@@ -95,6 +95,9 @@ func enregistrer_longueur_max_plateaux_pour_menu():
 func commencer_un_plateau() -> void:
 	if not SauvegardeBddJoueurs.ascension_en_cours():
 		initialiser_une_nouvelle_ascension()
+	if SauvegardeBddJoueurs.plateau_en_cours():
+		# Si un plateau était en cours, mais pas terminé, le considérer abandonné
+		abandonner_un_plateau()
 	# Ajouter le nouveau plateau
 	SauvegardeBddJoueurs.initialiser_un_nouveau_plateau(
 					SauvegardeBddJoueurs.lire_plateau_aleatoire_pour_niveau_courant(),
