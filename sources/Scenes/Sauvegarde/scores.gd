@@ -21,10 +21,9 @@ func _initialiser_la_liste_des_scores() -> void:
 		liste_des_scores = lecture_liste_des_scores.duplicate(true)
 		print("liste_des_scores = ", liste_des_scores)
 	else:
-		# CONVERSION [V0.3.1 -> V0.3.2]
 		# Création du fichier initial
 		_enregistrer_la_liste_des_scores()
-		print("[V0.3.1 -> V0.3.2] Creation du nouveau fichier 'scores.json'")
+		print("Création du fichier de score initial")
 
 func _enregistrer_la_liste_des_scores() -> void:
 	fichiers_json_gd.write_json_file("user://scores.json", liste_des_scores.duplicate(true))

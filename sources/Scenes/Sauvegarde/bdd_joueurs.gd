@@ -60,18 +60,6 @@ func _ready() -> void:
 	if not fichiers_json_gd.json_file_exists("user://sauvegarde_joueur_00.json"):
 		ajouter_un_nouveau_joueur('Alain Konu', 'sauvegarde_joueur_00.json')
 
-	# CONVERSION [V0.3.1 -> V0.3.2]
-	# Effacer le fichier de sauvegarde obsolete qui devient incompatible.
-	fichiers_json_gd.remove_json_file("user://sauvegarde.json")
-
-	# CONVERSION [V0.3.1 -> V0.3.2]
-	# Effacer les comptes de campagne terminés
-	for joueur in SauvegardeListeJoueurs.retourner_la_liste_des_joueurs():
-		var fichier = SauvegardeListeJoueurs.retourner_le_fichier_de_sauvegarde(joueur)
-		if not fichiers_json_gd.json_file_exists("user://" + fichier):
-			# Effacer le joueur de la liste des joueurs
-			SauvegardeListeJoueurs.supprimer_un_joueur(joueur, fichier)
-
 func _lire_sauvegarde_joueur(fichier : String) -> bool:
 	var lecture_sauvegarde_joueur = fichiers_json_gd.read_json_file("user://" + fichier)
 	if lecture_sauvegarde_joueur:

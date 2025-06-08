@@ -10,7 +10,7 @@ var fichiers_json_gd = preload("res://Scenes/Sauvegarde/fichiers_json.gd").new()
 
 # Dico : {'caracteristique': reglage}
 var configuration_du_jeu = {
-	'version': 'V0.3.2',
+	'version': 'V0.3.3',
 	'musiques': true,
 	'effets sonores': true,
 	'vibrations': true
@@ -30,8 +30,14 @@ func _initialiser_la_configuration() -> void:
 	var fichier_configuration = fichiers_json_gd.read_json_file("user://configuration_du_jeu.json")
 	# print(fichier_configuration)
 	
+	var version_courante = lire_la_version()
+	
 	# Copier les niveaux lus
 	if fichier_configuration:
+		if version_courante != lire_la_version():
+			# CONVERSION [V0.3.2 -> V0.3.3]
+			# TODO : conversion vers V0.3.3
+			pass
 		if 'musiques' in fichier_configuration:
 			configuration_du_jeu['musiques'] = fichier_configuration.get('musiques')
 		if 'effets sonores' in fichier_configuration:
@@ -39,7 +45,6 @@ func _initialiser_la_configuration() -> void:
 		if 'vibrations' in fichier_configuration:
 			configuration_du_jeu['vibrations'] = fichier_configuration.get('vibrations')
 	else:
-		# CONVERSION [V0.3.1 -> V0.3.2]
 		# Création du fichier initial
 		_enregistrer_la_configuration()
 	print("fichier_configuration = ", fichier_configuration)
