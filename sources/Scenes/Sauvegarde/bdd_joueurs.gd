@@ -10,10 +10,11 @@ var fichiers_json_gd = preload("res://Scenes/Sauvegarde/fichiers_json.gd").new()
 # Gestion des niveaux et des plateaux à jouer
 ###############################################
 var sauvegarde_joueur = {
-	'nom': 'Alain Konu',
-	'plateaux': {  },
-	'nombre_de_parties': {  },
-	'ascensions': [ ]
+	# Créé dans '_ready()'
+	#'nom': 'Alain Konu',
+	#'plateaux': {  },
+	#'nombre_de_parties': {  },
+	#'ascensions': [ ]
 }
 
 # Exemple de sauvegarde avec une ascension en cours
@@ -54,30 +55,27 @@ var fichier_sauvegarde = ""
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
 	# réalisé lors du choix du joueur
-	pass
+	
+	# Creation compte initial 'Alain Konu'
+	if not fichiers_json_gd.json_file_exists("user://sauvegarde_joueur_00.json"):
+		ajouter_un_nouveau_joueur('Alain Konu', 'sauvegarde_joueur_00.json')
 
-func _lire_sauvegarde_joueur(fichier : String) -> bool:
-	# CONVERSION [V0.3.0 -> V0.3.1]
+	# CONVERSION [V0.3.1 -> V0.3.2]
 	# Effacer le fichier de sauvegarde obsolete qui devient incompatible.
 	fichiers_json_gd.remove_json_file("user://sauvegarde.json")
-	
+
+	# CONVERSION [V0.3.1 -> V0.3.2]
+	# Effacer les comptes de campagne terminés
+	for joueur in SauvegardeListeJoueurs.retourner_la_liste_des_joueurs():
+		var fichier = SauvegardeListeJoueurs.retourner_le_fichier_de_sauvegarde(joueur)
+		if not fichiers_json_gd.json_file_exists("user://" + fichier):
+			# Effacer le joueur de la liste des joueurs
+			SauvegardeListeJoueurs.supprimer_un_joueur(joueur, fichier)
+
+func _lire_sauvegarde_joueur(fichier : String) -> bool:
 	var lecture_sauvegarde_joueur = fichiers_json_gd.read_json_file("user://" + fichier)
 	if lecture_sauvegarde_joueur:
 		fichier_sauvegarde = fichier
-		
-		# CONVERSION [V0.3.0 -> V0.3.1] pour 'ascensions'
-		#  - Si 'niveau' est à la racine => Conversion vers nouveau format avec 'ascensions' étoffé
-		#  - Si 'durees' est à la racine => Conversion vers nouveau format avec 'ascensions' étoffé
-		if 'niveau' in lecture_sauvegarde_joueur and 'durees' in lecture_sauvegarde_joueur:
-			sauvegarde_joueur['nom'] = lecture_sauvegarde_joueur.get('nom')
-			# Reset des informations 'plateaux' et 'nombre_de_parties'
-			sauvegarde_joueur['plateaux'] = SauvegardeBddPlateaux.plateau_liste_difficulte_duplicate()
-			sauvegarde_joueur['nombre_de_parties'] = {}
-			# La conversion 'niveau' et 'durees' vers 'ascensions' n'est pas possible.
-			sauvegarde_joueur['ascensions'] = []
-			_enregistrer_sauvegarde_joueur()
-			lecture_sauvegarde_joueur = fichiers_json_gd.read_json_file("user://" + fichier)
-		
 		sauvegarde_joueur = lecture_sauvegarde_joueur.duplicate(true)
 		_print_bdd_joueurs()
 		return true

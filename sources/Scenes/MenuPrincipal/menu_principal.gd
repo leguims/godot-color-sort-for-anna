@@ -117,6 +117,7 @@ func _mettre_a_jour_configuration():
 	$Marge/HBoxContainer/VBoxContainer/Marge/VBoxContainer/VBoxContainer/BoutonMusiques.button_pressed = SauvegardeConfiguration.musiques_sont_actives()
 	$Marge/HBoxContainer/VBoxContainer/Marge/VBoxContainer/VBoxContainer/BoutonEffetsSonores.button_pressed = SauvegardeConfiguration.effets_sonores_sont_actifs()
 	$Marge/HBoxContainer/VBoxContainer/Marge/VBoxContainer/VBoxContainer/BoutonVibrations.button_pressed = SauvegardeConfiguration.vibrations_sont_actives()
+	$Version.text = SauvegardeConfiguration.lire_la_version()
 
 func _on_bouton_musiques_toggled(toggled_on: bool) -> void:
 	if toggled_on:

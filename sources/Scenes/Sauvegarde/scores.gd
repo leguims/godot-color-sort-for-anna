@@ -20,24 +20,11 @@ func _initialiser_la_liste_des_scores() -> void:
 	if lecture_liste_des_scores:
 		liste_des_scores = lecture_liste_des_scores.duplicate(true)
 		print("liste_des_scores = ", liste_des_scores)
-		
-		# CONVERSION [V0.3.0 -> V0.3.1]
-		# 'Score' est le dernier lecteur de "user://sauvegarde.json" à s'initialiser
-		# Effacer le fichier de sauvegarde obsolete "user://sauvegarde.json"
-		fichiers_json_gd.remove_json_file("user://sauvegarde.json")
 	else:
-		# CONVERSION [V0.3.0 -> V0.3.1]
-		var ancienne_sauvegarde = fichiers_json_gd.read_json_file("user://sauvegarde.json")
-		if ancienne_sauvegarde:
-			# Convertir l'ancienne sauvegarde vers ce nouveau fichier
-			liste_des_scores = []
-			for joueur in ancienne_sauvegarde:
-				ajouter_un_nouveau_joueur(joueur.get('nom'))
-			_mettre_a_jour_les_rangs()
-			print("[V0.3.0 -> V0.3.1] Conversion de l'ancien fichier 'sauvegarde.json' vers 'scores.json'")
-			# TODO : Effacer l'ancien fichier 'sauvegarde.json'
-		else:
-			printerr("Erreur de lecture de la sauvegarde des scores")
+		# CONVERSION [V0.3.1 -> V0.3.2]
+		# Création du fichier initial
+		_enregistrer_la_liste_des_scores()
+		print("[V0.3.1 -> V0.3.2] Creation du nouveau fichier 'scores.json'")
 
 func _enregistrer_la_liste_des_scores() -> void:
 	fichiers_json_gd.write_json_file("user://scores.json", liste_des_scores.duplicate(true))

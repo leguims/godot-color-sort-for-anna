@@ -14,15 +14,6 @@
 [ext_resource type="AudioStream" uid="uid://dulllj3f0k4at" path="res://Art/Musique/The Three Princesses of Lilac Meadow.ogg" id="9_bedm5"]
 
 [node name="Campagne" type="Node"]
-_import_path = NodePath("")
-unique_name_in_owner = false
-process_mode = 0
-process_priority = 0
-process_physics_priority = 0
-process_thread_group = 0
-physics_interpolation_mode = 0
-auto_translate_mode = 0
-editor_description = ""
 script = ExtResource("1_4bhsb")
 
 [node name="PlateauDeJeu" parent="." instance=ExtResource("1_h65nu")]
