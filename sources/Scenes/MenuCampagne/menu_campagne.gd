@@ -255,6 +255,7 @@ func afficher_detail_score(detail_score : Dictionary) -> void:
 	# Afficher le détail du score.
 	var bbcode_complet = ''
 	var score_total = 0
+	var size_y = 300
 
 	# Entete
 	bbcode_complet += """[color=#efefef][font_size=30][center][b]Score[/b][/center][/font_size]"""
@@ -272,7 +273,7 @@ func afficher_detail_score(detail_score : Dictionary) -> void:
 	score_total += detail_score.get('duree').get('points')
 
 	# ratio_reussite
-	var bbcode_ratio_reussite = """[b]Ratio[/b]
+	var bbcode_ratio_reussite = """[b]Ratio Réussite[/b]
 [ul] Réalisé: #ratio_real#%[/ul]
 [ul] #ratio_pts# points[/ul]"""
 	bbcode_ratio_reussite = bbcode_ratio_reussite.replace('#ratio_real#', str(detail_score.get('ratio_reussite').get('ratio')))
@@ -291,6 +292,7 @@ func afficher_detail_score(detail_score : Dictionary) -> void:
 		bbcode_ascension = bbcode_ascension.replace('#asc_pts#', points_txt)
 		bbcode_complet += bbcode_ascension
 		score_total += detail_score.get('ascension').get('points')
+		size_y += 80
 
 	# ascension_sans_detour
 	if detail_score.get('ascension_sans_detour'):
@@ -302,6 +304,7 @@ func afficher_detail_score(detail_score : Dictionary) -> void:
 		bbcode_ascension_sans_detour = bbcode_ascension_sans_detour.replace('#asc_detour_pts#', points_txt)
 		bbcode_complet += bbcode_ascension_sans_detour
 		score_total += detail_score.get('ascension_sans_detour').get('points')
+		size_y += 80
 
 	# campagne
 	if  detail_score.get('campagne'):
@@ -311,6 +314,7 @@ func afficher_detail_score(detail_score : Dictionary) -> void:
 		bbcode_campagne = bbcode_campagne.replace('#campag_pts#', points_txt)
 		bbcode_complet += bbcode_campagne
 		score_total += detail_score.get('campagne').get('points')
+		size_y += 60
 
 	# total
 	var bbcode_total = """[/font_size][/left][font_size=30][center][b]Total : #total_pts#[/b][/center][/font_size][/color]"""
@@ -320,3 +324,4 @@ func afficher_detail_score(detail_score : Dictionary) -> void:
 
 	# Afficher le score
 	$MessageRiche.text = bbcode_complet
+	$MessageRiche.size.y = size_y

@@ -1,0 +1,19 @@
+[remap]
+
+importer="oggvorbisstr"
+type="AudioStreamOggVorbis"
+uid="uid://b62pryk1nsj3"
+path="res://.godot/imported/Great Little Challenge.ogg-9c74967645929a16281fc86f719d751f.oggvorbisstr"
+
+[deps]
+
+source_file="res://Art/Musique/Great Little Challenge.ogg"
+dest_files=["res://.godot/imported/Great Little Challenge.ogg-9c74967645929a16281fc86f719d751f.oggvorbisstr"]
+
+[params]
+
+loop=false
+loop_offset=0
+bpm=0
+beat_count=0
+bar_beats=4

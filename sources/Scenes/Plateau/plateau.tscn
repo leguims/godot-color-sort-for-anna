@@ -4,6 +4,15 @@
 [ext_resource type="PackedScene" uid="uid://xl5sym5dtjpg" path="res://Scenes/Pile/pile.tscn" id="2_7hnmy"]
 
 [node name="Plateau" type="Node"]
+_import_path = NodePath("")
+unique_name_in_owner = false
+process_mode = 0
+process_priority = 0
+process_physics_priority = 0
+process_thread_group = 0
+physics_interpolation_mode = 0
+auto_translate_mode = 0
+editor_description = ""
 script = ExtResource("1_yvses")
 pile_scene = ExtResource("2_7hnmy")
 

@@ -21,7 +21,7 @@ bg_color = Color(0, 0, 0, 1)
 font_size = 30
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_apfrx"]
-bg_color = Color(0.35, 0, 0.35, 0.843137)
+bg_color = Color(0.13, 0.13, 0.13, 0.843137)
 
 [node name="MenuCampagne" type="CanvasLayer"]
 script = ExtResource("1_88fpq")
