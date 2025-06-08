@@ -3,9 +3,28 @@
 ## V0.3.1 : Travaux réalisés
 
 ### Jeu
+- Découper "Gestion_Score" en plusieurs modules indépendants. Campagne, sauvegarde, traitement des données.
+- Ajouter des points au score par ascension terminée.
+- Annuler la sélection de pile lors d'un pointage sur le fond d'écran
+- La sélection ne met en surbrillance que les jetons concernés et pas la pile
+- En jeu, représenter les jetons contigus identiques comme "soudés".
+
+#### Ascensions
+- Dictionnaire pour les musiques en fonction des niveaux.
+- Au commencement d'une ascension, permettre à l'utilisateur de choisir la longueur de son ascension.
+- Lors d'un abandon, ne pas rejouer le même plateau abandonné, mais proposer un autre plateau de même difficulté.
+- Après une résolution ou abandon, représenter la variation du score avec sa composante "taux de réussite" et "temps de résolution" pour que le joueur comprenne les ressorts d'amélioration du score.
+- Ajouter des points spécifiques à la réussite d'une ascension dans le score.
+
+#### Musique
+- Attribuer des musiques en fonction de la phase ascensionnelle actuelle. 1 ascension fait défiler toutes les musiques.
+- Prévoir des musiques différentes selon l'avancement dans l'ascension.
+
+#### Graphisme
+- Représenter 2 jetons identiques l'un sur l'autre comme soudés
+- Quand une pile est bloquée, activée une couleur sombre autours (inverse de la selection). Elle n'est plus selectionnable.
 
 #### Congiguration du jeu
-
 - Ajouter une option pour activer/désactiver la musique
 - Ajouter une option pour activer/désactiver les vibrations
 - Ajouter une option pour activer/désactiver les bruitages

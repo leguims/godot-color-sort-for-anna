@@ -266,7 +266,7 @@ func afficher_detail_score(detail_score : Dictionary) -> void:
 [ul] Réalisé: #duree_real#s[/ul]
 [ul] #duree_pts# points[/ul]"""
 	bbcode_duree = bbcode_duree.replace('#duree_ref#', str(detail_score.get('duree').get('reference')))
-	bbcode_duree = bbcode_duree.replace('#duree_real#', str(detail_score.get('duree').get('realise')))
+	bbcode_duree = bbcode_duree.replace('#duree_real#', str( snapped(detail_score.get('duree').get('realise'), 0.1) ))
 	var points_txt = SauvegardeScores.nombre_avec_separateur_de_milliers(detail_score.get('duree').get('points'), '.')
 	bbcode_duree = bbcode_duree.replace('#duree_pts#', points_txt)
 	bbcode_complet += bbcode_duree

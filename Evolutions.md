@@ -25,7 +25,7 @@ Voici la liste ordonnées des évolutions votées lors de la version V0.3.0 (Ran
 21.	Score: 2,6	- Dans la page de statistiques, présenter des graphiques de statistiques de "Difficulté" : échecs par difficulté, taux de réussite, temps moyen, complétion.
 22.	Score: 2,6	- ~~Après une résolution ou abandon, représenter la variation du score avec sa composante "taux de réussite" et "temps de résolution" pour que le joueur comprenne les ressorts d'amélioration du score.~~:heavy_check_mark: V0.3.1
 23.	Score: 2,9	- Ajouter une musique dans les menus
-24.	Score: 3,0	- Prévoir des musiques différentes selon l'avancement dans l'ascension.
+24.	Score: 3,0	- ~~Prévoir des musiques différentes selon l'avancement dans l'ascension.~~:heavy_check_mark: V0.3.1
 25.	Score: 3,0	- ~~Ajouter des points spécifiques à la réussite d'une ascension dans le score.~~:heavy_check_mark: V0.3.1
 26.	Score: 3,0	- ~~En jeu, représenter les jetons contigus identiques comme "soudés".~~:heavy_check_mark: V0.3.1
 27.	Score: 3,0	- Quand un joueur tarde à résoudre un plateau, faire une animation pour l'inviter à abandonner (troll).
