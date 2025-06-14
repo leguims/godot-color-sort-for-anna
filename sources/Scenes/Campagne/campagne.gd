@@ -202,11 +202,11 @@ func mettre_a_jour_score_pour_victoire(duree_en_ms : int):
 
 	# Bonus spécifique pour Anna d'Amour, la déesse de ce jeu.
 	if SauvegardeBddJoueurs.lire_nom_joueur().to_lower() == 'Anna'.to_lower():
-		var score = score_duree.get('points') \
-			+ score_ratio_reussite.get('points') \
-			+ score_ascension.get('points') \
-			+ score_ascension_sans_detour.get('points') \
-			+ score_campagne.get('points')
+		var score = score_duree.get('points', 0) \
+			+ score_ratio_reussite.get('points', 0) \
+			+ score_ascension.get('points', 0) \
+			+ score_ascension_sans_detour.get('points', 0) \
+			+ score_campagne.get('points', 0)
 		var nom_joueur = SauvegardeBddJoueurs.lire_nom_joueur()
 		var bonus_anna = score * 3
 		SauvegardeScores.incrementer_score_joueur(nom_joueur, bonus_anna)
