@@ -76,6 +76,13 @@ func mettre_a_jour_infos_joueur() -> void:
 	var emoji_carre_noir = String.chr(0x25FE)
 	var emoji_montagne = String.chr(0x1F3D4)
 	# var emoji_globe = String.chr(0x1F30D)
+	
+	# Spécifier un caractere imprimable pour le WEB.
+	if OS.has_feature("web"):
+		emoji_carre_blanc = '[#]'
+		emoji_carre_noir = '[ ]'
+		emoji_montagne = '/\\'
+
 	var ascension = _pourcentage_en_led(
 		pourcentage_ascension_realise,
 		emoji_carre_noir,

@@ -77,6 +77,15 @@ func lire_le_trophee_du_rang(rang : int) -> String:
 		2: String.chr(0x1F948), # 2eme
 		3: String.chr(0x1F949)  # 3eme
 	}
+	# Spécifier un caractere imprimable pour le WEB.
+	if OS.has_feature("web"):
+		trophees = {
+			1: 'N°1', # 1er
+			2: 'N°2', # 2eme
+			3: 'N°3'  # 3eme
+		}
+		return trophees.get(rang, 'N°X') # = hors podium
+
 	return trophees.get(rang, String.chr(0x25FD)) # = hors podium
 
 func lire_score_joueur(nom_joueur : String) -> int:
