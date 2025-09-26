@@ -10,7 +10,7 @@ var fichiers_json_gd = preload("res://Scenes/Sauvegarde/fichiers_json.gd").new()
 
 # Dico : {'caracteristique': reglage}
 var configuration_du_jeu = {
-	'version': 'V0.3.5',
+	'version': 'V0.3.6',
 	'musiques': true,
 	'effets sonores': true,
 	'vibrations': true
