@@ -1,6 +1,6 @@
 [gd_scene load_steps=11 format=3 uid="uid://due674pwfguqp"]
 
-[ext_resource type="Script" path="res://Scenes/MenuPrincipal/menu_principal.gd" id="1_64slw"]
+[ext_resource type="Script" uid="uid://cab0yaq8331s4" path="res://Scenes/MenuPrincipal/menu_principal.gd" id="1_64slw"]
 [ext_resource type="Texture2D" uid="uid://bl3jiqwpmmvbq" path="res://Art/Images/fond_cubes_480x720.png" id="2_wsrww"]
 
 [sub_resource type="SystemFont" id="SystemFont_jisel"]
@@ -9,23 +9,23 @@ font_names = PackedStringArray("Impact")
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ruejn"]
 bg_color = Color(0, 0, 0, 1)
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_so4s0"]
-bg_color = Color(0.537255, 0, 0.537255, 1)
-
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_mef5e"]
 bg_color = Color(0.87451, 0, 0.87451, 1)
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_0rh52"]
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_so4s0"]
 bg_color = Color(0.537255, 0, 0.537255, 1)
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_urgqo"]
 bg_color = Color(0.873002, 0.000607988, 0.872996, 1)
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_dfj4a"]
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_0rh52"]
 bg_color = Color(0.537255, 0, 0.537255, 1)
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_p4mar"]
 bg_color = Color(0.87451, 0, 0.87451, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_dfj4a"]
+bg_color = Color(0.537255, 0, 0.537255, 1)
 
 [node name="Menu_principal" type="Control"]
 layout_mode = 3
@@ -94,8 +94,8 @@ alignment = 1
 [node name="BoutonCampagne" type="Button" parent="Marge/HBoxContainer/VBoxContainer/Marge/VBoxContainer"]
 layout_mode = 2
 theme_override_font_sizes/font_size = 21
-theme_override_styles/hover = SubResource("StyleBoxFlat_so4s0")
 theme_override_styles/normal = SubResource("StyleBoxFlat_mef5e")
+theme_override_styles/hover = SubResource("StyleBoxFlat_so4s0")
 text = "Campagne"
 
 [node name="JoueursCampagne" type="GridContainer" parent="Marge/HBoxContainer/VBoxContainer/Marge/VBoxContainer"]
@@ -105,15 +105,15 @@ layout_mode = 2
 [node name="BoutonScores" type="Button" parent="Marge/HBoxContainer/VBoxContainer/Marge/VBoxContainer"]
 layout_mode = 2
 theme_override_font_sizes/font_size = 21
-theme_override_styles/hover = SubResource("StyleBoxFlat_0rh52")
 theme_override_styles/normal = SubResource("StyleBoxFlat_urgqo")
+theme_override_styles/hover = SubResource("StyleBoxFlat_0rh52")
 text = "Scores"
 
 [node name="BoutonRéférences" type="Button" parent="Marge/HBoxContainer/VBoxContainer/Marge/VBoxContainer"]
 layout_mode = 2
 theme_override_font_sizes/font_size = 21
-theme_override_styles/hover = SubResource("StyleBoxFlat_dfj4a")
 theme_override_styles/normal = SubResource("StyleBoxFlat_p4mar")
+theme_override_styles/hover = SubResource("StyleBoxFlat_dfj4a")
 text = "Références"
 
 [node name="VBoxContainer" type="VBoxContainer" parent="Marge/HBoxContainer/VBoxContainer/Marge/VBoxContainer"]

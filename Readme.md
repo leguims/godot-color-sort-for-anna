@@ -14,10 +14,15 @@ Listes des évolutions votées par les testeurs:
 
 Depuis la phase de tests internes de la version V0.3.0, les fonctionnalités sont votées par les testeurs. L'attribution des fonctionnailités par versions ci-dessous devrait devenir obsolète pour préférer un classement global des testeurs. Cependant, les deux vont vivre pendant une phase de transition.
 
-## V0.3.1 : Travaux pour la prochaine version
+## V0.3.4 : Travaux pour la prochaine version
 
 ### Bug V0.3.0 :
 - [à surveiller] L'affichage "Niveau = 5 - indice Plateau = 0 - Nombre de parties = <null>" est en erreur !
+
+### Bug V0.3.2 :
+- bug sur score d'ascension qui est calculé sur le nombre de niveaux restant dans le jeu plutot que les niveaux effectivement réalisés dans l'ascension courante.
+- dernière ascension, la même musique pendant toute l'ascension.
+
 
 ### Jeu
 - Page "Campagne" : En même temps que le bouton "Commencer", faire des liens (en haut) vers chaque joueurs pour basculer d'une campagne à l'autre sans passer par le menu
@@ -25,7 +30,6 @@ Depuis la phase de tests internes de la version V0.3.0, les fonctionnalités son
 - (option) enregistrer les dates de jeux et proposer une série de plateaux de chaque niveau. "Semaine 1", proposer les 1er plateaux de chaque niveau.
 - (option) prévoir un json avec l'enregistrement des scores de chacun sur chaque semaine. Score total et score semaine.
 - (Faro) Aligner les piles sur la même ligne pour que ca soit plus facile à jouer (-1 Totol)
-- ~~Découper "Gestion_Score" en plusieurs modules indépendants. Campagne, sauvegarde, traitement des données.~~:heavy_check_mark:
 - Sauvegarder l'état du plateau en cours après chaque coup. Le joueur qui quitte le jeu, reprend là où il était. Quand il revient, il commence avec son temps moyen sur ce type de niveau.
 - (Aleksandar): thème sur le fond du décors. Trop austère.
 - ~~Ajouter des points au score par ascension terminée.~~:heavy_check_mark:
@@ -43,15 +47,7 @@ Depuis la phase de tests internes de la version V0.3.0, les fonctionnalités son
 - Prévoir de donner le choix de l'ascension au départ en indiquant les quantités de chacunes des ascensions et le temps à prévoir.
 - Enregistrer le score dans les infos 'joueur' quand l'ascension est terminée. Le score intermédiaire est calculé avec le score enregistré et le calcul partiel. "Score=f(essais, temps)"
 - Prevoir une musique spéciale pour la réussite de la derniere ascension possible et le message de félicitations.
-- ~~Dictionnaire pour les musiques en fonction des niveaux.~~:heavy_check_mark:
 - Calculer les populations restantes de chaque difficulté et attribuer un nombre de plateau par niveaux à réaliser par ascension au minimum. Le chemin se rallonge en cas d'echecs.
-
-#### Musique
-- ~~Réfléchir à l'utilisation des musiques.~~:heavy_check_mark:
-  - ~~Option 1 : 1 musique aléatoire à chaque plateau~~:heavy_check_mark:
-  - ~~Option 2 : 1 musique par tranche de progression dans l'ascension~~:heavy_check_mark:
-  - ~~Option 3 : 1 musique de debut d'ascension et de fin d'ascension constantes et de l'aléatoire sur le chemin~~:heavy_check_mark:
-- ~~Musique : (option 2) Attribuer des musiques en fonction de la phase ascensionnelle actuelle. 1 ascension fait défiler toutes les musiques.~~:heavy_check_mark:
 
 #### Statistiques
 - Inclure un bouton statistiques dans le menu principal
@@ -91,44 +87,35 @@ Depuis la phase de tests internes de la version V0.3.0, les fonctionnalités son
 - prévoir un champs de sauvegarde avec les infos : plateau courant (niveau, indice, nom et "nom" actuel).
 - enregistrer la liste des nom de plateaux achevés ?
 
-#### Graphisme
-- ~~Représenter 2 jetons identiques l'un sur l'autre comme soudés~~:heavy_check_mark:
-- voir si une astuce de zoom existe sur Godot pour grandir les piles suivant la taille des piles.
-- ~~Quand une pile est bloquée, activée une couleur sombre autours (inverse de la selection). Elle n'est plus selectionnable.~~:heavy_check_mark:
-
 #### Ambiance
 - (Anna) Le score est animé quand il augmente. Comme une machine à sous.
 - (Faro) Ajouter de la musique dans les menus (+1 Totol)
 - (option) détecter une position de plateau bloquée ou impossible.
 - (Totol) Quand un joueur met du temps à jouer, faire une animation pour dire d'abandonner ou faire apparaître une main qui y invite. C'est du troll.
+- (Guigui) messages d'amour pour joueuse d'amour !
 
 #### Accessibilité
 - Le tremblement peut faire selectioner/désélectionner une pile dans le même temps. Faire une tempo pour sélectionner une pile afin de se protéger des tremblements.
-- ~~Quand une sélection de pile est faite, montrer les piles destination possible.~~:heavy_check_mark:
 - Faire une sorte de buzz pour les mouvements interdits. Pas de son si la selection périme.
 
 ### Outillage
-
 - Rendre parametrable depuis les scripts "outil_*" les chemins vers "Analyses" et "Solutions"
 
 #### Recherche de plateaux
 - Ajouter un "outil_divers" pour reset les parametres de recherche de plateaux
 
 #### Revalidation
-- ~~Revalidation Phase 2 : il faut décomposer en plusieurs phases, car en 8x3, après 90 minutes, il est toujours bloqué dans la première sous boucle.~~:heavy_check_mark:
-	- ~~Vérifier à chaque étape de revalidation que le fichier est enregistré~~:heavy_check_mark:
-	- ~~Comparer le resultat avec l'ancien algo~~:heavy_check_mark:
-- ~~À chaque itération, repartir sur la nouvelle base et ne pas vérifier les plateaux effacés précedemment~~:heavy_check_mark:
 - Ajouter un "outil_divers" pour reset les parametres de revalidation des plateaux
-
-#### Accélération de recherche
-- ~~Ajouter un champs "Dernier plateau recherche" pour reprendre la recherche de plateau plus efficacement.~~:heavy_check_mark:
+- Similarité : Difflib : inclus dans python
+- Similarité : Pour réduire les similarité : Rapidfuzz + seuil à ajuster (75% et plus). Voir s'il faut l'appliquer sur le fichier complet de solutions.
 
 #### Difficulté de plateau
+- Baser la difficulté sur le nombre d'alternatives (les occasions de faire une erreur) de la solution
+  - noter avec la solution le nombre de coups possibles à chaque étapes.
+  - une étape sans alternative est inintéressante.
 - Difficulté :
     - (Anna) Pour la difficulté d'un plateau, inclure l'inverse du nombre de solutions existantes.
     - Il est possible que l'ordre des difficulté soit mal classé
-    - ~~Il est possible que les anciens "ordre" de 1 à 10 soient encore dans la liste alors qu'ils sont hors borne~~:heavy_check_mark:
     - Diagnostic : Vérifier les difficultés calculées
     - Diagnostic : Vérifier l'ordre des plateaux dans le jeu
     - Diagnostic : Vérifier la longueur de la solution minimale

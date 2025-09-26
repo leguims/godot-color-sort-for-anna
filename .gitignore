@@ -1,8 +1,9 @@
 # Godot 4+ specific ignores
 .godot/
 /android/
-
+*.uid
 *.tmp
+
 /Export
 /addons/
 /.vscode
@@ -12,3 +13,4 @@
 /sources/android/
 /sources/Solutions_classees_VERSION_JEU.json
 /sources/Solutions_classees_TESTS*.json
+
