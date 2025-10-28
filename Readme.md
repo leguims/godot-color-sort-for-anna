@@ -14,7 +14,7 @@ Listes des évolutions votées par les testeurs:
 
 Depuis la phase de tests internes de la version V0.3.0, les fonctionnalités sont votées par les testeurs. L'attribution des fonctionnailités par versions ci-dessous devrait devenir obsolète pour préférer un classement global des testeurs. Cependant, les deux vont vivre pendant une phase de transition.
 
-## V0.3.4 : Travaux pour la prochaine version
+## V0.3.6 : Travaux pour la prochaine version
 
 ### Bug V0.3.0 :
 - [à surveiller] L'affichage "Niveau = 5 - indice Plateau = 0 - Nombre de parties = <null>" est en erreur !
@@ -46,6 +46,7 @@ Depuis la phase de tests internes de la version V0.3.0, les fonctionnalités son
 - Prévoir un algo pour programmer l'ascension et la mémoriser.
 - Prévoir de donner le choix de l'ascension au départ en indiquant les quantités de chacunes des ascensions et le temps à prévoir.
 - Enregistrer le score dans les infos 'joueur' quand l'ascension est terminée. Le score intermédiaire est calculé avec le score enregistré et le calcul partiel. "Score=f(essais, temps)"
+- Le nombre de coups minimum d'une solution est connu, il est possible de l'inclure dans le calcul du score.
 - Prevoir une musique spéciale pour la réussite de la derniere ascension possible et le message de félicitations.
 - Calculer les populations restantes de chaque difficulté et attribuer un nombre de plateau par niveaux à réaliser par ascension au minimum. Le chemin se rallonge en cas d'echecs.
 
@@ -106,19 +107,20 @@ Depuis la phase de tests internes de la version V0.3.0, les fonctionnalités son
 
 #### Revalidation
 - Ajouter un "outil_divers" pour reset les parametres de revalidation des plateaux
-- Similarité : Difflib : inclus dans python
-- Similarité : Pour réduire les similarité : Rapidfuzz + seuil à ajuster (75% et plus). Voir s'il faut l'appliquer sur le fichier complet de solutions.
+- ~~Similarité : Difflib : inclus dans python~~ Réalisé avec Rapidfuzz
+- Similarité : Pour réduire les similarité : Rapidfuzz + seuil à ajuster (75% et plus). Voir s'il faut l'appliquer sur le fichier complet de solutions. Application sur "revalidation" = gain de temps + application sur "Solutions" pour gain de plaisir de jeu.
 
 #### Difficulté de plateau
-- Baser la difficulté sur le nombre d'alternatives (les occasions de faire une erreur) de la solution
-  - noter avec la solution le nombre de coups possibles à chaque étapes.
-  - une étape sans alternative est inintéressante.
-- Difficulté :
-    - (Anna) Pour la difficulté d'un plateau, inclure l'inverse du nombre de solutions existantes.
-    - Il est possible que l'ordre des difficulté soit mal classé
-    - Diagnostic : Vérifier les difficultés calculées
-    - Diagnostic : Vérifier l'ordre des plateaux dans le jeu
-    - Diagnostic : Vérifier la longueur de la solution minimale
+- ~~Dans la recherche de solution, réorganiser pour conserver:~~:heavy_check_mark:
+  - ~~La solution la plus courte (1 seule)~~:heavy_check_mark:
+  - ~~La quantité de solution pour chaque longueur~~:heavy_check_mark:
+- ~~Baser la difficulté sur le nombre d'alternatives (les occasions de faire une erreur) de la solution~~:heavy_check_mark:
+  - ~~noter avec la solution le nombre de coups possibles à chaque étapes.~~:heavy_check_mark:
+  - ~~une étape sans alternative est inintéressante.~~:heavy_check_mark:
+  - ~~Définir la difficulté:~~:heavy_check_mark:
+    - ~~Parcourir la solution la plus courte~~:heavy_check_mark:
+    - ~~À chaque coup, identifier s'il y a plusieurs coups jouables.~~:heavy_check_mark:
+    - ~~Difficulté = multiplier les coups legaux à chaque étape. Comme ça "1 coup" est neutre sur le score final.~~:heavy_check_mark:
 
 #### Divers
 - pour les plateaux sans solution, lancer une recherche en ajoutant 1 colonne d'une seule ligne OU 1 case vide sur la derniere colonne.
@@ -154,6 +156,31 @@ Depuis la phase de tests internes de la version V0.3.0, les fonctionnalités son
 	- un hublot avec des nuages qui passent
 	- des oiseaux qui passent
 	- des feuilles d'automne qui passent
+
+## V3.0 : Ascension émotionnelle plutot qu'une montagne
+
+### Campagne
+
+L'ascension doit refléter:
+- une relation amoureuse naissante
+- une relation à entretenir
+- relation avec incompréhension.
+- reconstruction difficile,
+- une relation à réparer
+- après reconstruction/réparation, une attention quotidienne est plus facile
+
+Des messages doivent apparaître pour la ponctuer :
+- texte : maxime, proverbe, message Anna
+  - Avec toi dans une cage, je me sens en liberté.
+  - En cage à tes côtés, je peux voler vers des cieux merveilleux.
+- audio : message Anna
+- animation : représentation d'une émotion d'Anna.
+
+Ce qui était la campagne avant doit devenir "jeu libre".
+
+Le tableau des scores doit se dissocier.
+- jeu libre = points
+- campagne = coeurs
 
 # Phases de tests
 

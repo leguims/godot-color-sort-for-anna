@@ -2,7 +2,7 @@
 
 Voici la liste ordonnées des évolutions votées lors de la version V0.3.2 (Rang | Score | Description):
 
-1.	Score : 1,0 Baser la difficulté sur le nombre d'alternatives (les occasions de faire une erreur) de la solution
+1.	Score : 1,0 ~~Baser la difficulté sur le nombre d'alternatives (les occasions de faire une erreur) de la solution~~:heavy_check_mark: V0.3.6
 2.	Score : 1,0 **NOUVEAU** Accélérer les plateaux du début. Trop facile trop longtemps.
 3.	Score : 1,5 Sauvegarder le jeu pendant la résolution d'un plateau pour reprendre au milieu d'un plateau.
 4.	Score : 1,5 Dans le menu principal, donner accès à des statistiques de jeu des joueurs.
