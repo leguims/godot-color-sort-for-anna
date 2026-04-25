@@ -1,7 +1,5 @@
 extends Node
 
-var fichiers_json_gd = preload("res://Scenes/Sauvegarde/fichiers_json.gd").new()
-
 var liste_des_scores = [
 	{
 		'nom': 'Alain Konu',
@@ -16,7 +14,7 @@ func _ready() -> void:
 	_initialiser_la_liste_des_scores()
 
 func _initialiser_la_liste_des_scores() -> void:
-	var lecture_liste_des_scores = fichiers_json_gd.read_json_file("user://scores.json")
+	var lecture_liste_des_scores = FichiersJson.read_json_file("user://scores.json")
 	if lecture_liste_des_scores:
 		liste_des_scores = lecture_liste_des_scores.duplicate(true)
 		print("liste_des_scores = ", liste_des_scores)
@@ -26,7 +24,7 @@ func _initialiser_la_liste_des_scores() -> void:
 		print("Création du fichier de score initial")
 
 func _enregistrer_la_liste_des_scores() -> void:
-	fichiers_json_gd.write_json_file("user://scores.json", liste_des_scores.duplicate(true))
+	FichiersJson.write_json_file("user://scores.json", liste_des_scores.duplicate(true))
 	print("Scores sauvegardés")
 
 

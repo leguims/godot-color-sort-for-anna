@@ -1,4 +1,4 @@
-extends Object
+extends Node
 
 func json_file_exists(chemin) -> Variant:
 	return FileAccess.file_exists(chemin)

@@ -4,8 +4,6 @@
 
 extends Node
 
-var fichiers_json_gd = preload("res://Scenes/Sauvegarde/fichiers_json.gd").new()
-
 ###############################################
 # Gestion des niveaux et des plateaux à jouer
 ###############################################
@@ -57,11 +55,11 @@ func _ready() -> void:
 	# réalisé lors du choix du joueur
 	
 	# Creation compte initial 'Alain Konu'
-	if not fichiers_json_gd.json_file_exists("user://sauvegarde_joueur_00.json"):
+	if not FichiersJson.json_file_exists("user://sauvegarde_joueur_00.json"):
 		ajouter_un_nouveau_joueur('Alain Konu', 'sauvegarde_joueur_00.json')
 
 func _lire_sauvegarde_joueur(fichier : String) -> bool:
-	var lecture_sauvegarde_joueur = fichiers_json_gd.read_json_file("user://" + fichier)
+	var lecture_sauvegarde_joueur = FichiersJson.read_json_file("user://" + fichier)
 	if lecture_sauvegarde_joueur:
 		fichier_sauvegarde = fichier
 		sauvegarde_joueur = lecture_sauvegarde_joueur.duplicate(true)
@@ -83,7 +81,7 @@ func _print_bdd_joueurs() -> void:
 
 func _enregistrer_sauvegarde_joueur() -> void:
 	if fichier_sauvegarde:
-		fichiers_json_gd.write_json_file("user://" + fichier_sauvegarde, sauvegarde_joueur.duplicate(true))
+		FichiersJson.write_json_file("user://" + fichier_sauvegarde, sauvegarde_joueur.duplicate(true))
 		print("Progression sauvegardée")
 
 func le_joueur_existe() -> bool:
@@ -100,7 +98,7 @@ func ajouter_un_nouveau_joueur(nom_nouveau_joueur : String, nom_nouveau_fichier 
 	# Vérifie que le nom est libre
 	if not nom_nouveau_joueur:
 		return false
-	if not nom_nouveau_fichier or fichiers_json_gd.json_file_exists(nom_nouveau_fichier):
+	if not nom_nouveau_fichier or FichiersJson.json_file_exists(nom_nouveau_fichier):
 		return false
 	# Crée le compte et l'enregistre
 	sauvegarde_joueur = {

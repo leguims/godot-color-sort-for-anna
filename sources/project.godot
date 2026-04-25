@@ -20,11 +20,12 @@ config/windows_native_icon="res://icon.ico"
 
 [autoload]
 
-SauvegardeConfiguration="*res://Scenes/Sauvegarde/configuration.gd"
-SauvegardeBddPlateaux="*res://Scenes/Sauvegarde/bdd_plateaux.gd"
-SauvegardeListeJoueurs="*res://Scenes/Sauvegarde/liste_joueurs.gd"
-SauvegardeBddJoueurs="*res://Scenes/Sauvegarde/bdd_joueurs.gd"
-SauvegardeScores="*res://Scenes/Sauvegarde/scores.gd"
+FichiersJson="*res://Singletons/Sauvegarde/fichiers_json.gd"
+SauvegardeConfiguration="*res://Singletons/Sauvegarde/configuration.gd"
+SauvegardeBddPlateaux="*res://Singletons/Sauvegarde/bdd_plateaux.gd"
+SauvegardeListeJoueurs="*res://Singletons/Sauvegarde/liste_joueurs.gd"
+SauvegardeBddJoueurs="*res://Singletons/Sauvegarde/bdd_joueurs.gd"
+SauvegardeScores="*res://Singletons/Sauvegarde/scores.gd"
 
 [display]
 

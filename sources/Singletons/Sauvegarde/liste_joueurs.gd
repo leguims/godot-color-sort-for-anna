@@ -1,7 +1,5 @@
 extends Node
 
-var fichiers_json_gd = preload("res://Scenes/Sauvegarde/fichiers_json.gd").new()
-
 var liste_des_joueurs = [
 	{
 		'nom': 'Alain Konu',
@@ -14,7 +12,7 @@ func _ready() -> void:
 	_initialiser_la_liste_des_joueurs()
 
 func _initialiser_la_liste_des_joueurs() -> void:
-	var lecture_liste_des_joueurs = fichiers_json_gd.read_json_file("user://liste_des_joueurs.json")
+	var lecture_liste_des_joueurs = FichiersJson.read_json_file("user://liste_des_joueurs.json")
 	if lecture_liste_des_joueurs:
 		liste_des_joueurs = lecture_liste_des_joueurs.duplicate(true)
 		print("liste_des_joueurs = ", liste_des_joueurs)
@@ -22,7 +20,7 @@ func _initialiser_la_liste_des_joueurs() -> void:
 		printerr("Erreur de lecture de la sauvegarde de la liste des joueurs")
 
 func _enregistrer_la_liste_des_joueurs() -> void:
-	fichiers_json_gd.write_json_file("user://liste_des_joueurs.json", liste_des_joueurs.duplicate(true))
+	FichiersJson.write_json_file("user://liste_des_joueurs.json", liste_des_joueurs.duplicate(true))
 	print("Liste des joueurs sauvegardée")
 
 
@@ -71,7 +69,7 @@ func supprimer_un_joueur(nom_joueur : String, fichier_joueur : String) -> bool:
 	# Vérifie que le nom est libre
 	if le_joueur_existe(nom_joueur):
 		# Effacer le fichier
-		fichiers_json_gd.remove_json_file(fichier_joueur)
+		FichiersJson.remove_json_file(fichier_joueur)
 		# Crée le compte à effacer
 		var compte = {
 			'nom': nom_joueur,

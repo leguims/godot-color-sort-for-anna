@@ -1,7 +1,5 @@
 extends Node
 
-var fichiers_json_gd = preload("res://Scenes/Sauvegarde/fichiers_json.gd").new()
-
 # Dico : {'difficulte': [liste_plateaux]}
 var plateau_liste_difficulte = {
 	#'3': [
@@ -15,7 +13,7 @@ func _ready() -> void:
 
 func _initialiser_les_plateaux() -> void:
 	# Lire la liste des plateaux classés par niveaux
-	var fichier_plateaux = fichiers_json_gd.read_json_file("res://Solutions_classees.json")
+	var fichier_plateaux = FichiersJson.read_json_file("res://Solutions_classees.json")
 	# print(fichier_plateaux)
 	
 	# Copier les niveaux lus

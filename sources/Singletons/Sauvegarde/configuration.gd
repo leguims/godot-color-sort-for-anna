@@ -6,8 +6,6 @@ extends Node
 
 # class_name Configuration
 
-var fichiers_json_gd = preload("res://Scenes/Sauvegarde/fichiers_json.gd").new()
-
 # Dico : {'caracteristique': reglage}
 var configuration_du_jeu = {
 	'version': 'V0.3.6',
@@ -24,10 +22,10 @@ func _ready() -> void:
 func _initialiser_la_configuration() -> void:
 	# CONVERSION [V0.3.1 -> V0.3.2]
 	# Effacer le fichier de sauvegarde obsolete qui devient incompatible.
-	fichiers_json_gd.remove_json_file("user://sauvegarde.json")
+	FichiersJson.remove_json_file("user://sauvegarde.json")
 	
 	# Lire la configuration du jeu
-	var fichier_configuration = fichiers_json_gd.read_json_file("user://configuration_du_jeu.json")
+	var fichier_configuration = FichiersJson.read_json_file("user://configuration_du_jeu.json")
 	# print(fichier_configuration)
 	
 	var version_courante = lire_la_version()
@@ -51,7 +49,7 @@ func _initialiser_la_configuration() -> void:
 
 func _enregistrer_la_configuration() -> void:
 	print("configuration.gd : _enregistrer_la_configuration")
-	fichiers_json_gd.write_json_file("user://configuration_du_jeu.json", configuration_du_jeu.duplicate(true))
+	FichiersJson.write_json_file("user://configuration_du_jeu.json", configuration_du_jeu.duplicate(true))
 	print("Configuration sauvegardée")
 
 func activer_musiques() -> void:
