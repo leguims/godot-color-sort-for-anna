@@ -37,9 +37,9 @@ func _lancer_plateau_de_campagne(plateau : String) -> void:
 		$PlateauDeJeu.effacer_le_plateau()
 		$PlateauDeJeu.commencer_un_nouveau_plateau(plateau)
 		if SauvegardeConfigurationService.effets_sonores_sont_actifs():
-			$SonCommencer.play()
+			AudioService.son_demarrer_la_partie()
 		if SauvegardeConfigurationService.musiques_sont_actives():
-			jouer_la_musique()
+			AudioService.jouer_la_musique()
 		heure_debut_en_ms = Time.get_ticks_msec()
 	else:
 		_on_plateau_de_jeu_plateau_invalide()
@@ -56,9 +56,9 @@ func _on_plateau_de_jeu_victoire() -> void:
 	else:
 		$MenuCampagne.afficher_victoire(roundi(duree_en_ms / 1000.0))
 	if SauvegardeConfigurationService.effets_sonores_sont_actifs():
-		$SonFinDePartie.play()
+		AudioService.son_gagner_la_partie()
 	if SauvegardeConfigurationService.musiques_sont_actives():
-		arreter_la_musique()
+		AudioService.arreter_la_musique()
 
 func _on_plateau_de_jeu_plateau_invalide() -> void:
 	# Pas de plateau invalide en campagne
@@ -71,9 +71,9 @@ func _on_plateau_de_jeu_abandon() -> void:
 	$MenuCampagne.show()
 	$MenuCampagne.afficher_abandon()
 	if SauvegardeConfigurationService.effets_sonores_sont_actifs():
-		$SonEchec.play()
+		AudioService.son_abandonner_la_partie()
 	if SauvegardeConfigurationService.musiques_sont_actives():
-		arreter_la_musique()
+		AudioService.arreter_la_musique()
 
 func _on_progression_campagne_service_progression_ascension():
 	enregistrer_infos_joueur_pour_menu()
@@ -95,32 +95,3 @@ func enregistrer_longueur_max_plateaux_pour_menu():
 	# Transmet la longueur max de plateau d'une ascension
 	var longueur_max_ascension = SauvegardeBddJoueursService.lire_nombre_de_niveaux_realisables()
 	$MenuCampagne.enregistrer_longueur_max_ascension(longueur_max_ascension)
-
-
-
-####################################
-# Musiques
-####################################
-
-func jouer_la_musique():
-	var pourcentage_ascension = SauvegardeBddJoueursService.lire_pourcentage_ascension_realise()
-	if pourcentage_ascension <= 100.*1/6:
-		$Musique_Dreaming.play()
-	elif pourcentage_ascension <= 100.*2/6:
-		$Musique_SuTurno.play()
-	elif pourcentage_ascension <= 100.*3/6:
-		$Musique_TheThreePrincessesOfLilacMeadow.play()
-	elif pourcentage_ascension <= 100.*4/6:
-		$Musique_SolveThePuzzle.play()
-	elif pourcentage_ascension <= 100.*5/6:
-		$Musique_HumbleMatch.play()
-	else:
-		$Musique_GreatLittleChallenge.play()
-
-func arreter_la_musique():
-	$Musique_SolveThePuzzle.stop()
-	$Musique_Dreaming.stop()
-	$Musique_GreatLittleChallenge.stop()
-	$Musique_HumbleMatch.stop()
-	$Musique_SuTurno.stop()
-	$Musique_TheThreePrincessesOfLilacMeadow.stop()
