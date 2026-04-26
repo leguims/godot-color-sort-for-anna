@@ -37,7 +37,7 @@ func _lancer_plateau_de_campagne(plateau : String) -> void:
 		$PlateauDeJeu.effacer_le_plateau()
 		$PlateauDeJeu.commencer_un_nouveau_plateau(plateau)
 		if SauvegardeConfigurationService.effets_sonores_sont_actifs():
-			AudioService.son_demarrer_la_partie()
+			AudioService.son_commencer_un_plateau()
 		if SauvegardeConfigurationService.musiques_sont_actives():
 			AudioService.jouer_la_musique()
 		heure_debut_en_ms = Time.get_ticks_msec()
@@ -56,7 +56,7 @@ func _on_plateau_de_jeu_victoire() -> void:
 	else:
 		$MenuCampagne.afficher_victoire(roundi(duree_en_ms / 1000.0))
 	if SauvegardeConfigurationService.effets_sonores_sont_actifs():
-		AudioService.son_gagner_la_partie()
+		AudioService.son_gagner_un_plateau()
 	if SauvegardeConfigurationService.musiques_sont_actives():
 		AudioService.arreter_la_musique()
 
@@ -71,7 +71,7 @@ func _on_plateau_de_jeu_abandon() -> void:
 	$MenuCampagne.show()
 	$MenuCampagne.afficher_abandon()
 	if SauvegardeConfigurationService.effets_sonores_sont_actifs():
-		AudioService.son_abandonner_la_partie()
+		AudioService.son_abandonner_un_plateau()
 	if SauvegardeConfigurationService.musiques_sont_actives():
 		AudioService.arreter_la_musique()
 

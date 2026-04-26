@@ -19,24 +19,13 @@ func commencer_un_plateau(pourcentage_longueur : float) -> void:
 		# Si un plateau était en cours, mais pas terminé, le considérer abandonné
 		abandonner_un_plateau()
 
-	# Ajouter le nouveau plateau
-	SauvegardeBddJoueursService.initialiser_un_nouveau_plateau(
-				SauvegardeBddJoueursService.lire_plateau_aleatoire_pour_niveau_courant(),
-				SauvegardeBddJoueursService.lire_niveau_joueur()
-				)
-
-	# Incrémenter le compteur de parties du niveau courant
-	SauvegardeBddJoueursService.incrementer_nombre_de_parties_joueur_pour_niveau_courant()
+	# Ajouter le nouveau plateau et incrémenter le compteur de parties du niveau courant
+	SauvegardeBddJoueursService.commencer_un_plateau()
 	print("Nombre de parties = ", SauvegardeBddJoueursService.lire_nombre_de_parties_joueur_pour_niveau_courant())
 
 func gagner_un_plateau(duree_en_ms : int) -> void:
 	# Valider le plateau courant (effacer de la liste des plateaux jouables)
-	SauvegardeBddJoueursService.supprimer_plateau_courant()
-
-	# Ajouter le temps de jeu dans le niveau courant
-	SauvegardeBddJoueursService.ajouter_duree_plateau(duree_en_ms)
-	SauvegardeBddJoueursService.modifier_statut_plateau('reussi')
-	SauvegardeBddJoueursService.terminer_plateau()
+	SauvegardeBddJoueursService.gagner_un_plateau(duree_en_ms)
 
 	# Calculer le niveau supérieur
 	var niveau_superieur = retourner_le_niveau_superieur()
@@ -60,9 +49,7 @@ func gagner_un_plateau(duree_en_ms : int) -> void:
 
 func abandonner_un_plateau() -> void:
 	# En cas d'abandon, pas d'enrgistrement du temps.
-	SauvegardeBddJoueursService.incrementer_longueur_detour_ascension()
-	SauvegardeBddJoueursService.modifier_statut_plateau('abandonné')
-	SauvegardeBddJoueursService.terminer_plateau()
+	SauvegardeBddJoueursService.abandonner_un_plateau()
 	
 	# Diminuer le niveau courant (si c'est possible)
 	var niveau_inferieur = retourner_le_niveau_inferieur()

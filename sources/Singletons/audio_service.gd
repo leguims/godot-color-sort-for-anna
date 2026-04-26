@@ -58,14 +58,14 @@ func arreter_la_musique():
 	if SauvegardeConfigurationService.musiques_sont_actives():
 		_musique_stop()
 
-func son_demarrer_la_partie():
+func son_commencer_un_plateau():
 	if SauvegardeConfigurationService.effets_sonores_sont_actifs():
 		_effet_sonore_play(SON_COMMENCER)
 
-func son_abandonner_la_partie():
+func son_abandonner_un_plateau():
 	if SauvegardeConfigurationService.effets_sonores_sont_actifs():
 		_effet_sonore_play(SON_ECHEC)
 
-func son_gagner_la_partie():
+func son_gagner_un_plateau():
 	if SauvegardeConfigurationService.effets_sonores_sont_actifs():
 		_effet_sonore_play(SON_FIN_DE_PARTIE)

@@ -676,3 +676,30 @@ func lire_nombre_coups() -> int:
 		var plateau = ascension.get('plateaux').back()
 		return len(plateau.get('coups joués'))
 	return 0
+
+
+# API externe
+func gagner_un_plateau(duree_en_ms : int) -> void:
+	# Valider le plateau courant (effacer de la liste des plateaux jouables)
+	supprimer_plateau_courant()
+
+	# Ajouter le temps de jeu dans le niveau courant
+	ajouter_duree_plateau(duree_en_ms)
+	modifier_statut_plateau('reussi')
+	terminer_plateau()
+
+func abandonner_un_plateau() -> void:
+	# En cas d'abandon, pas d'enrgistrement du temps.
+	incrementer_longueur_detour_ascension()
+	modifier_statut_plateau('abandonné')
+	terminer_plateau()
+
+func commencer_un_plateau() -> void:
+	# Ajouter le nouveau plateau
+	initialiser_un_nouveau_plateau(
+				lire_plateau_aleatoire_pour_niveau_courant(),
+				lire_niveau_joueur()
+				)
+
+	# Incrémenter le compteur de parties du niveau courant
+	incrementer_nombre_de_parties_joueur_pour_niveau_courant()
