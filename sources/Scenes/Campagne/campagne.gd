@@ -36,10 +36,8 @@ func _lancer_plateau_de_campagne(plateau : String) -> void:
 		$MenuCampagne.cacher_accueil()
 		$PlateauDeJeu.effacer_le_plateau()
 		$PlateauDeJeu.commencer_un_nouveau_plateau(plateau)
-		if SauvegardeConfigurationService.effets_sonores_sont_actifs():
-			AudioService.son_commencer_un_plateau()
-		if SauvegardeConfigurationService.musiques_sont_actives():
-			AudioService.jouer_la_musique()
+		AudioService.son_commencer_un_plateau()
+		AudioService.jouer_la_musique()
 		heure_debut_en_ms = Time.get_ticks_msec()
 	else:
 		_on_plateau_de_jeu_plateau_invalide()
@@ -55,10 +53,8 @@ func _on_plateau_de_jeu_victoire() -> void:
 		$MenuCampagne.afficher_fin_ascension()
 	else:
 		$MenuCampagne.afficher_victoire(roundi(duree_en_ms / 1000.0))
-	if SauvegardeConfigurationService.effets_sonores_sont_actifs():
-		AudioService.son_gagner_un_plateau()
-	if SauvegardeConfigurationService.musiques_sont_actives():
-		AudioService.arreter_la_musique()
+	AudioService.son_gagner_un_plateau()
+	AudioService.arreter_la_musique()
 
 func _on_plateau_de_jeu_plateau_invalide() -> void:
 	# Pas de plateau invalide en campagne
@@ -70,10 +66,8 @@ func _on_plateau_de_jeu_abandon() -> void:
 	ProgressionCampagneService.abandonner_un_plateau()
 	$MenuCampagne.show()
 	$MenuCampagne.afficher_abandon()
-	if SauvegardeConfigurationService.effets_sonores_sont_actifs():
-		AudioService.son_abandonner_un_plateau()
-	if SauvegardeConfigurationService.musiques_sont_actives():
-		AudioService.arreter_la_musique()
+	AudioService.son_abandonner_un_plateau()
+	AudioService.arreter_la_musique()
 
 func _on_progression_campagne_service_progression_ascension():
 	enregistrer_infos_joueur_pour_menu()

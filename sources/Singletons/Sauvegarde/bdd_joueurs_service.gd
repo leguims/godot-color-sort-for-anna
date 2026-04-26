@@ -52,11 +52,16 @@ var fichier_sauvegarde = ""
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
-	# réalisé lors du choix du joueur
-	
+	# Connecter les signaux attendus
+	var pcs = get_node("/root/ProgressionCampagneService")
+	pcs.fin_ascension.connect(_on_progression_campagne_service_fin_ascension)
+
 	# Creation compte initial 'Alain Konu'
 	if not FichiersJsonService.json_file_exists("user://sauvegarde_joueur_00.json"):
 		ajouter_un_nouveau_joueur('Alain Konu', 'sauvegarde_joueur_00.json')
+
+func _on_progression_campagne_service_fin_ascension():
+	terminer_ascension()
 
 func _lire_sauvegarde_joueur(fichier : String) -> bool:
 	var lecture_sauvegarde_joueur = FichiersJsonService.read_json_file("user://" + fichier)

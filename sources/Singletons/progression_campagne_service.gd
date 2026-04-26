@@ -31,8 +31,7 @@ func gagner_un_plateau(duree_en_ms : int) -> void:
 	var niveau_superieur = retourner_le_niveau_superieur()
 	# Déterminer si l'ascension est achevée (pas de niveau suivant)
 	if niveau_superieur == SauvegardeBddJoueursService.lire_niveau_joueur():
-		SauvegardeBddJoueursService.terminer_ascension()
-		# Préparer la jauge pour la prochaine ascension
+		# BDD joueur + Préparer la jauge pour la prochaine ascension
 		fin_ascension.emit()
 
 	# Calculer le score du plateau et l'enregistrer dans l'historique de l'ascension
