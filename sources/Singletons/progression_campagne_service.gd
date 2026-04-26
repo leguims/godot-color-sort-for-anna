@@ -6,6 +6,41 @@ signal fin_ascension
 # TODO : signal fin_campagne
 
 ####################################
+# Gestion de données transverses Campagne
+####################################
+func la_campagne_est_terminee_pour_joueur(nom_joueur : String) -> bool:
+	if SauvegardeListeJoueursService.le_joueur_existe(nom_joueur):
+		# Choisir le joueur pour la campagne
+		var nom_fichier = SauvegardeListeJoueursService.retourner_le_fichier_de_sauvegarde(nom_joueur)
+		SauvegardeBddJoueursService.choisir_le_joueur(nom_joueur, nom_fichier)
+		return SauvegardeBddJoueursService.la_campagne_est_terminee()
+	return false
+
+func choisir_le_joueur_pour_la_campagne(nom_joueur : String) -> bool:
+	if SauvegardeListeJoueursService.le_joueur_existe(nom_joueur):
+		# Choisir le joueur pour la campagne
+		var nom_fichier = SauvegardeListeJoueursService.retourner_le_fichier_de_sauvegarde(nom_joueur)
+		return SauvegardeBddJoueursService.choisir_le_joueur(nom_joueur, nom_fichier)
+	return false
+
+func liberer_le_joueur_pour_la_campagne():
+	SauvegardeBddJoueursService.liberer_le_joueur()
+
+func ajouter_un_nouveau_joueur_pour_la_campagne(nom_nouveau_joueur : String) -> bool:
+	return not SauvegardeListeJoueursService.le_joueur_existe(nom_nouveau_joueur)
+
+func initialiser_le_nouveau_joueur_pour_la_campagne(nom_nouveau_joueur : String) -> bool:
+	if not SauvegardeListeJoueursService.le_joueur_existe(nom_nouveau_joueur):
+		# Ajouter le joueur dans la liste des joueurs
+		if SauvegardeListeJoueursService.ajouter_un_nouveau_joueur(nom_nouveau_joueur):
+			var nom_fichier = SauvegardeListeJoueursService.retourner_le_fichier_de_sauvegarde(nom_nouveau_joueur)
+			# Ajouter la sauvegarde personnelle du joueur
+			if SauvegardeBddJoueursService.ajouter_un_nouveau_joueur(nom_nouveau_joueur, nom_fichier):
+				# Ajouter le joueur dans le tableau des scores
+				return SauvegardeTableauDesScoresService.ajouter_un_nouveau_joueur(nom_nouveau_joueur)
+	return false
+
+####################################
 # Gestion des mécaniques de jeu
 ####################################
 

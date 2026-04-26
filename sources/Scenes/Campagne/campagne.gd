@@ -16,7 +16,6 @@ func _ready() -> void:
 	pcs.progression_ascension.connect(_on_progression_campagne_service_progression_ascension)
 	pcs.fin_ascension.connect(_on_progression_campagne_service_fin_ascension)
 
-	$MenuCampagne.modifier_tempo_message(1.0)
 	# $MenuCampagne.modifier_message_vertical_align(VERTICAL_ALIGNMENT_CENTER)
 	$MenuCampagne.cacher_accueil()
 	$MenuCampagne.show()
@@ -52,7 +51,7 @@ func _on_plateau_de_jeu_victoire() -> void:
 		enregistrer_longueur_max_plateaux_pour_menu()
 		$MenuCampagne.afficher_fin_ascension()
 	else:
-		$MenuCampagne.afficher_victoire(roundi(duree_en_ms / 1000.0))
+		$MenuCampagne.afficher_gagner_un_plateau(roundi(duree_en_ms / 1000.0))
 	AudioService.son_gagner_un_plateau()
 	AudioService.arreter_la_musique()
 
@@ -65,7 +64,7 @@ func _on_plateau_de_jeu_abandon() -> void:
 	# Mettre à jour les plateaux à jouer
 	ProgressionCampagneService.abandonner_un_plateau()
 	$MenuCampagne.show()
-	$MenuCampagne.afficher_abandon()
+	$MenuCampagne.afficher_abandonner_un_plateau()
 	AudioService.son_abandonner_un_plateau()
 	AudioService.arreter_la_musique()
 

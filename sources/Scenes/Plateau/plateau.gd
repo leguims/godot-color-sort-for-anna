@@ -108,17 +108,11 @@ func on_pile_clique_gauche(indice_pile : int) -> void:
 				if regles.est_termine(liste_piles):
 					$BoutonAbandon.hide()
 					victoire.emit()
-					if SauvegardeConfigurationService.vibrations_sont_actives():
-						# Grosse vibration
-						Input.vibrate_handheld(800, 1.0)
+					VibrationService.vibration_fin_de_plateau()
 				else:
-					if SauvegardeConfigurationService.vibrations_sont_actives():
-						# Petite vibration
-						Input.vibrate_handheld(200, 0.5)
+					VibrationService.vibration_fin_de_pile()
 			else:
-				if SauvegardeConfigurationService.vibrations_sont_actives():
-					# Toute petite vibration
-					Input.vibrate_handheld(50, 0.2)
+				VibrationService.vibration_de_jeton()
 		_on_selection_pile_timeout()
 
 func _on_selection_pile_timeout() -> void:

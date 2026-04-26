@@ -30,6 +30,7 @@ AudioService="*res://Singletons/audio_service.gd"
 StatsService="*res://Singletons/stats_service.gd"
 ScoreService="*res://Singletons/score_service.gd"
 ProgressionCampagneService="*res://Singletons/progression_campagne_service.gd"
+VibrationService="*res://Singletons/vibration_service.gd"
 
 [display]
 
