@@ -12,6 +12,12 @@ signal fin_ascension
 # Evenements de jeu du plateau
 ##############################
 
+func ascension_en_cours() -> bool:
+	return SauvegardeBddJoueursService.ascension_en_cours()
+
+func la_campagne_est_terminee() -> bool:
+	return SauvegardeBddJoueursService.la_campagne_est_terminee()
+
 func commencer_un_plateau(pourcentage_longueur : float) -> void:
 	if not SauvegardeBddJoueursService.ascension_en_cours():
 		initialiser_une_nouvelle_ascension(pourcentage_longueur)

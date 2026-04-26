@@ -20,7 +20,7 @@ func _ready() -> void:
 	# $MenuCampagne.modifier_message_vertical_align(VERTICAL_ALIGNMENT_CENTER)
 	$MenuCampagne.cacher_accueil()
 	$MenuCampagne.show()
-	if SauvegardeBddJoueursService.ascension_en_cours():
+	if ProgressionCampagneService.ascension_en_cours():
 		enregistrer_infos_joueur_pour_menu()
 		$MenuCampagne.afficher_accueil_ascension_en_cours()
 	else:
@@ -46,9 +46,9 @@ func _on_plateau_de_jeu_victoire() -> void:
 	duree_en_ms = Time.get_ticks_msec() - heure_debut_en_ms
 	ProgressionCampagneService.gagner_un_plateau(duree_en_ms)
 	$MenuCampagne.show()
-	if SauvegardeBddJoueursService.la_campagne_est_terminee():
+	if ProgressionCampagneService.la_campagne_est_terminee():
 		$MenuCampagne.afficher_fin_campagne()
-	elif not SauvegardeBddJoueursService.ascension_en_cours():
+	elif not ProgressionCampagneService.ascension_en_cours():
 		enregistrer_longueur_max_plateaux_pour_menu()
 		$MenuCampagne.afficher_fin_ascension()
 	else:
