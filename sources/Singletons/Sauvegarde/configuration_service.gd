@@ -22,10 +22,10 @@ func _ready() -> void:
 func _initialiser_la_configuration() -> void:
 	# CONVERSION [V0.3.1 -> V0.3.2]
 	# Effacer le fichier de sauvegarde obsolete qui devient incompatible.
-	FichiersJson.remove_json_file("user://sauvegarde.json")
+	FichiersJsonService.remove_json_file("user://sauvegarde.json")
 	
 	# Lire la configuration du jeu
-	var fichier_configuration = FichiersJson.read_json_file("user://configuration_du_jeu.json")
+	var fichier_configuration = FichiersJsonService.read_json_file("user://configuration_du_jeu.json")
 	# print(fichier_configuration)
 	
 	var version_courante = lire_la_version()
@@ -49,7 +49,7 @@ func _initialiser_la_configuration() -> void:
 
 func _enregistrer_la_configuration() -> void:
 	print("configuration.gd : _enregistrer_la_configuration")
-	FichiersJson.write_json_file("user://configuration_du_jeu.json", configuration_du_jeu.duplicate(true))
+	FichiersJsonService.write_json_file("user://configuration_du_jeu.json", configuration_du_jeu.duplicate(true))
 	print("Configuration sauvegardée")
 
 func activer_musiques() -> void:

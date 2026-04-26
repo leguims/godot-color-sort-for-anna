@@ -13,7 +13,7 @@ func _ready() -> void:
 
 func _initialiser_les_plateaux() -> void:
 	# Lire la liste des plateaux classés par niveaux
-	var fichier_plateaux = FichiersJson.read_json_file("res://Solutions_classees.json")
+	var fichier_plateaux = FichiersJsonService.read_json_file("res://Solutions_classees.json")
 	# print(fichier_plateaux)
 	
 	# Copier les niveaux lus

@@ -12,7 +12,7 @@ var liste_format_scores = {
 
 func _ready() -> void:
 	# Realiser le classement des joueurs
-	var classement = SauvegardeScores.retourner_classement()
+	var classement = SauvegardeTableauDesScoresService.retourner_classement()
 
 	# Remplir chaque score dans la liste des scores
 	var liste_score_bbcode : String = ''
@@ -23,7 +23,7 @@ func _ready() -> void:
 			var rang_joueur = joueur.get('rang')
 			var score_texte = joueur.get('nom') + " " + joueur.get('score_txt')
 			if 1 <= rang_joueur and rang_joueur <= 3:
-				score_texte = SauvegardeScores.lire_le_trophee_du_rang(rang_joueur) + score_texte
+				score_texte = SauvegardeTableauDesScoresService.lire_le_trophee_du_rang(rang_joueur) + score_texte
 			# int(rang_joueur) car 'rang_joueur' est vu comme un float !
 			var texte_bbcode = liste_format_scores.get(int(rang_joueur))
 			texte_bbcode = texte_bbcode.replace('score', score_texte)

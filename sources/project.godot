@@ -20,12 +20,16 @@ config/windows_native_icon="res://icon.ico"
 
 [autoload]
 
-FichiersJson="*res://Singletons/Sauvegarde/fichiers_json.gd"
-SauvegardeConfiguration="*res://Singletons/Sauvegarde/configuration.gd"
-SauvegardeBddPlateaux="*res://Singletons/Sauvegarde/bdd_plateaux.gd"
-SauvegardeListeJoueurs="*res://Singletons/Sauvegarde/liste_joueurs.gd"
-SauvegardeBddJoueurs="*res://Singletons/Sauvegarde/bdd_joueurs.gd"
-SauvegardeScores="*res://Singletons/Sauvegarde/scores.gd"
+FichiersJsonService="*res://Singletons/Sauvegarde/fichiers_json_service.gd"
+SauvegardeConfigurationService="*res://Singletons/Sauvegarde/configuration_service.gd"
+SauvegardeBddPlateauxService="*res://Singletons/Sauvegarde/bdd_plateaux_service.gd"
+SauvegardeListeJoueursService="*res://Singletons/Sauvegarde/liste_joueurs_service.gd"
+SauvegardeBddJoueursService="*res://Singletons/Sauvegarde/bdd_joueurs_service.gd"
+SauvegardeTableauDesScoresService="*res://Singletons/Sauvegarde/tableau_scores_service.gd"
+AudioService="*res://Singletons/audio_service.gd"
+StatsService="*res://Singletons/stats_service.gd"
+ScoreService="*res://Singletons/score_service.gd"
+ProgressionCampagneService="*res://Singletons/progression_campagne_service.gd"
 
 [display]
 

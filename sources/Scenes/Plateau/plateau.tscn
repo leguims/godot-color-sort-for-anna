@@ -1,6 +1,6 @@
 [gd_scene load_steps=3 format=3 uid="uid://cfqcdseqsuy1l"]
 
-[ext_resource type="Script" path="res://Scenes/Plateau/plateau.gd" id="1_yvses"]
+[ext_resource type="Script" uid="uid://con7f03vw8e55" path="res://Scenes/Plateau/plateau.gd" id="1_yvses"]
 [ext_resource type="PackedScene" uid="uid://xl5sym5dtjpg" path="res://Scenes/Pile/pile.tscn" id="2_7hnmy"]
 
 [node name="Plateau" type="Node"]
@@ -22,8 +22,8 @@ anchors_preset = 10
 anchor_right = 1.0
 offset_bottom = 91.0
 grow_horizontal = 2
-theme_override_colors/font_hover_color = Color(0.994947, 0.331387, 1, 1)
 theme_override_colors/font_color = Color(0.675529, 0.00038495, 0.685483, 1)
+theme_override_colors/font_hover_color = Color(0.994947, 0.331387, 1, 1)
 theme_override_font_sizes/font_size = 60
 text = "Abandonner"
 

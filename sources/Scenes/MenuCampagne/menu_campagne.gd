@@ -7,6 +7,10 @@ signal commencer_plateau
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
+	# Connecter les signaux attendus
+	var pcs = get_node("/root/ProgressionCampagneService")
+	pcs.detail_score_plateau.connect(_on_progression_campagne_service_detail_score_plateau)
+
 	mettre_a_jour_infos_joueur()
 
 
@@ -254,6 +258,8 @@ func _on_h_slider_value_changed(value: float) -> void:
 	else:
 		$LongueurAscension/VBox/NombreDePlateaux.text = str(nb_plateaux) +" plateau"
 
+func _on_progression_campagne_service_detail_score_plateau(detail_score: Dictionary):
+	afficher_detail_score(detail_score)
 
 # MessageRiche
 ##############
@@ -274,7 +280,7 @@ func afficher_detail_score(detail_score : Dictionary) -> void:
 [ul] #duree_pts# points[/ul]"""
 	bbcode_duree = bbcode_duree.replace('#duree_ref#', str(detail_score.get('duree').get('reference')))
 	bbcode_duree = bbcode_duree.replace('#duree_real#', str( snapped(detail_score.get('duree').get('realise'), 0.1) ))
-	var points_txt = SauvegardeScores.nombre_avec_separateur_de_milliers(detail_score.get('duree').get('points'), '.')
+	var points_txt = SauvegardeTableauDesScoresService.nombre_avec_separateur_de_milliers(detail_score.get('duree').get('points'), '.')
 	bbcode_duree = bbcode_duree.replace('#duree_pts#', points_txt)
 	bbcode_complet += bbcode_duree
 	score_total += detail_score.get('duree').get('points')
@@ -284,7 +290,7 @@ func afficher_detail_score(detail_score : Dictionary) -> void:
 [ul] Réalisé: #ratio_real#%[/ul]
 [ul] #ratio_pts# points[/ul]"""
 	bbcode_ratio_reussite = bbcode_ratio_reussite.replace('#ratio_real#', str(detail_score.get('ratio_reussite').get('ratio')))
-	points_txt = SauvegardeScores.nombre_avec_separateur_de_milliers(detail_score.get('ratio_reussite').get('points'), '.')
+	points_txt = SauvegardeTableauDesScoresService.nombre_avec_separateur_de_milliers(detail_score.get('ratio_reussite').get('points'), '.')
 	bbcode_ratio_reussite = bbcode_ratio_reussite.replace('#ratio_pts#', points_txt)
 	bbcode_complet += bbcode_ratio_reussite
 	score_total += detail_score.get('ratio_reussite').get('points')
@@ -295,7 +301,7 @@ func afficher_detail_score(detail_score : Dictionary) -> void:
 [ul] Longueur: #asc_long# plateaux[/ul]
 [ul] #asc_pts# points[/ul]"""
 		bbcode_ascension = bbcode_ascension.replace('#asc_long#', str(detail_score.get('ascension').get('longueur')))
-		points_txt = SauvegardeScores.nombre_avec_separateur_de_milliers(detail_score.get('ascension').get('points'), '.')
+		points_txt = SauvegardeTableauDesScoresService.nombre_avec_separateur_de_milliers(detail_score.get('ascension').get('points'), '.')
 		bbcode_ascension = bbcode_ascension.replace('#asc_pts#', points_txt)
 		bbcode_complet += bbcode_ascension
 		score_total += detail_score.get('ascension').get('points')
@@ -307,7 +313,7 @@ func afficher_detail_score(detail_score : Dictionary) -> void:
 [ul] Bonus: #asc_detour_bonus#[/ul]
 [ul] #asc_detour_pts# points[/ul]"""
 		bbcode_ascension_sans_detour = bbcode_ascension_sans_detour.replace('#asc_detour_bonus#', str(detail_score.get('ascension_sans_detour').get('bonus')))
-		points_txt = SauvegardeScores.nombre_avec_separateur_de_milliers(detail_score.get('ascension_sans_detour').get('points'), '.')
+		points_txt = SauvegardeTableauDesScoresService.nombre_avec_separateur_de_milliers(detail_score.get('ascension_sans_detour').get('points'), '.')
 		bbcode_ascension_sans_detour = bbcode_ascension_sans_detour.replace('#asc_detour_pts#', points_txt)
 		bbcode_complet += bbcode_ascension_sans_detour
 		score_total += detail_score.get('ascension_sans_detour').get('points')
@@ -317,7 +323,7 @@ func afficher_detail_score(detail_score : Dictionary) -> void:
 	if  detail_score.get('campagne'):
 		var bbcode_campagne = """[b]Campagne[/b]
 [ul] #campag_pts# points[/ul]"""
-		points_txt = SauvegardeScores.nombre_avec_separateur_de_milliers(detail_score.get('campagne').get('points'), '.')
+		points_txt = SauvegardeTableauDesScoresService.nombre_avec_separateur_de_milliers(detail_score.get('campagne').get('points'), '.')
 		bbcode_campagne = bbcode_campagne.replace('#campag_pts#', points_txt)
 		bbcode_complet += bbcode_campagne
 		score_total += detail_score.get('campagne').get('points')
@@ -325,7 +331,7 @@ func afficher_detail_score(detail_score : Dictionary) -> void:
 
 	# total
 	var bbcode_total = """[/font_size][/left][font_size=30][center][b]Total : #total_pts#[/b][/center][/font_size][/color]"""
-	points_txt = SauvegardeScores.nombre_avec_separateur_de_milliers(score_total, '.')
+	points_txt = SauvegardeTableauDesScoresService.nombre_avec_separateur_de_milliers(score_total, '.')
 	bbcode_total = bbcode_total.replace('#total_pts#', points_txt)
 	bbcode_complet += bbcode_total
 

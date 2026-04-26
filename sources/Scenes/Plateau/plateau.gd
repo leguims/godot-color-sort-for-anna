@@ -170,15 +170,15 @@ func on_pile_clique_gauche(indice_pile : int) -> void:
 				if _est_termine():
 					$BoutonAbandon.hide()
 					victoire.emit()
-					if SauvegardeConfiguration.vibrations_sont_actives():
+					if SauvegardeConfigurationService.vibrations_sont_actives():
 						# Grosse vibration
 						Input.vibrate_handheld(800, 1.0)
 				else:
-					if SauvegardeConfiguration.vibrations_sont_actives():
+					if SauvegardeConfigurationService.vibrations_sont_actives():
 						# Petite vibration
 						Input.vibrate_handheld(200, 0.5)
 			else:
-				if SauvegardeConfiguration.vibrations_sont_actives():
+				if SauvegardeConfigurationService.vibrations_sont_actives():
 					# Toute petite vibration
 					Input.vibrate_handheld(50, 0.2)
 		_on_selection_pile_timeout()
@@ -242,7 +242,7 @@ func realiser_le_tansfert_de_pile(indice_pile_depart : int, indice_pile_arrivee 
 			pile_depart.retirer_le_dernier_jeton()
 			pile_arrivee.ajouter_le_jeton_dans_le_vide(indice_jeton_depart)
 		# Enregistrer le coup
-		SauvegardeBddJoueurs.ajouter_un_nouveau_coup(indice_pile_depart, indice_pile_arrivee)
+		SauvegardeBddJoueursService.ajouter_un_nouveau_coup(indice_pile_depart, indice_pile_arrivee)
 		return true
 	return false
 

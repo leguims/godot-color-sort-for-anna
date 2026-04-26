@@ -39,7 +39,7 @@ func _on_bouton_campagne_pressed() -> void:
 
 func _creer_tuiles_joueurs_campagne():
 	$Marge/HBoxContainer/VBoxContainer/Marge/VBoxContainer/JoueursCampagne.columns = 2
-	for nom_joueur in SauvegardeListeJoueurs.retourner_la_liste_des_joueurs():
+	for nom_joueur in SauvegardeListeJoueursService.retourner_la_liste_des_joueurs():
 		# Ajouter des boutons ou des tuiles de sélection de profil
 		var button = Button.new()
 		_creer_style_tuile_joueur_campagne(button, nom_joueur, _la_campagne_est_terminee_pour_joueur(nom_joueur))
@@ -103,7 +103,7 @@ func _creer_style_tuile_joueur_campagne(tuile : Control, nom : String, campagne_
 
 func _on_joueurs_campagne_pressed(nom_joueur: String) -> void:
 	print("Campagne avec le joueur : ", nom_joueur)
-	if not SauvegardeListeJoueurs.le_joueur_existe(nom_joueur):
+	if not SauvegardeListeJoueursService.le_joueur_existe(nom_joueur):
 		printerr("Erreur : Le nom '" + nom_joueur + "' n'existe pas")
 	elif not _la_campagne_est_terminee_pour_joueur(nom_joueur):
 		# Choisir le joueur pour la campagne
@@ -114,28 +114,28 @@ func _on_joueurs_campagne_pressed(nom_joueur: String) -> void:
 
 
 func _mettre_a_jour_configuration():
-	$Marge/HBoxContainer/VBoxContainer/Marge/VBoxContainer/VBoxContainer/BoutonMusiques.button_pressed = SauvegardeConfiguration.musiques_sont_actives()
-	$Marge/HBoxContainer/VBoxContainer/Marge/VBoxContainer/VBoxContainer/BoutonEffetsSonores.button_pressed = SauvegardeConfiguration.effets_sonores_sont_actifs()
-	$Marge/HBoxContainer/VBoxContainer/Marge/VBoxContainer/VBoxContainer/BoutonVibrations.button_pressed = SauvegardeConfiguration.vibrations_sont_actives()
-	$Version.text = SauvegardeConfiguration.lire_la_version()
+	$Marge/HBoxContainer/VBoxContainer/Marge/VBoxContainer/VBoxContainer/BoutonMusiques.button_pressed = SauvegardeConfigurationService.musiques_sont_actives()
+	$Marge/HBoxContainer/VBoxContainer/Marge/VBoxContainer/VBoxContainer/BoutonEffetsSonores.button_pressed = SauvegardeConfigurationService.effets_sonores_sont_actifs()
+	$Marge/HBoxContainer/VBoxContainer/Marge/VBoxContainer/VBoxContainer/BoutonVibrations.button_pressed = SauvegardeConfigurationService.vibrations_sont_actives()
+	$Version.text = SauvegardeConfigurationService.lire_la_version()
 
 func _on_bouton_musiques_toggled(toggled_on: bool) -> void:
 	if toggled_on:
-		SauvegardeConfiguration.activer_musiques()
+		SauvegardeConfigurationService.activer_musiques()
 	else:
-		SauvegardeConfiguration.desactiver_musiques()
+		SauvegardeConfigurationService.desactiver_musiques()
 
 func _on_bouton_effets_sonores_toggled(toggled_on: bool) -> void:
 	if toggled_on:
-		SauvegardeConfiguration.activer_effets_sonores()
+		SauvegardeConfigurationService.activer_effets_sonores()
 	else:
-		SauvegardeConfiguration.desactiver_effets_sonores()
+		SauvegardeConfigurationService.desactiver_effets_sonores()
 
 func _on_bouton_vibrations_toggled(toggled_on: bool) -> void:
 	if toggled_on:
-		SauvegardeConfiguration.activer_vibrations()
+		SauvegardeConfigurationService.activer_vibrations()
 	else:
-		SauvegardeConfiguration.desactiver_vibrations()
+		SauvegardeConfigurationService.desactiver_vibrations()
 
 
 # Traitement de données 'Sauvegarde*'
@@ -143,35 +143,35 @@ func _on_bouton_vibrations_toggled(toggled_on: bool) -> void:
 ################################################
 
 func _la_campagne_est_terminee_pour_joueur(nom_joueur : String) -> bool:
-	if SauvegardeListeJoueurs.le_joueur_existe(nom_joueur):
+	if SauvegardeListeJoueursService.le_joueur_existe(nom_joueur):
 		# Choisir le joueur pour la campagne
-		var nom_fichier = SauvegardeListeJoueurs.retourner_le_fichier_de_sauvegarde(nom_joueur)
-		SauvegardeBddJoueurs.choisir_le_joueur(nom_joueur, nom_fichier)
-		return SauvegardeBddJoueurs.la_campagne_est_terminee()
+		var nom_fichier = SauvegardeListeJoueursService.retourner_le_fichier_de_sauvegarde(nom_joueur)
+		SauvegardeBddJoueursService.choisir_le_joueur(nom_joueur, nom_fichier)
+		return SauvegardeBddJoueursService.la_campagne_est_terminee()
 	return false
 
 func menu_principal___choisir_le_joueur_pour_la_campagne(nom_joueur : String) -> bool:
-	if SauvegardeListeJoueurs.le_joueur_existe(nom_joueur):
+	if SauvegardeListeJoueursService.le_joueur_existe(nom_joueur):
 		# Choisir le joueur pour la campagne
-		var nom_fichier = SauvegardeListeJoueurs.retourner_le_fichier_de_sauvegarde(nom_joueur)
-		if SauvegardeBddJoueurs.choisir_le_joueur(nom_joueur, nom_fichier):
+		var nom_fichier = SauvegardeListeJoueursService.retourner_le_fichier_de_sauvegarde(nom_joueur)
+		if SauvegardeBddJoueursService.choisir_le_joueur(nom_joueur, nom_fichier):
 			return true
 	return false
 
 func menu_principal___liberer_le_joueur_pour_la_campagne():
-	SauvegardeBddJoueurs.liberer_le_joueur()
+	SauvegardeBddJoueursService.liberer_le_joueur()
 
 func menu_principal___ajouter_un_nouveau_joueur_pour_la_campagne(nom_nouveau_joueur : String) -> bool:
-	return not SauvegardeListeJoueurs.le_joueur_existe(nom_nouveau_joueur)
+	return not SauvegardeListeJoueursService.le_joueur_existe(nom_nouveau_joueur)
 
 func menu_principal___initialiser_le_nouveau_joueur_pour_la_campagne(nom_nouveau_joueur : String) -> bool:
-	if not SauvegardeListeJoueurs.le_joueur_existe(nom_nouveau_joueur):
+	if not SauvegardeListeJoueursService.le_joueur_existe(nom_nouveau_joueur):
 		# Ajouter le joueur dans la liste des joueurs
-		if SauvegardeListeJoueurs.ajouter_un_nouveau_joueur(nom_nouveau_joueur):
-			var nom_fichier = SauvegardeListeJoueurs.retourner_le_fichier_de_sauvegarde(nom_nouveau_joueur)
+		if SauvegardeListeJoueursService.ajouter_un_nouveau_joueur(nom_nouveau_joueur):
+			var nom_fichier = SauvegardeListeJoueursService.retourner_le_fichier_de_sauvegarde(nom_nouveau_joueur)
 			# Ajouter la sauvegarde personnelle du joueur
-			if SauvegardeBddJoueurs.ajouter_un_nouveau_joueur(nom_nouveau_joueur, nom_fichier):
+			if SauvegardeBddJoueursService.ajouter_un_nouveau_joueur(nom_nouveau_joueur, nom_fichier):
 				# Ajouter le joueur dans le tableau des scores
-				if SauvegardeScores.ajouter_un_nouveau_joueur(nom_nouveau_joueur):
+				if SauvegardeTableauDesScoresService.ajouter_un_nouveau_joueur(nom_nouveau_joueur):
 					return true
 	return false
