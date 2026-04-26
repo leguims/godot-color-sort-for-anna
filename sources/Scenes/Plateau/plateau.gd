@@ -33,40 +33,56 @@ func effacer_le_plateau() -> void:
 func est_valide(plateau_texte : String) -> bool:
 	return decodeur.est_valide(plateau_texte)
 
+
+# ########
+# Usine >>
 func _creer_un_plateau(piles : Array) -> void:
+	for jetons_pile_courante in piles:
+		# Créer une nouvelle instance de la scene 'Pile'.
+		var pile = _instancier_une_pile()
+		var indice_pile = len(liste_piles)-1
+		_initialiser_une_pile(pile, jetons_pile_courante)
+		var position_pile = _positionner_une_pile(len(piles), indice_pile)
+		#print("_creer_un_plateau : position_pile = ", position_pile)
+		pile.choisir_position( position_pile )
+
+func _instancier_une_pile() -> Pile:
+	# Créer une nouvelle instance de la scene 'Pile'.
+	var pile = pile_scene.instantiate()
+
+	# Ajouter la nouvelle scene au plus tot pour que
+	# le constructeur '_ready' ait fait ses actions préalables.
+	add_child(pile)
+	liste_piles.append(pile)
+	
+	# Fournir l'indice de la pile comme reference
+	# Permet d'identifier de quelle pile provient un signal.
+	var indice_pile = len(liste_piles)-1
+	pile.choisir_reference(indice_pile)
+	
+	# Connexion au signal 'Pile.clique_gauche'
+	pile.connect("clique_gauche", Callable(self, "on_pile_clique_gauche"))
+	
+	return pile
+
+func _initialiser_une_pile(pile: Pile, jetons_pile_texte) -> void:
+	# Initialiser la pile
+	var valide = pile.ajouter_les_jetons(jetons_pile_texte)
+	# Traiter le cas d'une pile invalide.
+	if not valide:
+		# la pile est invalide, le plateau aussi
+		effacer_le_plateau()
+		plateau_invalide.emit()
+
+func _positionner_une_pile(nb_piles_plateau: int, indice_pile: int) -> Vector2:
+	# Definir la position de la pile sur le plateau
 	# Constantes pour layout
 	layout.taille_bouton_abandonner_originale = $BoutonAbandon.size.y
 	layout.taille_fenetre_jeu = get_viewport().get_visible_rect().size
-	for pile_courante in piles:
-		# Créer une nouvelle instance de la scene 'Jeton'.
-		var pile = pile_scene.instantiate()
-
-		# Ajouter la nouvelle scene au plus tot pour que
-		# le constructeur '_ready' ait fait ses actions préalables.
-		add_child(pile)
-		liste_piles.append(pile)
-		
-		# Fournir l'indice de la pile comme reference
-		# Permet d'identifier de quelle pile provient un signal.
-		var indice_pile = len(liste_piles)-1
-		pile.choisir_reference(indice_pile)
-		
-		# Connexion au signal 'Jeton.clique_gauche'
-		pile.connect("clique_gauche", Callable(self, "on_pile_clique_gauche"))
-		
-		# Créer la pile
-		var valide = pile.ajouter_les_jetons(pile_courante)
-		# Traiter le cas d'une pile invalide.
-		if not valide:
-			# la pile est invalide, le plateau aussi
-			effacer_le_plateau()
-			plateau_invalide.emit()
-		
-		# Definir la position de la pile sur le plateau
-		layout.taille_pile_pixels = Vector2(liste_piles[0].largeur(), liste_piles[0].hauteur())
-		var position_pile = layout.calculer_la_position_de_la_pile(len(piles), len(liste_piles)-1)
-		#print("_creer_un_plateau : position_pile = ", position_pile)
-		pile.choisir_position( position_pile )
+	layout.taille_pile_pixels = Vector2(liste_piles[0].largeur(), liste_piles[0].hauteur())
+	return layout.calculer_la_position_de_la_pile(nb_piles_plateau, indice_pile)
+# Usine >>
+# ########
 
 func on_pile_clique_gauche(indice_pile : int) -> void:
 	# print("clique sur la pile : ", indice_pile)

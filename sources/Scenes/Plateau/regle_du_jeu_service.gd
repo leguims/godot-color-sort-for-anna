@@ -3,10 +3,10 @@ class_name PlateauReglesDuJeuService
 
 func pile_de_depart_de_tansfert_valide(pile_depart : Pile) -> bool:
 	if pile_depart.est_vide():
-		print("Pile de départ vide")
+		#print("Pile de départ vide")
 		return false
 	if pile_depart.est_termine():
-		print("Pile de départ terminée")
+		#print("Pile de départ terminée")
 		return false
 	return true
 
