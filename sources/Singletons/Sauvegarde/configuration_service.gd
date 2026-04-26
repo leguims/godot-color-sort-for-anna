@@ -8,7 +8,7 @@ extends Node
 
 # Dico : {'caracteristique': reglage}
 var configuration_du_jeu = {
-	'version': 'V0.3.7',
+	'version': 'V0.3.6',
 	'musiques': true,
 	'effets sonores': true,
 	'vibrations': true
