@@ -1,20 +1,20 @@
 [gd_scene load_steps=9 format=3 uid="uid://xsrt777ms37l"]
 
-[ext_resource type="Script" path="res://Scenes/MenuCampagne/menu_campagne.gd" id="1_88fpq"]
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_w2jhv"]
-bg_color = Color(0, 0, 0, 1)
+[ext_resource type="Script" uid="uid://cvnvhf4dvkux3" path="res://Scenes/MenuCampagne/menu_campagne.gd" id="1_88fpq"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_4v47e"]
+bg_color = Color(0, 0, 0, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_w2jhv"]
 bg_color = Color(0, 0, 0, 1)
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_11ehg"]
 bg_color = Color(0.996078, 0.333333, 1, 1)
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_1gckf"]
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_j78cs"]
 bg_color = Color(0, 0, 0, 1)
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_j78cs"]
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_1gckf"]
 bg_color = Color(0, 0, 0, 1)
 
 [sub_resource type="LabelSettings" id="LabelSettings_3y2ap"]
@@ -31,11 +31,11 @@ anchors_preset = 10
 anchor_right = 1.0
 offset_bottom = 100.0
 grow_horizontal = 2
-theme_override_colors/font_hover_color = Color(0.996078, 0.333333, 1, 1)
 theme_override_colors/font_color = Color(0.67451, 0, 0.686275, 1)
+theme_override_colors/font_hover_color = Color(0.996078, 0.333333, 1, 1)
 theme_override_font_sizes/font_size = 50
-theme_override_styles/hover = SubResource("StyleBoxFlat_w2jhv")
 theme_override_styles/normal = SubResource("StyleBoxFlat_4v47e")
+theme_override_styles/hover = SubResource("StyleBoxFlat_w2jhv")
 text = "Menu"
 
 [node name="InfosDuJoueur" type="VBoxContainer" parent="."]
@@ -82,11 +82,11 @@ anchor_bottom = 1.0
 offset_top = -100.0
 grow_horizontal = 2
 grow_vertical = 0
-theme_override_colors/font_hover_color = Color(0.994947, 0.331387, 1, 1)
 theme_override_colors/font_color = Color(0.675529, 0.00038495, 0.685483, 1)
+theme_override_colors/font_hover_color = Color(0.994947, 0.331387, 1, 1)
 theme_override_font_sizes/font_size = 60
-theme_override_styles/hover = SubResource("StyleBoxFlat_1gckf")
 theme_override_styles/normal = SubResource("StyleBoxFlat_j78cs")
+theme_override_styles/hover = SubResource("StyleBoxFlat_1gckf")
 text = "Commencer"
 
 [node name="LongueurAscension" type="MarginContainer" parent="."]
