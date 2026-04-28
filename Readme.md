@@ -14,7 +14,7 @@ Listes des évolutions votées par les testeurs:
 
 Depuis la phase de tests internes de la version V0.3.0, les fonctionnalités sont votées par les testeurs. L'attribution des fonctionnailités par versions ci-dessous devrait devenir obsolète pour préférer un classement global des testeurs. Cependant, les deux vont vivre pendant une phase de transition.
 
-## V0.3.6 : Travaux pour la prochaine version
+## V0.3.7 : Travaux pour la prochaine version
 
 ### Bug V0.3.0 :
 - [à surveiller] L'affichage "Niveau = 5 - indice Plateau = 0 - Nombre de parties = <null>" est en erreur !
@@ -22,6 +22,9 @@ Depuis la phase de tests internes de la version V0.3.0, les fonctionnalités son
 ### Bug V0.3.2 :
 - bug sur score d'ascension qui est calculé sur le nombre de niveaux restant dans le jeu plutot que les niveaux effectivement réalisés dans l'ascension courante.
 - dernière ascension, la même musique pendant toute l'ascension.
+
+### Bug V0.3.6 :
+- après un abandon, on peut continuer de résoudre un plateau et même le résoudre malgré les menus affichés
 
 
 ### Jeu
@@ -32,9 +35,16 @@ Depuis la phase de tests internes de la version V0.3.0, les fonctionnalités son
 - (Faro) Aligner les piles sur la même ligne pour que ca soit plus facile à jouer (-1 Totol)
 - Sauvegarder l'état du plateau en cours après chaque coup. Le joueur qui quitte le jeu, reprend là où il était. Quand il revient, il commence avec son temps moyen sur ce type de niveau.
 - (Aleksandar): thème sur le fond du décors. Trop austère.
-- ~~Ajouter des points au score par ascension terminée.~~:heavy_check_mark:
 - Quand le jeu est terminé (campagne 100%), afficher un globe à coté du nom du joueur dans le menu principal
 - Sauvegarder l'état du plateau en cours après chaque coup. Le joueur qui quitte le jeu, reprend là où il était. Quand il revient, il commence avec son temps moyen sur ce type de niveau.
+- Selon ton humeur, demander 5 plateaux faciles ou 5 ultras difficiles. (mode libre)
+- pour les plateaux impossibles à perdre, les classer dans DÉTENTE
+- pour les plateaux impossibles à gagner, proposer au joueur de trouver la combinaison pour perdre. (Mode No Win)
+
+#### Refactoring
+- ~~Structurer tout le dépot pour réorganiser les sources, les outils et les tests~~:heavy_check_mark:
+    - ~~plus de singleton~~
+    - ~~découpage des scenes menu_campagne.gd, campagne.gd et menu_principale.gd~~
 
 #### Ascensions
 - Gérer la difficulté relative des différentes 'ascensions':
@@ -44,11 +54,13 @@ Depuis la phase de tests internes de la version V0.3.0, les fonctionnalités son
 	- https://spherama.com/classements/montagnes/ascension/classement-des-montagnes-par-difficulte-ascension-monde.php
 	- https://climbfinder.com/fr/classement?l=415%3Fs%3Dhighest&s=cotacol
 - Prévoir un algo pour programmer l'ascension et la mémoriser.
-- Prévoir de donner le choix de l'ascension au départ en indiquant les quantités de chacunes des ascensions et le temps à prévoir.
-- Enregistrer le score dans les infos 'joueur' quand l'ascension est terminée. Le score intermédiaire est calculé avec le score enregistré et le calcul partiel. "Score=f(essais, temps)"
 - Le nombre de coups minimum d'une solution est connu, il est possible de l'inclure dans le calcul du score.
 - Prevoir une musique spéciale pour la réussite de la derniere ascension possible et le message de félicitations.
 - Calculer les populations restantes de chaque difficulté et attribuer un nombre de plateau par niveaux à réaliser par ascension au minimum. Le chemin se rallonge en cas d'echecs.
+- est ce qu'il faut limiter les ascensions (logo montagne) à une ascension maximum ?
+- TRICHE ANATOLE :
+    - Quand anatole comme 'nom' on peux mettre n'importe quelle couleur sur n'importe quelle couleur et ça marche mais pas beaucoup de point
+    - Il y aura un bouton gagner Ou quand tout les Block seront dans une case remplie
 
 #### Statistiques
 - Inclure un bouton statistiques dans le menu principal
@@ -77,6 +89,22 @@ Depuis la phase de tests internes de la version V0.3.0, les fonctionnalités son
     - Plateau:
     - le plus rapide (temps, profondeur) 
     - le plus long (temps, profondeur) 
+- Prévoir un téléchargement des stats:
+    - nommer le téléphone + compte google
+    - indiquer la date de création.
+    - zipper les données : comptes de jeux, scores et séquences de jeu.
+    - réaliser un SHA1 de l'ensemble
+    - envoyer le tout à l'adresse mail du jeu.
+    - Prévoir côté mail :
+      - vérifier le zip avec le SHA1
+      - créer une base de donnée avec tous les joueurs
+      - faire un classement de tout le monde.
+- Automatisation des scores:
+    - activer Google Play Games Services (GPGS)
+    - créer un leaderboard
+    - enregistrer l'ID. 
+    - importer le plug in GPGS dans godot.
+    - https://godotengine.org/asset-library/asset/2440#:~:text=2.0%20Tools%204.0%20Community,%2D%20Load%20events%20by%20ids
 
 #### Android
 - Pour Android : voir si une astuce de zoom existe sur Godot pour grandir les piles suivant la taille des piles.
@@ -100,27 +128,42 @@ Depuis la phase de tests internes de la version V0.3.0, les fonctionnalités son
 - Faire une sorte de buzz pour les mouvements interdits. Pas de son si la selection périme.
 
 ### Outillage
-- Rendre parametrable depuis les scripts "outil_*" les chemins vers "Analyses" et "Solutions"
+- ~~Decomposer les outils pour réaliser un forkflow (pipeline)~~:heavy_check_mark:
+
+#### Refactoring
+- ~~Structurer tout le dépot pour réorganiser les sources, les outils et les tests~~:heavy_check_mark:
+    - ~~arbrescence : core, io_utils, tests et pipeline~~
+- ~~Améliorer le code pour simplifier la maintenance:~~:heavy_check_mark:
+    - ~~creer des modules~~
+    - ~~faire une API~~
+    - ~~realiser des methodes deporter dans des ficheirs à theme~~
+    - ~~Réalisé pour : plateau.py, lot_de_plateaux.py et resoudre.py~~
 
 #### Recherche de plateaux
 - Ajouter un "outil_divers" pour reset les parametres de recherche de plateaux
 
 #### Revalidation
 - Ajouter un "outil_divers" pour reset les parametres de revalidation des plateaux
-- ~~Similarité : Difflib : inclus dans python~~ Réalisé avec Rapidfuzz
 - Similarité : Pour réduire les similarité : Rapidfuzz + seuil à ajuster (75% et plus). Voir s'il faut l'appliquer sur le fichier complet de solutions. Application sur "revalidation" = gain de temps + application sur "Solutions" pour gain de plaisir de jeu.
 
 #### Difficulté de plateau
 - ~~Dans la recherche de solution, réorganiser pour conserver:~~:heavy_check_mark:
-  - ~~La solution la plus courte (1 seule)~~:heavy_check_mark:
-  - ~~La quantité de solution pour chaque longueur~~:heavy_check_mark:
-- ~~Baser la difficulté sur le nombre d'alternatives (les occasions de faire une erreur) de la solution~~:heavy_check_mark:
-  - ~~noter avec la solution le nombre de coups possibles à chaque étapes.~~:heavy_check_mark:
-  - ~~une étape sans alternative est inintéressante.~~:heavy_check_mark:
-  - ~~Définir la difficulté:~~:heavy_check_mark:
-    - ~~Parcourir la solution la plus courte~~:heavy_check_mark:
-    - ~~À chaque coup, identifier s'il y a plusieurs coups jouables.~~:heavy_check_mark:
-    - ~~Difficulté = multiplier les coups legaux à chaque étape. Comme ça "1 coup" est neutre sur le score final.~~:heavy_check_mark:
+  - ~~La quantité de blocage pour chaque longueur~~:heavy_check_mark:
+- ~~Baser la difficulté le rapport : Nb Blocage / (Nb Blocage + Nb Solutionsd)~~:heavy_check_mark:
+- ~~Difficulté entre 0 et 100 (le plus difficile)~~:heavy_check_mark:
+
+#### Etape 5 : Tronquer les solutions => Exporter solution vers GODOT
+- Dans l'étape 5 (tronquer), ajouter un suffixe au plateau pour indiquer qu'il y a différentes longueurs de solutions.
+- Dans le jeu, à l'affichage du plateau, faire apparaître "Défi 6 coups" car 6 est le nombre de coups minimum (dans cet exemple).
+- Lors du calcul de score, ajouter un score spécifique sur la longueur.
+  - Longueur max = 0 points.
+  - Longueur min = max points
+  - et un pourcentage entre les deux.
+- Les infos de solutions sont séparées par un caractère spécial. Je propose le suffixe suivant:
+  - "|MIN:6|MAX:7"
+  - Solution la plus courte en 6 coups.
+  - Solution la plus longue en 7 coups.
+- Renommer l'étape 5. Ce n'est pas tronquer les solutions, c'est produire le fichier de solutions au format du jeu godot. Tronquer, ajouter infos plateau et autres. "Étape 5 = Exporter solution vers godot"
 
 #### Divers
 - pour les plateaux sans solution, lancer une recherche en ajoutant 1 colonne d'une seule ligne OU 1 case vide sur la derniere colonne.

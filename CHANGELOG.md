@@ -1,5 +1,32 @@
 # Liste des fonctionnalités
 
+## V0.3.6 :Travaux réalisés
+
+### Jeu
+
+#### Ascensions
+- Prévoir de donner le choix de l'ascension au départ en indiquant les quantités de chacunes des ascensions et le temps à prévoir.
+- Enregistrer le score dans les infos 'joueur' quand l'ascension est terminée. Le score intermédiaire est calculé avec le score enregistré et le calcul partiel. "Score=f(essais, temps)"
+
+### Outillage
+- Rendre parametrable depuis les scripts "outil_*" les chemins vers "Analyses" et "Solutions"
+
+#### Revalidation
+- Similarité : Difflib : inclus dans python Réalisé avec Rapidfuzz
+
+#### Difficulté de plateau
+- Dans la recherche de solution, réorganiser pour conserver:
+  - La solution la plus courte (1 seule)
+  - La quantité de solution pour chaque longueur
+- Baser la difficulté sur le nombre d'alternatives (les occasions de faire une erreur) de la solution
+  - noter avec la solution le nombre de coups possibles à chaque étapes.
+  - une étape sans alternative est inintéressante.
+  - Définir la difficulté:
+    - Parcourir la solution la plus courte
+    - À chaque coup, identifier s'il y a plusieurs coups jouables.
+    - Difficulté = multiplier les coups legaux à chaque étape. Comme ça "1 coup" est neutre sur le score final.
+- Ajouter un "outil_divers" pour mettre au nouveau format les solutions déjà trouvées
+
 ## V0.3.1 : Travaux réalisés
 
 ### Jeu
@@ -101,7 +128,7 @@
 		- "BAB.BAC.CAC.   " : filtré
 		- "ABA.ABC.CBC.   " : filtré
 		- "ACA.BCA.BCB.   " : filtré
-		- Pour filtrer ce doublon, il faut appliquer les permutations de jetons à chaque permutations de piles.~~
+		- Pour filtrer ce doublon, il faut appliquer les permutations de jetons à chaque permutations de piles.
 - 'classer_les_solutions.py' Réaliser un script d'élagage des solutions quand un plateau de départ a déjà une colonne de résolue.
 - 'chercheur_de_plateaux.py' Ne pas considérer les plateaux avec une pile déjà résolue.
 
@@ -163,14 +190,14 @@
 - outillage : construire un JSON selon une configuration qui indique le nombre de tableau de chaque niveau.
 
 ### Bug V0.2 :
-- ~~Le Bandeau d'information joueur n'a pas le score à jour après avoir joué (avéré sur l'affichage en fin d'ascension)~~:heavy_check_mark:
-  - ~~RAZ memoire + premier tableau fini. Score (bandeau info joueur) = 3600; Score (écran score) = 3776; Score (retour bandeau info joueur) = 3776~~:heavy_check_mark:
-- ~~Quand une pile est pleine, elle peut encore être selectionnée alors qu'elle devient immuable.~~:heavy_check_mark:
-- ~~Les cliques entre 2 jetons ne sont pas pris en compte.~~:heavy_check_mark:
-- ~~l'algorithme de difficulté est mauvais pour un plateau 3x5 qui est surclassé ! ("AABAA.A    .BBBB " 3x5 en X coups = difficulté 28) bien plus facile que ("BCA.CDB.CDA.BDA.   " 5x3 en X coups = 10)~~ Abandon (c'est la cohabitation de l'ancienne échelle de difficulté de 1 à 10 qui cause cette discontinuité.)
-- ~~BUG ancien : Sur le plateau de jeu, agrandir la fenetre preserve les piles. Par contre, si l'agrandissement a lieu avant d'appuyer sur le bouton commencer, les piles ne vont pas apparaitre.~~:heavy_check_mark:
--  ~~Ajout d'un nouveau joueur sans nom est accepté.~~:heavy_check_mark:
--  ~~Ajout d'un nouveau joueur puis clique sur campagne double tous les joeurs.~~:heavy_check_mark:
+- Le Bandeau d'information joueur n'a pas le score à jour après avoir joué (avéré sur l'affichage en fin d'ascension)
+  - RAZ memoire + premier tableau fini. Score (bandeau info joueur) = 3600; Score (écran score) = 3776; Score (retour bandeau info joueur) = 3776
+- Quand une pile est pleine, elle peut encore être selectionnée alors qu'elle devient immuable.
+- Les cliques entre 2 jetons ne sont pas pris en compte.
+- l'algorithme de difficulté est mauvais pour un plateau 3x5 qui est surclassé ! ("AABAA.A    .BBBB " 3x5 en X coups = difficulté 28) bien plus facile que ("BCA.CDB.CDA.BDA.   " 5x3 en X coups = 10) Abandon (c'est la cohabitation de l'ancienne échelle de difficulté de 1 à 10 qui cause cette discontinuité.)
+- BUG ancien : Sur le plateau de jeu, agrandir la fenetre preserve les piles. Par contre, si l'agrandissement a lieu avant d'appuyer sur le bouton commencer, les piles ne vont pas apparaitre.
+-  Ajout d'un nouveau joueur sans nom est accepté.
+-  Ajout d'un nouveau joueur puis clique sur campagne double tous les joeurs.
 
 ## V0.1 : Liste et organisation pour Godot:
 
@@ -195,7 +222,7 @@
 	- Contient les regles subjectives :
 		- Liste des mouvements autorisés, ABANDON géré par le bouton 'Abandonner'
 		- Est_terminé (toutes les colonnes sont terminées),
-		- ~~Est_bloqué (la liste des mouvements autorisés est vide)~~ ABANDON géré par le bouton 'Abandonner'
+		- Est_bloqué (la liste des mouvements autorisés est vide) ABANDON géré par le bouton 'Abandonner'
 	- Encodage de plateau:
 		- "AABB.BBAA.    " signifie :
 		- pile 1 : "AABB"
@@ -210,8 +237,8 @@
 	- Page d'accueil
 	- Liens entre les plateaux
 	- Ligne de saisie pour générer un plateau à résoudre.
-	- ~~Lien vers les Crédits (GODOT, musique, effet sonore)~~ Reporté V0.2
+	- Lien vers les Crédits (GODOT, musique, effet sonore) Reporté V0.2
 
 ### Bug V0.1 :
-- ~~La recherche de solution n'implémente pas de déplacement obligatoire de plusieurs jetons~~:heavy_check_mark:
-	- ~~"ABBA.AB  .AB  " : ce plateau est impossible~~:heavy_check_mark:
+- La recherche de solution n'implémente pas de déplacement obligatoire de plusieurs jetons
+	- "ABBA.AB  .AB  " : ce plateau est impossible
