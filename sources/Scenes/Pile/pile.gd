@@ -130,7 +130,7 @@ func choisir_position(nouvelle_position : Vector2) -> void:
 	# Changer la position de tous les jetons
 	for jeton_courant in liste_jetons:
 		var position_jeton = _calculer_la_position_du_jeton(indice_jeton)
-		# print("Pile.choisir_position : position_jeton = ", position_jeton)
+		# LogService.log_debug("Pile.choisir_position : position_jeton = ", position_jeton)
 		jeton_courant.choisir_position( position_jeton )
 		indice_jeton += 1
 	_ajuster_position_fond()
@@ -139,7 +139,7 @@ func _ajuster_position_fond() -> void:
 	if liste_jetons:
 		# Position du dernier jeton + Centrage de la pile
 		$Fond.set_position(liste_jetons[-1].position() - Vector2(marge, marge))
-		# print("Pile.choisir_position $Fond.get_position()", $Fond.get_position())
+		# LogService.log_debug("Pile.choisir_position $Fond.get_position()", $Fond.get_position())
 
 func selectionner() -> void:
 	selectionner_les_jetons_identiques_au_sommet()
@@ -279,7 +279,7 @@ func _calculer_la_position_du_jeton(indice_jeton : int) -> Vector2:
 	return position_jeton
 
 func on_jeton_clique_gauche(_indice_jeton : int) -> void:
-	# print("clique sur le jeton : ", _indice_jeton)
+	# LogService.log_debug("clique sur le jeton : ", _indice_jeton)
 	# Ne pas selectionner une pile terminee
 	if not est_termine():
 		clique_gauche.emit(reference_parent)

@@ -42,7 +42,7 @@ func mettre_a_jour_score_duree(duree_en_ms : int) -> Dictionary:
 	elif niveau <= 125:
 		temps_reference_en_s = temps_reference_par_niveau[125]
 	else :
-		printerr("Erreur : Niveau inattendu pour le score !")
+		LogService.log_erreur("Erreur : Niveau inattendu pour le score !")
 
 	var bonus_duree = 0
 	var nom_joueur = SauvegardeBddJoueursService.lire_nom_joueur()

@@ -14,10 +14,10 @@ func _on_bouton_scores_pressed() -> void:
 	get_tree().change_scene_to_file("res://Scenes/Scores/scores.tscn")
 
 func _on_nouveau_joueur_text_submitted(nom_nouveau_joueur: String) -> void:
-	print("Nouveau joueur : ", nom_nouveau_joueur)
+	LogService.log_debug("Nouveau joueur : ", nom_nouveau_joueur)
 	$Marge/HBoxContainer/VBoxContainer/Marge/VBoxContainer/JoueursCampagne.get_node("nouveau_joueur").clear()
 	if not ProgressionCampagneService.ajouter_un_nouveau_joueur_pour_la_campagne(nom_nouveau_joueur):
-		printerr("Erreur : Le nom '" + nom_nouveau_joueur + "' n'est pas libre")
+		LogService.log_erreur("Erreur : Le nom *" + nom_nouveau_joueur + "* n'est pas libre")
 		$Marge/HBoxContainer/VBoxContainer/Marge/VBoxContainer/JoueursCampagne.get_node("nouveau_joueur").placeholder_text = 'Erreur !'
 	else:
 		ProgressionCampagneService.initialiser_le_nouveau_joueur_pour_la_campagne(nom_nouveau_joueur)
@@ -32,15 +32,15 @@ func _on_bouton_campagne_pressed() -> void:
 		$Marge/HBoxContainer/VBoxContainer/Marge/VBoxContainer/JoueursCampagne.show()
 
 func _on_joueurs_campagne_pressed(nom_joueur: String) -> void:
-	print("Campagne avec le joueur : ", nom_joueur)
+	LogService.log_debug("Campagne avec le joueur : ", nom_joueur)
 	if not SauvegardeListeJoueursService.le_joueur_existe(nom_joueur):
-		printerr("Erreur : Le nom '" + nom_joueur + "' n'existe pas")
+		LogService.log_erreur("Erreur : Le nom *" + nom_joueur + "* n'existe pas")
 	elif not ProgressionCampagneService.la_campagne_est_terminee_pour_joueur(nom_joueur):
 		# Choisir le joueur pour la campagne
 		ProgressionCampagneService.choisir_le_joueur_pour_la_campagne(nom_joueur)
 		get_tree().change_scene_to_file("res://Scenes/Campagne/campagne.tscn")
 	else:
-		printerr("Erreur : Le joueur '" + nom_joueur + "' a terminé la campagne")
+		LogService.log_erreur("Erreur : Le joueur *" + nom_joueur + "* a terminé la campagne")
 
 func _mettre_a_jour_configuration():
 	$Marge/HBoxContainer/VBoxContainer/Marge/VBoxContainer/VBoxContainer/BoutonMusiques.button_pressed = SauvegardeConfigurationService.musiques_sont_actives()

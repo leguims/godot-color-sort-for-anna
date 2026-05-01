@@ -81,10 +81,10 @@ func choisir_position(nouvelle_position : Vector2) -> void:
 	$SoudureHaute.set_position(position_initiale_carre + Vector2(0, -2) + nouvelle_position)
 	$Carre.set_position(position_initiale_carre + nouvelle_position)
 	$SoudureBasse.set_position(position_initiale_carre + Vector2(0, $Carre.size.y) + nouvelle_position)
-	# print("Jeton.choisir_position : $Carre.position = ", $Carre.get_position())
+	# LogService.log_debug("Jeton.choisir_position : $Carre.position = ", $Carre.get_position())
 	
 	$Nom.set_position(position_initiale_nom + nouvelle_position)
-	# print("Jeton.choisir_position : $Nom.position = ", $Nom.get_position())
+	# LogService.log_debug("Jeton.choisir_position : $Nom.position = ", $Nom.get_position())
 
 func hauteur() -> int:
 	return $Carre.size.y
@@ -120,5 +120,5 @@ func deselectionner():
 func _on_carre_gui_input(event: InputEvent) -> void:
 	if event is InputEventMouseButton:
 		if event.button_index == MOUSE_BUTTON_LEFT and event.pressed:
-			# print("Clique souris sur : ", $Nom.text)
+			# LogService.log_debug("Clique souris sur : ", $Nom.text)
 			clique_gauche.emit(reference_parent)

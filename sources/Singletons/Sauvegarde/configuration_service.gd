@@ -26,7 +26,7 @@ func _initialiser_la_configuration() -> void:
 	
 	# Lire la configuration du jeu
 	var fichier_configuration = FichiersJsonService.read_json_file("user://configuration_du_jeu.json")
-	# print(fichier_configuration)
+	# LogService.log_debug(fichier_configuration)
 	
 	var version_courante = lire_la_version()
 	
@@ -45,27 +45,27 @@ func _initialiser_la_configuration() -> void:
 	else:
 		# Création du fichier initial
 		_enregistrer_la_configuration()
-	print("fichier_configuration = ", fichier_configuration)
+	LogService.log_debug("fichier_configuration = ", fichier_configuration)
 
 func _enregistrer_la_configuration() -> void:
-	print("configuration.gd : _enregistrer_la_configuration")
+	LogService.log_debug("configuration.gd : _enregistrer_la_configuration")
 	FichiersJsonService.write_json_file("user://configuration_du_jeu.json", configuration_du_jeu.duplicate(true))
-	print("Configuration sauvegardée")
+	LogService.log_debug("Configuration sauvegardée")
 
 func activer_musiques() -> void:
-	print("configuration.gd : activer_musiques")
+	LogService.log_debug("configuration.gd : activer_musiques")
 	if not configuration_du_jeu.get('musiques', true):
 		configuration_du_jeu['musiques'] = true
 		_enregistrer_la_configuration()
 
 func activer_effets_sonores() -> void:
-	print("configuration.gd : activer_effets_sonores")
+	LogService.log_debug("configuration.gd : activer_effets_sonores")
 	if not configuration_du_jeu.get('effets sonores', true):
 		configuration_du_jeu['effets sonores'] = true
 		_enregistrer_la_configuration()
 
 func activer_vibrations() -> void:
-	print("configuration.gd : activer_vibrations")
+	LogService.log_debug("configuration.gd : activer_vibrations")
 	if not configuration_du_jeu.get('vibrations', true):
 		configuration_du_jeu['vibrations'] = true
 		_enregistrer_la_configuration()

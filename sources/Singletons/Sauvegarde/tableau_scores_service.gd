@@ -17,15 +17,15 @@ func _initialiser_la_liste_des_scores() -> void:
 	var lecture_liste_des_scores = FichiersJsonService.read_json_file("user://scores.json")
 	if lecture_liste_des_scores:
 		liste_des_scores = lecture_liste_des_scores.duplicate(true)
-		print("liste_des_scores = ", liste_des_scores)
+		LogService.log_debug("liste_des_scores = ", liste_des_scores)
 	else:
 		# Création du fichier initial
 		_enregistrer_la_liste_des_scores()
-		print("Création du fichier de score initial")
+		LogService.log_debug("Création du fichier de score initial")
 
 func _enregistrer_la_liste_des_scores() -> void:
 	FichiersJsonService.write_json_file("user://scores.json", liste_des_scores.duplicate(true))
-	print("Scores sauvegardés")
+	LogService.log_debug("Scores sauvegardés")
 
 
 func _retourner_le_joueur(nom_joueur : String) -> Dictionary:

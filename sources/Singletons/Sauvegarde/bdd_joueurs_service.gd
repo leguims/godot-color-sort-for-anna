@@ -72,22 +72,22 @@ func _lire_sauvegarde_joueur(fichier : String) -> bool:
 		return true
 	else:
 		fichier_sauvegarde = ""
-		printerr("Erreur de lecture de la sauvegarde du joueur actuel (user://" + fichier + ")")
+		LogService.log_erreur("Erreur de lecture de la sauvegarde du joueur actuel (user://" + fichier + ")")
 	return false
 
 func _print_bdd_joueurs() -> void:
-	#print("sauvegarde_joueur '", sauvegarde_joueur['nom'],"' = ", sauvegarde_joueur)
-	print("sauvegarde_joueur '", sauvegarde_joueur.get('nom'),"' :")
-	print('\t', "plateaux=", lire_nom_plateau())
-	print('\t', "nombre_de_parties=", sauvegarde_joueur.get('nombre_de_parties'))
-	print('\t', "len(ascensions)=", len(sauvegarde_joueur.get('ascensions')))
+	#LogService.log_debug("sauvegarde_joueur *", sauvegarde_joueur['nom'],"* = ", sauvegarde_joueur)
+	LogService.log_debug("sauvegarde_joueur *", sauvegarde_joueur.get('nom'),"* :")
+	LogService.log_debug('\t', "plateaux=", lire_nom_plateau())
+	LogService.log_debug('\t', "nombre_de_parties=", sauvegarde_joueur.get('nombre_de_parties'))
+	LogService.log_debug('\t', "len(ascensions)=", len(sauvegarde_joueur.get('ascensions')))
 	#if len(sauvegarde_joueur.get('ascensions')):
-	#	print('\t', "derniere ascensions=", sauvegarde_joueur.get('ascensions').back())
+	#	LogService.log_debug('\t', "derniere ascensions=", sauvegarde_joueur.get('ascensions').back())
 
 func _enregistrer_sauvegarde_joueur() -> void:
 	if fichier_sauvegarde:
 		FichiersJsonService.write_json_file("user://" + fichier_sauvegarde, sauvegarde_joueur.duplicate(true))
-		print("Progression sauvegardée")
+		LogService.log_debug("Progression sauvegardée")
 
 func le_joueur_existe() -> bool:
 	return fichier_sauvegarde != ""

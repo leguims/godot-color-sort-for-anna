@@ -15,13 +15,13 @@ func _initialiser_la_liste_des_joueurs() -> void:
 	var lecture_liste_des_joueurs = FichiersJsonService.read_json_file("user://liste_des_joueurs.json")
 	if lecture_liste_des_joueurs:
 		liste_des_joueurs = lecture_liste_des_joueurs.duplicate(true)
-		print("liste_des_joueurs = ", liste_des_joueurs)
+		LogService.log_debug("liste_des_joueurs = ", liste_des_joueurs)
 	else:
-		printerr("Erreur de lecture de la sauvegarde de la liste des joueurs")
+		LogService.log_erreur("Erreur de lecture de la sauvegarde de la liste des joueurs")
 
 func _enregistrer_la_liste_des_joueurs() -> void:
 	FichiersJsonService.write_json_file("user://liste_des_joueurs.json", liste_des_joueurs.duplicate(true))
-	print("Liste des joueurs sauvegardée")
+	LogService.log_debug("Liste des joueurs sauvegardée")
 
 
 func le_joueur_existe(nom_joueur : String) -> bool:

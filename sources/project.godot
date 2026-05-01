@@ -20,6 +20,7 @@ config/windows_native_icon="res://icon.ico"
 
 [autoload]
 
+LogService="*res://Singletons/log_service.gd"
 FichiersJsonService="*res://Singletons/Sauvegarde/fichiers_json_service.gd"
 SauvegardeConfigurationService="*res://Singletons/Sauvegarde/configuration_service.gd"
 SauvegardeBddPlateauxService="*res://Singletons/Sauvegarde/bdd_plateaux_service.gd"

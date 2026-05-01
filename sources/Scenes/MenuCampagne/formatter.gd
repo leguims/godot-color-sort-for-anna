@@ -12,7 +12,7 @@ func _pourcentage_en_led(pourcentage : int, led_sombre, led_lumineuse) -> String
 		leds += led_lumineuse
 	for i in range(floori(1.*pourcentage/tranche_pourcentage), nb_max_leds):
 		leds += led_sombre
-	print("Tranche=", tranche_pourcentage, "%", \
+	LogService.log_debug("Tranche=", tranche_pourcentage, "%", \
 		", Pourcentage=", pourcentage, "%", \
 		", lumineuses=", floori(1.*pourcentage/tranche_pourcentage), \
 		", sombres=", nb_max_leds - floori(1.*pourcentage/tranche_pourcentage))

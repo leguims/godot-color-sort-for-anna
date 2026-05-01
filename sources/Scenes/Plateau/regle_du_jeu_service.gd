@@ -3,21 +3,21 @@ class_name PlateauReglesDuJeuService
 
 func pile_de_depart_de_tansfert_valide(pile_depart : Pile) -> bool:
 	if pile_depart.est_vide():
-		#print("Pile de départ vide")
+		#LogService.log_debug("Pile de départ vide")
 		return false
 	if pile_depart.est_termine():
-		#print("Pile de départ terminée")
+		#LogService.log_debug("Pile de départ terminée")
 		return false
 	return true
 
 func est_valide_le_tansfert_de_pile(liste_piles : Array, indice_pile_depart : int, indice_pile_arrivee : int) -> bool:
 	if indice_pile_depart == indice_pile_arrivee:
-		#print("Pile de départ et d'arrivée sont les mêmes")
+		#LogService.log_debug("Pile de départ et d'arrivée sont les mêmes")
 		return false
 
 	var pile_arrivee = liste_piles[indice_pile_arrivee]
 	if pile_arrivee.est_pleine():
-		#print("Pile d'arrivée pleine")
+		#LogService.log_debug("Pile d'arrivée pleine")
 		return false
 
 	var pile_depart = liste_piles[indice_pile_depart]
@@ -27,7 +27,7 @@ func est_valide_le_tansfert_de_pile(liste_piles : Array, indice_pile_depart : in
 	if pile_arrivee.accepte_jeton(indice_jeton_depart, nb_jeton_depart):
 		return true
 	else:
-		#print("La pile d'arrivée refuse le(s) ", nb_jeton_depart, " jeton(s)")
+		#LogService.log_debug("La pile d'arrivée refuse le(s) ", nb_jeton_depart, " jeton(s)")
 		return false
 
 func realiser_le_tansfert_de_pile(liste_piles : Array, indice_pile_depart : int, indice_pile_arrivee : int) -> bool:

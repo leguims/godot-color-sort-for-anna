@@ -57,7 +57,7 @@ func _on_plateau_de_jeu_victoire() -> void:
 
 func _on_plateau_de_jeu_plateau_invalide() -> void:
 	# Pas de plateau invalide en campagne
-	print("_on_plateau_de_jeu_plateau_invalide pour la campagne IMPOSSIBLE ! WTF !")
+	LogService.log_debug("_on_plateau_de_jeu_plateau_invalide pour la campagne IMPOSSIBLE ! WTF !")
 	pass
 
 func _on_plateau_de_jeu_abandon() -> void:

@@ -62,7 +62,7 @@ func commencer_un_plateau(pourcentage_longueur : float) -> void:
 
 	# Ajouter le nouveau plateau et incrémenter le compteur de parties du niveau courant
 	SauvegardeBddJoueursService.commencer_un_plateau()
-	print("Nombre de parties = ", SauvegardeBddJoueursService.lire_nombre_de_parties_joueur_pour_niveau_courant())
+	LogService.log_debug("Nombre de parties = ", SauvegardeBddJoueursService.lire_nombre_de_parties_joueur_pour_niveau_courant())
 
 func gagner_un_plateau(duree_en_ms : int) -> void:
 	# Valider le plateau courant (effacer de la liste des plateaux jouables)
@@ -105,7 +105,7 @@ func initialiser_une_nouvelle_ascension(pourcentage_longueur : float):
 		SauvegardeBddJoueursService.initialiser_une_nouvelle_ascension(niveau_min, niveau_max)
 
 func afficher_niveau_plateau_parties():
-	print("[Campagne] Niveau = ", str(SauvegardeBddJoueursService.lire_niveau_joueur()),
+	LogService.log_debug("[Campagne] Niveau = ", str(SauvegardeBddJoueursService.lire_niveau_joueur()),
 	 " - Plateau = '", str(SauvegardeBddJoueursService.lire_nom_plateau()).replace(' ', '-'), "'",
 	 " - Pourcentage ascension = ", str(SauvegardeBddJoueursService.lire_pourcentage_ascension_realise()),"%")
 

@@ -43,7 +43,7 @@ func _creer_un_plateau(piles : Array) -> void:
 		var indice_pile = len(liste_piles)-1
 		_initialiser_une_pile(pile, jetons_pile_courante)
 		var position_pile = _positionner_une_pile(len(piles), indice_pile)
-		#print("_creer_un_plateau : position_pile = ", position_pile)
+		#LogService.log_debug("_creer_un_plateau : position_pile = ", position_pile)
 		pile.choisir_position( position_pile )
 
 func _instancier_une_pile() -> Pile:
@@ -85,7 +85,7 @@ func _positionner_une_pile(nb_piles_plateau: int, indice_pile: int) -> Vector2:
 # ########
 
 func on_pile_clique_gauche(indice_pile : int) -> void:
-	# print("clique sur la pile : ", indice_pile)
+	# LogService.log_debug("clique sur la pile : ", indice_pile)
 	var pile_cible = liste_piles[indice_pile]
 	if sauvegarde_indice_pile_depart == -1 \
 		and regles.pile_de_depart_de_tansfert_valide(pile_cible):
@@ -121,7 +121,7 @@ func _on_selection_pile_timeout() -> void:
 			pile.deselectionner()
 	# Annulation du coup en cours
 	sauvegarde_indice_pile_depart = -1
-	# print("Annulation du coup en cours")
+	# LogService.log_debug("Annulation du coup en cours")
 
 func _on_bouton_abandon_pressed() -> void:
 	$BoutonAbandon.hide()
@@ -130,7 +130,7 @@ func _on_bouton_abandon_pressed() -> void:
 func _on_fond_gui_input(event: InputEvent) -> void:
 	if event is InputEventMouseButton:
 		if event.button_index == MOUSE_BUTTON_LEFT and event.pressed:
-			# print("Clique souris sur le fond du plateau")
+			# LogService.log_debug("Clique souris sur le fond du plateau")
 			# Parcourir les piles et déselectionner la pile (comme "timeout" sur la selection)
 			_on_selection_pile_timeout()
 			

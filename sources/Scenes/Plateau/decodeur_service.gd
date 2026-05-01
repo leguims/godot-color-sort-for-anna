@@ -20,13 +20,13 @@ func est_valide(plateau_texte : String) -> bool:
 
 func decoder_plateau(plateau_texte : String) -> Array:
 	plateau_texte = plateau_texte.to_upper()
-	#print("decoder_plateau : ", plateau_texte)
+	#LogService.log_debug("decoder_plateau : ", plateau_texte)
 	var plateau_liste = []
 	#plateau_texte = plateau_texte.replace(' ','')
 	for pile in plateau_texte.split('.'):
 		plateau_liste.append(decoder_pile(pile))
-	#print("  decoder_plateau : ", plateau_texte, " => ", plateau_liste)
-	#print("decoder_plateau : fin")
+	#LogService.log_debug("  decoder_plateau : ", plateau_texte, " => ", plateau_liste)
+	#LogService.log_debug("decoder_plateau : fin")
 	return plateau_liste
 
 func decoder_pile(pile_texte : String) -> Array:
@@ -37,5 +37,5 @@ func decoder_pile(pile_texte : String) -> Array:
 		string2int[String.chr(Plateau.ESPACE)] = Plateau.ESPACE # chr(ESPACE)=' '
 	for c in pile_texte:
 		pile_liste.append(string2int[c])
-	#print("  decoder_pile : ", pile_texte, " => ", pile_liste)
+	#LogService.log_debug("  decoder_pile : ", pile_texte, " => ", pile_liste)
 	return pile_liste

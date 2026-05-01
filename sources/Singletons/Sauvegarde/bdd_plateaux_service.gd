@@ -14,7 +14,7 @@ func _ready() -> void:
 func _initialiser_les_plateaux() -> void:
 	# Lire la liste des plateaux classés par niveaux
 	var fichier_plateaux = FichiersJsonService.read_json_file("res://Solutions_classees.json")
-	# print(fichier_plateaux)
+	# LogService.log_debug(fichier_plateaux)
 	
 	# Copier les niveaux lus
 	if fichier_plateaux:
@@ -24,10 +24,10 @@ func _initialiser_les_plateaux() -> void:
 				# Copie tous les niveaux, sauf 'None'
 				plateau_liste_difficulte[difficulte] = dico_difficulte.get(difficulte).duplicate(true)
 				# # Afficher un apercu du niveau
-				# print("Difficulté : ", difficulte)
+				# LogService.log_debug("Difficulté : ", difficulte)
 				# var cpt = 0
 				# for plateau in dico_difficulte.get(difficulte):
-				# 	print("   - plateaux : ", plateau)
+				# 	LogService.log_debug("   - plateaux : ", plateau)
 				# 	cpt += 1
 				# 	if cpt >= 5:
 				# 		break
