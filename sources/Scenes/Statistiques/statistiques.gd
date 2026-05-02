@@ -3,6 +3,8 @@ extends Control
 func _ready():
 	campagne()
 	ascensions()
+	niveaux()
+	plateaux()
 	
 
 	# Graphiques
@@ -19,6 +21,10 @@ func _ready():
 	$Marge/HBoxContainer/VBoxContainer/MonthlyPlaytimeGauge.set_progress(120, 300)
 
 func campagne():
+	# Identifier le joueur
+	# Consulter la BDD pour obtenir les indicateurs à afficher
+	# TODO
+
 	# KPI
 	var KPI_Completion = $Marge/HBoxContainer/VBoxContainer/KPI_Campagne/KPI_Completion
 	KPI_Completion.set_title("Complétion")
@@ -45,6 +51,10 @@ func campagne():
 	KPI_SerieMaximumSucces.set_minimum_size(Vector2(105,50))
 
 func ascensions():
+	# Identifier le joueur
+	# Consulter la BDD pour obtenir les indicateurs à afficher
+	# TODO
+
 	# KPI
 	# Ligne 1
 	var KPI_Completion = $Marge/HBoxContainer/VBoxContainer/KPI_Ascension/KPI_Completion
@@ -54,7 +64,7 @@ func ascensions():
 	KPI_Completion.set_minimum_size(Vector2(120,50))
 
 	var KPI_Parfait = $Marge/HBoxContainer/VBoxContainer/KPI_Ascension/KPI_Parfait
-	KPI_Parfait.set_title("Parfait")
+	KPI_Parfait.set_title("Parfaite")
 	KPI_Parfait.set_value("1")
 	KPI_Parfait.set_color(Color("GOLD"), Color('BLACK'))
 	KPI_Parfait.set_minimum_size(Vector2(120,50))
@@ -77,3 +87,55 @@ func ascensions():
 	KPI_Terminees.set_value(3)
 	KPI_Terminees.set_color(Color("ffe6f3ff"), Color('DEEP_PINK'))
 	KPI_Terminees.set_minimum_size(Vector2(120,50))
+
+func niveaux():
+	# Identifier le joueur
+	# Consulter la BDD pour obtenir les indicateurs à afficher
+	# TODO
+
+	# KPI
+	pass
+
+func plateaux():
+	# Identifier le joueur
+	# Consulter la BDD pour obtenir les indicateurs à afficher
+	# TODO
+
+	# KPI
+	# Ligne 1
+	var KPI_RapideTitre = $Marge/HBoxContainer/VBoxContainer/KPI_Plateau/KPI_RapideTitre
+	KPI_RapideTitre.set_title("Le Plus")
+	KPI_RapideTitre.set_value("Rapide")
+	KPI_RapideTitre.set_color(Color("e6e6ffff"), Color('BLUE'))
+	KPI_RapideTitre.set_minimum_size(Vector2(120,50))
+
+	var KPI_RapideTemps = $Marge/HBoxContainer/VBoxContainer/KPI_Plateau/KPI_RapideTemps
+	KPI_RapideTemps.set_title("Temps")
+	KPI_RapideTemps.set_value("7s")
+	KPI_RapideTemps.set_color(Color("ffe6f3ff"), Color('DEEP_PINK'))
+	KPI_RapideTemps.set_minimum_size(Vector2(120,50))
+
+	var KPI_RapideDifficulte = $Marge/HBoxContainer/VBoxContainer/KPI_Plateau/KPI_RapideDifficulte
+	KPI_RapideDifficulte.set_title("Difficulté")
+	KPI_RapideDifficulte.set_value("12")
+	KPI_RapideDifficulte.set_color(Color("fff0e3ff"), Color('CRIMSON'))
+	KPI_RapideDifficulte.set_minimum_size(Vector2(120,50))
+
+	# Ligne 2
+	var KPI_LentTitre = $Marge/HBoxContainer/VBoxContainer/KPI_Plateau2/KPI_LentTitre
+	KPI_LentTitre.set_title("Le Plus")
+	KPI_LentTitre.set_value("Lent")
+	KPI_LentTitre.set_color(Color("e6e6ffff"), Color('BLUE'))
+	KPI_LentTitre.set_minimum_size(Vector2(120,50))
+
+	var KPI_LentTemps = $Marge/HBoxContainer/VBoxContainer/KPI_Plateau2/KPI_LentTemps
+	KPI_LentTemps.set_title("Temps")
+	KPI_LentTemps.set_value("3min 7s")
+	KPI_LentTemps.set_color(Color("ffe6f3ff"), Color('DEEP_PINK'))
+	KPI_LentTemps.set_minimum_size(Vector2(120,50))
+
+	var KPI_LentDifficulte = $Marge/HBoxContainer/VBoxContainer/KPI_Plateau2/KPI_LentDifficulte
+	KPI_LentDifficulte.set_title("Longueur Max.")
+	KPI_LentDifficulte.set_value("78")
+	KPI_LentDifficulte.set_color(Color("fff0e3ff"), Color('CRIMSON'))
+	KPI_LentDifficulte.set_minimum_size(Vector2(120,50))

@@ -101,6 +101,7 @@ layout_mode = 2
 layout_mode = 2
 
 [node name="SEPARATEUR VIDE2" type="Label" parent="Marge/HBoxContainer/VBoxContainer"]
+visible = false
 layout_mode = 2
 text = " "
 
@@ -115,3 +116,37 @@ taille_minimum = Vector2(240, 25)
 visible = false
 layout_mode = 2
 script = ExtResource("3_xsdck")
+
+[node name="SEPARATEUR VIDE3" type="Label" parent="Marge/HBoxContainer/VBoxContainer"]
+layout_mode = 2
+text = " "
+
+[node name="Titre Plateau" parent="Marge/HBoxContainer/VBoxContainer" instance=ExtResource("2_xsdck")]
+layout_mode = 2
+titre = "Plateau"
+couleur_fond = Color(0.6918974, 0.40343967, 0.93590915, 1)
+taille_minimum = Vector2(240, 25)
+
+[node name="KPI_Plateau" type="HBoxContainer" parent="Marge/HBoxContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="KPI_RapideTitre" parent="Marge/HBoxContainer/VBoxContainer/KPI_Plateau" instance=ExtResource("2_xsdck")]
+layout_mode = 2
+
+[node name="KPI_RapideTemps" parent="Marge/HBoxContainer/VBoxContainer/KPI_Plateau" instance=ExtResource("2_xsdck")]
+layout_mode = 2
+
+[node name="KPI_RapideDifficulte" parent="Marge/HBoxContainer/VBoxContainer/KPI_Plateau" instance=ExtResource("2_xsdck")]
+layout_mode = 2
+
+[node name="KPI_Plateau2" type="HBoxContainer" parent="Marge/HBoxContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="KPI_LentTitre" parent="Marge/HBoxContainer/VBoxContainer/KPI_Plateau2" instance=ExtResource("2_xsdck")]
+layout_mode = 2
+
+[node name="KPI_LentTemps" parent="Marge/HBoxContainer/VBoxContainer/KPI_Plateau2" instance=ExtResource("2_xsdck")]
+layout_mode = 2
+
+[node name="KPI_LentDifficulte" parent="Marge/HBoxContainer/VBoxContainer/KPI_Plateau2" instance=ExtResource("2_xsdck")]
+layout_mode = 2
