@@ -53,40 +53,53 @@ func campagne():
 func ascensions():
 	# Identifier le joueur
 	# Consulter la BDD pour obtenir les indicateurs à afficher
+	var valeur
 	# TODO
 
 	# KPI
 	# Ligne 1
 	var KPI_Completion = $Marge/HBoxContainer/VBoxContainer/KPI_Ascension/KPI_Completion
 	KPI_Completion.set_title("Complétion")
-	KPI_Completion.set_value("66%")
+	valeur = str(StatsService.ascension_taux_completion()) + '%'
+	KPI_Completion.set_value(valeur)
 	KPI_Completion.set_color(Color("e6e6ffff"), Color('BLUE'))
 	KPI_Completion.set_minimum_size(Vector2(120,50))
 
-	var KPI_Parfait = $Marge/HBoxContainer/VBoxContainer/KPI_Ascension/KPI_Parfait
-	KPI_Parfait.set_title("Parfaite")
-	KPI_Parfait.set_value("1")
-	KPI_Parfait.set_color(Color("GOLD"), Color('BLACK'))
-	KPI_Parfait.set_minimum_size(Vector2(120,50))
+	var KPI_Terminees = $Marge/HBoxContainer/VBoxContainer/KPI_Ascension/KPI_Terminees
+	KPI_Terminees.set_title("Terminées")
+	valeur = StatsService.ascension_terminees()
+	KPI_Terminees.set_value(valeur)
+	KPI_Terminees.set_color(Color("ffe6f3ff"), Color('DEEP_PINK'))
+	KPI_Terminees.set_minimum_size(Vector2(120,50))
 
-	var KPI_Longueur = $Marge/HBoxContainer/VBoxContainer/KPI_Ascension/KPI_Longueur
-	KPI_Longueur.set_title("Longueur Max.")
-	KPI_Longueur.set_value("50")
-	KPI_Longueur.set_color(Color("fff0e3ff"), Color('CRIMSON'))
-	KPI_Longueur.set_minimum_size(Vector2(120,50))
-
-	# Ligne 2
-	var KPI_DureeMoyenne = $Marge/HBoxContainer/VBoxContainer/KPI_Ascension2/KPI_DureeMoyenne
+	var KPI_DureeMoyenne = $Marge/HBoxContainer/VBoxContainer/KPI_Ascension/KPI_DureeMoyenne
 	KPI_DureeMoyenne.set_title("Durée Moy.")
-	KPI_DureeMoyenne.set_value("3min 07s")
+	valeur = str(StatsService.ascension_duree_moyenne_en_ms()) + "ms"
+	KPI_DureeMoyenne.set_value(valeur)
 	KPI_DureeMoyenne.set_color(Color("fff0ffff"), Color('MAROON'))
 	KPI_DureeMoyenne.set_minimum_size(Vector2(120,50))
 
-	var KPI_Terminees = $Marge/HBoxContainer/VBoxContainer/KPI_Ascension2/KPI_Terminees
-	KPI_Terminees.set_title("Terminées")
-	KPI_Terminees.set_value(3)
-	KPI_Terminees.set_color(Color("ffe6f3ff"), Color('DEEP_PINK'))
-	KPI_Terminees.set_minimum_size(Vector2(120,50))
+	# Ligne 2
+	var KPI_Longueur = $Marge/HBoxContainer/VBoxContainer/KPI_Ascension2/KPI_Longueur
+	KPI_Longueur.set_title("Longueur Max.")
+	valeur = StatsService.ascension_longueur_max()
+	KPI_Longueur.set_value(valeur)
+	KPI_Longueur.set_color(Color("fff0e3ff"), Color('CRIMSON'))
+	KPI_Longueur.set_minimum_size(Vector2(120,50))
+
+	var KPI_Parfait_Nb = $Marge/HBoxContainer/VBoxContainer/KPI_Ascension2/KPI_Parfait_Nb
+	KPI_Parfait_Nb.set_title("Parfaite")
+	valeur = StatsService.ascension_parfaite_nb()
+	KPI_Parfait_Nb.set_value(valeur)
+	KPI_Parfait_Nb.set_color(Color("GOLD"), Color('BLACK'))
+	KPI_Parfait_Nb.set_minimum_size(Vector2(100,50))
+
+	var KPI_Parfait_Lg = $Marge/HBoxContainer/VBoxContainer/KPI_Ascension2/KPI_Parfait_Lg
+	KPI_Parfait_Lg.set_title("Longueur Parfaite")
+	valeur = StatsService.ascension_parfaite_longeur()
+	KPI_Parfait_Lg.set_value(valeur)
+	KPI_Parfait_Lg.set_color(Color("GOLD"), Color('BLACK'))
+	KPI_Parfait_Lg.set_minimum_size(Vector2(140,50))
 
 func niveaux():
 	# Identifier le joueur
@@ -99,6 +112,7 @@ func niveaux():
 func plateaux():
 	# Identifier le joueur
 	# Consulter la BDD pour obtenir les indicateurs à afficher
+	var valeur
 	# TODO
 
 	# KPI
@@ -111,13 +125,15 @@ func plateaux():
 
 	var KPI_RapideTemps = $Marge/HBoxContainer/VBoxContainer/KPI_Plateau/KPI_RapideTemps
 	KPI_RapideTemps.set_title("Temps")
-	KPI_RapideTemps.set_value("7s")
+	valeur = str(StatsService.plateau_plus_rapide_en_ms()) + 'ms'
+	KPI_RapideTemps.set_value(valeur)
 	KPI_RapideTemps.set_color(Color("ffe6f3ff"), Color('DEEP_PINK'))
 	KPI_RapideTemps.set_minimum_size(Vector2(120,50))
 
 	var KPI_RapideDifficulte = $Marge/HBoxContainer/VBoxContainer/KPI_Plateau/KPI_RapideDifficulte
 	KPI_RapideDifficulte.set_title("Difficulté")
-	KPI_RapideDifficulte.set_value("12")
+	valeur = StatsService.plateau_plus_rapide_difficulte()
+	KPI_RapideDifficulte.set_value(valeur)
 	KPI_RapideDifficulte.set_color(Color("fff0e3ff"), Color('CRIMSON'))
 	KPI_RapideDifficulte.set_minimum_size(Vector2(120,50))
 
@@ -130,12 +146,14 @@ func plateaux():
 
 	var KPI_LentTemps = $Marge/HBoxContainer/VBoxContainer/KPI_Plateau2/KPI_LentTemps
 	KPI_LentTemps.set_title("Temps")
-	KPI_LentTemps.set_value("3min 7s")
+	valeur = str(StatsService.plateau_plus_lent_en_ms()) + 'ms'
+	KPI_LentTemps.set_value(valeur)
 	KPI_LentTemps.set_color(Color("ffe6f3ff"), Color('DEEP_PINK'))
 	KPI_LentTemps.set_minimum_size(Vector2(120,50))
 
 	var KPI_LentDifficulte = $Marge/HBoxContainer/VBoxContainer/KPI_Plateau2/KPI_LentDifficulte
-	KPI_LentDifficulte.set_title("Longueur Max.")
-	KPI_LentDifficulte.set_value("78")
+	KPI_LentDifficulte.set_title("Difficulté")
+	valeur = StatsService.plateau_plus_lent_difficulte()
+	KPI_LentDifficulte.set_value(valeur)
 	KPI_LentDifficulte.set_color(Color("fff0e3ff"), Color('CRIMSON'))
 	KPI_LentDifficulte.set_minimum_size(Vector2(120,50))

@@ -85,19 +85,22 @@ layout_mode = 2
 [node name="KPI_Completion" parent="Marge/HBoxContainer/VBoxContainer/KPI_Ascension" instance=ExtResource("2_xsdck")]
 layout_mode = 2
 
-[node name="KPI_Parfait" parent="Marge/HBoxContainer/VBoxContainer/KPI_Ascension" instance=ExtResource("2_xsdck")]
+[node name="KPI_Terminees" parent="Marge/HBoxContainer/VBoxContainer/KPI_Ascension" instance=ExtResource("2_xsdck")]
 layout_mode = 2
 
-[node name="KPI_Longueur" parent="Marge/HBoxContainer/VBoxContainer/KPI_Ascension" instance=ExtResource("2_xsdck")]
+[node name="KPI_DureeMoyenne" parent="Marge/HBoxContainer/VBoxContainer/KPI_Ascension" instance=ExtResource("2_xsdck")]
 layout_mode = 2
 
 [node name="KPI_Ascension2" type="HBoxContainer" parent="Marge/HBoxContainer/VBoxContainer"]
 layout_mode = 2
 
-[node name="KPI_DureeMoyenne" parent="Marge/HBoxContainer/VBoxContainer/KPI_Ascension2" instance=ExtResource("2_xsdck")]
+[node name="KPI_Longueur" parent="Marge/HBoxContainer/VBoxContainer/KPI_Ascension2" instance=ExtResource("2_xsdck")]
 layout_mode = 2
 
-[node name="KPI_Terminees" parent="Marge/HBoxContainer/VBoxContainer/KPI_Ascension2" instance=ExtResource("2_xsdck")]
+[node name="KPI_Parfait_Nb" parent="Marge/HBoxContainer/VBoxContainer/KPI_Ascension2" instance=ExtResource("2_xsdck")]
+layout_mode = 2
+
+[node name="KPI_Parfait_Lg" parent="Marge/HBoxContainer/VBoxContainer/KPI_Ascension2" instance=ExtResource("2_xsdck")]
 layout_mode = 2
 
 [node name="SEPARATEUR VIDE2" type="Label" parent="Marge/HBoxContainer/VBoxContainer"]
