@@ -48,11 +48,11 @@ func niveau_max() -> int:
 	return -1
 
 func nb_niveaux() -> int:
-	var nb_niveaux = 0
+	var i_nb_niveaux = 0
 	for i in range(0, 300):
 		if niveau_existe(i):
-			nb_niveaux += 1
-	return nb_niveaux
+			i_nb_niveaux += 1
+	return i_nb_niveaux
 
 func niveau_existe(niveau : int) -> bool:
 	return str(niveau) in plateau_liste_difficulte
