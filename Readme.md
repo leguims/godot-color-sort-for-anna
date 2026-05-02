@@ -64,31 +64,51 @@ Depuis la phase de tests internes de la version V0.3.0, les fonctionnalités son
 
 #### Statistiques
 - Inclure un bouton statistiques dans le menu principal
+- Outils visuels:
+  - KPI : Bouton carré avec un chiffre
+    - Durée moyenne d’une partie
+    - Niveau maximum atteint
+    - Nombre total de parties
+    - Temps total de jeu
+  - GAUGE (Jauge) : jauge circulaire ou semi-circulaire
+    - Progression vers un objectif mensuel
+    - Pourcentage de niveaux complétés
+    - Temps de jeu par rapport à un objectif
+  - Bar chart (daigramme en barres) : 
+    - Victoires / défaites
+    - Nombre de parties par jour
+    - Temps de jeu par mois
+  - Line chart (courbe) : 
+    - Temps de jeu par mois
+    - Durée moyenne des parties au fil du temps
+  - Le plus simple sur GODOT 4.5: utiliser la bibliotheque de base.
+    - Control + TextureProgressBar + Label + Graphiques "faits maison"
 - Page de statisques contient (de haut en bas):
   - En haut : Nom du joueur + bouton pour changer de joueur
   - Campagne:
-    - Pourcentage de complétion,
-    - Temps de jeu,
-    - Nombre de parties
-    - Nombre de défaites
-    - Taux de réussite
-    - Série maximum de succès
+    - [KPI] Pourcentage de complétion,
+    - [KPI][Line chart] Temps de jeu,
+    - [Bar chart 1] Nombre de parties
+    - [Bar chart 1] Nombre de défaites
+    - [KPI] Taux de réussite
+    - [KPI] Série maximum de succès
   - Ascension:
-    - Pourcentage de complétion de l'ascension en cours,
-    - nombre d'ascension sans détour,
-    - la plus longue (temps, dépassement de plateaux)
-    - durée moyenne d'ascension (temps, plateaux), 
-    - nombre d'ascension achevées 
+    - [KPI] Pourcentage de complétion de l'ascension en cours,
+    - [KPI] nombre d'ascension sans détour,
+    - [KPI] la plus longue (temps, dépassement de plateaux)
+    - [Line chart] durée d'ascension (temps, plateaux), 
+    - [KPI] durée moyenne d'ascension (temps, plateaux), 
+    - [KPI] nombre d'ascension achevées 
   - Niveau (notion artificielle à construire):
-    - Idée de représentation graphique : Dessiner une courbe avec x=niveaux et y=f(x)=echecs, taux de réussite ...
-    - Idée : Representer les courbes sur 1 mois d'activité et comparer au dernier mois (en pointillé) 
-    - échecs par niveau, 
-    - taux de réussite par niveau, 
-    - temps moyen par niveau,
-    - complétion par niveau,
-    - Plateau:
-    - le plus rapide (temps, profondeur) 
-    - le plus long (temps, profondeur) 
+    - [Line chart] Idée de représentation graphique : Dessiner une courbe avec x=niveaux et y=f(x)=echecs, taux de réussite ...
+    - [Line chart] Idée : Representer les courbes sur 1 mois d'activité et comparer au dernier mois (en pointillé) 
+    - [Bar chart 2] échecs par niveau, 
+    - [Bar chart 2] taux de réussite par niveau, 
+    - [Bar chart 2] temps moyen par niveau,
+    - [Bar chart 2] complétion par niveau,
+  - Plateau:
+    - [KPI] le plus rapide (temps, profondeur) 
+    - [KPI] le plus long (temps, profondeur) 
 - Prévoir un téléchargement des stats:
     - nommer le téléphone + compte google
     - indiquer la date de création.
