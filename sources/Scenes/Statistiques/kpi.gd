@@ -1,13 +1,12 @@
 extends Control
 
-@export var title := "Titre"
-@export var value := "0"
-@export var _size := Vector2(140, 50)
-
 func _ready():
 	clip_contents = true
+	$VBox/Label_Title.text = "Titre"
+	$VBox/Label_Value.text = str("Valeur")
+
+func set_title(title: String):
 	$VBox/Label_Title.text = title
-	$VBox/Label_Value.text = str(value)
 
 func set_value(v):
 	$VBox/Label_Value.text = str(v)
@@ -18,7 +17,6 @@ func set_color(texte : Color , fond : Color):
 	$Fond.color = fond
 
 func set_minimum_size(new_size: Vector2):
-	_size = new_size
-	set_custom_minimum_size(_size) 
-	$Fond.set_custom_minimum_size(_size) 
-	$VBox.set_custom_minimum_size(_size) 
+	set_custom_minimum_size(new_size) 
+	$Fond.set_custom_minimum_size(new_size) 
+	$VBox.set_custom_minimum_size(new_size) 

@@ -40,15 +40,12 @@ layout_mode = 2
 
 [node name="KPI_AverageDuration" parent="Marge/HBoxContainer/VBoxContainer/KPIRow" instance=ExtResource("2_xsdck")]
 layout_mode = 2
-title = "Durée Moyenne"
 
 [node name="KPI_MaxLevel" parent="Marge/HBoxContainer/VBoxContainer/KPIRow" instance=ExtResource("2_xsdck")]
 layout_mode = 2
-title = "Niveau Max"
 
 [node name="KPI_TotalPlaytime" parent="Marge/HBoxContainer/VBoxContainer/KPIRow" instance=ExtResource("2_xsdck")]
 layout_mode = 2
-title = "Temps Total"
 
 [node name="Charts" type="VBoxContainer" parent="Marge/HBoxContainer/VBoxContainer"]
 layout_mode = 2
