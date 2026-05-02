@@ -1,6 +1,7 @@
-[gd_scene load_steps=6 format=3 uid="uid://ce35s8h6fj434"]
+[gd_scene load_steps=7 format=3 uid="uid://ce35s8h6fj434"]
 
 [ext_resource type="Script" uid="uid://d213tcxl8hfw3" path="res://Scenes/Statistiques/statistiques.gd" id="1_y2h7b"]
+[ext_resource type="Texture2D" uid="uid://bl3jiqwpmmvbq" path="res://Art/Images/fond_cubes_480x720.png" id="2_se7pp"]
 [ext_resource type="PackedScene" uid="uid://bgsyo7w2m28pi" path="res://Scenes/Statistiques/kpi.tscn" id="2_xsdck"]
 [ext_resource type="PackedScene" uid="uid://c8uyx36tscdpp" path="res://Scenes/Statistiques/diagramme_en_barres.tscn" id="3_se7pp"]
 [ext_resource type="Script" uid="uid://dv22g4vxsw80c" path="res://Scenes/Statistiques/jauge.gd" id="3_xsdck"]
@@ -19,6 +20,7 @@ script = ExtResource("1_y2h7b")
 layout_mode = 0
 offset_right = 40.0
 offset_bottom = 40.0
+texture = ExtResource("2_se7pp")
 
 [node name="Marge" type="MarginContainer" parent="."]
 layout_mode = 0

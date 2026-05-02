@@ -6,19 +6,18 @@ func _ready():
 	KPI_AverageDuration.set_title("Durée Moyenne")
 	KPI_AverageDuration.set_value("3 min 42")
 	KPI_AverageDuration.set_color(Color("e6e6ffff"), Color('BLUE'))
-	KPI_AverageDuration.set_minimum_size(Vector2(140,50))
-
+	KPI_AverageDuration.set_minimum_size(Vector2(150,50))
 	var KPI_MaxLevel = $Marge/HBoxContainer/VBoxContainer/KPIRow/KPI_MaxLevel
 	KPI_MaxLevel.set_title("Niveau Max")
 	KPI_MaxLevel.set_value(12)
 	KPI_MaxLevel.set_color(Color("fff4e6ff"), Color('DARK_ORANGE'))
-	KPI_MaxLevel.set_minimum_size(Vector2(140,50))
+	KPI_MaxLevel.set_minimum_size(Vector2(135,50))
 
 	var KPI_TotalPlaytime = $Marge/HBoxContainer/VBoxContainer/KPIRow/KPI_TotalPlaytime
 	KPI_TotalPlaytime.set_title("Temps Total")
 	KPI_TotalPlaytime.set_value("5h 30")
 	KPI_TotalPlaytime.set_color(Color("ffe6f3ff"), Color('DEEP_PINK'))
-	KPI_TotalPlaytime.set_minimum_size(Vector2(140,50))
+	KPI_TotalPlaytime.set_minimum_size(Vector2(135,50))
 
 	# Graphiques
 	var WinLossBarChart = $Marge/HBoxContainer/VBoxContainer/Charts/WinLossBarChart
