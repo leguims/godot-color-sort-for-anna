@@ -33,23 +33,34 @@ theme_override_constants/margin_bottom = 20
 
 [node name="HBoxContainer" type="HBoxContainer" parent="Marge"]
 layout_mode = 2
+alignment = 1
 
 [node name="VBoxContainer" type="VBoxContainer" parent="Marge/HBoxContainer"]
 layout_mode = 2
+alignment = 1
 
-[node name="KPIRow" type="HBoxContainer" parent="Marge/HBoxContainer/VBoxContainer"]
+[node name="Titre Campagne" parent="Marge/HBoxContainer/VBoxContainer" instance=ExtResource("2_xsdck")]
+layout_mode = 2
+titre = "Campagne"
+taille_minimum = Vector2(240, 25)
+
+[node name="KPI_Campagne" type="HBoxContainer" parent="Marge/HBoxContainer/VBoxContainer"]
 layout_mode = 2
 
-[node name="KPI_AverageDuration" parent="Marge/HBoxContainer/VBoxContainer/KPIRow" instance=ExtResource("2_xsdck")]
+[node name="KPI_Completion" parent="Marge/HBoxContainer/VBoxContainer/KPI_Campagne" instance=ExtResource("2_xsdck")]
 layout_mode = 2
 
-[node name="KPI_MaxLevel" parent="Marge/HBoxContainer/VBoxContainer/KPIRow" instance=ExtResource("2_xsdck")]
+[node name="KPI_Temps" parent="Marge/HBoxContainer/VBoxContainer/KPI_Campagne" instance=ExtResource("2_xsdck")]
 layout_mode = 2
 
-[node name="KPI_TotalPlaytime" parent="Marge/HBoxContainer/VBoxContainer/KPIRow" instance=ExtResource("2_xsdck")]
+[node name="KPI_TauxReussite" parent="Marge/HBoxContainer/VBoxContainer/KPI_Campagne" instance=ExtResource("2_xsdck")]
+layout_mode = 2
+
+[node name="KPI_SerieMaximumSucces" parent="Marge/HBoxContainer/VBoxContainer/KPI_Campagne" instance=ExtResource("2_xsdck")]
 layout_mode = 2
 
 [node name="Charts" type="VBoxContainer" parent="Marge/HBoxContainer/VBoxContainer"]
+visible = false
 layout_mode = 2
 
 [node name="WinLossBarChart" parent="Marge/HBoxContainer/VBoxContainer/Charts" instance=ExtResource("3_se7pp")]
@@ -58,6 +69,49 @@ layout_mode = 2
 [node name="PlaytimeLineChart" parent="Marge/HBoxContainer/VBoxContainer/Charts" instance=ExtResource("4_7ukwp")]
 layout_mode = 2
 
+[node name="SEPARATEUR VIDE" type="Label" parent="Marge/HBoxContainer/VBoxContainer"]
+layout_mode = 2
+text = " "
+
+[node name="Titre Ascension" parent="Marge/HBoxContainer/VBoxContainer" instance=ExtResource("2_xsdck")]
+layout_mode = 2
+titre = "Ascension"
+couleur_fond = Color(0, 0.6559956, 0.9749271, 1)
+taille_minimum = Vector2(240, 25)
+
+[node name="KPI_Ascension" type="HBoxContainer" parent="Marge/HBoxContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="KPI_Completion" parent="Marge/HBoxContainer/VBoxContainer/KPI_Ascension" instance=ExtResource("2_xsdck")]
+layout_mode = 2
+
+[node name="KPI_Parfait" parent="Marge/HBoxContainer/VBoxContainer/KPI_Ascension" instance=ExtResource("2_xsdck")]
+layout_mode = 2
+
+[node name="KPI_Longueur" parent="Marge/HBoxContainer/VBoxContainer/KPI_Ascension" instance=ExtResource("2_xsdck")]
+layout_mode = 2
+
+[node name="KPI_Ascension2" type="HBoxContainer" parent="Marge/HBoxContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="KPI_DureeMoyenne" parent="Marge/HBoxContainer/VBoxContainer/KPI_Ascension2" instance=ExtResource("2_xsdck")]
+layout_mode = 2
+
+[node name="KPI_Terminees" parent="Marge/HBoxContainer/VBoxContainer/KPI_Ascension2" instance=ExtResource("2_xsdck")]
+layout_mode = 2
+
+[node name="SEPARATEUR VIDE2" type="Label" parent="Marge/HBoxContainer/VBoxContainer"]
+layout_mode = 2
+text = " "
+
+[node name="Titre Niveau" parent="Marge/HBoxContainer/VBoxContainer" instance=ExtResource("2_xsdck")]
+visible = false
+layout_mode = 2
+titre = "Niveau"
+couleur_fond = Color(0.6918974, 0.40343967, 0.93590915, 1)
+taille_minimum = Vector2(240, 25)
+
 [node name="MonthlyPlaytimeGauge" type="TextureProgressBar" parent="Marge/HBoxContainer/VBoxContainer"]
+visible = false
 layout_mode = 2
 script = ExtResource("3_xsdck")

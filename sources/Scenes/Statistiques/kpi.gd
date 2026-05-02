@@ -1,9 +1,17 @@
 extends Control
 
+@export var titre := "Titre"
+@export var valeur := 0
+@export var couleur_texte := Color("WHITE")
+@export var couleur_fond := Color("DEEP PINK")
+@export var taille_minimum := Vector2(140, 50)
+
 func _ready():
 	clip_contents = true
-	$VBox/Label_Title.text = "Titre"
-	$VBox/Label_Value.text = str("Valeur")
+	$VBox/Label_Title.text = titre
+	$VBox/Label_Value.text = str(valeur)
+	set_color(couleur_texte, couleur_fond)
+	set_minimum_size(taille_minimum)
 
 func set_title(title: String):
 	$VBox/Label_Title.text = title
