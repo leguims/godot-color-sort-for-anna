@@ -31,6 +31,8 @@ func _pourcentage_en_led(pourcentage : int, led_sombre, led_lumineuse) -> String
 
 # PUZZLE PIECE : U+1F9E9
 
+# EARTH GLOBE EUROPE-AFRICA : U+1F30D
+
 # BLACK LARGE SQUARE : U+2B1B
 # WHITE LARGE SQUARE : U+2B1C
 # BLACK MEDIUM SQUARE : U+25FC

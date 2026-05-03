@@ -18,6 +18,7 @@ func _ready() -> void:
 
 func generer_bbcode_scores(classement: Array) -> String:
 	# Remplir chaque score dans la liste des scores
+	var world_icon = String.chr(0x1F30D)
 	var liste_score_bbcode : String = ''
 	liste_score_bbcode += liste_format_scores.get('entete')
 	for i in range(TOP_N): # TOP 5
@@ -25,6 +26,8 @@ func generer_bbcode_scores(classement: Array) -> String:
 		if joueur:
 			var rang_joueur = joueur.get('rang')
 			var score_texte = joueur.get('nom') + " " + joueur.get('score_txt')
+			if ProgressionCampagneService.la_campagne_est_terminee_pour_joueur(joueur.get('nom')):
+				score_texte = world_icon + score_texte
 			if 1 <= rang_joueur and rang_joueur <= 3:
 				score_texte = SauvegardeTableauDesScoresService.lire_le_trophee_du_rang(rang_joueur) + score_texte
 			# int(rang_joueur) car 'rang_joueur' est vu comme un float !
