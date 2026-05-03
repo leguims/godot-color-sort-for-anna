@@ -23,30 +23,36 @@ func _ready():
 func campagne():
 	# Identifier le joueur
 	# Consulter la BDD pour obtenir les indicateurs à afficher
+	var valeur
 	# TODO
 
 	# KPI
 	var KPI_Completion = $Marge/HBoxContainer/VBoxContainer/KPI_Campagne/KPI_Completion
 	KPI_Completion.set_title("Complétion")
-	KPI_Completion.set_value("33%")
+	valeur = StatsService.campagne_taux_completion()
+	valeur = str(arrondir_pourcentage(valeur)) + '%'
+	KPI_Completion.set_value(valeur)
 	KPI_Completion.set_color(Color("e6e6ffff"), Color('BLUE'))
 	KPI_Completion.set_minimum_size(Vector2(105,50))
 
 	var KPI_Temps = $Marge/HBoxContainer/VBoxContainer/KPI_Campagne/KPI_Temps
 	KPI_Temps.set_title("Temps")
-	KPI_Temps.set_value("5h 30")
+	valeur = str(StatsService.campagne_temps_total_en_ms()) + 'ms'
+	KPI_Temps.set_value(valeur)
 	KPI_Temps.set_color(Color("BLACK"), Color('SPRING_GREEN'))
 	KPI_Temps.set_minimum_size(Vector2(105,50))
 
 	var KPI_TauxReussite = $Marge/HBoxContainer/VBoxContainer/KPI_Campagne/KPI_TauxReussite
 	KPI_TauxReussite.set_title("Réussite")
-	KPI_TauxReussite.set_value("82%")
+	valeur = str(StatsService.campagne_taux_reussite()) + '%'
+	KPI_TauxReussite.set_value(valeur)
 	KPI_TauxReussite.set_color(Color("fff4e6ff"), Color('DARK_ORANGE'))
 	KPI_TauxReussite.set_minimum_size(Vector2(105,50))
 
 	var KPI_SerieMaximumSucces = $Marge/HBoxContainer/VBoxContainer/KPI_Campagne/KPI_SerieMaximumSucces
 	KPI_SerieMaximumSucces.set_title("Série Max.")
-	KPI_SerieMaximumSucces.set_value(12)
+	valeur = StatsService.campagne_serie_max_reussite()
+	KPI_SerieMaximumSucces.set_value(valeur)
 	KPI_SerieMaximumSucces.set_color(Color("ffe6f3ff"), Color('DEEP_PINK'))
 	KPI_SerieMaximumSucces.set_minimum_size(Vector2(105,50))
 
@@ -92,14 +98,14 @@ func ascensions():
 	valeur = StatsService.ascension_parfaite_nb()
 	KPI_Parfait_Nb.set_value(valeur)
 	KPI_Parfait_Nb.set_color(Color("GOLD"), Color('BLACK'))
-	KPI_Parfait_Nb.set_minimum_size(Vector2(100,50))
+	KPI_Parfait_Nb.set_minimum_size(Vector2(90,50))
 
 	var KPI_Parfait_Lg = $Marge/HBoxContainer/VBoxContainer/KPI_Ascension2/KPI_Parfait_Lg
-	KPI_Parfait_Lg.set_title("Longueur Parfaite")
+	KPI_Parfait_Lg.set_title("Longueur (Parfaite)")
 	valeur = StatsService.ascension_parfaite_longeur()
 	KPI_Parfait_Lg.set_value(valeur)
 	KPI_Parfait_Lg.set_color(Color("GOLD"), Color('BLACK'))
-	KPI_Parfait_Lg.set_minimum_size(Vector2(140,50))
+	KPI_Parfait_Lg.set_minimum_size(Vector2(150,50))
 
 func niveaux():
 	# Identifier le joueur
@@ -136,6 +142,8 @@ func plateaux():
 	KPI_RapideDifficulte.set_value(valeur)
 	KPI_RapideDifficulte.set_color(Color("fff0e3ff"), Color('CRIMSON'))
 	KPI_RapideDifficulte.set_minimum_size(Vector2(120,50))
+	
+	# TODO : representer le plateau en miniature
 
 	# Ligne 2
 	var KPI_LentTitre = $Marge/HBoxContainer/VBoxContainer/KPI_Plateau2/KPI_LentTitre
@@ -157,3 +165,16 @@ func plateaux():
 	KPI_LentDifficulte.set_value(valeur)
 	KPI_LentDifficulte.set_color(Color("fff0e3ff"), Color('CRIMSON'))
 	KPI_LentDifficulte.set_minimum_size(Vector2(120,50))
+	
+	# TODO : representer le plateau en miniature
+
+func arrondir_pourcentage(pourcentage: float) -> float:
+	if pourcentage < 1.0:
+		# 2 decimales
+		return round(pourcentage * 100) / 100.0
+	elif pourcentage < 10.0:
+		# 1 decimale
+		return round(pourcentage * 10) / 10.0
+	else:
+		# entier
+		return round(pourcentage)
