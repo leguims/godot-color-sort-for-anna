@@ -8,6 +8,9 @@ func _ready() -> void:
 
 # ########
 # Campagne
+func campagne_nom_joueur() -> String:
+	return SauvegardeBddJoueursService.lire_nom_joueur()
+
 func campagne_taux_completion() -> float:
 	var joueur = SauvegardeBddJoueursService.lire_nom_joueur()
 	LogService.log_debug("joueur:",joueur, ' campagne_taux_completion=', taux_completion_campagne())
@@ -122,6 +125,9 @@ func nombre_ascensions_terminees() -> int:
 	return nb_ascensions - 1
 
 func duree_moyenne_ascensions_terminees_en_s() -> float:
+	var nat = nombre_ascensions_terminees()
+	if nat == 0:
+		return 0.
 	return duree_totale_plateaux_ascensions_terminees_en_s() / nombre_ascensions_terminees()
 
 func nombre_de_plateau_reussis() -> int:
@@ -155,7 +161,11 @@ func nombre_de_plateau_abandonnes() -> int:
 	return nb_plateaux_abandonnes
 
 func taux_de_reussite_des_plateaux() -> float:
-	return 1. * nombre_de_plateau_reussis() / (nombre_de_plateau_reussis() + nombre_de_plateau_abandonnes())
+	var reussis = nombre_de_plateau_reussis()
+	var abandonne = nombre_de_plateau_abandonnes()
+	if (reussis + abandonne) == 0:
+		return 0.
+	return 1. * reussis / (reussis + abandonne)
 
 func longueur_max_ascension_terminee() -> int:
 	var joueur = SauvegardeBddJoueursService.lire_nom_joueur()

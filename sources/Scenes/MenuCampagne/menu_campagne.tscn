@@ -29,6 +29,7 @@ script = ExtResource("1_88fpq")
 [node name="BoutonMenuPrincipal" type="Button" parent="."]
 anchors_preset = 10
 anchor_right = 1.0
+offset_right = -240.0
 offset_bottom = 100.0
 grow_horizontal = 2
 theme_override_colors/font_color = Color(0.67451, 0, 0.686275, 1)
@@ -37,6 +38,19 @@ theme_override_font_sizes/font_size = 50
 theme_override_styles/normal = SubResource("StyleBoxFlat_4v47e")
 theme_override_styles/hover = SubResource("StyleBoxFlat_w2jhv")
 text = "Menu"
+
+[node name="BoutonStatistiques" type="Button" parent="."]
+anchors_preset = 10
+anchor_right = 1.0
+offset_left = 240.0
+offset_bottom = 100.0
+grow_horizontal = 2
+theme_override_colors/font_color = Color(0.67451, 0, 0.686275, 1)
+theme_override_colors/font_hover_color = Color(0.996078, 0.333333, 1, 1)
+theme_override_font_sizes/font_size = 50
+theme_override_styles/normal = SubResource("StyleBoxFlat_4v47e")
+theme_override_styles/hover = SubResource("StyleBoxFlat_w2jhv")
+text = "Stats"
 
 [node name="InfosDuJoueur" type="VBoxContainer" parent="."]
 visible = false
@@ -156,5 +170,6 @@ text = "[color=#efefef][font_size=30][center][b]Score[/b][/center][/font_size]
 [/font_size][/left][font_size=30][center][b]Total : ZZ.YYY.XXX[/b][/center][/font_size][/color]"
 
 [connection signal="pressed" from="BoutonMenuPrincipal" to="." method="_on_bouton_menu_principal_pressed"]
+[connection signal="pressed" from="BoutonStatistiques" to="." method="_on_bouton_statistiques_pressed"]
 [connection signal="pressed" from="BoutonCommencer" to="." method="_on_bouton_commencer_pressed"]
 [connection signal="value_changed" from="LongueurAscension/VBox/Curseur" to="." method="_on_h_slider_value_changed"]

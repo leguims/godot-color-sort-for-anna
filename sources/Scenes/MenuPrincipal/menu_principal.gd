@@ -40,7 +40,7 @@ func _on_joueurs_campagne_pressed(nom_joueur: String) -> void:
 		ProgressionCampagneService.choisir_le_joueur_pour_la_campagne(nom_joueur)
 		get_tree().change_scene_to_file("res://Scenes/Campagne/campagne.tscn")
 	else:
-		LogService.log_erreur("Erreur : Le joueur *" + nom_joueur + "* a terminé la campagne")
+		get_tree().change_scene_to_file("res://Scenes/Statistiques/statistiques.tscn")
 
 func _mettre_a_jour_configuration():
 	$Marge/HBoxContainer/VBoxContainer/Marge/VBoxContainer/VBoxContainer/BoutonMusiques.button_pressed = SauvegardeConfigurationService.musiques_sont_actives()

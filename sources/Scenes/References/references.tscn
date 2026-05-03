@@ -1,7 +1,7 @@
 [gd_scene load_steps=4 format=3 uid="uid://crh6v0vpu06u8"]
 
 [ext_resource type="Texture2D" uid="uid://bval8s3f0otos" path="res://Art/Images/credits_480x720.png" id="1_oti5q"]
-[ext_resource type="Script" path="res://Scenes/References/retour_menu_principal.gd" id="1_y14jx"]
+[ext_resource type="Script" uid="uid://cmgsljgwmgwhn" path="res://Scenes/References/retour_menu_principal.gd" id="1_y14jx"]
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_cte4r"]
 texture = ExtResource("1_oti5q")
@@ -11,15 +11,6 @@ texture_margin_right = 10.0
 texture_margin_bottom = 10.0
 
 [node name="References" type="Node"]
-_import_path = NodePath("")
-unique_name_in_owner = false
-process_mode = 0
-process_priority = 0
-process_physics_priority = 0
-process_thread_group = 0
-physics_interpolation_mode = 0
-auto_translate_mode = 0
-editor_description = ""
 script = ExtResource("1_y14jx")
 
 [node name="RichTextLabel" type="RichTextLabel" parent="."]

@@ -37,6 +37,7 @@ func modifier_message_vertical_align(alignement : VerticalAlignment) -> void:
 
 func cacher_accueil():
 	$BoutonMenuPrincipal.hide()
+	$BoutonStatistiques.hide()
 	$InfosDuJoueur.hide()
 	$Message.hide()
 	$BoutonCommencer.hide()
@@ -45,6 +46,7 @@ func cacher_accueil():
 
 func afficher_accueil_nouvelle_ascension():
 	$BoutonMenuPrincipal.show()
+	$BoutonStatistiques.show()
 	# Reset le max de la jauge de plateaux
 	reset_jauge_LongueurAscension()
 	$LongueurAscension.show()
@@ -54,6 +56,7 @@ func afficher_accueil_nouvelle_ascension():
 
 func afficher_accueil_ascension_en_cours():
 	$BoutonMenuPrincipal.show()
+	$BoutonStatistiques.show()
 	mettre_a_jour_infos_joueur()
 	$InfosDuJoueur.show()
 	
@@ -77,12 +80,16 @@ func _on_bouton_commencer_pressed() -> void:
 func _on_bouton_menu_principal_pressed() -> void:
 	get_tree().change_scene_to_file("res://Scenes/MenuPrincipal/menu_principal.tscn")
 
+func _on_bouton_statistiques_pressed() -> void:
+	get_tree().change_scene_to_file("res://Scenes/Statistiques/statistiques.tscn")
+
 
 
 func afficher_plateau_suivant(texte : String):
 	_afficher_message(texte)
 	mettre_a_jour_infos_joueur()
 	$BoutonMenuPrincipal.show()
+	$BoutonStatistiques.show()
 	$InfosDuJoueur.show()
 	$BoutonCommencer.show()
 
@@ -125,6 +132,7 @@ func afficher_fin_campagne():
 							"Vous êtes au sommet...",
 							"Savourez l'instant."], 5.0)
 	$BoutonMenuPrincipal.show()
+	$BoutonStatistiques.show()
 	mettre_a_jour_infos_joueur()
 	$InfosDuJoueur.show()
 	#$BoutonCommencer.show()

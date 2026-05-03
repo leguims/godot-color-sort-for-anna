@@ -1,11 +1,13 @@
 extends Control
 
 func _ready():
+	set_process_input(true) # Pour retourner dans le menu de campagne.
+	var nom_joueur = $Marge/HBoxContainer/VBoxContainer/Nom_Joueur
+	nom_joueur.text = StatsService.campagne_nom_joueur()
 	campagne()
 	ascensions()
 	niveaux()
 	plateaux()
-	
 
 	# Graphiques
 	var WinLossBarChart = $Marge/HBoxContainer/VBoxContainer/Charts/WinLossBarChart
@@ -19,6 +21,17 @@ func _ready():
 
 	# Jauge
 	$Marge/HBoxContainer/VBoxContainer/MonthlyPlaytimeGauge.set_progress(120, 300)
+
+
+func _input(event):
+	if event is InputEventMouseButton and event.pressed:
+		if SauvegardeBddJoueursService.la_campagne_est_terminee():
+			# Retour au menu principal
+			get_tree().change_scene_to_file("res://Scenes/MenuPrincipal/menu_principal.tscn")
+		else:
+			# Retour au menu de campagne
+			get_tree().change_scene_to_file("res://Scenes/Campagne/campagne.tscn")
+
 
 func campagne():
 	# Identifier le joueur

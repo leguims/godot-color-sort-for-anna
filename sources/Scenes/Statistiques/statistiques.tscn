@@ -1,4 +1,4 @@
-[gd_scene load_steps=7 format=3 uid="uid://ce35s8h6fj434"]
+[gd_scene load_steps=8 format=3 uid="uid://ce35s8h6fj434"]
 
 [ext_resource type="Script" uid="uid://d213tcxl8hfw3" path="res://Scenes/Statistiques/statistiques.gd" id="1_y2h7b"]
 [ext_resource type="Texture2D" uid="uid://bl3jiqwpmmvbq" path="res://Art/Images/fond_cubes_480x720.png" id="2_se7pp"]
@@ -6,6 +6,9 @@
 [ext_resource type="PackedScene" uid="uid://c8uyx36tscdpp" path="res://Scenes/Statistiques/diagramme_en_barres.tscn" id="3_se7pp"]
 [ext_resource type="Script" uid="uid://dv22g4vxsw80c" path="res://Scenes/Statistiques/jauge.gd" id="3_xsdck"]
 [ext_resource type="PackedScene" uid="uid://bi52323mrj54t" path="res://Scenes/Statistiques/courbe.tscn" id="4_7ukwp"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_se7pp"]
+bg_color = Color(0, 0, 0, 1)
 
 [node name="Statistiques" type="Control"]
 layout_mode = 3
@@ -39,6 +42,18 @@ alignment = 1
 layout_mode = 2
 alignment = 1
 
+[node name="Nom_Joueur" type="Label" parent="Marge/HBoxContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 1, 0.20392157, 1)
+theme_override_font_sizes/font_size = 34
+theme_override_styles/normal = SubResource("StyleBoxFlat_se7pp")
+text = "Toto"
+horizontal_alignment = 1
+
+[node name="SEPARATEUR VIDE0" type="Label" parent="Marge/HBoxContainer/VBoxContainer"]
+layout_mode = 2
+text = " "
+
 [node name="Titre Campagne" parent="Marge/HBoxContainer/VBoxContainer" instance=ExtResource("2_xsdck")]
 layout_mode = 2
 titre = "Campagne"
@@ -69,7 +84,7 @@ layout_mode = 2
 [node name="PlaytimeLineChart" parent="Marge/HBoxContainer/VBoxContainer/Charts" instance=ExtResource("4_7ukwp")]
 layout_mode = 2
 
-[node name="SEPARATEUR VIDE" type="Label" parent="Marge/HBoxContainer/VBoxContainer"]
+[node name="SEPARATEUR VIDE1" type="Label" parent="Marge/HBoxContainer/VBoxContainer"]
 layout_mode = 2
 text = " "
 
