@@ -1,5 +1,58 @@
 # Liste des fonctionnalités
 
+## V0.4.0 : Travaux pour la prochaine version
+
+### Jeu
+- Pouvoir passer l'apercu du score du plateau par un clique sur l'ecran.
+
+#### Refactoring
+- Structurer tout le dépot pour réorganiser les sources, les outils et les tests
+    - plus de singleton
+    - découpage des scenes menu_campagne.gd, campagne.gd et menu_principale.gd
+
+#### Statistiques
+- Inclure un bouton statistiques dans le menu campagne
+- Outils visuels:
+  - KPI : Bouton carré avec un chiffre
+    - Durée moyenne d’une partie
+    - Niveau maximum atteint
+    - Nombre total de parties
+    - Temps total de jeu
+- Page de statisques contient (de haut en bas):
+  - En haut : Nom du joueur
+  - Campagne:
+    - [KPI] Pourcentage de complétion,
+    - [KPI] Temps de jeu,
+    - [KPI] Taux de réussite
+    - [KPI] Série maximum de succès
+  - Ascension:
+    - [KPI] Pourcentage de complétion de l'ascension en cours,
+    - [KPI] nombre d'ascension sans détour,
+    - [KPI] la plus longue (temps, dépassement de plateaux)
+    - [KPI] durée moyenne d'ascension (temps, plateaux),
+    - [KPI] nombre d'ascension achevées 
+  - Plateau:
+    - [KPI] le plus rapide (temps, profondeur)
+    - [KPI] le plus long (temps, profondeur)
+
+### Outillage
+- Decomposer les outils pour réaliser un forkflow (pipeline)
+
+#### Refactoring
+- Structurer tout le dépot pour réorganiser les sources, les outils et les tests
+    - arbrescence : core, io_utils, tests et pipeline
+- Améliorer le code pour simplifier la maintenance:
+    - creer des modules
+    - faire une API
+    - realiser des methodes deporter dans des ficheirs à theme
+    - Réalisé pour : plateau.py, lot_de_plateaux.py et resoudre.py
+
+#### Difficulté de plateau
+- Dans la recherche de solution, réorganiser pour conserver:
+  - La quantité de blocage pour chaque longueur
+- Baser la difficulté le rapport : Nb Blocage / (Nb Blocage + Nb Solutionsd)
+- Difficulté entre 0 et 100 (le plus difficile)
+
 ## V0.3.6 :Travaux réalisés
 
 ### Jeu

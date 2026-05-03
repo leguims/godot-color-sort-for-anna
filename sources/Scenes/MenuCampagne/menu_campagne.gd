@@ -6,6 +6,7 @@ var formatter := FormatterMenuCampagne.new()
 
 # Notifie la scene `Plateau` que le bouton est pressé
 signal commencer_plateau
+signal fin_lecture_score
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
@@ -106,14 +107,18 @@ func afficher_gagner_un_plateau(duree : int) -> void:
 	_afficher_des_messages(["Bravo!",
 							"Gagné en %ss" % duree])
 	$MessageRiche.show()
-	await get_tree().create_timer(5.0).timeout
+	# Affichage minimum de 1s
+	await get_tree().create_timer(1.0).timeout
+	await fin_lecture_score
 	$MessageRiche.hide()
 	afficher_plateau_suivant("Plateau suivant!")
 
 func afficher_fin_ascension():
 	_afficher_message("Bravo!")
 	$MessageRiche.show()
-	await get_tree().create_timer(5.0).timeout
+	# Affichage minimum de 1s
+	await get_tree().create_timer(1.0).timeout
+	await fin_lecture_score
 	$MessageRiche.hide()
 	_afficher_des_messages(["Bravo!",
 							"C'était le dernier plateau!",
@@ -125,7 +130,9 @@ func afficher_fin_ascension():
 func afficher_fin_campagne():
 	_afficher_message("Félicitation!")
 	$MessageRiche.show()
-	await get_tree().create_timer(5.0).timeout
+	# Affichage minimum de 1s
+	await get_tree().create_timer(1.0).timeout
+	await fin_lecture_score
 	$MessageRiche.hide()
 	_afficher_des_messages(["C'était le dernier plateau...",
 							"...de la dernière ascension.",
@@ -170,3 +177,7 @@ func _on_h_slider_value_changed(value: float) -> void:
 
 func _on_progression_campagne_service_detail_score_plateau(detail_score: Dictionary):
 	afficher_detail_score(detail_score)
+
+func _on_message_riche_gui_input(event: InputEvent) -> void:
+	print('click score !!!')
+	fin_lecture_score.emit()

@@ -14,7 +14,7 @@ Listes des évolutions votées par les testeurs:
 
 Depuis la phase de tests internes de la version V0.3.0, les fonctionnalités sont votées par les testeurs. L'attribution des fonctionnailités par versions ci-dessous devrait devenir obsolète pour préférer un classement global des testeurs. Cependant, les deux vont vivre pendant une phase de transition.
 
-## V0.3.7 : Travaux pour la prochaine version
+## V0.4.0 : Travaux pour la prochaine version
 
 ### Bug V0.3.0 :
 - [à surveiller] L'affichage "Niveau = 5 - indice Plateau = 0 - Nombre de parties = <null>" est en erreur !
@@ -40,6 +40,7 @@ Depuis la phase de tests internes de la version V0.3.0, les fonctionnalités son
 - Selon ton humeur, demander 5 plateaux faciles ou 5 ultras difficiles. (mode libre)
 - pour les plateaux impossibles à perdre, les classer dans DÉTENTE
 - pour les plateaux impossibles à gagner, proposer au joueur de trouver la combinaison pour perdre. (Mode No Win)
+- ~~Pouvoir passer l'apercu du score du plateau par un clique sur l'ecran.~~:heavy_check_mark:
 
 #### Refactoring
 - ~~Structurer tout le dépot pour réorganiser les sources, les outils et les tests~~:heavy_check_mark:
@@ -58,18 +59,19 @@ Depuis la phase de tests internes de la version V0.3.0, les fonctionnalités son
 - Prevoir une musique spéciale pour la réussite de la derniere ascension possible et le message de félicitations.
 - Calculer les populations restantes de chaque difficulté et attribuer un nombre de plateau par niveaux à réaliser par ascension au minimum. Le chemin se rallonge en cas d'echecs.
 - est ce qu'il faut limiter les ascensions (logo montagne) à une ascension maximum ?
+- Il faudrait prevoir un jeu libre avec choix de difficulté et choix de longueur d'ascension + La campagne qui orchestre les longueurs d'ascensions à faire (10 puis 20 ...)
 - TRICHE ANATOLE :
     - Quand anatole comme 'nom' on peux mettre n'importe quelle couleur sur n'importe quelle couleur et ça marche mais pas beaucoup de point
     - Il y aura un bouton gagner Ou quand tout les Block seront dans une case remplie
 
 #### Statistiques
-- Inclure un bouton statistiques dans le menu principal
+- ~~Inclure un bouton statistiques dans le menu campagne~~:heavy_check_mark:
 - Outils visuels:
-  - KPI : Bouton carré avec un chiffre
-    - Durée moyenne d’une partie
-    - Niveau maximum atteint
-    - Nombre total de parties
-    - Temps total de jeu
+  - ~~KPI : Bouton carré avec un chiffre~~:heavy_check_mark:
+    - ~~Durée moyenne d’une partie~~
+    - ~~Niveau maximum atteint~~
+    - ~~Nombre total de parties~~
+    - ~~Temps total de jeu~~
   - GAUGE (Jauge) : jauge circulaire ou semi-circulaire
     - Progression vers un objectif mensuel
     - Pourcentage de niveaux complétés
@@ -84,21 +86,22 @@ Depuis la phase de tests internes de la version V0.3.0, les fonctionnalités son
   - Le plus simple sur GODOT 4.5: utiliser la bibliotheque de base.
     - Control + TextureProgressBar + Label + Graphiques "faits maison"
 - Page de statisques contient (de haut en bas):
-  - En haut : Nom du joueur + bouton pour changer de joueur
+  - ~~En haut : Nom du joueur + bouton pour changer de joueur~~:heavy_check_mark:
   - Campagne:
-    - [KPI] Pourcentage de complétion,
-    - [KPI][Line chart] Temps de jeu,
+    - ~~[KPI] Pourcentage de complétion,~~:heavy_check_mark:
+    - ~~[KPI] Temps de jeu,~~:heavy_check_mark:
+    - [Line chart] Temps de jeu,
     - [Bar chart 1] Nombre de parties
     - [Bar chart 1] Nombre de défaites
-    - [KPI] Taux de réussite
-    - [KPI] Série maximum de succès
+    - ~~[KPI] Taux de réussite~~:heavy_check_mark:
+    - ~~[KPI] Série maximum de succès~~:heavy_check_mark:
   - Ascension:
-    - [KPI] Pourcentage de complétion de l'ascension en cours,
-    - [KPI] nombre d'ascension sans détour,
-    - [KPI] la plus longue (temps, dépassement de plateaux)
+    - ~~[KPI] Pourcentage de complétion de l'ascension en cours,~~:heavy_check_mark:
+    - ~~[KPI] nombre d'ascension sans détour,~~:heavy_check_mark:
+    - ~~[KPI] la plus longue (temps, dépassement de plateaux)~~:heavy_check_mark:
     - [Line chart] durée d'ascension (temps, plateaux), 
-    - [KPI] durée moyenne d'ascension (temps, plateaux), 
-    - [KPI] nombre d'ascension achevées 
+    - ~~[KPI] durée moyenne d'ascension (temps, plateaux),~~:heavy_check_mark:
+    - ~~[KPI] nombre d'ascension achevées ~~:heavy_check_mark:
   - Niveau (notion artificielle à construire):
     - [Line chart] Idée de représentation graphique : Dessiner une courbe avec x=niveaux et y=f(x)=echecs, taux de réussite ...
     - [Line chart] Idée : Representer les courbes sur 1 mois d'activité et comparer au dernier mois (en pointillé) 
@@ -107,8 +110,8 @@ Depuis la phase de tests internes de la version V0.3.0, les fonctionnalités son
     - [Bar chart 2] temps moyen par niveau,
     - [Bar chart 2] complétion par niveau,
   - Plateau:
-    - [KPI] le plus rapide (temps, profondeur) 
-    - [KPI] le plus long (temps, profondeur) 
+    - ~~[KPI] le plus rapide (temps, profondeur)~~:heavy_check_mark:
+    - ~~[KPI] le plus long (temps, profondeur)~~:heavy_check_mark:
 - Prévoir un téléchargement des stats:
     - nommer le téléphone + compte google
     - indiquer la date de création.
