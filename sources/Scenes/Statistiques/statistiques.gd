@@ -44,7 +44,8 @@ func campagne():
 
 	var KPI_TauxReussite = $Marge/HBoxContainer/VBoxContainer/KPI_Campagne/KPI_TauxReussite
 	KPI_TauxReussite.set_title("Réussite")
-	valeur = str(StatsService.campagne_taux_reussite()) + '%'
+	valeur = StatsService.campagne_taux_reussite()
+	valeur = str(arrondir_pourcentage(valeur)) + '%'
 	KPI_TauxReussite.set_value(valeur)
 	KPI_TauxReussite.set_color(Color("fff4e6ff"), Color('DARK_ORANGE'))
 	KPI_TauxReussite.set_minimum_size(Vector2(105,50))
@@ -80,7 +81,7 @@ func ascensions():
 
 	var KPI_DureeMoyenne = $Marge/HBoxContainer/VBoxContainer/KPI_Ascension/KPI_DureeMoyenne
 	KPI_DureeMoyenne.set_title("Durée Moy.")
-	valeur = str(StatsService.ascension_duree_moyenne_en_ms()) + "ms"
+	valeur = str(StatsService.ascension_duree_moyenne_en_s()) + "s"
 	KPI_DureeMoyenne.set_value(valeur)
 	KPI_DureeMoyenne.set_color(Color("fff0ffff"), Color('MAROON'))
 	KPI_DureeMoyenne.set_minimum_size(Vector2(120,50))
@@ -169,12 +170,12 @@ func plateaux():
 	# TODO : representer le plateau en miniature
 
 func arrondir_pourcentage(pourcentage: float) -> float:
-	if pourcentage < 1.0:
+	# Passage en pourcentage * 100
+	pourcentage = 100. * pourcentage
+	# Précision du pourcentage selon le taux.
+	if pourcentage < 10.0:
 		# 2 decimales
 		return round(pourcentage * 100) / 100.0
-	elif pourcentage < 10.0:
+	else:
 		# 1 decimale
 		return round(pourcentage * 10) / 10.0
-	else:
-		# entier
-		return round(pourcentage)
