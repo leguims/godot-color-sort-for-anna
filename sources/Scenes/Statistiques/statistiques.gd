@@ -9,18 +9,19 @@ func _ready():
 	niveaux()
 	plateaux()
 
-	# Graphiques
-	var WinLossBarChart = $Marge/HBoxContainer/VBoxContainer/Charts/WinLossBarChart
-	WinLossBarChart.wins = 15
-	WinLossBarChart.losses = 7
-	WinLossBarChart.queue_redraw()
-
-	var PlaytimeLineChart = $Marge/HBoxContainer/VBoxContainer/Charts/PlaytimeLineChart
-	PlaytimeLineChart.monthly_minutes = [120, 90, 150, 200, 180, 220]
-	PlaytimeLineChart.queue_redraw()
-
-	# Jauge
-	$Marge/HBoxContainer/VBoxContainer/MonthlyPlaytimeGauge.set_progress(120, 300)
+	# TODO : Poursuivre les statistiques
+	## Graphiques
+	#var WinLossBarChart = $Marge/HBoxContainer/VBoxContainer/Charts/WinLossBarChart
+	#WinLossBarChart.wins = 15
+	#WinLossBarChart.losses = 7
+	#WinLossBarChart.queue_redraw()
+#
+	#var PlaytimeLineChart = $Marge/HBoxContainer/VBoxContainer/Charts/PlaytimeLineChart
+	#PlaytimeLineChart.monthly_minutes = [120, 90, 150, 200, 180, 220]
+	#PlaytimeLineChart.queue_redraw()
+#
+	## Jauge
+	#$Marge/HBoxContainer/VBoxContainer/MonthlyPlaytimeGauge.set_progress(120, 300)
 
 
 func _input(event):
