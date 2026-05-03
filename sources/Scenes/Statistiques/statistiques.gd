@@ -137,14 +137,14 @@ func plateaux():
 	valeur = StatsService.plateau_plus_rapide_en_s()
 	valeur = str_arrondir_temps_en_s(valeur)
 	KPI_RapideTemps.set_value(valeur)
-	KPI_RapideTemps.set_color(Color("ffe6f3ff"), Color('DEEP_PINK'))
+	KPI_RapideTemps.set_color(Color("BLACK"), Color('WHITE'))
 	KPI_RapideTemps.set_minimum_size(Vector2(120,50))
 
 	var KPI_RapideDifficulte = $Marge/HBoxContainer/VBoxContainer/KPI_Plateau/KPI_RapideDifficulte
 	KPI_RapideDifficulte.set_title("Difficulté")
 	valeur = StatsService.plateau_plus_rapide_difficulte()
 	KPI_RapideDifficulte.set_value(valeur)
-	KPI_RapideDifficulte.set_color(Color("fff0e3ff"), Color('CRIMSON'))
+	KPI_RapideDifficulte.set_color(Color("fff0e1ff"), Color('RED'))
 	KPI_RapideDifficulte.set_minimum_size(Vector2(120,50))
 	
 	# TODO : representer le plateau en miniature
@@ -161,14 +161,14 @@ func plateaux():
 	valeur = StatsService.plateau_plus_lent_en_s()
 	valeur = str_arrondir_temps_en_s(valeur)
 	KPI_LentTemps.set_value(valeur)
-	KPI_LentTemps.set_color(Color("ffe6f3ff"), Color('DEEP_PINK'))
+	KPI_LentTemps.set_color(Color("BLACK"), Color('WHITE'))
 	KPI_LentTemps.set_minimum_size(Vector2(120,50))
 
 	var KPI_LentDifficulte = $Marge/HBoxContainer/VBoxContainer/KPI_Plateau2/KPI_LentDifficulte
 	KPI_LentDifficulte.set_title("Difficulté")
 	valeur = StatsService.plateau_plus_lent_difficulte()
 	KPI_LentDifficulte.set_value(valeur)
-	KPI_LentDifficulte.set_color(Color("fff0e3ff"), Color('CRIMSON'))
+	KPI_LentDifficulte.set_color(Color("fff0e1ff"), Color('RED'))
 	KPI_LentDifficulte.set_minimum_size(Vector2(120,50))
 	
 	# TODO : representer le plateau en miniature
