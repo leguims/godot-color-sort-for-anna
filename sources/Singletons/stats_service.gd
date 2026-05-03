@@ -38,11 +38,11 @@ func ascension_longueur_max() -> int:
 
 func ascension_parfaite_nb() -> int:
 	"Ascension sans erreur"
-	return 0
+	return nombre_ascension_parfaite()
 
 func ascension_parfaite_longeur() -> int:
 	"Ascension sans erreur (nb plateaux)"
-	return 0
+	return longueur_max_ascension_parfaite()
 
 # #######
 # Plateau
@@ -249,3 +249,30 @@ func plateau_le_plus_lent_difficulte() -> float:
 								plus_lent_difficulte = difficulte
 	LogService.log_debug("joueur:",joueur, ' plus_lent_difficulte=', plus_lent_difficulte)
 	return plus_lent_difficulte
+
+func nombre_ascension_parfaite() -> int:
+	var joueur = SauvegardeBddJoueursService.lire_nom_joueur()
+	# Nombre d'ascension sans erreur
+	var nb_ascension_parfaite: int = 0.
+	# Parcourir la liste des ascensions
+	if SauvegardeBddJoueursService.sauvegarde_joueur.get("ascensions", null):
+		for ascension in SauvegardeBddJoueursService.sauvegarde_joueur.get("ascensions"):
+			if ascension.get("longueur_detour", null) == 0.:
+				nb_ascension_parfaite += 1
+	LogService.log_debug("joueur:",joueur, ' nb_ascension_parfaite=', nb_ascension_parfaite)
+	return nb_ascension_parfaite
+
+func longueur_max_ascension_parfaite() -> int:
+	var joueur = SauvegardeBddJoueursService.lire_nom_joueur()
+	# Longueur max. d'ascension sans erreur
+	var longueur_max_ascension_parfaite: int = 0.
+	# Parcourir la liste des ascensions
+	if SauvegardeBddJoueursService.sauvegarde_joueur.get("ascensions", null):
+		for ascension in SauvegardeBddJoueursService.sauvegarde_joueur.get("ascensions"):
+			var detour = ascension.get("longueur_detour", null)
+			var longueur = ascension.get("plateaux", null).size()
+			if detour == 0.:
+				if longueur > longueur_max_ascension_parfaite:
+					longueur_max_ascension_parfaite = longueur
+	LogService.log_debug("joueur:",joueur, ' longueur_max_ascension_parfaite=', longueur_max_ascension_parfaite)
+	return longueur_max_ascension_parfaite
