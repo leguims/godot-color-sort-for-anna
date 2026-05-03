@@ -3,8 +3,8 @@ extends Node
 func _ready() -> void:
 	# TODO : Supprimer
 	#ProgressionCampagneService.choisir_le_joueur_pour_la_campagne("Alain Konu")
-	#ProgressionCampagneService.choisir_le_joueur_pour_la_campagne("toto")
-	ProgressionCampagneService.choisir_le_joueur_pour_la_campagne("Anna")
+	ProgressionCampagneService.choisir_le_joueur_pour_la_campagne("toto")
+	#ProgressionCampagneService.choisir_le_joueur_pour_la_campagne("Anna")
 
 # ########
 # Campagne
