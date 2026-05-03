@@ -20,7 +20,7 @@ func campagne_taux_reussite() -> float:
 	return taux_de_reussite_des_plateaux()
 
 func campagne_serie_max_reussite() -> int:
-	return 0
+	return serie_de_victoire_maximum()
 
 # #########
 # Ascension
@@ -276,3 +276,27 @@ func longueur_max_ascension_parfaite() -> int:
 					longueur_max_ascension_parfaite = longueur
 	LogService.log_debug("joueur:",joueur, ' longueur_max_ascension_parfaite=', longueur_max_ascension_parfaite)
 	return longueur_max_ascension_parfaite
+
+func serie_de_victoire_maximum() -> int:
+	var joueur = SauvegardeBddJoueursService.lire_nom_joueur()
+	# Serie de victoire la plus grande.
+	var serie_de_victoire_maximum: int = 0
+	var serie_de_victoire_courante: int = 0
+	# Parcourir la liste des ascensions
+	if SauvegardeBddJoueursService.sauvegarde_joueur.get("ascensions", null):
+		for ascension in SauvegardeBddJoueursService.sauvegarde_joueur.get("ascensions"):
+			# Comptabiliser les plateaux reussis
+			if ascension.get("plateaux", null):
+				for plateau_joue in ascension.get("plateaux"):
+					if plateau_joue.get("statut") == "reussi":
+						serie_de_victoire_courante += 1
+					if plateau_joue.get("statut") == "abandonné":
+						# Defaite : Enregistrer le max et repartir à zéro.
+						if serie_de_victoire_courante > serie_de_victoire_maximum:
+							serie_de_victoire_maximum = serie_de_victoire_courante
+						serie_de_victoire_courante = 0
+		# Pour la derniere serie
+		if serie_de_victoire_courante > serie_de_victoire_maximum:
+			serie_de_victoire_maximum = serie_de_victoire_courante
+	LogService.log_debug("joueur:",joueur, ' serie_de_victoire_maximum=', serie_de_victoire_maximum)
+	return serie_de_victoire_maximum
