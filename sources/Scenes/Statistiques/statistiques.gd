@@ -37,7 +37,7 @@ func campagne():
 
 	var KPI_Temps = $Marge/HBoxContainer/VBoxContainer/KPI_Campagne/KPI_Temps
 	KPI_Temps.set_title("Temps")
-	valeur = str(StatsService.campagne_temps_total_en_ms()) + 'ms'
+	valeur = str(StatsService.campagne_temps_total_en_s()) + 's'
 	KPI_Temps.set_value(valeur)
 	KPI_Temps.set_color(Color("BLACK"), Color('SPRING_GREEN'))
 	KPI_Temps.set_minimum_size(Vector2(105,50))

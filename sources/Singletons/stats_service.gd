@@ -13,8 +13,8 @@ func campagne_taux_completion() -> float:
 	LogService.log_debug("joueur:",joueur, ' campagne_taux_completion=', taux_completion_campagne())
 	return taux_completion_campagne()
 
-func campagne_temps_total_en_ms() -> int:
-	return 0
+func campagne_temps_total_en_s() -> int:
+	return duree_totale_toutes_les_ascensions_en_s()
 
 func campagne_taux_reussite() -> float:
 	return 0.0
@@ -92,3 +92,21 @@ func nombre_de_plateaux_totaux() -> int:
 
 func taux_completion_campagne() -> float:
 	return 1. * nombre_de_plateau_acheves() / nombre_de_plateaux_totaux()
+
+func duree_totale_toutes_les_ascensions_en_s() -> float:
+	var joueur = SauvegardeBddJoueursService.lire_nom_joueur()
+	# Nombre de plateau achevés
+	var duree_totale_toutes_les_ascensions: float = 0.
+	# Parcourir la liste des ascensions
+	if SauvegardeBddJoueursService.sauvegarde_joueur.get("ascensions", null):
+		for ascension in SauvegardeBddJoueursService.sauvegarde_joueur.get("ascensions"):
+			# Comptabiliser les plateaux reussis
+			if ascension.get("plateaux", null):
+				for plateau_joue in ascension.get("plateaux"):
+					if plateau_joue.get("date_debut") and plateau_joue.get("date_fin"):
+						duree_totale_toutes_les_ascensions += plateau_joue.get("date_fin") - plateau_joue.get("date_debut")
+	LogService.log_debug("joueur:",joueur, ' duree_totale_toutes_les_ascensions=', duree_totale_toutes_les_ascensions)
+	return duree_totale_toutes_les_ascensions
+
+func duree_totale_ascensions_en_cours_en_s() -> float:
+	return 0.0
