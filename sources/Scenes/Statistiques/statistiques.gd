@@ -30,14 +30,15 @@ func campagne():
 	var KPI_Completion = $Marge/HBoxContainer/VBoxContainer/KPI_Campagne/KPI_Completion
 	KPI_Completion.set_title("Complétion")
 	valeur = StatsService.campagne_taux_completion()
-	valeur = str(arrondir_pourcentage(valeur)) + '%'
+	valeur = str_arrondir_pourcentage(valeur)
 	KPI_Completion.set_value(valeur)
 	KPI_Completion.set_color(Color("e6e6ffff"), Color('BLUE'))
 	KPI_Completion.set_minimum_size(Vector2(105,50))
 
 	var KPI_Temps = $Marge/HBoxContainer/VBoxContainer/KPI_Campagne/KPI_Temps
 	KPI_Temps.set_title("Temps")
-	valeur = str(StatsService.campagne_temps_total_en_s()) + 's'
+	valeur = StatsService.campagne_temps_total_en_s()
+	valeur = str_arrondir_temps_en_s(valeur)
 	KPI_Temps.set_value(valeur)
 	KPI_Temps.set_color(Color("BLACK"), Color('SPRING_GREEN'))
 	KPI_Temps.set_minimum_size(Vector2(105,50))
@@ -45,7 +46,7 @@ func campagne():
 	var KPI_TauxReussite = $Marge/HBoxContainer/VBoxContainer/KPI_Campagne/KPI_TauxReussite
 	KPI_TauxReussite.set_title("Réussite")
 	valeur = StatsService.campagne_taux_reussite()
-	valeur = str(arrondir_pourcentage(valeur)) + '%'
+	valeur = str_arrondir_pourcentage(valeur)
 	KPI_TauxReussite.set_value(valeur)
 	KPI_TauxReussite.set_color(Color("fff4e6ff"), Color('DARK_ORANGE'))
 	KPI_TauxReussite.set_minimum_size(Vector2(105,50))
@@ -81,7 +82,8 @@ func ascensions():
 
 	var KPI_DureeMoyenne = $Marge/HBoxContainer/VBoxContainer/KPI_Ascension/KPI_DureeMoyenne
 	KPI_DureeMoyenne.set_title("Durée Moy.")
-	valeur = str(StatsService.ascension_duree_moyenne_en_s()) + "s"
+	valeur = StatsService.ascension_duree_moyenne_en_s()
+	valeur = str_arrondir_temps_en_s(valeur)
 	KPI_DureeMoyenne.set_value(valeur)
 	KPI_DureeMoyenne.set_color(Color("fff0ffff"), Color('MAROON'))
 	KPI_DureeMoyenne.set_minimum_size(Vector2(120,50))
@@ -102,7 +104,7 @@ func ascensions():
 	KPI_Parfait_Nb.set_minimum_size(Vector2(90,50))
 
 	var KPI_Parfait_Lg = $Marge/HBoxContainer/VBoxContainer/KPI_Ascension2/KPI_Parfait_Lg
-	KPI_Parfait_Lg.set_title("Longueur (Parfaite)")
+	KPI_Parfait_Lg.set_title("Long. Max. (Parf.)")
 	valeur = StatsService.ascension_parfaite_longeur()
 	KPI_Parfait_Lg.set_value(valeur)
 	KPI_Parfait_Lg.set_color(Color("GOLD"), Color('BLACK'))
@@ -132,7 +134,8 @@ func plateaux():
 
 	var KPI_RapideTemps = $Marge/HBoxContainer/VBoxContainer/KPI_Plateau/KPI_RapideTemps
 	KPI_RapideTemps.set_title("Temps")
-	valeur = str(StatsService.plateau_plus_rapide_en_ms()) + 'ms'
+	valeur = StatsService.plateau_plus_rapide_en_s()
+	valeur = str_arrondir_temps_en_s(valeur)
 	KPI_RapideTemps.set_value(valeur)
 	KPI_RapideTemps.set_color(Color("ffe6f3ff"), Color('DEEP_PINK'))
 	KPI_RapideTemps.set_minimum_size(Vector2(120,50))
@@ -155,7 +158,8 @@ func plateaux():
 
 	var KPI_LentTemps = $Marge/HBoxContainer/VBoxContainer/KPI_Plateau2/KPI_LentTemps
 	KPI_LentTemps.set_title("Temps")
-	valeur = str(StatsService.plateau_plus_lent_en_ms()) + 'ms'
+	valeur = StatsService.plateau_plus_lent_en_s()
+	valeur = str_arrondir_temps_en_s(valeur)
 	KPI_LentTemps.set_value(valeur)
 	KPI_LentTemps.set_color(Color("ffe6f3ff"), Color('DEEP_PINK'))
 	KPI_LentTemps.set_minimum_size(Vector2(120,50))
@@ -169,13 +173,29 @@ func plateaux():
 	
 	# TODO : representer le plateau en miniature
 
-func arrondir_pourcentage(pourcentage: float) -> float:
+func str_arrondir_pourcentage(pourcentage: float) -> String:
 	# Passage en pourcentage * 100
 	pourcentage = 100. * pourcentage
 	# Précision du pourcentage selon le taux.
-	if pourcentage < 10.0:
+	if pourcentage < 1.0:
 		# 2 decimales
-		return round(pourcentage * 100) / 100.0
-	else:
+		return str(round(pourcentage * 100) / 100.0) + '%'
+	elif pourcentage < 10.0:
 		# 1 decimale
-		return round(pourcentage * 10) / 10.0
+		return str(round(pourcentage * 10) / 10.0) + '%'
+	else:
+		# 0 decimale
+		return str(int(round(pourcentage))) + '%'
+
+func str_arrondir_temps_en_s(temps: float) -> String:
+	# Passage en pourcentage * 100
+	# Précision du pourcentage selon le taux.
+	if temps < 1.0:
+		# En millissecondes
+		return str(round(temps * 1000)) + 'ms'
+	elif temps < 10.0:
+		# En secondes avec 1 decimale
+		return str(round(temps * 10) / 10.) + 's'
+	else:
+		# En secondes sans decimale
+		return str(int(round(temps))) + 's'
