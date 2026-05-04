@@ -1,6 +1,9 @@
 extends Node
 
-var clonage := "/sdcard/Documents/RangeLesCouleurs/" # null
+var clonage: bool = true
+var clonage_base_path: String = "/sdcard/Documents/"
+var clonage_app_dir: String = "RangeLesCouleurs"
+var clonage_fullpath: String = clonage_base_path + clonage_app_dir + "/"
 
 func json_file_exists(chemin) -> Variant:
 	return FileAccess.file_exists(chemin)
@@ -12,8 +15,8 @@ func remove_json_file(chemin) -> void:
 			LogService.log_erreur("Erreur : Effacement du fichier : ", chemin,
 					 " avec l'erreur : ", erreur)
 		if OS.get_name() == "Android" and clonage:
-			if FileAccess.file_exists(clonage + chemin):
-				DirAccess.remove_absolute(clonage + chemin)
+			if FileAccess.file_exists(clonage_fullpath + chemin):
+				DirAccess.remove_absolute(clonage_fullpath + chemin)
 
 func read_json_file(chemin) -> Variant:
 	var fichier = null
@@ -37,6 +40,25 @@ func read_json_file(chemin) -> Variant:
 		var error = json.parse(contenu_texte)
 		# LogService.log_debug("error = ", error)
 		if error == OK:
+			if OS.get_name() == "Android" and clonage:
+				# Verifier si le repertoire existe
+				if not DirAccess.dir_exists_absolute(clonage_fullpath):
+					var dir := DirAccess.open(clonage_base_path)
+					if dir:
+						var err = dir.make_dir(clonage_app_dir)
+						if err == OK:
+							LogService.log("Dossier créé :", clonage_base_path + clonage_app_dir)
+						else:
+							LogService.log_erreur("Impossible de créer le dossier :", err)
+					else:
+						LogService.log_erreur("Impossible d'ouvrir :", clonage_base_path)
+				# Copier le fichier s'il n'existe pas !
+				if not FileAccess.file_exists(clonage_fullpath + chemin):
+					fichier = FileAccess.open(clonage_fullpath + chemin, FileAccess.WRITE)
+					if not fichier:
+						LogService.log_erreur("write_json_file : ERREUR sur le chemin : ", clonage_fullpath + chemin)
+					fichier.store_string(contenu_texte)
+					fichier.close()
 			return json.get_data()
 		LogService.log_erreur("read_json_file : ERREUR sur le décodage JSON: ", json.get_error_message(), " in ", chemin, " at line ", json.get_error_line())
 	else:
@@ -59,8 +81,8 @@ func write_json_file(chemin, contenu) -> void:
 	fichier.close()
 
 	if OS.get_name() == "Android" and clonage:
-		fichier = FileAccess.open(clonage + chemin, FileAccess.WRITE)
+		fichier = FileAccess.open(clonage_fullpath + chemin, FileAccess.WRITE)
 		if not fichier:
-			LogService.log_erreur("write_json_file : ERREUR sur le chemin : ", clonage + chemin)
+			LogService.log_erreur("write_json_file : ERREUR sur le chemin : ", clonage_fullpath + chemin)
 		fichier.store_string(json_string)
 		fichier.close()

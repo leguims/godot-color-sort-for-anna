@@ -26,6 +26,9 @@ Depuis la phase de tests internes de la version V0.3.0, les fonctionnalités son
 ### Bug V0.3.6 :
 - après un abandon, on peut continuer de résoudre un plateau et même le résoudre malgré les menus affichés
 
+### Bug V0.4.0 :
+- Durée campagne = 1500h et plus. Si un jouer arrete le jeu pendant une partie, au prochain lancement, la partie est terminée avec l'heure du lancement qui peut etre plusieurs semaines apres. Il faudrait laisse "fin" à une valeur connue pour identifier qu'il ne faut pas la compter dans les statistiques de temps. Peut-etre ajouter un champs "fin_inconnue = true".
+
 
 ### Jeu
 - Page "Campagne" : En même temps que le bouton "Commencer", faire des liens (en haut) vers chaque joueurs pour basculer d'une campagne à l'autre sans passer par le menu
