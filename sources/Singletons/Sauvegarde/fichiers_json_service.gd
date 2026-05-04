@@ -1,5 +1,7 @@
 extends Node
 
+var clonage := "/sdcard/Documents/RangeLesCouleurs/" # null
+
 func json_file_exists(chemin) -> Variant:
 	return FileAccess.file_exists(chemin)
 
@@ -9,6 +11,9 @@ func remove_json_file(chemin) -> void:
 		if erreur != OK:
 			LogService.log_erreur("Erreur : Effacement du fichier : ", chemin,
 					 " avec l'erreur : ", erreur)
+		if OS.get_name() == "Android" and clonage:
+			if FileAccess.file_exists(clonage + chemin):
+				DirAccess.remove_absolute(clonage + chemin)
 
 func read_json_file(chemin) -> Variant:
 	var fichier = null
@@ -52,3 +57,10 @@ func write_json_file(chemin, contenu) -> void:
 	# Ecriture du fichier
 	fichier.store_string(json_string)
 	fichier.close()
+
+	if OS.get_name() == "Android" and clonage:
+		fichier = FileAccess.open(clonage + chemin, FileAccess.WRITE)
+		if not fichier:
+			LogService.log_erreur("write_json_file : ERREUR sur le chemin : ", clonage + chemin)
+		fichier.store_string(json_string)
+		fichier.close()
