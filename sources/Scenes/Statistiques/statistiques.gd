@@ -220,6 +220,6 @@ func str_arrondir_temps_en_s(temps: float) -> String:
 	else:
 		# En heure + minutes + secondes
 		var heure = roundi(temps/3600.)
-		var min = roundi(fmod(temps, 3600.))
-		var sec = roundi(fmod(fmod(temps, 3600.), 60.))
+		var min = roundi((temps - heure * 3600.) / 60.)
+		var sec = roundi(fmod(temps, 60.))
 		return str(heure) + 'h ' + str(min) + 'min' + str(sec) + 's'
