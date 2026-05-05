@@ -46,7 +46,7 @@ func campagne():
 	valeur = StatsService.campagne_taux_completion()
 	valeur = str_arrondir_pourcentage(valeur)
 	KPI_Completion.set_value(valeur)
-	KPI_Completion.set_color(Color("e6e6ffff"), Color('BLUE'))
+	KPI_Completion.set_color(Color("ffe6f3ff"), Color('DEEP_PINK'))
 	KPI_Completion.set_minimum_size(Vector2(105,50))
 
 	var KPI_Temps = $Marge/HBoxContainer/VBoxContainer/KPI_Campagne/KPI_Temps
@@ -54,7 +54,7 @@ func campagne():
 	valeur = StatsService.campagne_temps_total_en_s()
 	valeur = str_arrondir_temps_en_s(valeur)
 	KPI_Temps.set_value(valeur)
-	KPI_Temps.set_color(Color("BLACK"), Color('SPRING_GREEN'))
+	KPI_Temps.set_color(Color("ffe6f3ff"), Color('DEEP_PINK'))
 	KPI_Temps.set_minimum_size(Vector2(105,50))
 
 	var KPI_TauxReussite = $Marge/HBoxContainer/VBoxContainer/KPI_Campagne/KPI_TauxReussite
@@ -62,7 +62,7 @@ func campagne():
 	valeur = StatsService.campagne_taux_reussite()
 	valeur = str_arrondir_pourcentage(valeur)
 	KPI_TauxReussite.set_value(valeur)
-	KPI_TauxReussite.set_color(Color("fff4e6ff"), Color('DARK_ORANGE'))
+	KPI_TauxReussite.set_color(Color("ffe6f3ff"), Color('DEEP_PINK'))
 	KPI_TauxReussite.set_minimum_size(Vector2(105,50))
 
 	var KPI_SerieMaximumSucces = $Marge/HBoxContainer/VBoxContainer/KPI_Campagne/KPI_SerieMaximumSucces
@@ -84,14 +84,14 @@ func ascensions():
 	KPI_Completion.set_title("Complétion")
 	valeur = str(StatsService.ascension_taux_completion()) + '%'
 	KPI_Completion.set_value(valeur)
-	KPI_Completion.set_color(Color("e6e6ffff"), Color('BLUE'))
+	KPI_Completion.set_color(Color("WHITE"), Color('00a7f9'))
 	KPI_Completion.set_minimum_size(Vector2(120,50))
 
 	var KPI_Terminees = $Marge/HBoxContainer/VBoxContainer/KPI_Ascension/KPI_Terminees
 	KPI_Terminees.set_title("Terminées")
 	valeur = StatsService.ascension_terminees()
 	KPI_Terminees.set_value(valeur)
-	KPI_Terminees.set_color(Color("ffe6f3ff"), Color('DEEP_PINK'))
+	KPI_Terminees.set_color(Color("WHITE"), Color('00a7f9'))
 	KPI_Terminees.set_minimum_size(Vector2(120,50))
 
 	var KPI_DureeMoyenne = $Marge/HBoxContainer/VBoxContainer/KPI_Ascension/KPI_DureeMoyenne
@@ -99,7 +99,7 @@ func ascensions():
 	valeur = StatsService.ascension_duree_moyenne_en_s()
 	valeur = str_arrondir_temps_en_s(valeur)
 	KPI_DureeMoyenne.set_value(valeur)
-	KPI_DureeMoyenne.set_color(Color("fff0ffff"), Color('MAROON'))
+	KPI_DureeMoyenne.set_color(Color("WHITE"), Color('00a7f9'))
 	KPI_DureeMoyenne.set_minimum_size(Vector2(120,50))
 
 	# Ligne 2
@@ -107,20 +107,20 @@ func ascensions():
 	KPI_Longueur.set_title("Longueur Max.")
 	valeur = StatsService.ascension_longueur_max()
 	KPI_Longueur.set_value(valeur)
-	KPI_Longueur.set_color(Color("fff0e3ff"), Color('CRIMSON'))
+	KPI_Longueur.set_color(Color("WHITE"), Color('00a7f9'))
 	KPI_Longueur.set_minimum_size(Vector2(120,50))
 
 	var KPI_Parfait_Nb = $Marge/HBoxContainer/VBoxContainer/KPI_Ascension2/KPI_Parfait_Nb
 	KPI_Parfait_Nb.set_title("Parfaite")
 	var ascension_parfaite = StatsService.ascension_parfaite_infos()
 	KPI_Parfait_Nb.set_value(ascension_parfaite.get('nombre'))
-	KPI_Parfait_Nb.set_color(Color("GOLD"), Color('BLACK'))
+	KPI_Parfait_Nb.set_color(Color("WHITE"), Color('00a7f9'))
 	KPI_Parfait_Nb.set_minimum_size(Vector2(90,50))
 
 	var KPI_Parfait_Lg = $Marge/HBoxContainer/VBoxContainer/KPI_Ascension2/KPI_Parfait_Lg
 	KPI_Parfait_Lg.set_title("Long. Max. (Parf.)")
 	KPI_Parfait_Lg.set_value(ascension_parfaite.get('longueur'))
-	KPI_Parfait_Lg.set_color(Color("GOLD"), Color('BLACK'))
+	KPI_Parfait_Lg.set_color(Color("WHITE"), Color('00a7f9'))
 	KPI_Parfait_Lg.set_minimum_size(Vector2(150,50))
 
 func niveaux():
@@ -142,7 +142,7 @@ func plateaux():
 	var KPI_RapideTitre = $Marge/HBoxContainer/VBoxContainer/KPI_Plateau/KPI_RapideTitre
 	KPI_RapideTitre.set_title("Le Plus")
 	KPI_RapideTitre.set_value("Rapide")
-	KPI_RapideTitre.set_color(Color("e6e6ffff"), Color('BLUE'))
+	KPI_RapideTitre.set_color(Color("WHITE"), Color('b067ef'))
 	KPI_RapideTitre.set_minimum_size(Vector2(120,50))
 
 	var KPI_RapideTemps = $Marge/HBoxContainer/VBoxContainer/KPI_Plateau/KPI_RapideTemps
@@ -150,14 +150,14 @@ func plateaux():
 	var plus_rapide = StatsService.plateau_plus_rapide_infos()
 	valeur = str_arrondir_temps_en_s(plus_rapide.get('temps_en_s'))
 	KPI_RapideTemps.set_value(valeur)
-	KPI_RapideTemps.set_color(Color("BLACK"), Color('WHITE'))
+	KPI_RapideTemps.set_color(Color("WHITE"), Color('b067ef'))
 	KPI_RapideTemps.set_minimum_size(Vector2(120,50))
 
 	var KPI_RapideDifficulte = $Marge/HBoxContainer/VBoxContainer/KPI_Plateau/KPI_RapideDifficulte
 	KPI_RapideDifficulte.set_title("Difficulté")
 	valeur = plus_rapide.get('difficulte')
 	KPI_RapideDifficulte.set_value(valeur)
-	KPI_RapideDifficulte.set_color(Color("fff0e1ff"), Color('RED'))
+	KPI_RapideDifficulte.set_color(Color("WHITE"), Color('b067ef'))
 	KPI_RapideDifficulte.set_minimum_size(Vector2(120,50))
 	
 	# TODO : representer le plateau en miniature
@@ -166,7 +166,7 @@ func plateaux():
 	var KPI_LentTitre = $Marge/HBoxContainer/VBoxContainer/KPI_Plateau2/KPI_LentTitre
 	KPI_LentTitre.set_title("Le Plus")
 	KPI_LentTitre.set_value("Lent")
-	KPI_LentTitre.set_color(Color("e6e6ffff"), Color('BLUE'))
+	KPI_LentTitre.set_color(Color("WHITE"), Color('b067ef'))
 	KPI_LentTitre.set_minimum_size(Vector2(120,50))
 
 	var KPI_LentTemps = $Marge/HBoxContainer/VBoxContainer/KPI_Plateau2/KPI_LentTemps
@@ -174,14 +174,14 @@ func plateaux():
 	var plus_lent = StatsService.plateau_plus_lent_infos()
 	valeur = str_arrondir_temps_en_s(plus_lent.get('temps_en_s'))
 	KPI_LentTemps.set_value(valeur)
-	KPI_LentTemps.set_color(Color("BLACK"), Color('WHITE'))
+	KPI_LentTemps.set_color(Color("WHITE"), Color('b067ef'))
 	KPI_LentTemps.set_minimum_size(Vector2(120,50))
 
 	var KPI_LentDifficulte = $Marge/HBoxContainer/VBoxContainer/KPI_Plateau2/KPI_LentDifficulte
 	KPI_LentDifficulte.set_title("Difficulté")
 	valeur = plus_lent.get('difficulte')
 	KPI_LentDifficulte.set_value(valeur)
-	KPI_LentDifficulte.set_color(Color("fff0e1ff"), Color('RED'))
+	KPI_LentDifficulte.set_color(Color("WHITE"), Color('b067ef'))
 	KPI_LentDifficulte.set_minimum_size(Vector2(120,50))
 	
 	# TODO : representer le plateau en miniature

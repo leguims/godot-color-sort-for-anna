@@ -1,7 +1,7 @@
 [gd_scene load_steps=8 format=3 uid="uid://ce35s8h6fj434"]
 
 [ext_resource type="Script" uid="uid://d213tcxl8hfw3" path="res://Scenes/Statistiques/statistiques.gd" id="1_y2h7b"]
-[ext_resource type="Texture2D" uid="uid://b4sljtl47g8vl" path="res://Art/Images/fond_statistiques_480x720.png" id="2_se7pp"]
+[ext_resource type="Texture2D" uid="uid://b5o70yfsck3ni" path="res://Art/Images/fond_statistiques_480x720.png" id="2_se7pp"]
 [ext_resource type="PackedScene" uid="uid://bgsyo7w2m28pi" path="res://Scenes/Statistiques/kpi.tscn" id="2_xsdck"]
 [ext_resource type="PackedScene" uid="uid://c8uyx36tscdpp" path="res://Scenes/Statistiques/diagramme_en_barres.tscn" id="3_se7pp"]
 [ext_resource type="Script" uid="uid://dv22g4vxsw80c" path="res://Scenes/Statistiques/jauge.gd" id="3_xsdck"]
@@ -42,6 +42,10 @@ alignment = 1
 layout_mode = 2
 alignment = 1
 
+[node name="SEPARATEUR VIDE7" type="Label" parent="Marge/HBoxContainer/VBoxContainer"]
+layout_mode = 2
+text = " "
+
 [node name="Nom_Joueur" type="Label" parent="Marge/HBoxContainer/VBoxContainer"]
 layout_mode = 2
 theme_override_colors/font_color = Color(1, 1, 0.20392157, 1)
@@ -50,7 +54,11 @@ theme_override_styles/normal = SubResource("StyleBoxFlat_se7pp")
 text = "Toto"
 horizontal_alignment = 1
 
-[node name="SEPARATEUR VIDE0" type="Label" parent="Marge/HBoxContainer/VBoxContainer"]
+[node name="SEPARATEUR VIDE6" type="Label" parent="Marge/HBoxContainer/VBoxContainer"]
+layout_mode = 2
+text = " "
+
+[node name="SEPARATEUR VIDE5" type="Label" parent="Marge/HBoxContainer/VBoxContainer"]
 layout_mode = 2
 text = " "
 
@@ -88,6 +96,10 @@ layout_mode = 2
 layout_mode = 2
 text = " "
 
+[node name="SEPARATEUR VIDE0" type="Label" parent="Marge/HBoxContainer/VBoxContainer"]
+layout_mode = 2
+text = " "
+
 [node name="Titre Ascension" parent="Marge/HBoxContainer/VBoxContainer" instance=ExtResource("2_xsdck")]
 layout_mode = 2
 titre = "Ascension"
@@ -119,7 +131,10 @@ layout_mode = 2
 layout_mode = 2
 
 [node name="SEPARATEUR VIDE2" type="Label" parent="Marge/HBoxContainer/VBoxContainer"]
-visible = false
+layout_mode = 2
+text = " "
+
+[node name="SEPARATEUR VIDE4" type="Label" parent="Marge/HBoxContainer/VBoxContainer"]
 layout_mode = 2
 text = " "
 
@@ -136,6 +151,7 @@ layout_mode = 2
 script = ExtResource("3_xsdck")
 
 [node name="SEPARATEUR VIDE3" type="Label" parent="Marge/HBoxContainer/VBoxContainer"]
+visible = false
 layout_mode = 2
 text = " "
 

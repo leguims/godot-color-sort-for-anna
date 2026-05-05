@@ -28,6 +28,8 @@ Depuis la phase de tests internes de la version V0.3.0, les fonctionnalités son
 
 ### Bug V0.4.0 :
 - Durée campagne = 1500h et plus. Si un jouer arrete le jeu pendant une partie, au prochain lancement, la partie est terminée avec l'heure du lancement qui peut etre plusieurs semaines apres. Il faudrait laisse "fin" à une valeur connue pour identifier qu'il ne faut pas la compter dans les statistiques de temps. Peut-etre ajouter un champs "fin_inconnue = true".
+- La version dans le fichier de configuration enregistrée n'est pas mise à jour lors d'une nouvelle version.
+- Le tableau des scores repete "Alain à 0" 5 fois sur une machine vierge.
 
 
 ### Jeu
