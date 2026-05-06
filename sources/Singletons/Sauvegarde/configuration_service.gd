@@ -28,13 +28,16 @@ func _initialiser_la_configuration() -> void:
 	var fichier_configuration = FichiersJsonService.read_json_file("user://configuration_du_jeu.json")
 	# LogService.log_debug(fichier_configuration)
 	
-	var version_courante = lire_la_version()
+	var version_courante_disque = fichier_configuration.get('version')
 	
 	# Copier les niveaux lus
 	if fichier_configuration:
-		if version_courante != lire_la_version():
+		if version_courante_disque != lire_la_version():
 			# CONVERSION [V0.3.2 -> V0.3.3]
 			# TODO : conversion vers V0.3.3
+			# TODO : Nouvelle campagne => reset des sauvegardes
+			# Ecrire la nouvelle version après conversion
+			_enregistrer_la_configuration()
 			pass
 		if 'musiques' in fichier_configuration:
 			configuration_du_jeu['musiques'] = fichier_configuration.get('musiques')

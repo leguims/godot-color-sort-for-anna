@@ -27,25 +27,27 @@ Depuis la phase de tests internes de la version V0.3.0, les fonctionnalités son
 - après un abandon, on peut continuer de résoudre un plateau et même le résoudre malgré les menus affichés
 
 ### Bug V0.4.0 :
-- Durée campagne = 1500h et plus. Si un jouer arrete le jeu pendant une partie, au prochain lancement, la partie est terminée avec l'heure du lancement qui peut etre plusieurs semaines apres. Il faudrait laisse "fin" à une valeur connue pour identifier qu'il ne faut pas la compter dans les statistiques de temps. Peut-etre ajouter un champs "fin_inconnue = true".
+- ~~Durée campagne = 1500h et plus. Si un jouer arrete le jeu pendant une partie, au prochain lancement, la partie est terminée avec l'heure du lancement qui peut etre plusieurs semaines apres. Il faudrait laisse "fin" à une valeur connue pour identifier qu'il ne faut pas la compter dans les statistiques de temps. Peut-etre ajouter un champs "fin_inconnue = true".~~:heavy_check_mark:
 - La version dans le fichier de configuration enregistrée n'est pas mise à jour lors d'une nouvelle version.
 - Le tableau des scores repete "Alain à 0" 5 fois sur une machine vierge.
+- Pour l'export, reduire les noms de fichiers, car ils sont tronqués, modifiés.
 
 
 ### Jeu
-- Page "Campagne" : En même temps que le bouton "Commencer", faire des liens (en haut) vers chaque joueurs pour basculer d'une campagne à l'autre sans passer par le menu
-- Lire les plateaux 'Solutions_classees.json' et enregistrer l'UUID. Si l'UUID n'est pas celui de la sauvegarde, effacer toutes les sauvegardes des joueurs.
-- (option) enregistrer les dates de jeux et proposer une série de plateaux de chaque niveau. "Semaine 1", proposer les 1er plateaux de chaque niveau.
-- (option) prévoir un json avec l'enregistrement des scores de chacun sur chaque semaine. Score total et score semaine.
+- ~~Page "Campagne" : En même temps que le bouton "Commencer", faire des liens (en haut) vers chaque joueurs pour basculer d'une campagne à l'autre sans passer par le menu~~ ABANDON
+- ~~Lire les plateaux 'Solutions_classees.json' et enregistrer l'UUID. Si l'UUID n'est pas celui de la sauvegarde, effacer toutes les sauvegardes des joueurs.~~ ABANDON
+- ~~(option) enregistrer les dates de jeux et proposer une série de plateaux de chaque niveau. "Semaine 1", proposer les 1er plateaux de chaque niveau.~~ ABANDON
+- ~~(option) prévoir un json avec l'enregistrement des scores de chacun sur chaque semaine. Score total et score semaine.~~ Calculable avec les statistiques.
 - (Faro) Aligner les piles sur la même ligne pour que ca soit plus facile à jouer (-1 Totol)
 - Sauvegarder l'état du plateau en cours après chaque coup. Le joueur qui quitte le jeu, reprend là où il était. Quand il revient, il commence avec son temps moyen sur ce type de niveau.
 - (Aleksandar): thème sur le fond du décors. Trop austère.
-- Quand le jeu est terminé (campagne 100%), afficher un globe à coté du nom du joueur dans le menu principal
+- ~~Quand le jeu est terminé (campagne 100%), afficher un globe à coté du nom du joueur dans le menu principal~~:heavy_check_mark:
 - Sauvegarder l'état du plateau en cours après chaque coup. Le joueur qui quitte le jeu, reprend là où il était. Quand il revient, il commence avec son temps moyen sur ce type de niveau.
 - Selon ton humeur, demander 5 plateaux faciles ou 5 ultras difficiles. (mode libre)
 - pour les plateaux impossibles à perdre, les classer dans DÉTENTE
 - pour les plateaux impossibles à gagner, proposer au joueur de trouver la combinaison pour perdre. (Mode No Win)
 - ~~Pouvoir passer l'apercu du score du plateau par un clique sur l'ecran.~~:heavy_check_mark:
+- Pouvoir effacer un joueur (avec confirmation)
 
 #### Refactoring
 - ~~Structurer tout le dépot pour réorganiser les sources, les outils et les tests~~:heavy_check_mark:
