@@ -16,7 +16,7 @@ func campagne_taux_completion() -> float:
 	LogService.log_debug("joueur:",joueur, ' campagne_taux_completion=', taux_completion_campagne())
 	return taux_completion_campagne()
 
-func campagne_temps_total_en_s() -> int:
+func campagne_temps_total_en_s() -> float:
 	return duree_totale_plateaux_toutes_les_ascensions_en_s().get('toutes')
 
 func campagne_taux_reussite() -> float:
@@ -33,7 +33,7 @@ func ascension_taux_completion() -> int:
 func ascension_terminees() -> int:
 	return SauvegardeBddJoueursService.lire_nombre_ascensions()
 
-func ascension_duree_moyenne_en_s() -> int:
+func ascension_duree_moyenne_en_s() -> float:
 	return duree_moyenne_ascensions_terminees_en_s()
 
 func ascension_longueur_max() -> int:
@@ -98,13 +98,13 @@ func duree_totale_plateaux_toutes_les_ascensions_en_s() -> Dictionary:
 			# Comptabiliser les plateaux reussis
 			if ascension.get("plateaux", null):
 				for plateau_joue in ascension.get("plateaux"):
-					var duree = plateau_joue.get("date_fin") - plateau_joue.get("date_debut")
-					if plateau_joue.get("date_debut") and plateau_joue.get("date_fin"):
+					var duree_en_ms = plateau_joue.get("duree")
+					if duree_en_ms:
 						# Comptabiliser TOUTES les ascensions
-						duree_totale_plateaux_toutes_les_ascensions += duree
+						duree_totale_plateaux_toutes_les_ascensions += duree_en_ms / 1000.
 						if ascension.get("date_fin"):
 							# Comptabiliser les ascensions TERMINEES
-							duree_totale_plateaux_toutes_les_ascensions_terminees += duree
+							duree_totale_plateaux_toutes_les_ascensions_terminees += duree_en_ms / 1000.
 	LogService.log_debug("joueur:",joueur,
 						' duree_totale_plateaux_toutes_les_ascensions=', duree_totale_plateaux_toutes_les_ascensions,
 						' duree_totale_plateaux_toutes_les_ascensions_terminees=', duree_totale_plateaux_toutes_les_ascensions_terminees)
@@ -182,14 +182,14 @@ func plateau_le_plus_rapide_les_infos() -> Dictionary:
 			# Comptabiliser les plateaux reussis
 			if ascension.get("plateaux", null):
 				for plateau_joue in ascension.get("plateaux"):
-					if plateau_joue.get("date_fin") and plateau_joue.get("date_debut"):
-						var duree = plateau_joue.get("date_fin") - plateau_joue.get("date_debut")
+					var duree_en_ms = plateau_joue.get("duree", 0)
+					if duree_en_ms:
 						var difficulte = plateau_joue.get("niveau")
-						if duree <= plus_rapide_temps or plus_rapide_temps == 0.:
-							if duree == plus_rapide_temps and difficulte > plus_rapide_difficulte:
+						if duree_en_ms <= plus_rapide_temps or plus_rapide_temps == 0.:
+							if duree_en_ms == plus_rapide_temps and difficulte > plus_rapide_difficulte:
 								plus_rapide_difficulte = difficulte
 							else:
-								plus_rapide_temps = duree
+								plus_rapide_temps = duree_en_ms / 1000.
 								plus_rapide_difficulte = difficulte
 	LogService.log_debug("joueur:",joueur,
 						' plus_rapide_temps=', plus_rapide_temps,
@@ -207,14 +207,14 @@ func plateau_le_plus_lent_les_infos() -> Dictionary:
 			# Comptabiliser les plateaux reussis
 			if ascension.get("plateaux", null):
 				for plateau_joue in ascension.get("plateaux"):
-					if plateau_joue.get("date_fin") and plateau_joue.get("date_debut"):
-						var duree = plateau_joue.get("date_fin") - plateau_joue.get("date_debut")
+					var duree_en_ms = plateau_joue.get("duree", 0)
+					if duree_en_ms:
 						var difficulte = plateau_joue.get("niveau")
-						if duree >= plus_lent_temps or plus_lent_temps == 0.:
-							if duree == plus_lent_temps and difficulte > plus_lent_difficulte:
+						if duree_en_ms >= plus_lent_temps or plus_lent_temps == 0.:
+							if duree_en_ms == plus_lent_temps and difficulte > plus_lent_difficulte:
 								plus_lent_difficulte = difficulte
 							else:
-								plus_lent_temps = duree
+								plus_lent_temps = duree_en_ms / 1000.
 								plus_lent_difficulte = difficulte
 	LogService.log_debug("joueur:",joueur,
 						' plus_lent_temps=', plus_lent_temps,

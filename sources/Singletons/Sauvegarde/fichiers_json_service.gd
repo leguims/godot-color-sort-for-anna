@@ -2,7 +2,7 @@ extends Node
 
 var clonage: bool = true
 var clonage_app_dir: String = "/sdcard/Download/"
-var clonage_prefixe: String = "RangeLesCouleurs_"
+var clonage_prefixe: String = "RLC_"
 
 func json_file_exists(chemin : String) -> Variant:
 	return FileAccess.file_exists(chemin)
