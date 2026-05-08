@@ -26,6 +26,9 @@ func _initialiser_la_configuration() -> void:
 	
 	# Lire la configuration du jeu
 	var fichier_configuration = FichiersJsonService.read_json_file("user://configuration_du_jeu.json")
+	if not fichier_configuration:
+		_enregistrer_la_configuration()
+		fichier_configuration = FichiersJsonService.read_json_file("user://configuration_du_jeu.json")
 	# LogService.log_debug(fichier_configuration)
 	
 	var version_courante_disque = fichier_configuration.get('version')

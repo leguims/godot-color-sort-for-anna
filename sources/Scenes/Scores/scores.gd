@@ -22,21 +22,22 @@ func generer_bbcode_scores(classement: Array) -> String:
 	var liste_score_bbcode : String = ''
 	liste_score_bbcode += liste_format_scores.get('entete')
 	for i in range(TOP_N): # TOP 5
-		var joueur: Dictionary = classement.pop_front()
-		if joueur:
-			var rang_joueur = joueur.get('rang')
-			var score_texte = joueur.get('nom') + " " + joueur.get('score_txt')
-			if ProgressionCampagneService.la_campagne_est_terminee_pour_joueur(joueur.get('nom')):
-				score_texte = world_icon + score_texte
-			if 1 <= rang_joueur and rang_joueur <= 3:
-				score_texte = SauvegardeTableauDesScoresService.lire_le_trophee_du_rang(rang_joueur) + score_texte
-			# int(rang_joueur) car 'rang_joueur' est vu comme un float !
-			var texte_bbcode = liste_format_scores.get(int(rang_joueur))
-			texte_bbcode = texte_bbcode.replace('score', score_texte)
-			liste_score_bbcode += texte_bbcode
-		else:
-			var texte_bbcode = liste_format_scores.get(TOP_N)
-			texte_bbcode = texte_bbcode.replace('score', '-')
-			liste_score_bbcode += texte_bbcode
+		if classement:
+			var joueur: Dictionary = classement.pop_front()
+			if joueur:
+				var rang_joueur = joueur.get('rang')
+				var score_texte = joueur.get('nom') + " " + joueur.get('score_txt')
+				if ProgressionCampagneService.la_campagne_est_terminee_pour_joueur(joueur.get('nom')):
+					score_texte = world_icon + score_texte
+				if 1 <= rang_joueur and rang_joueur <= 3:
+					score_texte = SauvegardeTableauDesScoresService.lire_le_trophee_du_rang(rang_joueur) + score_texte
+				# int(rang_joueur) car 'rang_joueur' est vu comme un float !
+				var texte_bbcode = liste_format_scores.get(int(rang_joueur))
+				texte_bbcode = texte_bbcode.replace('score', score_texte)
+				liste_score_bbcode += texte_bbcode
+				continue
+		var texte_bbcode = liste_format_scores.get(TOP_N)
+		texte_bbcode = texte_bbcode.replace('score', '-')
+		liste_score_bbcode += texte_bbcode
 	liste_score_bbcode += liste_format_scores.get('pied_de_page')
 	return liste_score_bbcode
