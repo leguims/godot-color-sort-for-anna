@@ -20,11 +20,11 @@ Depuis la phase de tests internes de la version V0.3.0, les fonctionnalités son
 - [à surveiller] L'affichage "Niveau = 5 - indice Plateau = 0 - Nombre de parties = <null>" est en erreur !
 
 ### Bug V0.3.2 :
-- bug sur score d'ascension qui est calculé sur le nombre de niveaux restant dans le jeu plutot que les niveaux effectivement réalisés dans l'ascension courante.
-- dernière ascension, la même musique pendant toute l'ascension.
+- ~~bug sur score d'ascension qui est calculé sur le nombre de niveaux restant dans le jeu plutot que les niveaux effectivement réalisés dans l'ascension courante.~~:heavy_check_mark:
+- ~~dernière ascension, la même musique pendant toute l'ascension.~~:heavy_check_mark:
 
 ### Bug V0.3.6 :
-- après un abandon, on peut continuer de résoudre un plateau et même le résoudre malgré les menus affichés
+- ~~après un abandon, on peut continuer de résoudre un plateau et même le résoudre malgré les menus affichés~~:heavy_check_mark:
 
 ### Bug V0.4.0 :
 - ~~Durée campagne = 1500h et plus. Si un jouer arrete le jeu pendant une partie, au prochain lancement, la partie est terminée avec l'heure du lancement qui peut etre plusieurs semaines apres. Il faudrait laisse "fin" à une valeur connue pour identifier qu'il ne faut pas la compter dans les statistiques de temps. Peut-etre ajouter un champs "fin_inconnue = true".~~:heavy_check_mark:
