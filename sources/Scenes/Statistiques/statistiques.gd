@@ -205,21 +205,21 @@ func str_arrondir_temps_en_s(temps: float) -> String:
 	# Précision du pourcentage selon le taux.
 	if temps < 1.:
 		# En millissecondes
-		return str(roundi(temps * 1000)) + 'ms'
+		return str(floori(temps * 1000)) + 'ms'
 	elif temps < 10.:
 		# En secondes avec 1 decimale
-		return str(round(temps * 10) / 10.) + 's'
+		return str(floori(temps * 10) / 10.) + 's'
 	elif temps < 60.: # < 1 min
 		# En secondes sans decimale
-		return str(roundi(temps)) + 's'
+		return str(floori(temps)) + 's'
 	elif temps < (60. * 60.): # < 1 h
 		# En minutes + secondes
-		var min = roundi(temps/60.)
-		var sec = roundi(fmod(temps, 60.))
+		var min = floori(temps/60.)
+		var sec = floori(fmod(temps, 60.))
 		return str(min) + 'min ' + str(sec) + 's'
 	else:
 		# En heure + minutes + secondes
-		var heure = roundi(temps/3600.)
-		var min = roundi((temps - heure * 3600.) / 60.)
-		var sec = roundi(fmod(temps, 60.))
+		var heure = floori(temps/3600.)
+		var min = floori((temps - heure * 3600.) / 60.)
+		var sec = floori(fmod(temps, 60.))
 		return str(heure) + 'h ' + str(min) + 'min' + str(sec) + 's'

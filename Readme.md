@@ -31,6 +31,7 @@ Depuis la phase de tests internes de la version V0.3.0, les fonctionnalités son
 - La version dans le fichier de configuration enregistrée n'est pas mise à jour lors d'une nouvelle version.
 - Le tableau des scores repete "Alain à 0" 5 fois sur une machine vierge.
 - Pour l'export, reduire les noms de fichiers, car ils sont tronqués, modifiés.
+- Après un abandon, le menu de campagne n'apparait pas, le jeu est bloqué.
 
 
 ### Jeu
