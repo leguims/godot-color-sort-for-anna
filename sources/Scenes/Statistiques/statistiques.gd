@@ -82,7 +82,8 @@ func ascensions():
 	# Ligne 1
 	var KPI_Completion = $Marge/HBoxContainer/VBoxContainer/KPI_Ascension/KPI_Completion
 	KPI_Completion.set_title("Complétion")
-	valeur = str(StatsService.ascension_taux_completion()) + '%'
+	valeur = StatsService.ascension_taux_completion()
+	valeur = str_arrondir_pourcentage(valeur)
 	KPI_Completion.set_value(valeur)
 	KPI_Completion.set_color(Color("WHITE"), Color('00a7f9'))
 	KPI_Completion.set_minimum_size(Vector2(120,50))

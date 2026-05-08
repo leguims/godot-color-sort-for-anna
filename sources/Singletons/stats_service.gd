@@ -27,8 +27,8 @@ func campagne_serie_max_reussite() -> int:
 
 # #########
 # Ascension
-func ascension_taux_completion() -> int:
-	return SauvegardeBddJoueursService.lire_pourcentage_ascension_realise()
+func ascension_taux_completion() -> float:
+	return taux_completion_ascension()
 
 func ascension_terminees() -> int:
 	return SauvegardeBddJoueursService.lire_nombre_ascensions()
@@ -85,6 +85,25 @@ func nombre_de_plateaux_totaux() -> int:
 
 func taux_completion_campagne() -> float:
 	return 1. * nombre_de_plateau_acheves() / nombre_de_plateaux_totaux()
+
+func taux_completion_ascension() -> float:
+	"Taux de complétion de l'ascension en cours"
+	var joueur = SauvegardeBddJoueursService.lire_nom_joueur()
+	# Consulter la derniere ascension
+	if SauvegardeBddJoueursService.sauvegarde_joueur.get("ascensions", null):
+		var ascension = SauvegardeBddJoueursService.sauvegarde_joueur.get('ascensions').back()
+		if "longueur_initiale" in ascension and not ascension.get('date_fin', null):
+			var lg_initiale: int = ascension.get("longueur_initiale", 0)
+			var lg_realisee: int = ascension.get("plateaux", 0).size()
+			var lg_detour: int = ascension.get("longueur_detour", 0)
+			var completion: float = 1. * (lg_realisee - lg_detour) / lg_initiale
+			LogService.log_debug("joueur:",joueur,
+								' lg_initiale=', lg_initiale,
+								' lg_realisee=', lg_realisee,
+								' lg_detour=', lg_detour,
+								' completion=', completion)
+			return completion
+	return 0.
 
 func duree_totale_plateaux_toutes_les_ascensions_en_s() -> Dictionary:
 	"Durée totale de jeu effectif de plateaux dans les ascensions"

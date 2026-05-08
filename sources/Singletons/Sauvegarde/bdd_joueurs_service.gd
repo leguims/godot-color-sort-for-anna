@@ -27,6 +27,7 @@ var sauvegarde_joueur = {
 # 			'niveau_courant': 20,
 # 			'date_debut': 1748785865.997,
 # 			'date_fin': 0.,
+# 			'longueur_initiale': 0,
 # 			'longueur_detour': 0,
 # 			'score': { 'ascension': 500000, 'ascension_sans_detour': 500000},
 # 			'plateaux': [
@@ -217,6 +218,7 @@ func lire_nombre_de_parties_joueur_pour_niveau(niveau : int) -> int:
 # 			'niveau_courant': 20,
 # 			'date_debut': 1748785865.997,
 # 			'date_fin': 0.,
+# 			'longueur_initiale': 0,
 # 			'longueur_detour': 0,
 # 			'score': { 'ascension': 500000, 'ascension_sans_detour': 500000},
 # 			'plateaux': [
@@ -249,7 +251,8 @@ func ascension_en_cours() -> bool:
 		return not ascension.get('date_fin')
 	return false
 
-func initialiser_une_nouvelle_ascension(niveau_debut : int,
+func initialiser_une_nouvelle_ascension(nb_niveau : int,
+										niveau_debut : int,
 										niveau_fin : int) -> bool:
 	"Crée et initialise une nouvelle ascension"
 	if not ascension_en_cours():
@@ -259,6 +262,7 @@ func initialiser_une_nouvelle_ascension(niveau_debut : int,
 			'niveau_courant': niveau_debut,
 			'date_debut': Time.get_unix_time_from_system(), # Timestamp
 			'date_fin': 0.,
+			'longueur_initiale': nb_niveau,
 			'longueur_detour': 0,
 			'score': {},
 			'plateaux': []

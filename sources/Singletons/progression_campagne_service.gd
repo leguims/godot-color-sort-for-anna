@@ -102,7 +102,7 @@ func initialiser_une_nouvelle_ascension(pourcentage_longueur : float):
 		var nb_niveaux = roundi(pourcentage_longueur / 100. * SauvegardeBddJoueursService.lire_nombre_de_niveaux_realisables())
 		var niveau_min = retourner_le_niveau_le_plus_bas()
 		var niveau_max = retourner_le_niveau_nieme(nb_niveaux)
-		SauvegardeBddJoueursService.initialiser_une_nouvelle_ascension(niveau_min, niveau_max)
+		SauvegardeBddJoueursService.initialiser_une_nouvelle_ascension(nb_niveaux, niveau_min, niveau_max)
 
 func afficher_niveau_plateau_parties():
 	LogService.log_debug("[Campagne] Niveau = ", str(SauvegardeBddJoueursService.lire_niveau_joueur()),
