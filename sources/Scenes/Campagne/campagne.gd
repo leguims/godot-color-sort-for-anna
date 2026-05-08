@@ -57,7 +57,7 @@ func _on_plateau_de_jeu_victoire() -> void:
 
 func _on_plateau_de_jeu_plateau_invalide() -> void:
 	# Pas de plateau invalide en campagne
-	LogService.log_debug("_on_plateau_de_jeu_plateau_invalide pour la campagne IMPOSSIBLE ! WTF !")
+	LogService.log_erreur("_on_plateau_de_jeu_plateau_invalide pour la campagne IMPOSSIBLE ! WTF !")
 	pass
 
 func _on_plateau_de_jeu_abandon() -> void:
@@ -78,8 +78,8 @@ func enregistrer_infos_joueur_pour_menu():
 	# Transmet les infos pour mettre à jour la banniere 'infos joueur' du menu
 	var nom = SauvegardeBddJoueursService.lire_nom_joueur()
 	var trophee = SauvegardeTableauDesScoresService.lire_le_trophee_du_joueur(nom)
-	var pourcentage_ascension_realise = SauvegardeBddJoueursService.lire_pourcentage_ascension_realise()
-	var nb_ascensions = SauvegardeBddJoueursService.lire_nombre_ascensions()
+	var pourcentage_ascension_realise = StatsService.ascension_taux_completion() * 100.
+	var nb_ascensions = StatsService.ascension_terminees()
 	var score_texte = SauvegardeTableauDesScoresService.lire_score_txt_joueur(nom)
 	$MenuCampagne.enregistrer_infos_joueur(	nom, trophee, pourcentage_ascension_realise,
 									 nb_ascensions, score_texte)

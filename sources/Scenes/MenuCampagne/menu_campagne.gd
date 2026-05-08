@@ -62,6 +62,8 @@ func afficher_accueil_ascension_en_cours():
 	$InfosDuJoueur.show()
 	
 	_afficher_message("Poursuivre l'ascension!")
+	# Attendre l'affichage du texte
+	await get_tree().create_timer(0.5).timeout
 	$BoutonCommencer.show()
 
 func _afficher_message(texte : String, tempo : float = 1.0):
@@ -73,7 +75,13 @@ func _afficher_message(texte : String, tempo : float = 1.0):
 
 func _afficher_des_messages(les_message : Array[String], tempo : float = 1.0):
 	for message in les_message:
-		_afficher_message(message,tempo)
+		# pas d'appel à '_afficher_message'
+		# pour que 'await' soit bloquant entre les messages
+		$Message.hide()
+		$Message.text = message
+		$Message.show()
+		await get_tree().create_timer(tempo).timeout
+		$Message.hide()
 
 func _on_bouton_commencer_pressed() -> void:
 	commencer_plateau.emit()
@@ -92,6 +100,8 @@ func afficher_plateau_suivant(texte : String):
 	$BoutonMenuPrincipal.show()
 	$BoutonStatistiques.show()
 	$InfosDuJoueur.show()
+	# Attendre l'affichage du texte
+	await get_tree().create_timer(0.5).timeout
 	$BoutonCommencer.show()
 
 func afficher_plateau_invalide():
@@ -102,10 +112,19 @@ func afficher_abandonner_un_plateau():
 	_afficher_des_messages(["Perdu!",
 							"Fin de Partie",
 							"Plateau suivant!"])
+	$BoutonMenuPrincipal.show()
+	$BoutonStatistiques.show()
+	mettre_a_jour_infos_joueur()
+	$InfosDuJoueur.show()
+	
+	# Attendre l'affichage du texte
+	await get_tree().create_timer(3.0).timeout
+	$BoutonCommencer.show()
 
 func afficher_gagner_un_plateau(duree : int) -> void:
-	_afficher_des_messages(["Bravo!",
-							"Gagné en %ss" % duree])
+	_afficher_message("Bravo!", 0.5)
+	# Attendre l'affichage du texte
+	await get_tree().create_timer(0.5).timeout
 	$MessageRiche.show()
 	# Affichage minimum de 1s
 	await get_tree().create_timer(1.0).timeout
@@ -114,7 +133,6 @@ func afficher_gagner_un_plateau(duree : int) -> void:
 	afficher_plateau_suivant("Plateau suivant!")
 
 func afficher_fin_ascension():
-	_afficher_message("Bravo!")
 	$MessageRiche.show()
 	# Affichage minimum de 1s
 	await get_tree().create_timer(1.0).timeout
@@ -124,25 +142,28 @@ func afficher_fin_ascension():
 							"C'était le dernier plateau!",
 							"Vous êtes au sommet...",
 							"...de l'Everest!"], 3.0)
+	# Attendre l'affichage du texte
+	await get_tree().create_timer(4*3.0).timeout
 	afficher_plateau_suivant("Ascension suivante!")
 	afficher_accueil_nouvelle_ascension()
 
 func afficher_fin_campagne():
-	_afficher_message("Félicitation!")
 	$MessageRiche.show()
 	# Affichage minimum de 1s
 	await get_tree().create_timer(1.0).timeout
 	await fin_lecture_score
 	$MessageRiche.hide()
-	_afficher_des_messages(["C'était le dernier plateau...",
+	_afficher_des_messages(["Félicitation!",
+							"C'était le dernier plateau...",
 							"...de la dernière ascension.",
 							"Vous êtes au sommet...",
 							"Savourez l'instant."], 5.0)
+	# Attendre l'affichage du texte
+	await get_tree().create_timer(5*5.0).timeout
 	$BoutonMenuPrincipal.show()
 	$BoutonStatistiques.show()
 	mettre_a_jour_infos_joueur()
 	$InfosDuJoueur.show()
-	#$BoutonCommencer.show()
 
 
 # LongueurAscension

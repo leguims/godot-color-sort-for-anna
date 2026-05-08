@@ -40,7 +40,7 @@ func _effet_sonore_play(stream: AudioStream):
 func jouer_la_musique():
 	if not SauvegardeConfigurationService.musiques_sont_actives():
 		return
-	var pourcentage_ascension = SauvegardeBddJoueursService.lire_pourcentage_ascension_realise()
+	var pourcentage_ascension = StatsService.ascension_taux_completion() * 100.
 	if pourcentage_ascension <= 100.*1/6:
 		_musique_play(MUSIQUE_DREAMING)
 	elif pourcentage_ascension <= 100.*2/6:

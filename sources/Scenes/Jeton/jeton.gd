@@ -48,10 +48,6 @@ func _ready() -> void:
 	position_initiale_carre = $Carre.position
 	position_initiale_nom = $Nom.position
 
-# Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(_delta: float) -> void:
-	pass
-
 func choisir_reference(reference : int) -> void:
 	reference_parent = reference
 
