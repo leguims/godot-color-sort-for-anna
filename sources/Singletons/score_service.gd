@@ -72,7 +72,7 @@ func mettre_a_jour_score_ascension() -> Dictionary:
 	var niveau_ascension_longueur_totale = 0
 	if not SauvegardeBddJoueursService.ascension_en_cours():
 		var nom_joueur = SauvegardeBddJoueursService.lire_nom_joueur()
-		niveau_ascension_longueur_totale = SauvegardeBddJoueursService.lire_niveau_ascension_longueur_totale()
+		niveau_ascension_longueur_totale = SauvegardeBddJoueursService.lire_niveau_ascension_longueur_initiale()
 		# bonus = 100 x Dénivelé ^2 (bonus non linéaire)
 		bonus_ascension = roundi(50 * pow(niveau_ascension_longueur_totale, 2))
 		SauvegardeBddJoueursService.modifier_score_ascension(bonus_ascension)

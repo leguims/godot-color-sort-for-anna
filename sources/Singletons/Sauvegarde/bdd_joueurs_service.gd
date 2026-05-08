@@ -140,6 +140,11 @@ func lire_plateau_aleatoire_pour_niveau_courant() -> String:
 	"Désigne un plateau aléatoire du niveau courant"
 	if le_joueur_existe():
 		var str_niveau = str(lire_niveau_joueur())
+		if not sauvegarde_joueur.get('plateaux').get(str_niveau):
+			# Plus de plateaux sur le niveau courant
+			var niveau_superieur = ProgressionCampagneService.retourner_le_niveau_superieur()
+			modifier_niveau_joueur(niveau_superieur)
+			str_niveau = str(niveau_superieur)
 		return sauvegarde_joueur.get('plateaux').get(str_niveau).pick_random()
 	return ''
 
@@ -318,13 +323,11 @@ func lire_niveau_fin_ascension() -> int:
 		return ascension.get('niveau_fin')
 	return 0
 
-func lire_niveau_ascension_longueur_totale() -> int:
+func lire_niveau_ascension_longueur_initiale() -> int:
 	var longueur_totale = 0
 	if ascension_existe():
 		var ascension = sauvegarde_joueur.get('ascensions').back()
-		for niveau in range(ascension.get('niveau_debut'), ascension.get('niveau_fin')+1):
-			if str(niveau) in sauvegarde_joueur.get('plateaux'):
-				longueur_totale += 1
+		return ascension.get('longueur_initiale', 0)
 	return longueur_totale
 
 func lire_niveau_ascension_longueur_realisee() -> int:
@@ -356,7 +359,7 @@ func lire_niveau_ascension_longueur_restante() -> int:
 func lire_pourcentage_ascension_realise() -> int:
 	"Pourcentage de réalisation (retourne 99 pour 99%, 15 pour 15% ...)"
 	if ascension_en_cours():
-		var nb_niveaux_totaux = lire_niveau_ascension_longueur_totale()
+		var nb_niveaux_totaux = lire_niveau_ascension_longueur_initiale()
 		var nb_niveaux_realises = lire_niveau_ascension_longueur_realisee()
 		return roundi(100. * nb_niveaux_realises / nb_niveaux_totaux)
 	return 0

@@ -29,9 +29,13 @@ Depuis la phase de tests internes de la version V0.3.0, les fonctionnalités son
 ### Bug V0.4.0 :
 - ~~Durée campagne = 1500h et plus. Si un jouer arrete le jeu pendant une partie, au prochain lancement, la partie est terminée avec l'heure du lancement qui peut etre plusieurs semaines apres. Il faudrait laisse "fin" à une valeur connue pour identifier qu'il ne faut pas la compter dans les statistiques de temps. Peut-etre ajouter un champs "fin_inconnue = true".~~:heavy_check_mark:
 - La version dans le fichier de configuration enregistrée n'est pas mise à jour lors d'une nouvelle version.
-- Le tableau des scores repete "Alain à 0" 5 fois sur une machine vierge.
+- ~~Le tableau des scores repete "Alain à 0" 5 fois sur une machine vierge.~~:heavy_check_mark:
 - Pour l'export, reduire les noms de fichiers, car ils sont tronqués, modifiés.
-- Après un abandon, le menu de campagne n'apparait pas, le jeu est bloqué.
+- [BLOQUANT] Après un abandon, le menu de campagne n'apparait pas, le jeu est bloqué.
+- ~~Le score de fin de campagne/ascension montre une longueur d'ascension eronnée (zero !) => mauvais score d'ascension et de detour.~~:heavy_check_mark:
+- ~~Pendant l'ascension, les log montrent une ascension qui est figée à 0% que l'on gagne ou perde.~~:heavy_check_mark:
+- Définir une combinaison secrete pour declencher l'export des fichiers JSON.
+- La musique ne change plus avec la progression en ascension
 
 
 ### Jeu
