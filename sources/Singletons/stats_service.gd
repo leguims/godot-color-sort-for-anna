@@ -175,7 +175,7 @@ func plateau_le_plus_rapide_les_infos() -> Dictionary:
 	var joueur = SauvegardeBddJoueursService.lire_nom_joueur()
 	# Plateau termine le plus vite et sa difficulté
 	var plus_rapide_temps: float = 0.
-	var plus_rapide_difficulte: float = 0.
+	var plus_rapide_difficulte: int = 0
 	# Parcourir la liste des ascensions
 	if SauvegardeBddJoueursService.sauvegarde_joueur.get("ascensions", null):
 		for ascension in SauvegardeBddJoueursService.sauvegarde_joueur.get("ascensions"):
@@ -189,18 +189,18 @@ func plateau_le_plus_rapide_les_infos() -> Dictionary:
 							if duree_en_ms == plus_rapide_temps and difficulte > plus_rapide_difficulte:
 								plus_rapide_difficulte = difficulte
 							else:
-								plus_rapide_temps = duree_en_ms / 1000.
+								plus_rapide_temps = duree_en_ms
 								plus_rapide_difficulte = difficulte
 	LogService.log_debug("joueur:",joueur,
-						' plus_rapide_temps=', plus_rapide_temps,
+						' plus_rapide_temps=', plus_rapide_temps / 1000.,
 						' plus_rapide_difficulte=', plus_rapide_difficulte)
-	return {'temps_en_s': plus_rapide_temps, 'difficulte': plus_rapide_difficulte}
+	return {'temps_en_s': plus_rapide_temps / 1000., 'difficulte': plus_rapide_difficulte}
 
 func plateau_le_plus_lent_les_infos() -> Dictionary:
 	var joueur = SauvegardeBddJoueursService.lire_nom_joueur()
 	# Plateau le plus lent à résoudre et sa difficulté
 	var plus_lent_temps: float = 0.
-	var plus_lent_difficulte: float = 0.
+	var plus_lent_difficulte: int = 0
 	# Parcourir la liste des ascensions
 	if SauvegardeBddJoueursService.sauvegarde_joueur.get("ascensions", null):
 		for ascension in SauvegardeBddJoueursService.sauvegarde_joueur.get("ascensions"):
@@ -214,12 +214,12 @@ func plateau_le_plus_lent_les_infos() -> Dictionary:
 							if duree_en_ms == plus_lent_temps and difficulte > plus_lent_difficulte:
 								plus_lent_difficulte = difficulte
 							else:
-								plus_lent_temps = duree_en_ms / 1000.
+								plus_lent_temps = duree_en_ms
 								plus_lent_difficulte = difficulte
 	LogService.log_debug("joueur:",joueur,
-						' plus_lent_temps=', plus_lent_temps,
+						' plus_lent_temps=', plus_lent_temps / 1000.,
 						' plus_lent_difficulte=', plus_lent_difficulte)
-	return {'temps_en_s': plus_lent_temps, 'difficulte': plus_lent_difficulte}
+	return {'temps_en_s': plus_lent_temps / 1000., 'difficulte': plus_lent_difficulte}
 
 func ascension_parfaite_les_infos() -> Dictionary:
 	"Retourne le nombre d'ascensions parfaites et la longueur de la plus longue"
