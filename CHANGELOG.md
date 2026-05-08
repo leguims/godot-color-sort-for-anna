@@ -106,6 +106,12 @@
     - Difficulté = multiplier les coups legaux à chaque étape. Comme ça "1 coup" est neutre sur le score final.
 - Ajouter un "outil_divers" pour mettre au nouveau format les solutions déjà trouvées
 
+#### Deploiement de versions
+- changement de version : les nouveaux tableaux et les anciens tableaux sont en collision.
+- définir le modèle de mise à jour : tout à zéro, on poursuit en cumulé, on poursuit en perdant l'ancien => à définir pour chaque version
+- Sauvegarder le numéro de version dans la sauvegarde et l'utiliser lors du lancement d'une nouvelle version pour réaliser tous les travaux de mise à jour de changement de version nécessaire.
+- enregistrer la liste des nom de plateaux achevés => dans les statistiques du joueur
+
 ## V0.3.1 : Travaux réalisés
 
 ### Jeu

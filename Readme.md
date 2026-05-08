@@ -14,7 +14,7 @@ Listes des évolutions votées par les testeurs:
 
 Depuis la phase de tests internes de la version V0.3.0, les fonctionnalités sont votées par les testeurs. L'attribution des fonctionnailités par versions ci-dessous devrait devenir obsolète pour préférer un classement global des testeurs. Cependant, les deux vont vivre pendant une phase de transition.
 
-## V0.4.0 : Travaux pour la prochaine version
+## V0.4.1 : Travaux pour la prochaine version
 
 ### Bug V0.3.0 :
 - [à surveiller] L'affichage "Niveau = 5 - indice Plateau = 0 - Nombre de parties = <null>" est en erreur !
@@ -99,11 +99,7 @@ Depuis la phase de tests internes de la version V0.3.0, les fonctionnalités son
 - Pour Android : voir si une astuce de zoom existe sur Godot pour grandir les piles suivant la taille des piles.
 
 #### Deploiement de versions
-- changement de version : les nouveaux tableaux et les anciens tableaux sont en collision.
-- définir le modèle de mise à jour : tout à zéro, on poursuit en cumulé, on poursuit en perdant l'ancien
-- Sauvegarder le numéro de version dans la sauvegarde et l'utiliser lors du lancement d'une nouvelle version pour réaliser tous les travaux de mise à jour de changement de version nécessaire.
 - prévoir un champs de sauvegarde avec les infos : plateau courant (niveau, indice, nom et "nom" actuel).
-- enregistrer la liste des nom de plateaux achevés ?
 
 #### Ambiance
 - (Anna) Le score est animé quand il augmente. Comme une machine à sous.
