@@ -19,46 +19,18 @@ Depuis la phase de tests internes de la version V0.3.0, les fonctionnalités son
 ### Bug V0.3.0 :
 - [à surveiller] L'affichage "Niveau = 5 - indice Plateau = 0 - Nombre de parties = <null>" est en erreur !
 
-### Bug V0.3.2 :
-- ~~bug sur score d'ascension qui est calculé sur le nombre de niveaux restant dans le jeu plutot que les niveaux effectivement réalisés dans l'ascension courante.~~:heavy_check_mark:
-- ~~dernière ascension, la même musique pendant toute l'ascension.~~:heavy_check_mark:
-
-### Bug V0.3.6 :
-- ~~après un abandon, on peut continuer de résoudre un plateau et même le résoudre malgré les menus affichés~~:heavy_check_mark:
-
 ### Bug V0.4.0 :
-- ~~Durée campagne = 1500h et plus. Si un jouer arrete le jeu pendant une partie, au prochain lancement, la partie est terminée avec l'heure du lancement qui peut etre plusieurs semaines apres. Il faudrait laisse "fin" à une valeur connue pour identifier qu'il ne faut pas la compter dans les statistiques de temps. Peut-etre ajouter un champs "fin_inconnue = true".~~:heavy_check_mark:
-- ~~Le tableau des scores repete "Alain à 0" 5 fois sur une machine vierge.~~:heavy_check_mark:
-- Pour l'export, reduire les noms de fichiers, car ils sont tronqués, modifiés.
-- ~~[BLOQUANT] Après un abandon, le menu de campagne n'apparait pas, le jeu est bloqué.~~:heavy_check_mark:
-- ~~Le score de fin de campagne/ascension montre une longueur d'ascension eronnée (zero !) => mauvais score d'ascension et de detour.~~:heavy_check_mark:
-- ~~Pendant l'ascension, les log montrent une ascension qui est figée à 0% que l'on gagne ou perde.~~:heavy_check_mark:
-- ~~La version dans le fichier de configuration enregistrée n'est pas mise à jour lors d'une nouvelle version.~~:heavy_check_mark:
-- ~~La musique ne change plus avec la progression en ascension~~:heavy_check_mark:
-- ~~Les infos joueur de l'ascension ne sont plus à jour~~:heavy_check_mark:
 - Définir une combinaison secrete pour declencher l'export des fichiers JSON.
-- Lors du changement de version, effacer tous les plateaux inachevés des joueurs enregistrés.
 
 ### Jeu
-- ~~Page "Campagne" : En même temps que le bouton "Commencer", faire des liens (en haut) vers chaque joueurs pour basculer d'une campagne à l'autre sans passer par le menu~~ ABANDON
-- ~~Lire les plateaux 'Solutions_classees.json' et enregistrer l'UUID. Si l'UUID n'est pas celui de la sauvegarde, effacer toutes les sauvegardes des joueurs.~~ ABANDON
-- ~~(option) enregistrer les dates de jeux et proposer une série de plateaux de chaque niveau. "Semaine 1", proposer les 1er plateaux de chaque niveau.~~ ABANDON
-- ~~(option) prévoir un json avec l'enregistrement des scores de chacun sur chaque semaine. Score total et score semaine.~~ Calculable avec les statistiques.
 - (Faro) Aligner les piles sur la même ligne pour que ca soit plus facile à jouer (-1 Totol)
 - Sauvegarder l'état du plateau en cours après chaque coup. Le joueur qui quitte le jeu, reprend là où il était. Quand il revient, il commence avec son temps moyen sur ce type de niveau.
 - (Aleksandar): thème sur le fond du décors. Trop austère.
-- ~~Quand le jeu est terminé (campagne 100%), afficher un globe à coté du nom du joueur dans le menu principal~~:heavy_check_mark:
 - Sauvegarder l'état du plateau en cours après chaque coup. Le joueur qui quitte le jeu, reprend là où il était. Quand il revient, il commence avec son temps moyen sur ce type de niveau.
 - Selon ton humeur, demander 5 plateaux faciles ou 5 ultras difficiles. (mode libre)
 - pour les plateaux impossibles à perdre, les classer dans DÉTENTE
 - pour les plateaux impossibles à gagner, proposer au joueur de trouver la combinaison pour perdre. (Mode No Win)
-- ~~Pouvoir passer l'apercu du score du plateau par un clique sur l'ecran.~~:heavy_check_mark:
 - Pouvoir effacer un joueur (avec confirmation)
-
-#### Refactoring
-- ~~Structurer tout le dépot pour réorganiser les sources, les outils et les tests~~:heavy_check_mark:
-    - ~~plus de singleton~~
-    - ~~découpage des scenes menu_campagne.gd, campagne.gd et menu_principale.gd~~
 
 #### Ascensions
 - Gérer la difficulté relative des différentes 'ascensions':
@@ -78,13 +50,7 @@ Depuis la phase de tests internes de la version V0.3.0, les fonctionnalités son
     - Il y aura un bouton gagner Ou quand tout les Block seront dans une case remplie
 
 #### Statistiques
-- ~~Inclure un bouton statistiques dans le menu campagne~~:heavy_check_mark:
 - Outils visuels:
-  - ~~KPI : Bouton carré avec un chiffre~~:heavy_check_mark:
-    - ~~Durée moyenne d’une partie~~
-    - ~~Niveau maximum atteint~~
-    - ~~Nombre total de parties~~
-    - ~~Temps total de jeu~~
   - GAUGE (Jauge) : jauge circulaire ou semi-circulaire
     - Progression vers un objectif mensuel
     - Pourcentage de niveaux complétés
@@ -99,22 +65,12 @@ Depuis la phase de tests internes de la version V0.3.0, les fonctionnalités son
   - Le plus simple sur GODOT 4.5: utiliser la bibliotheque de base.
     - Control + TextureProgressBar + Label + Graphiques "faits maison"
 - Page de statisques contient (de haut en bas):
-  - ~~En haut : Nom du joueur + bouton pour changer de joueur~~:heavy_check_mark:
   - Campagne:
-    - ~~[KPI] Pourcentage de complétion,~~:heavy_check_mark:
-    - ~~[KPI] Temps de jeu,~~:heavy_check_mark:
     - [Line chart] Temps de jeu,
     - [Bar chart 1] Nombre de parties
     - [Bar chart 1] Nombre de défaites
-    - ~~[KPI] Taux de réussite~~:heavy_check_mark:
-    - ~~[KPI] Série maximum de succès~~:heavy_check_mark:
   - Ascension:
-    - ~~[KPI] Pourcentage de complétion de l'ascension en cours,~~:heavy_check_mark:
-    - ~~[KPI] nombre d'ascension sans détour,~~:heavy_check_mark:
-    - ~~[KPI] la plus longue (temps, dépassement de plateaux)~~:heavy_check_mark:
     - [Line chart] durée d'ascension (temps, plateaux), 
-    - ~~[KPI] durée moyenne d'ascension (temps, plateaux),~~:heavy_check_mark:
-    - ~~[KPI] nombre d'ascension achevées ~~:heavy_check_mark:
   - Niveau (notion artificielle à construire):
     - [Line chart] Idée de représentation graphique : Dessiner une courbe avec x=niveaux et y=f(x)=echecs, taux de réussite ...
     - [Line chart] Idée : Representer les courbes sur 1 mois d'activité et comparer au dernier mois (en pointillé) 
@@ -122,9 +78,6 @@ Depuis la phase de tests internes de la version V0.3.0, les fonctionnalités son
     - [Bar chart 2] taux de réussite par niveau, 
     - [Bar chart 2] temps moyen par niveau,
     - [Bar chart 2] complétion par niveau,
-  - Plateau:
-    - ~~[KPI] le plus rapide (temps, profondeur)~~:heavy_check_mark:
-    - ~~[KPI] le plus long (temps, profondeur)~~:heavy_check_mark:
 - Prévoir un téléchargement des stats:
     - nommer le téléphone + compte google
     - indiquer la date de création.
@@ -164,16 +117,6 @@ Depuis la phase de tests internes de la version V0.3.0, les fonctionnalités son
 - Faire une sorte de buzz pour les mouvements interdits. Pas de son si la selection périme.
 
 ### Outillage
-- ~~Decomposer les outils pour réaliser un forkflow (pipeline)~~:heavy_check_mark:
-
-#### Refactoring
-- ~~Structurer tout le dépot pour réorganiser les sources, les outils et les tests~~:heavy_check_mark:
-    - ~~arbrescence : core, io_utils, tests et pipeline~~
-- ~~Améliorer le code pour simplifier la maintenance:~~:heavy_check_mark:
-    - ~~creer des modules~~
-    - ~~faire une API~~
-    - ~~realiser des methodes deporter dans des ficheirs à theme~~
-    - ~~Réalisé pour : plateau.py, lot_de_plateaux.py et resoudre.py~~
 
 #### Recherche de plateaux
 - Ajouter un "outil_divers" pour reset les parametres de recherche de plateaux
@@ -181,12 +124,6 @@ Depuis la phase de tests internes de la version V0.3.0, les fonctionnalités son
 #### Revalidation
 - Ajouter un "outil_divers" pour reset les parametres de revalidation des plateaux
 - Similarité : Pour réduire les similarité : Rapidfuzz + seuil à ajuster (75% et plus). Voir s'il faut l'appliquer sur le fichier complet de solutions. Application sur "revalidation" = gain de temps + application sur "Solutions" pour gain de plaisir de jeu.
-
-#### Difficulté de plateau
-- ~~Dans la recherche de solution, réorganiser pour conserver:~~:heavy_check_mark:
-  - ~~La quantité de blocage pour chaque longueur~~:heavy_check_mark:
-- ~~Baser la difficulté le rapport : Nb Blocage / (Nb Blocage + Nb Solutionsd)~~:heavy_check_mark:
-- ~~Difficulté entre 0 et 100 (le plus difficile)~~:heavy_check_mark:
 
 #### Etape 5 : Tronquer les solutions => Exporter solution vers GODOT
 - Dans l'étape 5 (tronquer), ajouter un suffixe au plateau pour indiquer qu'il y a différentes longueurs de solutions.

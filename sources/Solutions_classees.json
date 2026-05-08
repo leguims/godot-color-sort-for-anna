@@ -1,456 +1,312 @@
 {
     "liste difficulte des plateaux": {
-        "108": [
-            "ACAB.CBCA.CBAB.    "
+        "10": [
+            "DDA.CCB.AAB.   .DBC",
+            "DC .ABC.BBA.C  .DAD",
+            "DBD.CDB.   .AAB.CCA",
+            "DBD.BC .AB .ACA.CD ",
+            "AC .DB .CDA.BCB.AD ",
+            "DAD.B  .CAB.DC .ACB"
+        ],
+        "11": [
+            "AC.BD.CD.EA.FB.FE.  ",
+            "AAC.CB .DB .DDC.BA ",
+            "AB .AA .DCC.BDC.DB ",
+            "ACB.ADA.DDC.CBB.   ",
+            "DDB.ACB.BDC.A  .CA ",
+            "DCB.A  .CD .ADA.CBB"
+        ],
+        "12": [
+            "DA .CDC.BA .BB .DCA",
+            "AC .DDC.BDA.ABB.C  ",
+            "ABC.BBD.CD .ACA.D  ",
+            "DA .CCD.A  .BDB.BCA",
+            "DA .CC .ADB.BD .BAC",
+            "DC .BDA.CDA.BCB.A  "
+        ],
+        "13": [
+            "BA.BF.CE.DA.EC.FD.  ",
+            "ABD.CBA.BC .DA .DC ",
+            "ACB.CA .DA .BDC.BD ",
+            "AB.BC.DE.DE.FA.FC.  ",
+            "DAC.ABB.BAC.DCD.   "
+        ],
+        "14": [
+            "DCA.BAA.B  .CDD.CB ",
+            "ABD.BCA.B  .CAD.CD ",
+            "AD .BAD.CB .DBC.CA ",
+            "AB.CA.CB.  ",
+            "DBC.DC .B  .BAC.ADA",
+            "ACC.DAB.DDB.BA .C  "
+        ],
+        "15": [
+            "DC .A  .DBA.BDC.BAC",
+            "DDA.ADB.C  .ACB.BC ",
+            "DDC.BBA.BCA.CAD.   ",
+            "DAC.D  .ACC.BD .ABB"
+        ],
+        "16": [
+            "ABA.DCD.BC .BAC.D  ",
+            "DB .BDA.CA .CDC.BA ",
+            "AAC.DBD.ADC.CB .B  "
+        ],
+        "17": [
+            "AC .BAD.CA .DCB.BD ",
+            "DAD.CB .BCA.DC .AB ",
+            "DCC.DDA.BAC.   .BBA",
+            "DCC.CA .ABD.DB .BA ",
+            "DAB.BCA.DDA.CCB.   ",
+            "DB .ACA.BD .CDB.AC "
         ],
         "18": [
-            "AAAAAAAB.ABBBBBBB.CCCC    .CCCC    "
+            "ADD.AC .BC .CBD.BA ",
+            "DAC.CB .ADB.A  .DCB",
+            "DBC.BAD.BDC.AC .A  ",
+            "DAA.C  .BC .BAD.CBD"
+        ],
+        "19": [
+            "DA .DB .CA .ACB.CDB"
         ],
         "20": [
-            "AAAAAAB.ABBBBBB.CCC    .CCCC   ",
-            "AAAAAAB.ABBBBBC.CCCCCC .B      "
+            "ADB.DCD.CBA.ACB.   ",
+            "AD .BA .BBD.CCD.CA ",
+            "ADB.DBC.CAD.CAB.   ",
+            "DAD.AC .B  .DAB.CCB",
+            "AB.BE.CA.CE.D .D ",
+            "ADC.ACB.DBA.CDB.   "
         ],
         "21": [
-            "AAAAAAAB.ABBBBBBB.CCCCCCCD.CDDDDDDD.EEEE    .EEEE    "
+            "AAC.DCB.ABC.BDD.   ",
+            "DAB.ACB.DB .CA .CD ",
+            "DCB.DBA.CA .CDB.A  ",
+            "AC .CD .BAD.ABD.CB "
+        ],
+        "22": [
+            "AA .BC .DBC.DBD.CA ",
+            "DBA.A  .BDC.DCB.AC ",
+            "DBA.CAD.BA .BDC.C  ",
+            "DBA.   .ABA.DCC.CDB",
+            "DCD.ABD.   .BAC.ACB",
+            "ADC.ACD.BBD.CBA.   "
         ],
         "23": [
-            "AAAAAAAB.ABBBBBBB.CCCCCCCD.CDDDDDDD.EEEEEEEF.EFFFF   .FFF     "
+            "DB .CCB.ADC.ADA.B  ",
+            "ABD.DBD.CAB.AC .C  ",
+            "DAA.CCB.DAD.   .BBC",
+            "B .B .CA.DC.ED.FA.FE"
         ],
         "24": [
-            "AAAAAB.ABBB  .BBC   .CCCCC ",
-            "AAAAAB.ABBBB .BC    .CCCCC ",
-            "AAAAAB.ABBBB .CCC   .BCCC  ",
-            "AAAAAB.ABBBC .CCCCC .BB    ",
-            "AAAAAB.ABBCC .CCCC  .BBB   "
+            "DBC.D  .BD .ACB.ACA",
+            "DCC.ADA.CB .B  .ADB"
         ],
         "25": [
-            "AAAAAAB.ABBBBBC.BCC    .CCCC   ",
-            "AAAAAAB.ABBBBBC.CCCCCCB.       "
+            "ACC.DB .DB .ACA.BD ",
+            "DAB.   .CDA.CDC.ABB",
+            "DA .CA .DDA.BCB.BC ",
+            "AAC.AB .BCC.B  ",
+            "ACC.DAD.BBD.CBA.   ",
+            "ACC.BBA.BCA.   "
         ],
         "26": [
-            "AAAAAAB.ABBBBBB.CCCCCCD.CDDDDDD.EEEEEEF.EFFF   .FFF    ",
-            "AAAAAAB.ABBBBBB.CCCCCCD.CDDDDDD.EEEEEEF.F      .EFFFFF ",
-            "AAAAAAB.ABBBBBB.CCCCCCD.CDDDDDD.EEEEEEF.FFFE   .FFF    ",
-            "AAAAAAB.ABBBBBB.CCCCCCD.CDDDDDD.EEEEEEF.FFFFF  .FE     "
+            "DCA.   .CAB.DCD.BBA"
         ],
         "27": [
-            "AAAAAAB.B      .BABBBB ",
-            "AAAAAAB.BB     .BABBB  ",
-            "AAAAAAB.BBB    .BABB   ",
-            "AAAAAAB.BBBBBAB.       "
+            "DCD.AD .CBB.C  .AAB",
+            "DAD.BBC.BC .DC .AA ",
+            "ACA.ACB.CBB.   ",
+            "DAC.   .BDD.CBA.CBA",
+            "ABD.C  .DCB.AAB.DC "
         ],
         "28": [
-            "AAAAB.ABBBB.CC   .CCCD .DDDD ",
-            "AAAAB.ABBBB.CCC  .DDDCC.DD   ",
-            "AAAAB.ABBBB.CCCC .DC   .DDDD ",
-            "AAAAB.ABBBB.CCCC .DDD  .DDC  ",
-            "AAAAB.ABBBB.CDDD .DD   .CCCC "
+            "DB .A  .CCA.CAB.DBD",
+            "DB .CCA.CDB.B  .DAA",
+            "DCD.DC .ABB.AC .BA ",
+            "ABD.CCB.DAB.CAD.   "
         ],
         "29": [
-            "AAAAAAB.ABBBBBB.CCCCCCD.CDDDDDD.EEEEEEF.FEF    .FFFF   ",
-            "AAAAAAB.ABBBBBB.CCCCCCD.CDDDDDD.EEEEEEF.FEFFF  .FF     "
+            "AB .AC .CAB.CB ",
+            "DAD.ABB.CCB.DAC.   ",
+            "DD .BC .BAC.AAB.DC ",
+            "DC .CAA.AB .DB .CDB",
+            "DD .AAB.AC .DC .BBC"
         ],
         "30": [
-            "AAAAAAB.ABBBBBC.CCCB   .CCC    ",
-            "AAAAAAB.ABBBBBC.CCCCCB .C      "
+            "DC .BA .BCA.DBC.AD ",
+            "ABC.DB .CAB.AD .DC ",
+            "DC .CB .BDA.DA .BAC",
+            "DB .ADB.AD .CCB.CA "
         ],
-        "32": [
-            "AAA   .AAB   .BBABBB",
-            "AAA   .AABABB.BBB   ",
-            "AAA   .AABB  .BBBAB ",
-            "AAA   .AABBAB.BBB   ",
-            "AAA   .AABBB .BBAB  ",
-            "AAAA  .ABBABB.BB    ",
-            "AAAA  .ABBB  .BBAB  ",
-            "AAAAAB.B     .BABBB ",
-            "AAAAAB.BABB  .BB    ",
-            "AAABA .BBB   .AABB  "
+        "31": [
+            "AAD.CD .ACB.BD .CB ",
+            "DCA.ACA.DDB.CB .B  ",
+            "ACB.BCA.DDA.DBC.   "
+        ],
+        "33": [
+            "DB .C  .ABC.AAB.DCD",
+            "DAC.BBA.BD .CAD.C  ",
+            "DBC.CAB.AAD.CDB.   ",
+            "DA .BCC.BBA.DA .CD ",
+            "ACC.BAB.BD .DAD.C  ",
+            "DDB.BAC.   .BAC.ACD"
         ],
         "34": [
-            "AAAAB.ABBBB.CDC  .CCC  .DDDD ",
-            "AAAAB.ABBBB.CDCCC.C    .DDDD ",
-            "AAAAB.ABBBB.CDD  .DDDCC.CC   ",
-            "AAAAB.ABBBB.CDDCC.DDD  .CC   ",
-            "AAAAB.ABBBB.CDDD .DDC  .CCC  ",
-            "AAAAB.ABBBB.CDDD .DDCCC.C    ",
-            "AAAAB.ABBBB.CDDDC.DD   .CCC  ",
-            "AAAAB.ABBBB.CDDDD.C    .DCCC ",
-            "AAAAB.ABBBB.CDDDD.CCC  .DC   ",
-            "AAAAB.ABBBB.CDDDD.DCCCC.     "
+            "DDB.DBA.   .ACC.CBA",
+            "DCB.DA .ADC.BA .BC ",
+            "AAB.D  .ABC.DBC.CD "
+        ],
+        "35": [
+            "DA .DBA.CDB.A  .CCB"
         ],
         "36": [
-            "AAAAAAB.ABBBBBC.CBCCCC .C      ",
-            "AAAAAAB.ABBBBBC.CBCCCCC.       ",
-            "AAAAAAB.ABBBBBC.CCBC   .CCC    ",
-            "AAAAAAB.ABBBBBC.CCBCC  .CC     ",
-            "AAAAAAB.ABBBBBC.CCBCCCC.       ",
-            "AAAAAAB.ABBBBBC.CCCBC  .CC     ",
-            "AAAAAAB.ABBBBBC.CCCBCC .C      ",
-            "AAAAAAB.ABBBBBC.CCCCBC .C      ",
-            "AAAAAAB.ABBBBBC.CCCCBCC.       ",
-            "AAAAAAB.ABBBBBC.CCCCCBC.       "
+            "AC .CDB.CB .AAD.BD ",
+            "ADC.ABD.DBA.C  .BC ",
+            "DBA.CDA.DB .A  .CCB",
+            "AAC.ADB.DCB.BCD.   ",
+            "DAB.ABC.CAD.B  .DC ",
+            "ACA.BDC.DDB.BCA.   "
         ],
         "37": [
-            "AAAAB.ABBBB.CCCCD.CDDDD.E    .FFEEE.FFFE ",
-            "AAAAB.ABBBB.CCCCD.CDDDD.EEE  .EFF  .FFFE ",
-            "AAAAB.ABBBB.CCCCD.CDDDD.EEE  .EFFE .FFF  ",
-            "AAAAB.ABBBB.CCCCD.CDDDD.EFEEE.FFFF .E    ",
-            "AAAAB.ABBBB.CCCCD.CDDDD.FEEEE.F    .EFFF ",
-            "AAAAB.ABBBB.CCCCD.CDDDD.FF   .EEEE .FEFF ",
-            "AAAAB.ABBBB.CCCCD.CDDDD.FFE  .FFFEE.EE   ",
-            "AAAAB.ABBBB.CCCCD.CDDDD.FFEE .EFFF .EE   ",
-            "AAAAB.ABBBB.CCCCD.CDDDD.FFFFE.EE   .EEF  ",
-            "AAAAB.ABBBB.CCCCD.CDDDD.FFFFE.EEEEF.     "
+            "DCB.ADA.B  .CB .ACD",
+            "ABA.BC .DBC.DAD.C  ",
+            "ACD.DDA.ACB.CB .B  ",
+            "DDC.B  .DCA.ACB.AB "
         ],
         "38": [
-            "A    .BAAA .BBABB",
-            "AA   .ABB  .BAABB",
-            "AAA  .AB   .BBABB",
-            "AAAAB.BAB  .BB   ",
-            "AABB .AAB  .BBA  ",
-            "AABB .ABAA .BB   ",
-            "ABAAA.BA   .BBB  ",
-            "ABBB .A    .BAAAB",
-            "ABBBA.BBAAA.     ",
-            "BBAAA.BBAAB.     "
+            "DCB.CAD.DCB.BAA.   ",
+            "ACB.DC .BA .DDC.BA ",
+            "DDA.CAB.BBC.DAC.   "
         ],
         "40": [
-            "AAA   .ABBBB .BABA  ",
-            "AAA   .ABBBBA.BAB   ",
-            "AAAA  .BBABB .BAB   ",
-            "AAAA  .BBB   .BABAB ",
-            "AAAAB .ABABBB.B     ",
-            "AAAAB .ABB   .BABB  ",
-            "AAAABA.B     .BABBB ",
-            "AAAABB.AB    .BABB  ",
-            "AAAB  .AB    .BBAABB",
-            "AAAB  .BBAB  .BBAA  "
-        ],
-        "41": [
-            "AAAAB.ABBBB.CCCCD.CDDDD.FFF  .EEEFE.FE   ",
-            "AAAAB.ABBBB.CCCCD.CDDDD.FFF  .EEFEE.FE   ",
-            "AAAAB.ABBBB.CCCCD.CDDDD.FFF  .FEFE .EEE  ",
-            "AAAAB.ABBBB.CCCCD.CDDDD.FFFE .EE   .FEEF ",
-            "AAAAB.ABBBB.CCCCD.CDDDD.FFFE .EEEFE.F    ",
-            "AAAAB.ABBBB.CCCCD.CDDDD.FFFE .EF   .EEEF ",
-            "AAAAB.ABBBB.CCCCD.CDDDD.FFFE .FEEEF.E    ",
-            "AAAAB.ABBBB.CCCCD.CDDDD.FFFEF.EEEEF.     ",
-            "AAAAB.ABBBB.CCCCD.CDDDD.FFFEF.EEF  .EE   ",
-            "AAAAB.ABBBB.CCCCD.CDDDD.FFFFE.E    .EEFE "
+            "ACC.BDB.AAD.BDC.   ",
+            "DBD.BCA.ABC.   .DAC",
+            "ADA.ADD.CBC.B  .CB ",
+            "ABD.DBD.CAC.CAB.   "
         ],
         "42": [
-            "AAAAAB.ABBB  .CBC   .CCCCB ",
-            "AAAAAB.ABBBBC.C     .CBCCC ",
-            "AAAAAB.ABBCBC.BBCC  .CC    ",
-            "AAAAAB.ABBCBC.CCCCBB.      ",
-            "AAAAAB.ABBCC .BBC   .CCBC  ",
-            "AAAAAB.ABBCC .BBCBC .CC    ",
-            "AAAAAB.ABBCC .BBCBCC.C     ",
-            "AAAAAB.ABBCC .BBCCBC.C     ",
-            "AAAAAB.ABBCC .BC    .CBBCC ",
-            "AAAAAB.ABBCC .BCC   .CBBC  "
+            "DAD.ACA.B  .CB .DBC",
+            "DAC.BAC.DD .C  .BAB",
+            "DAA.ABC.CB .DCD.B  ",
+            "DAB.DAD.CBA.CBC.   ",
+            "DBA.AD .CBC.B  .ACD"
         ],
         "43": [
-            "AAAAB.A    .BBCB .BCCCC",
-            "AAAAB.AB   .BBC  .CCBCC",
-            "AAAAB.ABB  .BCCC .CBC  ",
-            "AAAAB.ACB  .BCCCC.BB   ",
-            "AAAAB.ACBB .B    .CBCCC",
-            "AAAAB.ACBBB.     .CCCBC",
-            "AAAAB.ACBC .BB   .CCCB ",
-            "AAAAB.ACCB .CCBBC.B    ",
-            "AAAAB.BAB  .BCCB .CCC  ",
-            "AAAAB.BABCC.B    .CCCB "
+            "DBA.   .CAD.BAB.CCD"
+        ],
+        "44": [
+            "AAB.DBA.DCD.BC .C  ",
+            "ABD.CBD.ABA.C  .DC ",
+            "DCD.   .BAA.DCB.ACB"
         ],
         "45": [
-            "AAAAB.ABBBB.CCCCD.CDDDD.FFEEF.EF   .FEE  ",
-            "AAAAB.ABBBB.CCCCD.CDDDD.FFEEF.EFFE .E    ",
-            "AAAAB.ABBBB.CCCCD.CDDDD.FFEEF.EFFEE.     ",
-            "AAAAB.ABBBB.CCCCD.CDDDD.FFEEF.F    .EEFE ",
-            "AAAAB.ABBBB.CCCCD.CDDDD.FFEF .EEFEE.F    ",
-            "AAAAB.ABBBB.CCCCD.CDDDD.FFEFE.EEFF .E    ",
-            "AAAAB.ABBBB.CCCCD.CDDDD.FFEFF.EFEE .E    ",
-            "AAAAB.ABBBB.CCCCD.CDDDD.FFEFF.EFEEE.     ",
-            "AAAAB.ABBBB.CCCCD.CDDDD.FFFE .EEF  .EFE  ",
-            "AAAAB.ABBBB.CCCCD.CDDDD.FFFE .FE   .EEFE "
+            "AAB.DCB.ACB.DCD.   ",
+            "DB .DAD.CAB.B  .CAC",
+            "DDC.C  .ABC.ABA.DB ",
+            "DDB.AC .B  .ACA.DCB"
         ],
         "46": [
-            "AAAAB.ABBBB.CC   .CDCDD.DDC  ",
-            "AAAAB.ABBBB.CCC  .DDCD .DCD  ",
-            "AAAAB.ABBBB.CCCD .CDCDD.D    ",
-            "AAAAB.ABBBB.CCCDC.D    .DCDD ",
-            "AAAAB.ABBBB.CCCDD.CD   .DCD  ",
-            "AAAAB.ABBBB.CCCDD.CDCD .D    ",
-            "AAAAB.ABBBB.CCDC .CDDD .DC   ",
-            "AAAAB.ABBBB.CCDCD.CCDD .D    ",
-            "AAAAB.ABBBB.CCDDC.DCCD .D    ",
-            "AAAAB.ABBBB.CDDDC.D    .CCDC "
+            "AB .DCA.DCD.ABC.B  ",
+            "DC .C  .DBD.CBA.BAA",
+            "DDC.CC .BAB.DA .BA "
         ],
-        "48": [
-            "AAAAAB.ABBB  .CBC   .CCBCC ",
-            "AAAAAB.ABBBC .CB    .CBCCC ",
-            "AAAAAB.ABBBCB.C     .CBCCC ",
-            "AAAAAB.ABBBCC.C     .CCBCB ",
-            "AAAAAB.ABBCB .BC    .BCCCC ",
-            "AAAAAB.ABBCB .BC    .CCCBC ",
-            "AAAAAB.ABBCBB.C     .CBCCC ",
-            "AAAAAB.ABBCBC.B     .BCCCC ",
-            "AAAAAB.ABBCC .BC    .BCCCB ",
-            "AAAAAB.ABBCC .CC    .CBBCB "
-        ],
-        "49": [
-            "AAAAB.ABBBB.CCCCD.CDDDD.EE   .EFEFF.FEF  ",
-            "AAAAB.ABBBB.CCCCD.CDDDD.EFE  .EEFEF.FF   ",
-            "AAAAB.ABBBB.CCCCD.CDDDD.EFEFE.F    .EEFF ",
-            "AAAAB.ABBBB.CCCCD.CDDDD.EFFFE.EFEEF.     ",
-            "AAAAB.ABBBB.CCCCD.CDDDD.EFFFE.FEEFE.     ",
-            "AAAAB.ABBBB.CCCCD.CDDDD.FEFE .FFEEF.E    ",
-            "AAAAB.ABBBB.CCCCD.CDDDD.FEFEE.E    .FEFF ",
-            "AAAAB.ABBBB.CCCCD.CDDDD.FFE  .FEEF .FEE  ",
-            "AAAAB.ABBBB.CCCCD.CDDDD.FFEEF.E    .EFEF ",
-            "AAAAB.ABBBB.CCCCD.CDDDD.FFEFE.FEEEF.     "
+        "47": [
+            "ABA.CBD.CBC.DAD.   ",
+            "DAD.BBC.DAB.CAC.   ",
+            "DCA.   .ACB.BBA.DCD"
         ],
         "50": [
-            "AAAAB.A    .BBCB .CBCCC",
-            "AAAAB.AB   .BCB  .CBCCC",
-            "AAAAB.ABB  .CB   .CCCBC",
-            "AAAAB.ABBBC.     .CCBCC",
-            "AAAAB.ABBCB.CCC  .CB   ",
-            "AAAAB.ABC  .BBC  .CCBC ",
-            "AAAAB.AC   .CCBB .BCBC ",
-            "AAAAB.ACB  .CCB  .BCCB ",
-            "AAAAB.ACBBC.BCC  .CB   ",
-            "AAAAB.ACBC .CCBBB.C    "
+            "DBB.C  .BA .DAD.CCA",
+            "DCB.DBA.AAC.BCD.   ",
+            "DDC.ACB.BC .BAA.D  ",
+            "DCD.A  .CB .DBC.AAB",
+            "DDB.ABD.CAC.   .CBA"
         ],
-        "51": [
-            "AAAAB.ABBBB.CCD  .CDD  .CDDC ",
-            "AAAAB.ABBBB.CCDC .CD   .DCDD ",
-            "AAAAB.ABBBB.CDCCD.DC   .DDC  ",
-            "AAAAB.ABBBB.CDDCC.DC   .DCD  ",
-            "AAAAB.ABBBB.CDDCC.DCD  .CD   ",
-            "AAAAB.ABBBB.CDDCD.C    .CCDD ",
-            "AAAAB.ABBBB.CDDCD.DCD  .CC   ",
-            "AAAAB.ABBBB.CDDD .CCD  .CDC  ",
-            "AAAAB.ABBBB.CDDD .CDCD .CC   ",
-            "AAAAB.ABBBB.CDDDC.DCDC .C    "
+        "52": [
+            "DBD.ADB.ACA.C  .BC ",
+            "ACA.BDB.BDC.ADC.   "
         ],
-        "53": [
-            "AAAAB.ABBBB.CCCCD.CDDDD.EEFEF.EFEF .F    ",
-            "AAAAB.ABBBB.CCCCD.CDDDD.EFFEF.EF   .EEF  ",
-            "AAAAB.ABBBB.CCCCD.CDDDD.FEFE .EFFEF.E    ",
-            "AAAAB.ABBBB.CCCCD.CDDDD.FEFEE.FFEFE.     ",
-            "AAAAB.ABBBB.CCCCD.CDDDD.FEFEF.EEF  .FE   ",
-            "AAAAB.ABBBB.CCCCD.CDDDD.FEFEF.EF   .FEE  ",
-            "AAAAB.ABBBB.CCCCD.CDDDD.FEFF .EEFEF.E    ",
-            "AAAAB.ABBBB.CCCCD.CDDDD.FEFFE.EFEEF.     ",
-            "AAAAB.ABBBB.CCCCD.CDDDD.FFEFE.EFE  .FE   ",
-            "AAAAB.ABBBB.CCCCD.CDDDD.FFEFE.FEEFE.     "
-        ],
-        "54": [
-            "AAAAAB.ABBBC .CBC   .CBCC  ",
-            "AAAAAB.ABBCB .CB    .CBCCC ",
-            "AAAAAB.ABBCBC.BC    .BCCC  ",
-            "AAAAAB.ABBCC .BC    .BCBCC ",
-            "AAAAAB.ABBCCB.CBC   .CCB   ",
-            "AAAAAB.ABBCCB.CBCB  .CC    ",
-            "AAAAAB.ABBCCB.CBCC  .CB    ",
-            "AAAAAB.ABBCCC.BC    .BCBC  ",
-            "AAAAAB.ABBCCC.CBCB  .CB    ",
-            "AAAAAB.ABBCCC.CBCCB .B     "
-        ],
-        "56": [
-            "AAAB  .AB    .BABBAB",
-            "AAABA .B     .BABABB",
-            "AAABAB.      .BBABBA",
-            "AAABB .BAB   .BABA  ",
-            "AAABB .BABAB .AB    ",
-            "AAABBA.B     .BABAB ",
-            "AAABBA.BAB   .BAB   ",
-            "AAABBB.      .ABABAB",
-            "AAABBB.ABAB  .AB    ",
-            "AAABBB.BABABA.      "
+        "55": [
+            "DAD.ABB.CA .D  .CBC",
+            "ABC.DB .DD .ACA.BC ",
+            "DAC.BD .B  .CDB.CAA",
+            "ADC.CD .ABA.BDB.C  "
         ],
         "57": [
-            "AAAAB.ABBBB.CCCCD.CDDDD.EF   .EFEFF.EFE  ",
-            "AAAAB.ABBBB.CCCCD.CDDDD.EFE  .EFF  .EFEF ",
-            "AAAAB.ABBBB.CCCCD.CDDDD.EFEEF.FEFEF.     ",
-            "AAAAB.ABBBB.CCCCD.CDDDD.EFEF .FEFE .EF   ",
-            "AAAAB.ABBBB.CCCCD.CDDDD.EFEFE.FEF  .EF   ",
-            "AAAAB.ABBBB.CCCCD.CDDDD.EFFFE.EFEFE.     ",
-            "AAAAB.ABBBB.CCCCD.CDDDD.FE   .FEEF .FEFE ",
-            "AAAAB.ABBBB.CCCCD.CDDDD.FEEFE.FEFEF.     ",
-            "AAAAB.ABBBB.CCCCD.CDDDD.FEFEF.E    .EFEF ",
-            "AAAAB.ABBBB.CCCCD.CDDDD.FEFEF.FEFE .E    "
+            "ACD.DC .BBA.BC .DA ",
+            "ACB.DB .CD .AAD.CB "
+        ],
+        "58": [
+            "DBD.DAC.CBA.   .ABC",
+            "DCD.BCB.   .ADB.ACA",
+            "DAC.DBC.CBA.   .ABD"
         ],
         "60": [
-            "AAAAAB.ABBCB .CBCBCC.C     ",
-            "AAAAAB.ABBCBC.B     .CBCCC ",
-            "AAAAAB.ABBCBC.CC    .CBCB  ",
-            "AAAAAB.ABBCBC.CCBCCB.      ",
-            "AAAAAB.ABBCC .CB    .CBCBC ",
-            "AAAAAB.ABBCC .CBC   .CBCB  ",
-            "AAAAAB.ABBCCB.CBC   .CBC   ",
-            "AAAAAB.ABBCCB.CCBCBC.      ",
-            "AAAAAB.ABBCCC.CBCBCB.      "
+            "DDC.ACB.A  .BAD.BC ",
+            "AB .ACA.BCC.B  ",
+            "ABD.CAA.CDB.BDC.   ",
+            "DAC.   .BDB.CCD.BAA",
+            "DCC.BAD.   .CAB.DBA"
         ],
         "61": [
-            "AAAAB.ABBBB.CCCCD.CDDDD.EF   .EFEF .EFEF ",
-            "AAAAB.ABBBB.CCCCD.CDDDD.FEFEF.EFEFE.     "
+            "DC .ABA.CBA.C  .DBD",
+            "DBD.B  .CAC.AB .DAC",
+            "ADA.BC .BDA.DCB.C  "
+        ],
+        "62": [
+            "DA .BDA.A  .BCC.DCB",
+            "DAC.ACA.DB .B  .BCD",
+            "ABC.BCD.DCB.DA .A  ",
+            "DA .DBD.CBC.A  .ACB"
         ],
         "63": [
-            "AAAAB.ABBBB.CDC  .CDCD .CDD  ",
-            "AAAAB.ABBBB.CDCD .CD   .CDDC ",
-            "AAAAB.ABBBB.CDCDC.CD   .DCD  ",
-            "AAAAB.ABBBB.CDCDC.DCDDC.     ",
-            "AAAAB.ABBBB.CDDCD.CD   .CDC  ",
-            "AAAAB.ABBBB.CDDCD.CDCDC.     ",
-            "AAAAB.ABBBB.CDDDC.CDCDC.     "
+            "AD .CDA.BDC.CB .AB ",
+            "DBA.BA .AC .BC .DCD",
+            "DA .BAB.BC .CDD.CA "
         ],
         "64": [
-            "AAAB  .BABAB .BAB   ",
-            "AAABAB.      .BBABAB",
-            "AAABAB.BAB   .BAB   ",
-            "AAABAB.BABABB.      "
+            "DBC.DAB.ACC.ABD.   ",
+            "DBA.CDB.DAA.   .CBC"
+        ],
+        "65": [
+            "AD .BA .CBA.BDC.CD "
         ],
         "66": [
-            "AAAAAB.ABBCBC.C     .CBCBC ",
-            "AAAAAB.ABBCBC.CBC   .CBC   ",
-            "AAAAAB.ABBCBC.CCBCBC.      "
+            "DBC.A  .CBB.AD .CAD",
+            "AD .DBC.CBB.CAA.D  ",
+            "DBA.B  .BC .DAD.CAC",
+            "DBA.CA .DCB.C  .BAD",
+            "DDB.BA .A  .ACC.BCD"
         ],
-        "67": [
-            "AA   .BABAB.BAB  ",
-            "AAB  .AB   .BABAB",
-            "AABAB.AB   .BAB  ",
-            "AABB .ABAB .AB   ",
-            "ABA  .BABBA.BA   ",
-            "ABAA .BAB  .BAB  ",
-            "ABAB .ABA  .BBA  ",
-            "ABBA .BABA .BA   ",
-            "BAABA.BA   .BBA  ",
-            "BABAA.BA   .BBA  "
+        "68": [
+            "DCB.CAB.B  .DA .CAD",
+            "ABD.BCA.ACD.BCD.   ",
+            "ADC.BD .ABC.BDA.C  "
         ],
         "69": [
-            "AAAAB.ABBBB.CDCD .CDCD .CD   ",
-            "AAAAB.ABBBB.CDCDC.DCDCD.     "
+            "DB .ADC.DCC.B  .ABA",
+            "DDC.DB .ABA.AC .CB ",
+            "AB .DCC.DBA.ADC.B  "
         ],
-        "72": [
-            "AAAAB.ABCBC.CB   .CBC  ",
-            "AAAAB.ABCBC.CBCB .C    ",
-            "AAAAB.BCACB.CBCB .C    ",
-            "AAAAB.CABCB.CB   .CBC  ",
-            "AAAAB.CBACB.CBCB .C    ",
-            "AAAAB.CBC  .CBACB.CB   ",
-            "AAAAB.CBCB .CABC .CB   ",
-            "AAAAB.CBCB .CBC  .CAB  ",
-            "AAAAB.CBCBC.CB   .ABC  ",
-            "AAAAB.CBCBC.CB   .ACB  "
+        "71": [
+            "DB .AC .CBA.CD .ADB",
+            "DCA.CBC.AB .AD .DB ",
+            "DBC.ADD.AB .CB .CA ",
+            "DCA.AB .DB .BD .ACC",
+            "DA .CD .CA .BBC.DAB"
         ],
-        "76": [
-            "AABAB.BABAB.     ",
-            "AB   .BABA .BABA ",
-            "ABA  .BABA .BAB  ",
-            "ABAAB.BABAB.     ",
-            "ABAB .ABBA .AB   ",
-            "ABABA.AB   .BAB  ",
-            "ABABA.ABABB.     ",
-            "ABABA.BAB  .BA   ",
-            "BAABA.BABA .B    ",
-            "BAABA.BABAB.     "
+        "73": [
+            "DB .ADB.DC .AC .BCA",
+            "DC .DB .AB .CAC.ABD"
         ],
-        "78": [
-            "AAAB.ABBB.CCDC.DEDE.EDEC.    ",
-            "AAAB.ABBB.CCDC.EDEC.EDED.    ",
-            "AAAB.ABBB.CCDE.CEDE.EDCD.    ",
-            "AAAB.ABBB.CCDE.ECD .CEDE.D   ",
-            "AAAB.ABBB.CCE .CDED.DCED.E   ",
-            "AAAB.ABBB.CCE .DC  .DCDE.EDE ",
-            "AAAB.ABBB.CCEC.EDEC.D   .DED ",
-            "AAAB.ABBB.CCED.DEDC.EDEC.    "
+        "75": [
+            "DC .BAC.AC .AD .BDB",
+            "AC .BCA.BD .ABD.CD "
         ],
-        "79": [
-            "AAAAB.ABCBC.CBCBC.     ",
-            "AAAAB.CBCBC.CBABC.     "
-        ],
-        "80": [
-            "AAB.A  .BCC.DED.CBE.ED ",
-            "AAB.AB .BC .ECD.CED.ED ",
-            "AAB.AB .CDB.DE .ECD.EC ",
-            "AAB.AB .CED.CBC.DE .ED ",
-            "AAB.AB .CED.EDC.EC .BD ",
-            "AAB.AB .DE .DED.CBC.EC ",
-            "AAB.AB .DEC.CDC.B  .EDE",
-            "AAB.AB .DED.EDE.CB .CC ",
-            "AAB.AB .EBE.CDC.ED .DC ",
-            "AAB.AB .EC .CBE.CD .DED"
+        "77": [
+            "ABD.AC .DC .DAB.CB ",
+            "DCB.BAC.BD .AD .AC "
         ],
         "81": [
-            "A   .BAB .CACB.CBAC",
-            "AABC.BACA.B   .CBC ",
-            "ABAC.BAB .CCBA.C   ",
-            "ABBC.ACAC.BAC .B   ",
-            "ABBC.ACB .CA  .CBA ",
-            "ABC .ABC .AB  .CCAB",
-            "ABC .AC  .BBAC.BCA ",
-            "ABCA.BA  .BC  .CACB",
-            "ABCA.BABC.BACC.    ",
-            "AC  .BABC.CBA .CBA "
-        ],
-        "84": [
-            "ABAB.BABA.    ",
-            "BABA.BA  .BA  ",
-            "BABA.BABA.    "
-        ],
-        "86": [
-            "ABAB .ABAB .AB   ",
-            "ABABA.BABAB.     "
-        ],
-        "88": [
-            "AAB.A  .BDC.DCE.ECE.DB ",
-            "AAB.AB .DE .DEC.CEB.CD ",
-            "AAB.AB .DEC.DB .EC .EDC",
-            "AAB.AB .ECE.DCD.EB .DC ",
-            "AAB.AB .ED .EC .CDB.CED",
-            "AAB.ABC.DEB.ED .EC .DC ",
-            "AAB.ABC.ECE.DBD.DC .E  ",
-            "AAB.ABD.C  .ECD.CBE.ED ",
-            "AAB.ABD.D  .DCB.EC .ECE",
-            "AAB.ABE.   .DBC.ECD.CDE"
-        ],
-        "90": [
-            "AC  .ABAB.CC  .BCAB",
-            "AC  .ABCA.BCBC.BA  ",
-            "AC  .BABC.BC  .ABAC",
-            "AC  .BCA .BCBA.BAC ",
-            "AC  .BCB .BAC .ABCA",
-            "AC  .CBAC.AB  .CBAB",
-            "ACA .ACB .AB  .BCBC",
-            "ACA .BCB .BABC.AC  ",
-            "ACAB.AB  .CBCB.AC  ",
-            "ACAB.BCA .BC  .ACB "
-        ],
-        "96": [
-            "AAB.ABD.EDC.DE .E  .CBC",
-            "AAB.ABE.DC .C  .CDE.EBD",
-            "AAB.ADC.EBD.   .CED.BEC",
-            "AAB.AEC.   .ECB.EBD.DCD",
-            "AAB.AEC.BDC.DBE.DEC.   ",
-            "AAB.AEC.D  .BD .DBE.CEC",
-            "AAB.AEC.EB .ECD.B  .DCD",
-            "AAB.AED.EBC.   .CBC.DED",
-            "AAB.BCE.CBD.EDC.ADE.   ",
-            "AAB.ECE.DCD.ECD.BAB.   "
-        ],
-        "99": [
-            "ACAB.BCB .ACBC.A   ",
-            "ACAB.CBCA.CBA .B   ",
-            "ACAC.BCBA.BCA .B   ",
-            "ACB .ACAB.C   .ABCB",
-            "ACBA.CBCA.B   .CBA ",
-            "ACBC.    .BCAB.ACAB",
-            "ACBC.    .BCBA.CABA",
-            "ACBC.ABCB.    .ACAB",
-            "ACBC.C   .ACAB.BAB ",
-            "ACCB.    .ABAC.ABCB"
+            "AD .BCA.BC .ABD.DC "
         ]
     }
 }

@@ -2,7 +2,33 @@
 
 ## V0.4.0 : Travaux pour la prochaine version
 
+### Bug V0.3.2 :
+- bug sur score d'ascension qui est calculé sur le nombre de niveaux restant dans le jeu plutot que les niveaux effectivement réalisés dans l'ascension courante.
+- dernière ascension, la même musique pendant toute l'ascension.
+
+### Bug V0.3.6 :
+- après un abandon, on peut continuer de résoudre un plateau et même le résoudre malgré les menus affichés
+
+### Bug V0.4.0.beta :
+- Durée campagne = 1500h et plus. Si un jouer arrete le jeu pendant une partie, au prochain lancement, la partie est terminée avec l'heure du lancement qui peut etre plusieurs semaines apres. Il faudrait laisse "fin" à une valeur connue pour identifier qu'il ne faut pas la compter dans les statistiques de temps. Peut-etre ajouter un champs "fin_inconnue = true".
+- Le tableau des scores repete "Alain à 0" 5 fois sur une machine vierge.
+- [BLOQUANT] Après un abandon, le menu de campagne n'apparait pas, le jeu est bloqué.
+- Le score de fin de campagne/ascension montre une longueur d'ascension eronnée (zero !) => mauvais score d'ascension et de detour.
+- Pendant l'ascension, les log montrent une ascension qui est figée à 0% que l'on gagne ou perde.
+- La version dans le fichier de configuration enregistrée n'est pas mise à jour lors d'une nouvelle version.
+- La musique ne change plus avec la progression en ascension
+- Les infos joueur de l'ascension ne sont plus à jour
+- Pour l'export, reduire les noms de fichiers, car ils sont tronqués, modifiés.
+- Lors du changement de version, effacer tous les plateaux inachevés des joueurs enregistrés..
+- Lors du changement de version, remettre à zéro les scores des joueurs enregistrés..
+
 ### Jeu
+- Pouvoir passer l'apercu du score du plateau par un clique sur l'ecran.
+- Page "Campagne" : En même temps que le bouton "Commencer", faire des liens (en haut) vers chaque joueurs pour basculer d'une campagne à l'autre sans passer par le menu => ABANDON
+- Lire les plateaux 'Solutions_classees.json' et enregistrer l'UUID. Si l'UUID n'est pas celui de la sauvegarde, effacer toutes les sauvegardes des joueurs. => ABANDON
+- (option) enregistrer les dates de jeux et proposer une série de plateaux de chaque niveau. "Semaine 1", proposer les 1er plateaux de chaque niveau. => ABANDON
+- (option) prévoir un json avec l'enregistrement des scores de chacun sur chaque semaine. Score total et score semaine. => Calculable avec les statistiques.
+- Quand le jeu est terminé (campagne 100%), afficher un globe à coté du nom du joueur dans le menu principal
 - Pouvoir passer l'apercu du score du plateau par un clique sur l'ecran.
 
 #### Refactoring

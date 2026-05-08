@@ -120,6 +120,23 @@ func ajouter_un_nouveau_joueur(nom_nouveau_joueur : String, nom_nouveau_fichier 
 	_enregistrer_sauvegarde_joueur()
 	return true
 
+func remplacer_campagne_des_joueur():
+	"""Parcourir tous les joueurs et remplacer les plateaux à jouer par ceux du fichier courant"""
+	# Parcourir chaque joueurs
+	for nom_joueur in SauvegardeListeJoueursService.retourner_la_liste_des_joueurs():
+		fichier_sauvegarde = SauvegardeListeJoueursService.retourner_le_fichier_de_sauvegarde(nom_joueur)
+		_lire_sauvegarde_joueur(fichier_sauvegarde)
+		# Clore toute ascension en cours.
+		terminer_plateau()
+		terminer_ascension()
+		# Remplacer les plateaux residuels d'une ancienne campagne.
+		# avec les plateaux de la nouvelle campagne
+		sauvegarde_joueur['plateaux'] = SauvegardeBddPlateauxService.plateau_liste_difficulte_duplicate()
+		# Enregistrer les changements
+		_enregistrer_sauvegarde_joueur()
+		liberer_le_joueur()
+		LogService.log_debug("Remplacement de campagne pour le joueur :", nom_joueur)
+
 
 ###############################################
 # Nom

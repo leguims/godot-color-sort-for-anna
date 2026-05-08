@@ -8,7 +8,7 @@ extends Node
 
 # Dico : {'caracteristique': reglage}
 var configuration_du_jeu = {
-	'version': 'V0.4.0.beta6',
+	'version': 'V0.4.0',
 	'musiques': true,
 	'effets sonores': true,
 	'vibrations': true
@@ -36,6 +36,13 @@ func _initialiser_la_configuration() -> void:
 	# Copier les niveaux lus
 	if fichier_configuration:
 		if version_courante_disque != lire_la_version():
+			# Reset campagne
+			if version_courante_disque in ['V0.3.3', 'V0.3.4', 'V0.3.5', 'V0.3.6',
+											'V0.4.0.beta1', 'V0.4.0.beta2', 'V0.4.0.beta3',
+											'V0.4.0.beta4', 'V0.4.0.beta5', 'V0.4.0.beta6',
+											'V0.4.0.beta7']:
+				SauvegardeBddJoueursService.remplacer_campagne_des_joueur()
+				SauvegardeTableauDesScoresService.remise_a_zero()
 			# CONVERSION [V0.3.2 -> V0.3.3]
 			# TODO : conversion vers V0.3.3
 			# TODO : Nouvelle campagne => reset des sauvegardes

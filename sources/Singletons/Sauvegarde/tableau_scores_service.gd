@@ -27,12 +27,18 @@ func _enregistrer_la_liste_des_scores() -> void:
 	FichiersJsonService.write_json_file("user://scores.json", liste_des_scores.duplicate(true))
 	LogService.log_debug("Scores sauvegardés")
 
-
 func _retourner_le_joueur(nom_joueur : String) -> Dictionary:
 	for joueur in liste_des_scores:
 		if joueur.get('nom') == nom_joueur:
 			return joueur
 	return {}
+
+func remise_a_zero():
+	for joueur in liste_des_scores:
+		joueur['score'] = 0
+		joueur['score_txt'] = "0"
+		LogService.log_debug("Remise à zéro du score de ", joueur)
+	_enregistrer_la_liste_des_scores()
 
 func le_joueur_existe(nom_joueur : String) -> bool:
 	"""Verifie si le joueur existe"""

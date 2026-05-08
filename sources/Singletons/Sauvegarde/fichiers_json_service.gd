@@ -1,6 +1,6 @@
 extends Node
 
-var clonage: bool = true
+var clonage: bool = false
 var clonage_app_dir: String = "/sdcard/Download/"
 var clonage_prefixe: String = "RLC_"
 
