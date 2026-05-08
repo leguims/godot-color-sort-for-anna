@@ -165,9 +165,14 @@ func longueur_max_ascension_terminee() -> int:
 		for ascension in SauvegardeBddJoueursService.sauvegarde_joueur.get("ascensions"):
 			# Comptabiliser les plateaux sur les ascensions terminées
 			if ascension.get("plateaux", null) and ascension.get("date_fin", null):
-				var longueur_ascension_courante: int = ascension.get("plateaux", null).size()
-				if longueur_ascension_courante > longueur_max_ascension_terminee:
-					longueur_max_ascension_terminee = longueur_ascension_courante
+				# Longueur ascension realisée
+				var longueur_ascension_realisee: int = ascension.get("plateaux", null).size()
+				# Longueur detour ascension
+				var longueur_ascension_detour: int = ascension.get("longueur_detour", 0)
+				# Longueur ascension initiale
+				var longueur_ascension_initiale: int = longueur_ascension_realisee - longueur_ascension_detour
+				if longueur_ascension_initiale > longueur_max_ascension_terminee:
+					longueur_max_ascension_terminee = longueur_ascension_initiale
 	LogService.log_debug("joueur:",joueur, ' longueur_max_ascension_terminee=', longueur_max_ascension_terminee)
 	return longueur_max_ascension_terminee
 
