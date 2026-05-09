@@ -8,7 +8,8 @@ extends Node
 
 # Dico : {'caracteristique': reglage}
 var configuration_du_jeu = {
-	'version': 'V0.4.0',
+	'version': 'V0.4.1',
+	'date_debut_campagne': "2026-05-08 18:24:14",
 	'musiques': true,
 	'effets sonores': true,
 	'vibrations': true
@@ -109,3 +110,7 @@ func vibrations_sont_actives() -> bool:
 
 func lire_la_version() -> String:
 	return configuration_du_jeu.get('version', '?')
+
+func lire_la_date_debut_campagne_timestamp() -> int:
+	var datetime = configuration_du_jeu.get('date_debut_campagne', '?')
+	return Time.get_unix_time_from_datetime_string(datetime)

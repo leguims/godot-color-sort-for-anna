@@ -31,7 +31,7 @@ func ascension_taux_completion() -> float:
 	return taux_completion_ascension()
 
 func ascension_terminees() -> int:
-	return SauvegardeBddJoueursService.lire_nombre_ascensions()
+	return nombre_ascensions_terminees()
 
 func ascension_duree_moyenne_en_s() -> float:
 	return duree_moyenne_ascensions_terminees_en_s()
@@ -67,6 +67,7 @@ func nombre_de_plateau_inacheves() -> int:
 
 func nombre_de_plateau_acheves() -> int:
 	var joueur = SauvegardeBddJoueursService.lire_nom_joueur()
+	var date_debut_campagne = SauvegardeConfigurationService.lire_la_date_debut_campagne_timestamp()
 	# Nombre de plateau achevés
 	var nb_plateaux_acheves: int = 0
 	# Parcourir la liste des ascensions
@@ -75,7 +76,8 @@ func nombre_de_plateau_acheves() -> int:
 			# Comptabiliser les plateaux reussis
 			if ascension.get("plateaux", null):
 				for plateau_joue in ascension.get("plateaux"):
-					if plateau_joue.get("statut") == "reussi":
+					if plateau_joue.get("date_debut") > date_debut_campagne \
+						and plateau_joue.get("statut") == "reussi":
 						nb_plateaux_acheves += 1
 	LogService.log_debug("joueur:",joueur, ' nb_plateaux_acheves=', nb_plateaux_acheves)
 	return nb_plateaux_acheves
@@ -89,10 +91,13 @@ func taux_completion_campagne() -> float:
 func taux_completion_ascension() -> float:
 	"Taux de complétion de l'ascension en cours"
 	var joueur = SauvegardeBddJoueursService.lire_nom_joueur()
+	var date_debut_campagne = SauvegardeConfigurationService.lire_la_date_debut_campagne_timestamp()
 	# Consulter la derniere ascension
 	if SauvegardeBddJoueursService.sauvegarde_joueur.get("ascensions", null):
 		var ascension = SauvegardeBddJoueursService.sauvegarde_joueur.get('ascensions').back()
-		if "longueur_initiale" in ascension and not ascension.get('date_fin', null):
+		if "longueur_initiale" in ascension \
+			and not ascension.get('date_fin', null) \
+			and ascension.get("date_debut") > date_debut_campagne:
 			var lg_initiale: int = ascension.get("longueur_initiale", 0)
 			var lg_realisee: int = ascension.get("plateaux", 0).size()
 			var lg_detour: int = ascension.get("longueur_detour", 0)
@@ -108,6 +113,7 @@ func taux_completion_ascension() -> float:
 func duree_totale_plateaux_toutes_les_ascensions_en_s() -> Dictionary:
 	"Durée totale de jeu effectif de plateaux dans les ascensions"
 	var joueur = SauvegardeBddJoueursService.lire_nom_joueur()
+	var date_debut_campagne = SauvegardeConfigurationService.lire_la_date_debut_campagne_timestamp()
 	# Nombre de plateau achevés
 	var duree_totale_plateaux_toutes_les_ascensions: float = 0.
 	var duree_totale_plateaux_toutes_les_ascensions_terminees: float = 0.
@@ -117,13 +123,14 @@ func duree_totale_plateaux_toutes_les_ascensions_en_s() -> Dictionary:
 			# Comptabiliser les plateaux reussis
 			if ascension.get("plateaux", null):
 				for plateau_joue in ascension.get("plateaux"):
-					var duree_en_ms = plateau_joue.get("duree")
-					if duree_en_ms:
-						# Comptabiliser TOUTES les ascensions
-						duree_totale_plateaux_toutes_les_ascensions += duree_en_ms / 1000.
-						if ascension.get("date_fin"):
-							# Comptabiliser les ascensions TERMINEES
-							duree_totale_plateaux_toutes_les_ascensions_terminees += duree_en_ms / 1000.
+					if plateau_joue.get("date_debut") > date_debut_campagne:
+						var duree_en_ms = plateau_joue.get("duree")
+						if duree_en_ms:
+							# Comptabiliser TOUTES les ascensions
+							duree_totale_plateaux_toutes_les_ascensions += duree_en_ms / 1000.
+							if ascension.get("date_fin"):
+								# Comptabiliser les ascensions TERMINEES
+								duree_totale_plateaux_toutes_les_ascensions_terminees += duree_en_ms / 1000.
 	LogService.log_debug("joueur:",joueur,
 						' duree_totale_plateaux_toutes_les_ascensions=', duree_totale_plateaux_toutes_les_ascensions,
 						' duree_totale_plateaux_toutes_les_ascensions_terminees=', duree_totale_plateaux_toutes_les_ascensions_terminees)
@@ -133,11 +140,13 @@ func duree_totale_plateaux_toutes_les_ascensions_en_s() -> Dictionary:
 	}
 
 func nombre_ascensions_terminees() -> int:
-	var nb_ascensions = SauvegardeBddJoueursService.sauvegarde_joueur.get("ascensions").size()
-	var duree_ascensions = duree_totale_plateaux_toutes_les_ascensions_en_s()
-	if duree_ascensions.get('toutes') == duree_ascensions.get('terminees'):
-		return nb_ascensions
-	return nb_ascensions - 1
+	var date_debut_campagne = SauvegardeConfigurationService.lire_la_date_debut_campagne_timestamp()
+	var nb_ascensions: int = 0
+	for ascension in SauvegardeBddJoueursService.sauvegarde_joueur.get("ascensions"):
+		if ascension.get("date_debut") > date_debut_campagne \
+			and ascension.get("date_fin"):
+			nb_ascensions += 1
+	return nb_ascensions
 
 func duree_moyenne_ascensions_terminees_en_s() -> float:
 	var nat = nombre_ascensions_terminees()
@@ -148,6 +157,7 @@ func duree_moyenne_ascensions_terminees_en_s() -> float:
 
 func nombre_de_plateau_reussis_abandonnes() -> Dictionary:
 	var joueur = SauvegardeBddJoueursService.lire_nom_joueur()
+	var date_debut_campagne = SauvegardeConfigurationService.lire_la_date_debut_campagne_timestamp()
 	# Nombre de plateau reussis
 	var nb_plateaux_reussis: int = 0
 	# Nombre de plateau reussis
@@ -158,10 +168,11 @@ func nombre_de_plateau_reussis_abandonnes() -> Dictionary:
 			# Comptabiliser les plateaux reussis
 			if ascension.get("plateaux", null):
 				for plateau_joue in ascension.get("plateaux"):
-					if plateau_joue.get("statut") == "reussi":
-						nb_plateaux_reussis += 1
-					if plateau_joue.get("statut") == "abandonné":
-						nb_plateaux_abandonnes += 1
+					if plateau_joue.get("date_debut") > date_debut_campagne:
+						if plateau_joue.get("statut") == "reussi":
+							nb_plateaux_reussis += 1
+						if plateau_joue.get("statut") == "abandonné":
+							nb_plateaux_abandonnes += 1
 	LogService.log_debug("joueur:",joueur,
 						' nb_plateaux_reussis=', nb_plateaux_reussis,
 						' nb_plateaux_abandonnes=', nb_plateaux_abandonnes)
@@ -177,13 +188,16 @@ func taux_de_reussite_des_plateaux() -> float:
 
 func longueur_max_ascension_terminee() -> int:
 	var joueur = SauvegardeBddJoueursService.lire_nom_joueur()
+	var date_debut_campagne = SauvegardeConfigurationService.lire_la_date_debut_campagne_timestamp()
 	# Nombre de plateau reussis
 	var longueur_max_ascension_terminee: int = 0
 	# Parcourir la liste des ascensions
 	if SauvegardeBddJoueursService.sauvegarde_joueur.get("ascensions", null):
 		for ascension in SauvegardeBddJoueursService.sauvegarde_joueur.get("ascensions"):
 			# Comptabiliser les plateaux sur les ascensions terminées
-			if ascension.get("plateaux", null) and ascension.get("date_fin", null):
+			if ascension.get("plateaux", null) \
+				and ascension.get("date_fin", null) \
+				and ascension.get("date_debut") > date_debut_campagne:
 				# Longueur ascension realisée
 				var longueur_ascension_realisee: int = ascension.get("plateaux", null).size()
 				# Longueur detour ascension
@@ -197,6 +211,7 @@ func longueur_max_ascension_terminee() -> int:
 
 func plateau_le_plus_rapide_les_infos() -> Dictionary:
 	var joueur = SauvegardeBddJoueursService.lire_nom_joueur()
+	var date_debut_campagne = SauvegardeConfigurationService.lire_la_date_debut_campagne_timestamp()
 	# Plateau termine le plus vite et sa difficulté
 	var plus_rapide_temps: float = 0.
 	var plus_rapide_difficulte: int = 0
@@ -204,7 +219,8 @@ func plateau_le_plus_rapide_les_infos() -> Dictionary:
 	if SauvegardeBddJoueursService.sauvegarde_joueur.get("ascensions", null):
 		for ascension in SauvegardeBddJoueursService.sauvegarde_joueur.get("ascensions"):
 			# Comptabiliser les plateaux reussis
-			if ascension.get("plateaux", null):
+			if ascension.get("plateaux", null) \
+				and ascension.get("date_debut") > date_debut_campagne:
 				for plateau_joue in ascension.get("plateaux"):
 					var duree_en_ms = plateau_joue.get("duree", 0)
 					if duree_en_ms:
@@ -222,6 +238,7 @@ func plateau_le_plus_rapide_les_infos() -> Dictionary:
 
 func plateau_le_plus_lent_les_infos() -> Dictionary:
 	var joueur = SauvegardeBddJoueursService.lire_nom_joueur()
+	var date_debut_campagne = SauvegardeConfigurationService.lire_la_date_debut_campagne_timestamp()
 	# Plateau le plus lent à résoudre et sa difficulté
 	var plus_lent_temps: float = 0.
 	var plus_lent_difficulte: int = 0
@@ -229,7 +246,8 @@ func plateau_le_plus_lent_les_infos() -> Dictionary:
 	if SauvegardeBddJoueursService.sauvegarde_joueur.get("ascensions", null):
 		for ascension in SauvegardeBddJoueursService.sauvegarde_joueur.get("ascensions"):
 			# Comptabiliser les plateaux reussis
-			if ascension.get("plateaux", null):
+			if ascension.get("plateaux", null) \
+				and ascension.get("date_debut") > date_debut_campagne:
 				for plateau_joue in ascension.get("plateaux"):
 					var duree_en_ms = plateau_joue.get("duree", 0)
 					if duree_en_ms:
@@ -248,6 +266,7 @@ func plateau_le_plus_lent_les_infos() -> Dictionary:
 func ascension_parfaite_les_infos() -> Dictionary:
 	"Retourne le nombre d'ascensions parfaites et la longueur de la plus longue"
 	var joueur = SauvegardeBddJoueursService.lire_nom_joueur()
+	var date_debut_campagne = SauvegardeConfigurationService.lire_la_date_debut_campagne_timestamp()
 	# Nombre d'ascension sans erreur
 	var nb_ascension_parfaite: int = 0
 	# Longueur max. d'ascension sans erreur
@@ -255,19 +274,21 @@ func ascension_parfaite_les_infos() -> Dictionary:
 	# Parcourir la liste des ascensions
 	if SauvegardeBddJoueursService.sauvegarde_joueur.get("ascensions", null):
 		for ascension in SauvegardeBddJoueursService.sauvegarde_joueur.get("ascensions"):
-			var detour = ascension.get("longueur_detour", null)
-			var longueur = ascension.get("plateaux", null).size()
-			if detour == 0.:
-				nb_ascension_parfaite += 1
-				if longueur > longueur_max_ascension_parfaite:
-					longueur_max_ascension_parfaite = longueur
-	LogService.log_debug("joueur:",joueur,
-						' nb_ascension_parfaite=', nb_ascension_parfaite,
-						' longueur_max_ascension_parfaite=', longueur_max_ascension_parfaite)
+			if  ascension.get("date_debut") > date_debut_campagne:
+				var detour = ascension.get("longueur_detour", null)
+				var longueur = ascension.get("plateaux", null).size()
+				if detour == 0.:
+					nb_ascension_parfaite += 1
+					if longueur > longueur_max_ascension_parfaite:
+						longueur_max_ascension_parfaite = longueur
+		LogService.log_debug("joueur:",joueur,
+							' nb_ascension_parfaite=', nb_ascension_parfaite,
+							' longueur_max_ascension_parfaite=', longueur_max_ascension_parfaite)
 	return {'nombre': nb_ascension_parfaite, 'longueur': longueur_max_ascension_parfaite}
 
 func serie_de_victoire_maximum() -> int:
 	var joueur = SauvegardeBddJoueursService.lire_nom_joueur()
+	var date_debut_campagne = SauvegardeConfigurationService.lire_la_date_debut_campagne_timestamp()
 	# Serie de victoire la plus grande.
 	var serie_de_victoire_maximum: int = 0
 	var serie_de_victoire_courante: int = 0
@@ -275,7 +296,8 @@ func serie_de_victoire_maximum() -> int:
 	if SauvegardeBddJoueursService.sauvegarde_joueur.get("ascensions", null):
 		for ascension in SauvegardeBddJoueursService.sauvegarde_joueur.get("ascensions"):
 			# Comptabiliser les plateaux reussis
-			if ascension.get("plateaux", null):
+			if ascension.get("plateaux", null) \
+				and ascension.get("date_debut") > date_debut_campagne:
 				for plateau_joue in ascension.get("plateaux"):
 					if plateau_joue.get("statut") == "reussi":
 						serie_de_victoire_courante += 1
