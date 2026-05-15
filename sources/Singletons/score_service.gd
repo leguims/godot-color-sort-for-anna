@@ -22,25 +22,40 @@ func mettre_a_jour_score_pour_victoire(duree_en_ms : int) -> Dictionary:
 func mettre_a_jour_score_duree(duree_en_ms : int) -> Dictionary:
 	"Calculer le score relatif au temps"
 	var temps_reference_par_niveau = {
-		25 : 10.,
-		50 : 15.,
-		60 : 20.,
-		100 : 25.,
-		125 : 40.
+		9 : 9.,
+		10 : 12.,
+		20 : 14.,
+		30 : 16.,
+		40 : 18.,
+		50 : 20.,
+		60 : 25.,
+		71 : 30.,
+		81 : 60.,
+		100 : 120.
 		}
 
 	var niveau = SauvegardeBddJoueursService.lire_niveau_joueur()
-	var temps_reference_en_s = temps_reference_par_niveau[25]
-	if niveau <= 25:
-		temps_reference_en_s = temps_reference_par_niveau[25]
+	var temps_reference_en_s = temps_reference_par_niveau[9]
+	if niveau <= 9:
+		temps_reference_en_s = temps_reference_par_niveau[9]
+	elif niveau <= 10:
+		temps_reference_en_s = temps_reference_par_niveau[10]
+	elif niveau <= 20:
+		temps_reference_en_s = temps_reference_par_niveau[20]
+	elif niveau <= 30:
+		temps_reference_en_s = temps_reference_par_niveau[30]
+	elif niveau <= 40:
+		temps_reference_en_s = temps_reference_par_niveau[40]
 	elif niveau <= 50:
 		temps_reference_en_s = temps_reference_par_niveau[50]
 	elif niveau <= 60:
 		temps_reference_en_s = temps_reference_par_niveau[60]
+	elif niveau <= 71:
+		temps_reference_en_s = temps_reference_par_niveau[71]
+	elif niveau <= 81:
+		temps_reference_en_s = temps_reference_par_niveau[81]
 	elif niveau <= 100:
 		temps_reference_en_s = temps_reference_par_niveau[100]
-	elif niveau <= 125:
-		temps_reference_en_s = temps_reference_par_niveau[125]
 	else :
 		LogService.log_erreur("Erreur : Niveau inattendu pour le score !")
 
