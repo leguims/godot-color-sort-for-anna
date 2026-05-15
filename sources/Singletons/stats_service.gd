@@ -101,13 +101,15 @@ func taux_completion_ascension() -> float:
 			var lg_initiale: int = ascension.get("longueur_initiale", 0)
 			var lg_realisee: int = ascension.get("plateaux", 0).size()
 			var lg_detour: int = ascension.get("longueur_detour", 0)
-			var completion: float = 1. * (lg_realisee - lg_detour) / lg_initiale
-			LogService.log_debug("joueur:",joueur,
-								' lg_initiale=', lg_initiale,
-								' lg_realisee=', lg_realisee,
-								' lg_detour=', lg_detour,
-								' completion=', completion)
-			return completion
+			if (2 * lg_detour) < lg_realisee:
+				# Un plateau perdu entraine 2 plateaux supplémentaires.
+				var completion: float = 1. * (lg_realisee - 2 * lg_detour) / lg_initiale
+				LogService.log_debug("joueur:",joueur,
+									' lg_initiale=', lg_initiale,
+									' lg_realisee=', lg_realisee,
+									' lg_detour=', lg_detour,
+									' completion=', completion)
+				return completion
 	return 0.
 
 func duree_totale_plateaux_toutes_les_ascensions_en_s() -> Dictionary:
