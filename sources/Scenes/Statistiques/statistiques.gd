@@ -38,7 +38,7 @@ func campagne():
 	# Identifier le joueur
 	# Consulter la BDD pour obtenir les indicateurs à afficher
 	var valeur
-	# TODO
+	# TODO : campagne : diagrammes et courbes
 
 	# KPI
 	var KPI_Completion = $Marge/HBoxContainer/VBoxContainer/KPI_Campagne/KPI_Completion
@@ -76,7 +76,7 @@ func ascensions():
 	# Identifier le joueur
 	# Consulter la BDD pour obtenir les indicateurs à afficher
 	var valeur
-	# TODO
+	# TODO : ascensions : diagrammes et courbes
 
 	# KPI
 	# Ligne 1
@@ -95,48 +95,49 @@ func ascensions():
 	KPI_Terminees.set_color(Color("WHITE"), Color('00a7f9'))
 	KPI_Terminees.set_minimum_size(Vector2(120,50))
 
-	var KPI_DureeMoyenne = $Marge/HBoxContainer/VBoxContainer/KPI_Ascension/KPI_DureeMoyenne
-	KPI_DureeMoyenne.set_title("Durée Moy.")
-	valeur = StatsService.ascension_duree_moyenne_en_s()
-	valeur = str_arrondir_temps_en_s(valeur)
-	KPI_DureeMoyenne.set_value(valeur)
-	KPI_DureeMoyenne.set_color(Color("WHITE"), Color('00a7f9'))
-	KPI_DureeMoyenne.set_minimum_size(Vector2(120,50))
-
-	# Ligne 2
-	var KPI_Longueur = $Marge/HBoxContainer/VBoxContainer/KPI_Ascension2/KPI_Longueur
+	var KPI_Longueur = $Marge/HBoxContainer/VBoxContainer/KPI_Ascension/KPI_Longueur
 	KPI_Longueur.set_title("Longueur Max.")
 	valeur = StatsService.ascension_longueur_max()
 	KPI_Longueur.set_value(valeur)
 	KPI_Longueur.set_color(Color("WHITE"), Color('00a7f9'))
 	KPI_Longueur.set_minimum_size(Vector2(120,50))
 
-	var KPI_Parfait_Nb = $Marge/HBoxContainer/VBoxContainer/KPI_Ascension2/KPI_Parfait_Nb
-	KPI_Parfait_Nb.set_title("Parfaite")
-	var ascension_parfaite = StatsService.ascension_parfaite_infos()
-	KPI_Parfait_Nb.set_value(ascension_parfaite.get('nombre'))
-	KPI_Parfait_Nb.set_color(Color("WHITE"), Color('00a7f9'))
-	KPI_Parfait_Nb.set_minimum_size(Vector2(90,50))
+	# Ligne 2
+	var KPI_MinMax_Titre = $Marge/HBoxContainer/VBoxContainer/KPI_Ascension2/KPI_MinMax_Titre
+	KPI_MinMax_Titre.set_title("Réussite Min/Max")
+	KPI_MinMax_Titre.set_value("Longueur")
+	KPI_MinMax_Titre.set_color(Color("WHITE"), Color('00a7f9'))
+	KPI_MinMax_Titre.set_minimum_size(Vector2(160,50))
 
-	var KPI_Parfait_Lg = $Marge/HBoxContainer/VBoxContainer/KPI_Ascension2/KPI_Parfait_Lg
-	KPI_Parfait_Lg.set_title("Long. Max. (Parf.)")
-	KPI_Parfait_Lg.set_value(ascension_parfaite.get('longueur'))
-	KPI_Parfait_Lg.set_color(Color("WHITE"), Color('00a7f9'))
-	KPI_Parfait_Lg.set_minimum_size(Vector2(150,50))
+	var KPI_Taux_Min = $Marge/HBoxContainer/VBoxContainer/KPI_Ascension2/KPI_Taux_Min
+	var taux_reussite = StatsService.ascension_taux_reussite_infos()
+	valeur = str_arrondir_pourcentage(taux_reussite.get('taux_min'))
+	KPI_Taux_Min.set_title(valeur)
+	KPI_Taux_Min.set_value(taux_reussite.get('taux_min_lg'))
+	KPI_Taux_Min.set_color(Color("WHITE"), Color('00a7f9'))
+	KPI_Taux_Min.set_minimum_size(Vector2(100,50))
+
+	var KPI_Taux_Max = $Marge/HBoxContainer/VBoxContainer/KPI_Ascension2/KPI_Taux_Max
+	valeur = str_arrondir_pourcentage(taux_reussite.get('taux_max'))
+	KPI_Taux_Max.set_title(valeur)
+	KPI_Taux_Max.set_value(taux_reussite.get('taux_max_lg'))
+	KPI_Taux_Max.set_color(Color("WHITE"), Color('00a7f9'))
+	KPI_Taux_Max.set_minimum_size(Vector2(100,50))
 
 func niveaux():
 	# Identifier le joueur
 	# Consulter la BDD pour obtenir les indicateurs à afficher
-	# TODO
+	# TODO : niveaux : diagrammes et courbes
 
 	# KPI
+	# TODO : niveaux : KPI
 	pass
 
 func plateaux():
 	# Identifier le joueur
 	# Consulter la BDD pour obtenir les indicateurs à afficher
 	var valeur
-	# TODO
+	# TODO : plateaux : diagrammes et courbes
 
 	# KPI
 	# Ligne 1

@@ -54,10 +54,6 @@ theme_override_styles/normal = SubResource("StyleBoxFlat_se7pp")
 text = "Toto"
 horizontal_alignment = 1
 
-[node name="SEPARATEUR VIDE6" type="Label" parent="Marge/HBoxContainer/VBoxContainer"]
-layout_mode = 2
-text = " "
-
 [node name="SEPARATEUR VIDE5" type="Label" parent="Marge/HBoxContainer/VBoxContainer"]
 layout_mode = 2
 text = " "
@@ -111,19 +107,19 @@ layout_mode = 2
 [node name="KPI_Terminees" parent="Marge/HBoxContainer/VBoxContainer/KPI_Ascension" instance=ExtResource("2_xsdck")]
 layout_mode = 2
 
-[node name="KPI_DureeMoyenne" parent="Marge/HBoxContainer/VBoxContainer/KPI_Ascension" instance=ExtResource("2_xsdck")]
+[node name="KPI_Longueur" parent="Marge/HBoxContainer/VBoxContainer/KPI_Ascension" instance=ExtResource("2_xsdck")]
 layout_mode = 2
 
 [node name="KPI_Ascension2" type="HBoxContainer" parent="Marge/HBoxContainer/VBoxContainer"]
 layout_mode = 2
 
-[node name="KPI_Longueur" parent="Marge/HBoxContainer/VBoxContainer/KPI_Ascension2" instance=ExtResource("2_xsdck")]
+[node name="KPI_MinMax_Titre" parent="Marge/HBoxContainer/VBoxContainer/KPI_Ascension2" instance=ExtResource("2_xsdck")]
 layout_mode = 2
 
-[node name="KPI_Parfait_Nb" parent="Marge/HBoxContainer/VBoxContainer/KPI_Ascension2" instance=ExtResource("2_xsdck")]
+[node name="KPI_Taux_Min" parent="Marge/HBoxContainer/VBoxContainer/KPI_Ascension2" instance=ExtResource("2_xsdck")]
 layout_mode = 2
 
-[node name="KPI_Parfait_Lg" parent="Marge/HBoxContainer/VBoxContainer/KPI_Ascension2" instance=ExtResource("2_xsdck")]
+[node name="KPI_Taux_Max" parent="Marge/HBoxContainer/VBoxContainer/KPI_Ascension2" instance=ExtResource("2_xsdck")]
 layout_mode = 2
 
 [node name="SEPARATEUR VIDE2" type="Label" parent="Marge/HBoxContainer/VBoxContainer"]

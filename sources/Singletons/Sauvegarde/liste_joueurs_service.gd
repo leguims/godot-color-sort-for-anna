@@ -52,6 +52,7 @@ func ajouter_un_nouveau_joueur(nom_nouveau_joueur : String) -> bool:
 	if le_joueur_existe(nom_nouveau_joueur):
 		return false
 	# Crée le compte et l'enregistre
+	# TODO : L'ajout et la suppression de joueur entraine des erreur de suffixe sur le fichier de sauvegarde>
 	var compte = {
 		'nom': nom_nouveau_joueur,
 		'fichier_sauvegarde': 'sauvegarde_joueur_' + str(len(liste_des_joueurs)).pad_zeros(2) + '.json'
