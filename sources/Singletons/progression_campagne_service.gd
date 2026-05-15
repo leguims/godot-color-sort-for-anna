@@ -20,7 +20,11 @@ func choisir_le_joueur_pour_la_campagne(nom_joueur : String) -> bool:
 	if SauvegardeListeJoueursService.le_joueur_existe(nom_joueur):
 		# Choisir le joueur pour la campagne
 		var nom_fichier = SauvegardeListeJoueursService.retourner_le_fichier_de_sauvegarde(nom_joueur)
-		return SauvegardeBddJoueursService.choisir_le_joueur(nom_joueur, nom_fichier)
+		var succes: bool =  SauvegardeBddJoueursService.choisir_le_joueur(nom_joueur, nom_fichier)
+		if not succes:
+			LogService.log_erreur("Erreur : Impossible de choisir le joueur *" + nom_joueur + "*. L'effacer de la liste des joueurs.")
+			SauvegardeListeJoueursService.supprimer_un_joueur_orphelin_de_sauvegarde(nom_joueur, nom_fichier)
+		return succes
 	return false
 
 func liberer_le_joueur_pour_la_campagne():

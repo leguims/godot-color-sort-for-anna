@@ -62,14 +62,21 @@ func ajouter_un_nouveau_joueur(nom_nouveau_joueur : String) -> bool:
 
 func supprimer_un_joueur(nom_joueur : String, fichier_joueur : String) -> bool:
 	"""Supprime un joueur"""
+	# Effacer le joueur
+	var succes: bool = supprimer_un_joueur_orphelin_de_sauvegarde(nom_joueur, fichier_joueur)
+	if succes:
+		# Effacer le fichier
+		FichiersJsonService.remove_json_file(fichier_joueur)
+	return succes
+
+func supprimer_un_joueur_orphelin_de_sauvegarde(nom_joueur : String, fichier_joueur : String) -> bool:
+	"""Supprime un joueur qui pointe sur un fichier à probleme"""
 	if not nom_joueur:
 		return false
 	if not fichier_joueur:
 		return false
 	# Vérifie que le nom est libre
 	if le_joueur_existe(nom_joueur):
-		# Effacer le fichier
-		FichiersJsonService.remove_json_file(fichier_joueur)
 		# Crée le compte à effacer
 		var compte = {
 			'nom': nom_joueur,

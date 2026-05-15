@@ -37,8 +37,11 @@ func _on_joueurs_campagne_pressed(nom_joueur: String) -> void:
 		LogService.log_erreur("Erreur : Le nom *" + nom_joueur + "* n'existe pas")
 	elif not ProgressionCampagneService.la_campagne_est_terminee_pour_joueur(nom_joueur):
 		# Choisir le joueur pour la campagne
-		ProgressionCampagneService.choisir_le_joueur_pour_la_campagne(nom_joueur)
-		get_tree().change_scene_to_file("res://Scenes/Campagne/campagne.tscn")
+		var succes: bool = ProgressionCampagneService.choisir_le_joueur_pour_la_campagne(nom_joueur)
+		if succes:
+			get_tree().change_scene_to_file("res://Scenes/Campagne/campagne.tscn")
+		else:
+			LogService.log_erreur("Erreur : Impossible de choisir le joueur *" + nom_joueur + "*.")
 	else:
 		get_tree().change_scene_to_file("res://Scenes/Statistiques/statistiques.tscn")
 
