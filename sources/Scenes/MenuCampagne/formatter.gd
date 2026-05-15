@@ -67,14 +67,11 @@ func enregistrer_infos_joueur(	_nom : String = "",
 func formater_infos_joueur() -> String:
 	var emoji_carre_blanc = String.chr(0x25FD)
 	var emoji_carre_noir = String.chr(0x25FE)
-	var emoji_montagne = String.chr(0x1F3D4)
-	# var emoji_globe = String.chr(0x1F30D)
 	
 	# Spécifier un caractere imprimable pour le WEB.
 	if OS.has_feature("web"):
 		emoji_carre_blanc = '[#]'
 		emoji_carre_noir = '[ ]'
-		emoji_montagne = '/\\'
 
 	var ascension = _pourcentage_en_led(
 		pourcentage_ascension_realise,
@@ -83,11 +80,6 @@ func formater_infos_joueur() -> String:
 	var texte = "[center][font_size=30]"
 	texte += nom + " " + trophee + " " + score_texte + "\n"
 	texte += ascension + "\n"
-	#texte += campagne + "\n"
-	if nb_ascensions:
-		for i in range(nb_ascensions):
-			texte += emoji_montagne
-		texte += "\n"
 	texte += "[/font_size][/center]"
 	return texte
 
