@@ -96,10 +96,6 @@ layout_mode = 2
 layout_mode = 2
 text = " "
 
-[node name="SEPARATEUR VIDE0" type="Label" parent="Marge/HBoxContainer/VBoxContainer"]
-layout_mode = 2
-text = " "
-
 [node name="Titre Ascension" parent="Marge/HBoxContainer/VBoxContainer" instance=ExtResource("2_xsdck")]
 layout_mode = 2
 titre = "Ascension"
@@ -134,10 +130,6 @@ layout_mode = 2
 layout_mode = 2
 text = " "
 
-[node name="SEPARATEUR VIDE4" type="Label" parent="Marge/HBoxContainer/VBoxContainer"]
-layout_mode = 2
-text = " "
-
 [node name="Titre Niveau" parent="Marge/HBoxContainer/VBoxContainer" instance=ExtResource("2_xsdck")]
 visible = false
 layout_mode = 2
@@ -161,6 +153,15 @@ titre = "Plateau"
 couleur_fond = Color(0.6918974, 0.40343967, 0.93590915, 1)
 taille_minimum = Vector2(240, 25)
 
+[node name="KPI_Plateau3" type="HBoxContainer" parent="Marge/HBoxContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="KPI_MoyenTitre" parent="Marge/HBoxContainer/VBoxContainer/KPI_Plateau3" instance=ExtResource("2_xsdck")]
+layout_mode = 2
+
+[node name="KPI_MoyenTemps" parent="Marge/HBoxContainer/VBoxContainer/KPI_Plateau3" instance=ExtResource("2_xsdck")]
+layout_mode = 2
+
 [node name="KPI_Plateau" type="HBoxContainer" parent="Marge/HBoxContainer/VBoxContainer"]
 layout_mode = 2
 
@@ -183,4 +184,16 @@ layout_mode = 2
 layout_mode = 2
 
 [node name="KPI_LentDifficulte" parent="Marge/HBoxContainer/VBoxContainer/KPI_Plateau2" instance=ExtResource("2_xsdck")]
+layout_mode = 2
+
+[node name="KPI_Plateau4" type="HBoxContainer" parent="Marge/HBoxContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="KPI_GalereTitre" parent="Marge/HBoxContainer/VBoxContainer/KPI_Plateau4" instance=ExtResource("2_xsdck")]
+layout_mode = 2
+
+[node name="KPI_GalereEssais" parent="Marge/HBoxContainer/VBoxContainer/KPI_Plateau4" instance=ExtResource("2_xsdck")]
+layout_mode = 2
+
+[node name="KPI_GalereDifficulte" parent="Marge/HBoxContainer/VBoxContainer/KPI_Plateau4" instance=ExtResource("2_xsdck")]
 layout_mode = 2

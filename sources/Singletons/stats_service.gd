@@ -45,12 +45,17 @@ func ascension_parfaite_infos() -> Dictionary:
 
 # #######
 # Plateau
+func plateau_temps_moyen_en_s() -> float:
+	return plateau_le_temps_moyen_en_s()
+
 func plateau_plus_rapide_infos() -> Dictionary:
 	return plateau_le_plus_rapide_les_infos()
 
 func plateau_plus_lent_infos() -> Dictionary:
 	return plateau_le_plus_lent_les_infos()
 
+func plateau_plus_galere_infos() -> Dictionary:
+	return plateau_le_plus_galere_les_infos()
 
 # ####################
 # Calculs Statistiques
@@ -207,6 +212,30 @@ func longueur_max_ascension_terminee() -> int:
 	LogService.log_debug("joueur:",joueur, ' longueur_max_ascension_terminee=', longueur_max_ascension_terminee)
 	return longueur_max_ascension_terminee
 
+func plateau_le_temps_moyen_en_s() -> float:
+	var joueur = SauvegardeBddJoueursService.lire_nom_joueur()
+	var date_debut_campagne = SauvegardeConfigurationService.lire_la_date_debut_campagne_timestamp()
+	# Plateau termine le plus vite et sa difficulté
+	var temps_total_en_ms: float = 0.
+	var nb_plateaux: int = 0
+	var temps_moyen_en_s: float = 0.
+	# Parcourir la liste des ascensions
+	if SauvegardeBddJoueursService.sauvegarde_joueur.get("ascensions", null):
+		for ascension in SauvegardeBddJoueursService.sauvegarde_joueur.get("ascensions"):
+			# Comptabiliser les plateaux reussis
+			if ascension.get("plateaux", null) \
+				and ascension.get("date_debut") > date_debut_campagne:
+				for plateau_joue in ascension.get("plateaux"):
+					var duree_en_ms = plateau_joue.get("duree", 0)
+					if duree_en_ms:
+						temps_total_en_ms += duree_en_ms
+						nb_plateaux += 1
+	if nb_plateaux:
+		temps_moyen_en_s = temps_total_en_ms / nb_plateaux / 1000.
+	LogService.log_debug("joueur:",joueur,
+						' temps_moyen=', temps_moyen_en_s)
+	return temps_moyen_en_s
+
 func plateau_le_plus_rapide_les_infos() -> Dictionary:
 	var joueur = SauvegardeBddJoueursService.lire_nom_joueur()
 	var date_debut_campagne = SauvegardeConfigurationService.lire_la_date_debut_campagne_timestamp()
@@ -260,6 +289,39 @@ func plateau_le_plus_lent_les_infos() -> Dictionary:
 						' plus_lent_temps=', plus_lent_temps / 1000.,
 						' plus_lent_difficulte=', plus_lent_difficulte)
 	return {'temps_en_s': plus_lent_temps / 1000., 'difficulte': plus_lent_difficulte}
+
+func plateau_le_plus_galere_les_infos() -> Dictionary:
+	var joueur = SauvegardeBddJoueursService.lire_nom_joueur()
+	var date_debut_campagne = SauvegardeConfigurationService.lire_la_date_debut_campagne_timestamp()
+	# Plateau le plus galère à résoudre et sa difficulté
+	var plateaux_essais: Dictionary = {}
+	# Parcourir la liste des ascensions et collecter les essais sur chaque plateau
+	if SauvegardeBddJoueursService.sauvegarde_joueur.get("ascensions", null):
+		for ascension in SauvegardeBddJoueursService.sauvegarde_joueur.get("ascensions"):
+			# Comptabiliser les essais de plateaux
+			if ascension.get("plateaux", null) \
+				and ascension.get("date_debut") > date_debut_campagne:
+				for plateau_joue in ascension.get("plateaux"):
+					var nom_plateau = plateau_joue.get("nom", 'inconnu')
+					if nom_plateau in plateaux_essais:
+						plateaux_essais[nom_plateau]['essais'] += 1
+					else:
+						var niveau_plateau = plateau_joue.get("niveau", 0)
+						plateaux_essais[nom_plateau] = {'essais': 1, 'niveau': niveau_plateau}
+	var plus_galere_nom: String = ''
+	var plus_galere_essais: int = 0
+	var plus_galere_difficulte: int = 0
+	for nom_plateau in plateaux_essais.keys():
+		if plateaux_essais.get(nom_plateau).get('essais') > plus_galere_essais:
+			plus_galere_nom = nom_plateau
+			plus_galere_essais = plateaux_essais.get(nom_plateau).get('essais')
+			plus_galere_difficulte = plateaux_essais.get(nom_plateau).get('niveau')
+	# Chercher le plateau avec le plus d'essais
+	LogService.log_debug("joueur:",joueur,
+						' plus_galere_nom=', plus_galere_nom,
+						' plus_galere_essais=', plus_galere_essais,
+						' plus_galere_difficulte=', plus_galere_difficulte)
+	return {'essais': plus_galere_essais, 'difficulte': plus_galere_difficulte}
 
 func ascension_parfaite_les_infos() -> Dictionary:
 	"Retourne le nombre d'ascensions parfaites et la longueur de la plus longue"

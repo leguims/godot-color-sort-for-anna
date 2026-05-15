@@ -140,6 +140,21 @@ func plateaux():
 
 	# KPI
 	# Ligne 1
+	var KPI_MoyenTitre = $Marge/HBoxContainer/VBoxContainer/KPI_Plateau3/KPI_MoyenTitre
+	KPI_MoyenTitre.set_title("Temps")
+	KPI_MoyenTitre.set_value("Moyen")
+	KPI_MoyenTitre.set_color(Color("WHITE"), Color('b067ef'))
+	KPI_MoyenTitre.set_minimum_size(Vector2(120,50))
+
+	var KPI_MoyenTemps = $Marge/HBoxContainer/VBoxContainer/KPI_Plateau3/KPI_MoyenTemps
+	KPI_MoyenTemps.set_title("Temps")
+	var temps_moyen = StatsService.plateau_temps_moyen_en_s()
+	valeur = str_arrondir_temps_en_s(temps_moyen)
+	KPI_MoyenTemps.set_value(valeur)
+	KPI_MoyenTemps.set_color(Color("WHITE"), Color('b067ef'))
+	KPI_MoyenTemps.set_minimum_size(Vector2(120,50))
+	
+	# Ligne 2
 	var KPI_RapideTitre = $Marge/HBoxContainer/VBoxContainer/KPI_Plateau/KPI_RapideTitre
 	KPI_RapideTitre.set_title("Le Plus")
 	KPI_RapideTitre.set_value("Rapide")
@@ -161,9 +176,7 @@ func plateaux():
 	KPI_RapideDifficulte.set_color(Color("WHITE"), Color('b067ef'))
 	KPI_RapideDifficulte.set_minimum_size(Vector2(120,50))
 	
-	# TODO : representer le plateau en miniature
-
-	# Ligne 2
+	# Ligne 3
 	var KPI_LentTitre = $Marge/HBoxContainer/VBoxContainer/KPI_Plateau2/KPI_LentTitre
 	KPI_LentTitre.set_title("Le Plus")
 	KPI_LentTitre.set_value("Lent")
@@ -184,6 +197,28 @@ func plateaux():
 	KPI_LentDifficulte.set_value(valeur)
 	KPI_LentDifficulte.set_color(Color("WHITE"), Color('b067ef'))
 	KPI_LentDifficulte.set_minimum_size(Vector2(120,50))
+	
+	# Ligne 4
+	var KPI_GalereTitre = $Marge/HBoxContainer/VBoxContainer/KPI_Plateau4/KPI_GalereTitre
+	KPI_GalereTitre.set_title("Le Plus")
+	KPI_GalereTitre.set_value("Galère")
+	KPI_GalereTitre.set_color(Color("WHITE"), Color('b067ef'))
+	KPI_GalereTitre.set_minimum_size(Vector2(120,50))
+
+	var KPI_GalereEssais = $Marge/HBoxContainer/VBoxContainer/KPI_Plateau4/KPI_GalereEssais
+	KPI_GalereEssais.set_title("Essais")
+	var plus_galere = StatsService.plateau_plus_galere_infos()
+	valeur = plus_galere.get('essais')
+	KPI_GalereEssais.set_value(valeur)
+	KPI_GalereEssais.set_color(Color("WHITE"), Color('b067ef'))
+	KPI_GalereEssais.set_minimum_size(Vector2(120,50))
+
+	var KPI_GalereDifficulte = $Marge/HBoxContainer/VBoxContainer/KPI_Plateau4/KPI_GalereDifficulte
+	KPI_GalereDifficulte.set_title("Difficulté")
+	valeur = plus_galere.get('difficulte')
+	KPI_GalereDifficulte.set_value(valeur)
+	KPI_GalereDifficulte.set_color(Color("WHITE"), Color('b067ef'))
+	KPI_GalereDifficulte.set_minimum_size(Vector2(120,50))
 	
 	# TODO : representer le plateau en miniature
 
