@@ -8,7 +8,7 @@ Voici la liste ordonnées des évolutions votées lors de la version V0.3.2 (Ran
 4.	Score : 1,5 ~~Dans le menu campagne, donner accès à des statistiques de jeu des joueurs.~~:heavy_check_mark: V0.4.0
 5.	Score : 1,5 ~~Dans la page de statistiques, présenter des statistiques de "Campagne" : Pourcentage de complétion,  Temps de jeu, Nombre de parties, Nombre de défaites, Taux de réussite, Série maximum de succès~~:heavy_check_mark: V0.4.0
 6.	Score : 1,5 ~~Dans la page de statistiques, présenter des statistiques de "Ascension" : Pourcentage de complétion de l'ascension en cours, nombre d'ascension sans détour, la plus longue (temps, dépassement de plateaux) durée moyenne d'ascension (temps, plateaux), nombre d'ascension achevées~~:heavy_check_mark: V0.4.0
-7.	Score : 1,5 Réduire la similitude des plateaux de faible niveaux qui se ressemblent trop.
+7.	Score : 1,5 ~~Réduire la similitude des plateaux de faible niveaux qui se ressemblent trop.~~:heavy_check_mark: V0.4.0
 8.	Score : 1,5 Implémenter le "GLISSER" pour le déplacement de jeton en plus du mécanisme actuel.
 10.	Score : 1,5 ~~**NOUVEAU** Le score doit disparaître sur un clique, pas une temporisation (pour lire tranquillement ou passer vite)~~:heavy_check_mark: V0.4.0
 11.	Score : 2,0 Dans la page de statistiques, présenter des graphiques de statistiques de "Difficulté" : échecs par difficulté, taux de réussite, temps moyen, complétion.

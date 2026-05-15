@@ -1,6 +1,23 @@
 # Liste des fonctionnalités
 
-## V0.4.0 : Travaux pour la prochaine version
+## V0.4.2
+
+### Jeu
+
+#### Statistiques
+- Page de statisques contient (de haut en bas):
+  - Ascension:
+    - [KPI] Pourcentage de complétion de l'ascension en cours,
+    - [KPI] nombre d'ascension achevées 
+    - [KPI] la plus longue (temps, dépassement de plateaux)
+    - [KPI] Taux de reussite max + longueur de l'asecension
+    - [KPI] Taux de reussite min + longueur de l'asecension
+  - Plateau:
+    - [KPI] temps moyen de résolution
+    - [KPI] plateau le plus galère
+
+
+## V0.4.0
 
 ### Bug V0.3.2 :
 - bug sur score d'ascension qui est calculé sur le nombre de niveaux restant dans le jeu plutot que les niveaux effectivement réalisés dans l'ascension courante.

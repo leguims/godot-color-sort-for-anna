@@ -14,7 +14,7 @@ Listes des évolutions votées par les testeurs:
 
 Depuis la phase de tests internes de la version V0.3.0, les fonctionnalités sont votées par les testeurs. L'attribution des fonctionnailités par versions ci-dessous devrait devenir obsolète pour préférer un classement global des testeurs. Cependant, les deux vont vivre pendant une phase de transition.
 
-## V0.4.1 : Travaux pour la prochaine version
+## V0.4.3 : Travaux pour la prochaine version
 
 ### Bug V0.3.0 :
 - [à surveiller] L'affichage "Niveau = 5 - indice Plateau = 0 - Nombre de parties = <null>" est en erreur !
