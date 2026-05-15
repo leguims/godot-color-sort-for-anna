@@ -200,12 +200,8 @@ func longueur_max_ascension_terminee() -> int:
 			if ascension.get("plateaux", null) \
 				and ascension.get("date_fin", null) \
 				and ascension.get("date_debut") > date_debut_campagne:
-				# Longueur ascension realisée
-				var longueur_ascension_realisee: int = ascension.get("plateaux", null).size()
-				# Longueur detour ascension
-				var longueur_ascension_detour: int = ascension.get("longueur_detour", 0)
 				# Longueur ascension initiale
-				var longueur_ascension_initiale: int = longueur_ascension_realisee - longueur_ascension_detour
+				var longueur_ascension_initiale: int = ascension.get("longueur_initiale", 0)
 				if longueur_ascension_initiale > longueur_max_ascension_terminee:
 					longueur_max_ascension_terminee = longueur_ascension_initiale
 	LogService.log_debug("joueur:",joueur, ' longueur_max_ascension_terminee=', longueur_max_ascension_terminee)
