@@ -50,18 +50,15 @@ func _pourcentage_en_led(pourcentage : int, led_sombre, led_lumineuse) -> String
 var nom : String = ""
 var trophee : String = ""
 var pourcentage_ascension_realise : int = 0
-var nb_ascensions : int = 0
 var score_texte : String = "0"
 
 func enregistrer_infos_joueur(	_nom : String = "",
 								_trophee : String = "",
 								_pourcentage_ascension_realise : int = 0,
-								_nb_ascensions : int = 0,
 								_score_texte : String = "0") -> void:
 	nom = _nom
 	trophee = _trophee
 	pourcentage_ascension_realise = _pourcentage_ascension_realise
-	nb_ascensions = _nb_ascensions
 	score_texte = _score_texte
 
 func formater_infos_joueur() -> String:

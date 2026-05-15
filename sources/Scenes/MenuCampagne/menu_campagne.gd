@@ -19,9 +19,8 @@ func _ready() -> void:
 func enregistrer_infos_joueur(	_nom : String = "",
 								_trophee : String = "",
 								_pourcentage_ascension_realise : int = 0,
-								_nb_ascensions : int = 0,
 								_score_texte : String = "0") -> void:
-	formatter.enregistrer_infos_joueur(_nom, _trophee, _pourcentage_ascension_realise, _nb_ascensions, _score_texte)
+	formatter.enregistrer_infos_joueur(_nom, _trophee, _pourcentage_ascension_realise, _score_texte)
 
 func mettre_a_jour_infos_joueur() -> void:
 	$InfosDuJoueur/TexteInfosDuJoueur.bbcode_text = formatter.formater_infos_joueur()
