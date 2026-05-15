@@ -25,6 +25,7 @@ func set_color(texte : Color , fond : Color):
 	$Fond.color = fond
 
 func set_minimum_size(new_size: Vector2):
-	set_custom_minimum_size(new_size) 
-	$Fond.set_custom_minimum_size(new_size) 
-	$VBox.set_custom_minimum_size(new_size) 
+	taille_minimum = new_size
+	set_custom_minimum_size(taille_minimum) 
+	$Fond.set_custom_minimum_size(taille_minimum) 
+	$VBox.set_custom_minimum_size(taille_minimum) 

@@ -39,6 +39,9 @@ func campagne():
 	# Consulter la BDD pour obtenir les indicateurs à afficher
 	var valeur
 	# TODO : campagne : diagrammes et courbes
+	
+	# Largeur du titre 'Campagne'
+	$"Marge/HBoxContainer/VBoxContainer/Titre Campagne".set_minimum_size(Vector2(430,25))
 
 	# KPI
 	var KPI_Completion = $Marge/HBoxContainer/VBoxContainer/KPI_Campagne/KPI_Completion
@@ -77,6 +80,9 @@ func ascensions():
 	# Consulter la BDD pour obtenir les indicateurs à afficher
 	var valeur
 	# TODO : ascensions : diagrammes et courbes
+
+	# Largeur du titre 'Ascension'
+	$"Marge/HBoxContainer/VBoxContainer/Titre Ascension".set_minimum_size(Vector2(365,25))
 
 	# KPI
 	# Ligne 1
@@ -138,6 +144,9 @@ func plateaux():
 	# Consulter la BDD pour obtenir les indicateurs à afficher
 	var valeur
 	# TODO : plateaux : diagrammes et courbes
+
+	# Largeur du titre 'Plateau'
+	$"Marge/HBoxContainer/VBoxContainer/Titre Plateau".set_minimum_size(Vector2(245,25))
 
 	# KPI
 	# Ligne 1
