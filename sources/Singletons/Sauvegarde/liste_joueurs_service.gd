@@ -2,6 +2,7 @@ extends Node
 
 var liste_des_joueurs = [
 	{
+		'indice': 0,
 		'nom': 'Alain Konu',
 		'fichier_sauvegarde': 'sauvegarde_joueur_00.json'
 	}
@@ -10,6 +11,8 @@ var liste_des_joueurs = [
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
 	_initialiser_la_liste_des_joueurs()
+	# Maintient de compatibilité
+	_corriger_absence_indice()
 
 func _initialiser_la_liste_des_joueurs() -> void:
 	var lecture_liste_des_joueurs = FichiersJsonService.read_json_file("user://liste_des_joueurs.json")
@@ -19,10 +22,20 @@ func _initialiser_la_liste_des_joueurs() -> void:
 	else:
 		LogService.log_erreur("Erreur de lecture de la sauvegarde de la liste des joueurs")
 
+func _corriger_absence_indice() -> void:
+	if not liste_des_joueurs.is_empty():
+		var maj: bool = false
+		for joueur in liste_des_joueurs:
+			if 'indice' not in joueur:
+				var indice_str = joueur.get('fichier_sauvegarde').remove_chars('sauvegarde_joueur_').remove_chars('.json')
+				joueur['indice'] = indice_str.to_int()
+				maj = true
+		if maj:
+			_enregistrer_la_liste_des_joueurs()
+
 func _enregistrer_la_liste_des_joueurs() -> void:
 	FichiersJsonService.write_json_file("user://liste_des_joueurs.json", liste_des_joueurs.duplicate(true))
 	LogService.log_debug("Liste des joueurs sauvegardée")
-
 
 func le_joueur_existe(nom_joueur : String) -> bool:
 	"""Verifie si le joueur existe"""
@@ -51,11 +64,17 @@ func ajouter_un_nouveau_joueur(nom_nouveau_joueur : String) -> bool:
 		return false
 	if le_joueur_existe(nom_nouveau_joueur):
 		return false
+
+	# Definir l'indice du joueur
+	var indice: int = 0
+	if not liste_des_joueurs.is_empty():
+		var dernier_joueur: Dictionary = liste_des_joueurs.back()
+		indice = dernier_joueur.get('indice', 0) + 1
 	# Crée le compte et l'enregistre
-	# TODO : L'ajout et la suppression de joueur entraine des erreur de suffixe sur le fichier de sauvegarde>
 	var compte = {
+		'indice': indice,
 		'nom': nom_nouveau_joueur,
-		'fichier_sauvegarde': 'sauvegarde_joueur_' + str(len(liste_des_joueurs)).pad_zeros(2) + '.json'
+		'fichier_sauvegarde': 'sauvegarde_joueur_' + str(indice).pad_zeros(2) + '.json'
 	}
 	liste_des_joueurs.append(compte.duplicate(true))
 	_enregistrer_la_liste_des_joueurs()
