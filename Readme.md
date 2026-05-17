@@ -23,7 +23,7 @@ Depuis la phase de tests internes de la version V0.3.0, les fonctionnalités son
 - Définir une combinaison secrete pour declencher l'export des fichiers JSON.
 
 ### Bug V0.4.2 :
-- En cas d'effacement d'un joueur, les chemin de fichiers sont décalés. Il faut tous les renommer pour que cela fonctionne à nouveau.
+- ~~En cas d'effacement d'un joueur, les chemin de fichiers sont décalés. Il faut tous les renommer pour que cela fonctionne à nouveau.~~:heavy_check_mark:
 
 ### Jeu
 - (Faro) Aligner les piles sur la même ligne pour que ca soit plus facile à jouer (-1 Totol)
@@ -110,8 +110,8 @@ Depuis la phase de tests internes de la version V0.3.0, les fonctionnalités son
 - (option) détecter une position de plateau bloquée ou impossible.
 - (Totol) Quand un joueur met du temps à jouer, faire une animation pour dire d'abandonner ou faire apparaître une main qui y invite. C'est du troll.
 - (Guigui) messages d'amour pour joueuse d'amour !
-- (copilot) Ajouter un son "doux" de click pour la selection d'une pile.
-- (copilot) Ajouter un son doux "plop" pour une pile qui s'acheve.
+- ~~(copilot) Ajouter un son "doux" de click pour la selection d'une pile.~~:heavy_check_mark:
+- ~~(copilot) Ajouter un son doux "plop" pour une pile qui s'acheve.~~:heavy_check_mark:
 - (copilot) Ajouter des defis (complete en moins de X mouvements)
 
 #### Accessibilité

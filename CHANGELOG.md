@@ -1,5 +1,17 @@
 # Liste des fonctionnalités
 
+
+## V0.4.3
+
+### Bug V0.4.2 :
+- En cas d'effacement d'un joueur, les chemin de fichiers sont décalés. Il faut tous les renommer pour que cela fonctionne à nouveau.
+
+### Jeu
+
+#### Ambiance
+- (copilot) Ajouter un son "doux" de click pour la selection d'une pile.
+- (copilot) Ajouter un son doux "plop" pour une pile qui s'acheve.
+
 ## V0.4.2
 
 ### Jeu

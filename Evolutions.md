@@ -3,7 +3,7 @@
 Voici la liste ordonnées des évolutions votées lors de la version V0.3.2 (Rang | Score | Description):
 
 1.	Score : 1,0 ~~Baser la difficulté sur le nombre d'alternatives (les occasions de faire une erreur) de la solution~~:heavy_check_mark: V0.3.6
-2.	Score : 1,0 **NOUVEAU** Accélérer les plateaux du début. Trop facile trop longtemps.
+2.	Score : 1,0 ~~**NOUVEAU** Accélérer les plateaux du début. Trop facile trop longtemps.~~:heavy_check_mark: V0.4.2
 3.	Score : 1,5 Sauvegarder le jeu pendant la résolution d'un plateau pour reprendre au milieu d'un plateau.
 4.	Score : 1,5 ~~Dans le menu campagne, donner accès à des statistiques de jeu des joueurs.~~:heavy_check_mark: V0.4.0
 5.	Score : 1,5 ~~Dans la page de statistiques, présenter des statistiques de "Campagne" : Pourcentage de complétion,  Temps de jeu, Nombre de parties, Nombre de défaites, Taux de réussite, Série maximum de succès~~:heavy_check_mark: V0.4.0
@@ -25,4 +25,4 @@ Voici la liste ordonnées des évolutions votées lors de la version V0.3.2 (Ran
 22.	Score : 3,5 Prévoir 2 tableaux de scores : un classement globale et cumulatif de tous les plateaux joués et un classement par ascension.
 23.	Score : 4,0 Ajouter une musique dans les menus
 24.	Score : 4,0 Des plateaux encore plus difficiles !
-25.	Score : 5,0 Dans la page "Campagne" à coté du bouton "Menu", prévoir un bouton pour changer de joueur sans retourner au menu principal.
+25.	Score : 5,0 ~~Dans la page "Campagne" à coté du bouton "Menu", prévoir un bouton pour changer de joueur sans retourner au menu principal.~~ ABANDON
