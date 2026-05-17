@@ -16,9 +16,11 @@ The Three Princesses of Lilac Meadow
 Vals de su jardín C[/ul]
 
 [b]Effet sonore : [url]https://pixabay.com[/url][/b]
-[ul]freesound_community : game-start-6104
-freesound_community : fail-jingle-stereo-mix-88784
-floraphonic : marimba-win-f-2-209688[/ul]
+[ul]freesound_community : game-start, fail-jingle
+floraphonic : marimba-win
+virtual_vibes : minimal-ui-pop, simple-pop-noise
+SoundReality : battle-pop
+Dragon-Studio : Spacebar Tap[/ul]
 
 [b]didacticiel :[/b]
 [ul]Baba Des bois - [url]https://www.youtube.com/@BabaDesBois[/url][/ul][/color][/outline_size][/left]

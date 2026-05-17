@@ -22,22 +22,21 @@ grow_vertical = 2
 theme_override_styles/normal = SubResource("StyleBoxTexture_cte4r")
 bbcode_enabled = true
 text = "[left][outline_size=5][color=#ef00ef][font_size=23][b]Moteur : [url]godotengine.org[/url][/b]
-[ul] Godot[/ul]
 
 [b]Musique : [url]patrickdearteaga.com[/url][/b]
-[ul] Dreaming[/ul]
+[font_size=18][ul] Dreaming[/ul]
 [ul] Su Turno[/ul]
 [ul] The Three Princesses of Lilac Meadow[/ul]
 [ul] Solve The Puzzle[/ul]
 [ul] Humble Match[/ul]
-[ul] Great Little Challenge[/ul]
+[ul] Great Little Challenge[/ul][/font_size]
 
 [b]Effet sonore : [url]pixabay.com[/url][/b]
-[ul] freesound_community : 
-[ul] game-start-6104
- fail-jingle-stereo-mix-88784[/ul]
- floraphonic : 
-[ul] marimba-win-f-2-209688[/ul][/ul]
+[font_size=18][ul] freesound_community : game-start, fail-jingle[/ul]
+[ul] floraphonic : marimba-win[/ul]
+[ul] virtual_vibes : minimal-ui-pop, simple-pop-noise[/ul]
+[ul] SoundReality : battle-pop[/ul]
+[ul] Dragon-Studio : Spacebar Tap[/ul][/font_size]
 
 [b]didacticiel : www.youtube.com[/b]
-[ul] Baba Des bois - [url]@BabaDesBois[/url][/ul][/font_size][/color][/outline_size][/left]"
+[font_size=18][ul] Baba Des bois - [url]@BabaDesBois[/url][/ul][/font_size][/font_size][/color][/outline_size][/left]"

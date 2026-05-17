@@ -9,9 +9,11 @@ func _ready() -> void:
 
 func _on_bouton_références_pressed() -> void:
 	get_tree().change_scene_to_file("res://Scenes/References/references.tscn")
+	AudioService.son_menu_click()
 
 func _on_bouton_scores_pressed() -> void:
 	get_tree().change_scene_to_file("res://Scenes/Scores/scores.tscn")
+	AudioService.son_menu_click()
 
 func _on_nouveau_joueur_text_submitted(nom_nouveau_joueur: String) -> void:
 	LogService.log_debug("Nouveau joueur : ", nom_nouveau_joueur)
@@ -30,6 +32,7 @@ func _on_bouton_campagne_pressed() -> void:
 		$Marge/HBoxContainer/VBoxContainer/Marge/VBoxContainer/JoueursCampagne.hide()
 	else:
 		$Marge/HBoxContainer/VBoxContainer/Marge/VBoxContainer/JoueursCampagne.show()
+	AudioService.son_menu_click()
 
 func _on_joueurs_campagne_pressed(nom_joueur: String) -> void:
 	LogService.log_debug("Campagne avec le joueur : ", nom_joueur)
@@ -39,10 +42,12 @@ func _on_joueurs_campagne_pressed(nom_joueur: String) -> void:
 		# Choisir le joueur pour la campagne
 		var succes: bool = ProgressionCampagneService.choisir_le_joueur_pour_la_campagne(nom_joueur)
 		if succes:
+			AudioService.son_menu_click()
 			get_tree().change_scene_to_file("res://Scenes/Campagne/campagne.tscn")
 		else:
 			LogService.log_erreur("Erreur : Impossible de choisir le joueur *" + nom_joueur + "*.")
 	else:
+		AudioService.son_menu_click()
 		get_tree().change_scene_to_file("res://Scenes/Statistiques/statistiques.tscn")
 
 func _mettre_a_jour_configuration():
@@ -56,20 +61,21 @@ func _on_bouton_musiques_toggled(toggled_on: bool) -> void:
 		SauvegardeConfigurationService.activer_musiques()
 	else:
 		SauvegardeConfigurationService.desactiver_musiques()
+	AudioService.son_menu_click()
 
 func _on_bouton_effets_sonores_toggled(toggled_on: bool) -> void:
 	if toggled_on:
 		SauvegardeConfigurationService.activer_effets_sonores()
 	else:
 		SauvegardeConfigurationService.desactiver_effets_sonores()
+	AudioService.son_menu_click()
 
 func _on_bouton_vibrations_toggled(toggled_on: bool) -> void:
 	if toggled_on:
 		SauvegardeConfigurationService.activer_vibrations()
 	else:
 		SauvegardeConfigurationService.desactiver_vibrations()
-
-
+	AudioService.son_menu_click()
 
 
 func _creer_tuiles_joueurs_campagne():

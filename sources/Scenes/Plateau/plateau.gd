@@ -93,6 +93,7 @@ func on_pile_clique_gauche(indice_pile : int) -> void:
 	if sauvegarde_indice_pile_depart == -1 \
 		and regles.pile_de_depart_de_tansfert_valide(pile_cible):
 		$SelectionPile.start()
+		AudioService.son_jeton_deplacer_debut()
 		sauvegarde_indice_pile_depart = indice_pile
 		# Selecitonner la pile de depart
 		pile_cible.selectionner()
@@ -114,8 +115,12 @@ func on_pile_clique_gauche(indice_pile : int) -> void:
 					VibrationService.vibration_fin_de_plateau()
 				else:
 					VibrationService.vibration_fin_de_pile()
+					AudioService.son_jeton_deplacer_pile_pleine()
 			else:
 				VibrationService.vibration_de_jeton()
+				AudioService.son_jeton_deplacer_succes()
+		else:
+			AudioService.son_jeton_deplacer_echec()
 		_on_selection_pile_timeout()
 
 func _on_selection_pile_timeout() -> void:

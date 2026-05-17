@@ -83,12 +83,15 @@ func _afficher_des_messages(les_message : Array[String], tempo : float = 1.0):
 		$Message.hide()
 
 func _on_bouton_commencer_pressed() -> void:
+	AudioService.son_menu_click()
 	commencer_plateau.emit()
 
 func _on_bouton_menu_principal_pressed() -> void:
+	AudioService.son_menu_click()
 	get_tree().change_scene_to_file("res://Scenes/MenuPrincipal/menu_principal.tscn")
 
 func _on_bouton_statistiques_pressed() -> void:
+	AudioService.son_menu_click()
 	get_tree().change_scene_to_file("res://Scenes/Statistiques/statistiques.tscn")
 
 
