@@ -12,6 +12,7 @@
 - (copilot) Ajouter un son "doux" de click pour la selection d'une pile.
 - (copilot) Ajouter un son doux "plop" pour une pile qui s'acheve.
 
+
 ## V0.4.2
 
 ### Jeu
