@@ -111,7 +111,7 @@ Depuis la phase de tests internes de la version V0.3.0, les fonctionnalités son
 
 #### Accessibilité
 - Le tremblement peut faire selectioner/désélectionner une pile dans le même temps. Faire une tempo pour sélectionner une pile afin de se protéger des tremblements.
-- Faire une sorte de buzz pour les mouvements interdits. Pas de son si la selection périme.
+- ~~Faire une sorte de buzz pour les mouvements interdits. Pas de son si la selection périme.~~ V0.4.3
 
 ### Outillage
 
