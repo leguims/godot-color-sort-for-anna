@@ -31,6 +31,12 @@ Depuis la phase de tests internes de la version V0.3.0, les fonctionnalités son
 - pour les plateaux impossibles à perdre, les classer dans DÉTENTE
 - pour les plateaux impossibles à gagner, proposer au joueur de trouver la combinaison pour perdre. (Mode No Win)
 - Pouvoir effacer un joueur (avec confirmation)
+- Effacer automatiquement un joueur sans fichier de statistiques.
+
+#### Web
+- ~~Filtrer le menu des vibrations~~
+- Ajouter un clavier pour ajouter un joueur
+- ~~Afficher l'avancement dans l'ascension + Campagne au lieu des icones moches. (Android, Windows et WEB)~~
 
 #### Ascensions
 - Gérer la difficulté relative des différentes 'ascensions':
@@ -48,6 +54,8 @@ Depuis la phase de tests internes de la version V0.3.0, les fonctionnalités son
 - TRICHE ANATOLE :
     - Quand anatole comme 'nom' on peux mettre n'importe quelle couleur sur n'importe quelle couleur et ça marche mais pas beaucoup de point
     - Il y aura un bouton gagner Ou quand tout les Block seront dans une case remplie
+- Campagne progressive qui impose les ascensions
+- Jeu libre avec les plateaux résolus en campagne (statistiques protégées de l'entrainement)
 
 #### Statistiques
 - Outils visuels:
@@ -108,6 +116,9 @@ Depuis la phase de tests internes de la version V0.3.0, les fonctionnalités son
 - (Totol) Quand un joueur met du temps à jouer, faire une animation pour dire d'abandonner ou faire apparaître une main qui y invite. C'est du troll.
 - (Guigui) messages d'amour pour joueuse d'amour !
 - (copilot) Ajouter des defis (complete en moins de X mouvements)
+- (Guigui) Pour le son de fin de rangée, interroger la taille de la rangée pour boucler un son en fonction de sa taille.
+- (Guigui) Changer de thème quand on joue une 2onde fois un plateau en échec. (Rouge avec un logo "Attention")
+- (Guigui) en jeu, afficher la complétion de l'ascension et de la campagne sous le nom sous forme de pourcentage.
 
 #### Accessibilité
 - Le tremblement peut faire selectioner/désélectionner une pile dans le même temps. Faire une tempo pour sélectionner une pile afin de se protéger des tremblements.
@@ -117,6 +128,11 @@ Depuis la phase de tests internes de la version V0.3.0, les fonctionnalités son
 
 #### Recherche de plateaux
 - Ajouter un "outil_divers" pour reset les parametres de recherche de plateaux
+- Faire un itérateur qui s'appuie sur le plateau de plus petite taille:
+  - Yx2 => Yx3 => Yx4 ... YxZ
+  - Yx2 est produit classiquement, sans filtrage, sans optimisation
+  - Yx3 parcourt tous les plateaux Yx2 valides et ajoutes toutes les combinaisons de la dernière rangée.
+  - La liste des plateaux valides ainsi obtenus n'est pas exhaustives, mais le calcul est accéléré.
 
 #### Revalidation
 - Ajouter un "outil_divers" pour reset les parametres de revalidation des plateaux

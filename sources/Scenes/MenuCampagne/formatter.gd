@@ -1,82 +1,31 @@
 extends RefCounted
 class_name FormatterMenuCampagne
 
-# InfosDuJoueur
-###############
-
-func _pourcentage_en_led(pourcentage : int, led_sombre, led_lumineuse) -> String:
-	var nb_max_leds = 10
-	var tranche_pourcentage = 100./nb_max_leds
-	var leds : String = ''
-	for i in range(floori(1.*pourcentage/tranche_pourcentage)):
-		leds += led_lumineuse
-	for i in range(floori(1.*pourcentage/tranche_pourcentage), nb_max_leds):
-		leds += led_sombre
-	LogService.log_debug("Tranche=", tranche_pourcentage, "%", \
-		", Pourcentage=", pourcentage, "%", \
-		", lumineuses=", floori(1.*pourcentage/tranche_pourcentage), \
-		", sombres=", nb_max_leds - floori(1.*pourcentage/tranche_pourcentage))
-	return leds
-# WALKING PERSON :
-# U+1F6B6
-# U+1F6B6 U+200D U+2642 U+FE0F
-# U+1F6B6 U+200D U+2640 U+FE0F
-# U+1F6B6 U+200D U+27A1 U+FE0F
-# U+1F6B6 U+200D U+2640 U+FE0F U+200D U+27A1 U+FE0F
-# U+1F6B6 U+200D U+2642 U+FE0F U+200D U+27A1 U+FE0F
-
-# FOOT PRINT : U+1F463
-
-# ROCK : U+1FAA8
-
-# PUZZLE PIECE : U+1F9E9
-
-# EARTH GLOBE EUROPE-AFRICA : U+1F30D
-
-# BLACK LARGE SQUARE : U+2B1B
-# WHITE LARGE SQUARE : U+2B1C
-# BLACK MEDIUM SQUARE : U+25FC
-# WHITE MEDIUM SQUARE : U+25FB
-# BLACK SMALL SQUARE : U+25FE
-# WHITE SMALL SQUARE : U+25FD
-
-# Tenter de representer l'avancement ainsi : 
-# LARGE = 20%
-# MEDIUM = 10 %
-# SMALL = 1 plateau
-
 # Infos joueur
 ###############
 var nom : String = ""
 var trophee : String = ""
 var pourcentage_ascension_realise : int = 0
+var pourcentage_campagne_realise : int = 0
 var score_texte : String = "0"
 
 func enregistrer_infos_joueur(	_nom : String = "",
 								_trophee : String = "",
 								_pourcentage_ascension_realise : int = 0,
+								_pourcentage_campagne_realise : int = 0,
 								_score_texte : String = "0") -> void:
 	nom = _nom
 	trophee = _trophee
 	pourcentage_ascension_realise = _pourcentage_ascension_realise
+	pourcentage_campagne_realise = _pourcentage_campagne_realise
 	score_texte = _score_texte
 
 func formater_infos_joueur() -> String:
-	var emoji_carre_blanc = String.chr(0x25FD)
-	var emoji_carre_noir = String.chr(0x25FE)
-	
-	# Spécifier un caractere imprimable pour le WEB.
-	if OS.has_feature("web"):
-		emoji_carre_blanc = '[#]'
-		emoji_carre_noir = '[ ]'
-
-	var ascension = _pourcentage_en_led(
-		pourcentage_ascension_realise,
-		emoji_carre_noir,
-		emoji_carre_blanc)
 	var texte = "[center][font_size=30]"
 	texte += nom + " " + trophee + " " + score_texte + "\n"
-	texte += ascension + "\n"
+	texte += "[font_size=20]Ascension : " + String.num_int64(pourcentage_ascension_realise) + "%"
+	texte += " - "
+	texte += "Campagne : " + String.num_int64(pourcentage_campagne_realise) + "%[/font_size]"
 	texte += "[/font_size][/center]"
 	return texte
 

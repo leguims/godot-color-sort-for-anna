@@ -6,6 +6,10 @@ func _ready() -> void:
 	ProgressionCampagneService.liberer_le_joueur_pour_la_campagne()
 	_creer_tuiles_joueurs_campagne()
 	_mettre_a_jour_configuration()
+	if OS.has_feature("web"):
+		# [WEB] masquer le bouton de vibration
+		$Marge/HBoxContainer/VBoxContainer/Marge/VBoxContainer/VBoxContainer/BoutonVibrations.hide()
+
 
 func _on_bouton_références_pressed() -> void:
 	get_tree().change_scene_to_file("res://Scenes/References/references.tscn")

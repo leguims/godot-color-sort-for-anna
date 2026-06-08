@@ -79,8 +79,9 @@ func enregistrer_infos_joueur_pour_menu():
 	var nom = SauvegardeBddJoueursService.lire_nom_joueur()
 	var trophee = SauvegardeTableauDesScoresService.lire_le_trophee_du_joueur(nom)
 	var pourcentage_ascension_realise = StatsService.ascension_taux_completion() * 100.
+	var pourcentage_campagne_realise = StatsService.campagne_taux_completion() * 100.
 	var score_texte = SauvegardeTableauDesScoresService.lire_score_txt_joueur(nom)
-	$MenuCampagne.enregistrer_infos_joueur(	nom, trophee, pourcentage_ascension_realise, score_texte)
+	$MenuCampagne.enregistrer_infos_joueur(	nom, trophee, pourcentage_ascension_realise, pourcentage_campagne_realise, score_texte)
 
 func enregistrer_longueur_max_plateaux_pour_menu():
 	# Transmet la longueur max de plateau d'une ascension
