@@ -96,6 +96,11 @@ func _creer_tuiles_joueurs_campagne():
 	var nouveau_joueur = LineEdit.new()
 	_creer_style_tuile_joueur_campagne(nouveau_joueur, "nouveau_joueur", false)
 	nouveau_joueur.placeholder_text = " Ajouter "
+	if OS.has_feature("web"):
+		# [WEB] Faire apparaitre un clavier virtuel pour créer les joueurs.
+		nouveau_joueur.set_virtual_keyboard_enabled(true)
+		nouveau_joueur.set_virtual_keyboard_show_on_focus(true)
+
 	nouveau_joueur.text_submitted.connect(_on_nouveau_joueur_text_submitted)
 	$Marge/HBoxContainer/VBoxContainer/Marge/VBoxContainer/JoueursCampagne.add_child(nouveau_joueur)
 

@@ -35,7 +35,7 @@ Depuis la phase de tests internes de la version V0.3.0, les fonctionnalités son
 
 #### Web
 - ~~Filtrer le menu des vibrations~~
-- Ajouter un clavier pour ajouter un joueur
+- ~~Ajouter un clavier pour ajouter un joueur~~
 - ~~Afficher l'avancement dans l'ascension + Campagne au lieu des icones moches. (Android, Windows et WEB)~~
 
 #### Ascensions
