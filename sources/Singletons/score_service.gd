@@ -120,9 +120,13 @@ func mettre_a_jour_score_campagne() -> Dictionary:
 func bonus_score_anna_damour(score_global : Dictionary) -> void:
 	"Bonus spécifique pour Anna d'Amour, la déesse de ce jeu."
 	var nom_joueur = SauvegardeBddJoueursService.lire_nom_joueur()
-	if nom_joueur.to_lower() == 'Anna'.to_lower():
+	var nom_anna_triche = String.chr(0x1F5A4) + 'Anna' + String.chr(0x1F9E1)
+	if OS.has_feature("web"):
+		nom_anna_triche = '*Anna*'
+	if nom_joueur.to_lower() == nom_anna_triche.to_lower():
 		var score_total = 0
 		for score in score_global.values():
 			score_total += score.get('points', 0)
 		var bonus_anna = score_total * 3
+		LogService.log_debug("Bonus ", nom_anna_triche, " d'Amour !")
 		SauvegardeTableauDesScoresService.incrementer_score_joueur(nom_joueur, bonus_anna)

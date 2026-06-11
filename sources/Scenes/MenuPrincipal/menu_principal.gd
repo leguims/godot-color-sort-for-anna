@@ -21,6 +21,11 @@ func _on_bouton_scores_pressed() -> void:
 
 func _on_nouveau_joueur_text_submitted(nom_nouveau_joueur: String) -> void:
 	LogService.log_debug("Nouveau joueur : ", nom_nouveau_joueur)
+	if nom_nouveau_joueur.to_lower() == 'Anna'.to_lower():
+		var nom_anna_triche = String.chr(0x1F5A4) + '*Anna*' + String.chr(0x1F9E1)
+		if OS.has_feature("web"):
+			nom_anna_triche = '*Anna*'
+		nom_nouveau_joueur = nom_anna_triche
 	$Marge/HBoxContainer/VBoxContainer/Marge/VBoxContainer/JoueursCampagne.get_node("nouveau_joueur").clear()
 	if not ProgressionCampagneService.ajouter_un_nouveau_joueur_pour_la_campagne(nom_nouveau_joueur):
 		LogService.log_erreur("Erreur : Le nom *" + nom_nouveau_joueur + "* n'est pas libre")
@@ -94,6 +99,9 @@ func _creer_tuiles_joueurs_campagne():
 
 	# Ajouter la tuile pour ajouter un nouveau joueur
 	var nouveau_joueur = LineEdit.new()
+	if OS.has_feature("web") and _is_ios():
+		$LineEdit.focus_entered.connect(_nouveau_joueur_on_focus_entered)
+		$LineEdit.focus_exited.connect(_nouveau_joueur_on_focus_exited)
 	_creer_style_tuile_joueur_campagne(nouveau_joueur, "nouveau_joueur", false)
 	nouveau_joueur.placeholder_text = " Ajouter "
 	if OS.has_feature("web"):
@@ -104,6 +112,18 @@ func _creer_tuiles_joueurs_campagne():
 	nouveau_joueur.text_submitted.connect(_on_nouveau_joueur_text_submitted)
 	$Marge/HBoxContainer/VBoxContainer/Marge/VBoxContainer/JoueursCampagne.add_child(nouveau_joueur)
 
+func _nouveau_joueur_on_focus_entered():
+	if OS.has_feature("web") and _is_ios():
+		DisplayServer.window_set_mode(DisplayServer.WINDOW_MODE_WINDOWED)
+
+func _nouveau_joueur_on_focus_exited():
+	if OS.has_feature("web") and _is_ios():
+		await get_tree().create_timer(0.1).timeout
+		DisplayServer.window_set_mode(DisplayServer.WINDOW_MODE_FULLSCREEN)
+
+func _is_ios() -> bool:
+	var ua = JavaScriptBridge.eval("navigator.userAgent")
+	return ua.find("iPhone") != -1 or ua.find("iPad") != -1 or ua.find("iPod") != -1
 
 func _ajouter_une_tuile_pour_nouveau_joueur_campagne(nom_joueur : String):
 	# Ajouter la tuile de sélection du nouveau profil
