@@ -12,14 +12,16 @@ Listes des évolutions votées par les testeurs:
 
 # Liste des fonctionnalités
 
-Depuis la phase de tests internes de la version V0.3.0, les fonctionnalités sont votées par les testeurs. L'attribution des fonctionnailités par versions ci-dessous devrait devenir obsolète pour préférer un classement global des testeurs. Cependant, les deux vont vivre pendant une phase de transition.
+Depuis la phase de tests internes de la version V0.3.0, les fonctionnalités sont votées par les testeurs. L'attribution des fonctionnalités par versions ci-dessous devrait devenir obsolète pour préférer un classement global des testeurs. Cependant, les deux vont vivre pendant une phase de transition.
 
 ## V0.4.4 : Travaux pour la prochaine version
 
-### Bug V0.3.0 :
+### Bugs
+
+#### Bug V0.3.0 :
 - [à surveiller] L'affichage "Niveau = 5 - indice Plateau = 0 - Nombre de parties = <null>" est en erreur !
 
-### Bug V0.4.0 :
+#### Bug V0.4.0 :
 - Définir une combinaison secrete pour declencher l'export des fichiers JSON.
 
 ### Jeu
@@ -32,11 +34,15 @@ Depuis la phase de tests internes de la version V0.3.0, les fonctionnalités son
 - pour les plateaux impossibles à gagner, proposer au joueur de trouver la combinaison pour perdre. (Mode No Win)
 - Pouvoir effacer un joueur (avec confirmation)
 - Effacer automatiquement un joueur sans fichier de statistiques.
+- Ajouter un menu pour effacer un joueur (avec resolution d'un plateau pour confirmer)
 
 #### Web
 - ~~Filtrer le menu des vibrations~~
 - ~~Ajouter un clavier pour ajouter un joueur~~
 - ~~Afficher l'avancement dans l'ascension + Campagne au lieu des icones moches. (Android, Windows et WEB)~~
+- Ajouter un menu pour exporter les sauvegardes (avec chiffrage secret)
+- Ajouter un menu pour importer les sauvegardes chiffrées
+- Ajouter un clavier virtuel pour saisir le nom du joueur
 
 #### Ascensions
 - Gérer la difficulté relative des différentes 'ascensions':
@@ -107,7 +113,7 @@ Depuis la phase de tests internes de la version V0.3.0, les fonctionnalités son
 - Pour Android : voir si une astuce de zoom existe sur Godot pour grandir les piles suivant la taille des piles.
 
 #### Deploiement de versions
-- prévoir un champs de sauvegarde avec les infos : plateau courant (niveau, indice, nom et "nom" actuel).
+- ~~prévoir un champs de sauvegarde avec les infos : plateau courant (niveau, indice, nom et "nom" actuel).~~ ABANDON (je ne comprends plus)
 
 #### Ambiance
 - (Anna) Le score est animé quand il augmente. Comme une machine à sous.
@@ -123,41 +129,6 @@ Depuis la phase de tests internes de la version V0.3.0, les fonctionnalités son
 #### Accessibilité
 - Le tremblement peut faire selectioner/désélectionner une pile dans le même temps. Faire une tempo pour sélectionner une pile afin de se protéger des tremblements.
 - ~~Faire une sorte de buzz pour les mouvements interdits. Pas de son si la selection périme.~~ V0.4.3
-
-### Outillage
-
-#### Recherche de plateaux
-- Ajouter un "outil_divers" pour reset les parametres de recherche de plateaux
-- Faire un itérateur qui s'appuie sur le plateau de plus petite taille:
-  - Yx2 => Yx3 => Yx4 ... YxZ
-  - Yx2 est produit classiquement, sans filtrage, sans optimisation
-  - Yx3 parcourt tous les plateaux Yx2 valides et ajoutes toutes les combinaisons de la dernière rangée.
-  - La liste des plateaux valides ainsi obtenus n'est pas exhaustives, mais le calcul est accéléré.
-
-#### Revalidation
-- Ajouter un "outil_divers" pour reset les parametres de revalidation des plateaux
-- Similarité : Pour réduire les similarité : Rapidfuzz + seuil à ajuster (75% et plus). Voir s'il faut l'appliquer sur le fichier complet de solutions. Application sur "revalidation" = gain de temps + application sur "Solutions" pour gain de plaisir de jeu.
-
-#### Etape 5 : Tronquer les solutions => Exporter solution vers GODOT
-- Dans l'étape 5 (tronquer), ajouter un suffixe au plateau pour indiquer qu'il y a différentes longueurs de solutions.
-- Dans le jeu, à l'affichage du plateau, faire apparaître "Défi 6 coups" car 6 est le nombre de coups minimum (dans cet exemple).
-- Lors du calcul de score, ajouter un score spécifique sur la longueur.
-  - Longueur max = 0 points.
-  - Longueur min = max points
-  - et un pourcentage entre les deux.
-- Les infos de solutions sont séparées par un caractère spécial. Je propose le suffixe suivant:
-  - "|MIN:6|MAX:7"
-  - Solution la plus courte en 6 coups.
-  - Solution la plus longue en 7 coups.
-- Renommer l'étape 5. Ce n'est pas tronquer les solutions, c'est produire le fichier de solutions au format du jeu godot. Tronquer, ajouter infos plateau et autres. "Étape 5 = Exporter solution vers godot"
-
-#### Divers
-- pour les plateaux sans solution, lancer une recherche en ajoutant 1 colonne d'une seule ligne OU 1 case vide sur la derniere colonne.
-- classer_les_solutions_tronquer.py : produire un UUID dans le fichier des solutions.
-- classer_les_solutions_tronquer.py : Ajouter des filtres lors de la selection des plateaux:
-	- nombre de colonnes min/max
-	- nombre de lignes min/max
-	- nombre de coups de la solution min/max
 
 ## V1.0 : Pour une version long terme
 ### Jeu
