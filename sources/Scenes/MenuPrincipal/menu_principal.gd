@@ -10,7 +10,6 @@ func _ready() -> void:
 		# [WEB] masquer le bouton de vibration
 		$Marge/HBoxContainer/VBoxContainer/Marge/VBoxContainer/VBoxContainer/BoutonVibrations.hide()
 
-
 func _on_bouton_références_pressed() -> void:
 	get_tree().change_scene_to_file("res://Scenes/References/references.tscn")
 	AudioService.son_menu_click()
@@ -100,8 +99,7 @@ func _creer_tuiles_joueurs_campagne():
 	# Ajouter la tuile pour ajouter un nouveau joueur
 	var nouveau_joueur = LineEdit.new()
 	if OS.has_feature("web") and _is_ios():
-		$LineEdit.focus_entered.connect(_nouveau_joueur_on_focus_entered)
-		$LineEdit.focus_exited.connect(_nouveau_joueur_on_focus_exited)
+		nouveau_joueur.focus_entered.connect(_nouveau_joueur_on_focus_entered)
 	_creer_style_tuile_joueur_campagne(nouveau_joueur, "nouveau_joueur", false)
 	nouveau_joueur.placeholder_text = " Ajouter "
 	if OS.has_feature("web"):
@@ -114,16 +112,19 @@ func _creer_tuiles_joueurs_campagne():
 
 func _nouveau_joueur_on_focus_entered():
 	if OS.has_feature("web") and _is_ios():
-		DisplayServer.window_set_mode(DisplayServer.WINDOW_MODE_WINDOWED)
-
-func _nouveau_joueur_on_focus_exited():
-	if OS.has_feature("web") and _is_ios():
-		await get_tree().create_timer(0.1).timeout
-		DisplayServer.window_set_mode(DisplayServer.WINDOW_MODE_FULLSCREEN)
+		# Ouvrir le clavier intégré au jeu pour iOS sur le web.
+		$Clavier.ouvrir()
 
 func _is_ios() -> bool:
 	var ua = JavaScriptBridge.eval("navigator.userAgent")
 	return ua.find("iPhone") != -1 or ua.find("iPad") != -1 or ua.find("iPod") != -1
+
+func _on_clavier_pseudo_valide(pseudo: String):
+	$Clavier.fermer()
+	_on_nouveau_joueur_text_submitted(pseudo)
+
+func _on_clavier_pseudo_annule():
+	$Clavier.fermer()
 
 func _ajouter_une_tuile_pour_nouveau_joueur_campagne(nom_joueur : String):
 	# Ajouter la tuile de sélection du nouveau profil

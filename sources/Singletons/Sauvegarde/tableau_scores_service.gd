@@ -122,9 +122,9 @@ func incrementer_score_joueur(nom_joueur : String, increment_score : int) -> voi
 func retourner_classement() -> Array:
 	"""Retourner une liste de score avec :
 		[
-			{'rang': 1, 'score': 99999, 'score_txt': '99 999', 'nom': 'Joueur2'},
-			{'rang': 2, 'score': 12345, 'score_txt': '12 345', 'nom': 'Joueur1'},
-			{'rang': 2, 'score': 12345, 'score_txt': '12 345', 'nom': 'Joueur3'}
+			{'rang': 1, 'score': 99999, 'score_txt': '99.999', 'nom': 'Joueur2'},
+			{'rang': 2, 'score': 12345, 'score_txt': '12.345', 'nom': 'Joueur1'},
+			{'rang': 2, 'score': 12345, 'score_txt': '12.345', 'nom': 'Joueur3'}
 		]"""
 	var classement = []
 	for rang in range(1, len(liste_des_scores)+1):

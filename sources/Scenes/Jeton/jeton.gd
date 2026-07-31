@@ -100,6 +100,21 @@ func est_vide() -> bool:
 func souder_en_haut() -> void:
 	$SoudureHaute.show()
 
+func hide() -> void:
+	$Carre.hide()
+	$Nom.hide()
+
+func show() -> void:
+	$Carre.show()
+	$Nom.show()
+
+func set_scale(valeur) -> void:
+	$Selection.set_scale(valeur)
+	$SoudureHaute.set_scale(valeur)
+	$Carre.set_scale(valeur)
+	$SoudureBasse.set_scale(valeur)
+	$Nom.set_scale(valeur)
+
 func souder_en_bas() -> void:
 	$SoudureBasse.show()
 

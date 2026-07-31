@@ -1,7 +1,8 @@
-[gd_scene load_steps=11 format=3 uid="uid://due674pwfguqp"]
+[gd_scene load_steps=12 format=3 uid="uid://due674pwfguqp"]
 
 [ext_resource type="Script" uid="uid://cab0yaq8331s4" path="res://Scenes/MenuPrincipal/menu_principal.gd" id="1_64slw"]
 [ext_resource type="Texture2D" uid="uid://bl3jiqwpmmvbq" path="res://Art/Images/fond_cubes_480x720.png" id="2_wsrww"]
+[ext_resource type="PackedScene" uid="uid://knrlkm4pili5" path="res://Scenes/Clavier/clavier.tscn" id="3_y3ggv"]
 
 [sub_resource type="SystemFont" id="SystemFont_jisel"]
 font_names = PackedStringArray("Impact")
@@ -137,6 +138,8 @@ button_pressed = true
 action_mode = 0
 text = "Vibrations"
 
+[node name="Clavier" parent="." instance=ExtResource("3_y3ggv")]
+
 [node name="Version" type="Label" parent="."]
 layout_mode = 1
 anchors_preset = 3
@@ -158,3 +161,5 @@ vertical_alignment = 2
 [connection signal="toggled" from="Marge/HBoxContainer/VBoxContainer/Marge/VBoxContainer/VBoxContainer/BoutonMusiques" to="." method="_on_bouton_musiques_toggled"]
 [connection signal="toggled" from="Marge/HBoxContainer/VBoxContainer/Marge/VBoxContainer/VBoxContainer/BoutonEffetsSonores" to="." method="_on_bouton_effets_sonores_toggled"]
 [connection signal="toggled" from="Marge/HBoxContainer/VBoxContainer/Marge/VBoxContainer/VBoxContainer/BoutonVibrations" to="." method="_on_bouton_vibrations_toggled"]
+[connection signal="pseudo_annule" from="Clavier" to="." method="_on_clavier_pseudo_annule"]
+[connection signal="pseudo_valide" from="Clavier" to="." method="_on_clavier_pseudo_valide"]
