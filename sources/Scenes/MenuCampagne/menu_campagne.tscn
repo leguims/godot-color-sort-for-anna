@@ -1,4 +1,4 @@
-[gd_scene load_steps=9 format=3 uid="uid://xsrt777ms37l"]
+[gd_scene format=3 uid="uid://xsrt777ms37l"]
 
 [ext_resource type="Script" uid="uid://cvnvhf4dvkux3" path="res://Scenes/MenuCampagne/menu_campagne.gd" id="1_88fpq"]
 
@@ -23,10 +23,10 @@ font_size = 30
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_apfrx"]
 bg_color = Color(0.13, 0.13, 0.13, 0.843137)
 
-[node name="MenuCampagne" type="CanvasLayer"]
+[node name="MenuCampagne" type="CanvasLayer" unique_id=162026973]
 script = ExtResource("1_88fpq")
 
-[node name="BoutonMenuPrincipal" type="Button" parent="."]
+[node name="BoutonMenuPrincipal" type="Button" parent="." unique_id=935163631]
 anchors_preset = 10
 anchor_right = 1.0
 offset_right = -240.0
@@ -39,7 +39,7 @@ theme_override_styles/normal = SubResource("StyleBoxFlat_4v47e")
 theme_override_styles/hover = SubResource("StyleBoxFlat_w2jhv")
 text = "Menu"
 
-[node name="BoutonStatistiques" type="Button" parent="."]
+[node name="BoutonStatistiques" type="Button" parent="." unique_id=1801002106]
 anchors_preset = 10
 anchor_right = 1.0
 offset_left = 240.0
@@ -52,20 +52,20 @@ theme_override_styles/normal = SubResource("StyleBoxFlat_4v47e")
 theme_override_styles/hover = SubResource("StyleBoxFlat_w2jhv")
 text = "Stats"
 
-[node name="InfosDuJoueur" type="VBoxContainer" parent="."]
+[node name="InfosDuJoueur" type="VBoxContainer" parent="." unique_id=2056747543]
 visible = false
 offset_top = 100.0
 offset_right = 480.0
 offset_bottom = 200.0
 
-[node name="TexteInfosDuJoueur" type="RichTextLabel" parent="InfosDuJoueur"]
+[node name="TexteInfosDuJoueur" type="RichTextLabel" parent="InfosDuJoueur" unique_id=2073583728]
 layout_mode = 2
 theme_override_styles/normal = SubResource("StyleBoxFlat_11ehg")
 bbcode_enabled = true
 text = "[center][font_size=30][b]infos joueur[/b][/font_size][/center]"
 fit_content = true
 
-[node name="Message" type="Label" parent="."]
+[node name="Message" type="Label" parent="." unique_id=264140970]
 visible = false
 anchors_preset = 8
 anchor_left = 0.5
@@ -84,7 +84,7 @@ horizontal_alignment = 1
 vertical_alignment = 1
 autowrap_mode = 2
 
-[node name="BoutonCommencer" type="Button" parent="."]
+[node name="BoutonCommencer" type="Button" parent="." unique_id=2037088046]
 anchors_preset = 12
 anchor_top = 1.0
 anchor_right = 1.0
@@ -99,46 +99,46 @@ theme_override_styles/normal = SubResource("StyleBoxFlat_j78cs")
 theme_override_styles/hover = SubResource("StyleBoxFlat_1gckf")
 text = "Commencer"
 
-[node name="LongueurAscension" type="MarginContainer" parent="."]
+[node name="LongueurAscension" type="MarginContainer" parent="." unique_id=270862965]
 offset_top = 269.0
 offset_right = 480.0
 offset_bottom = 309.0
 theme_override_constants/margin_left = 40
 theme_override_constants/margin_right = 40
 
-[node name="ColorRect" type="ColorRect" parent="LongueurAscension"]
+[node name="ColorRect" type="ColorRect" parent="LongueurAscension" unique_id=764635341]
 layout_mode = 2
 color = Color(0.13, 0.13, 0.13, 1)
 
-[node name="VBox" type="VBoxContainer" parent="LongueurAscension"]
+[node name="VBox" type="VBoxContainer" parent="LongueurAscension" unique_id=1061081107]
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="Description" type="Label" parent="LongueurAscension/VBox"]
+[node name="Description" type="Label" parent="LongueurAscension/VBox" unique_id=1348859050]
 layout_mode = 2
 text = "Nouvelle ascension
 Définissez sa longueur :"
 label_settings = SubResource("LabelSettings_3y2ap")
 horizontal_alignment = 1
 
-[node name="Curseur" type="HSlider" parent="LongueurAscension/VBox"]
+[node name="Curseur" type="HSlider" parent="LongueurAscension/VBox" unique_id=1952519625]
 layout_mode = 2
 min_value = 1.0
 value = 100.0
 
-[node name="Pourcentage" type="ProgressBar" parent="LongueurAscension/VBox"]
+[node name="Pourcentage" type="ProgressBar" parent="LongueurAscension/VBox" unique_id=1568223738]
 layout_mode = 2
 min_value = 1.0
 step = 1.0
 value = 100.0
 
-[node name="NombreDePlateaux" type="Label" parent="LongueurAscension/VBox"]
+[node name="NombreDePlateaux" type="Label" parent="LongueurAscension/VBox" unique_id=1947652494]
 layout_mode = 2
 text = "1 plateau"
 label_settings = SubResource("LabelSettings_3y2ap")
 horizontal_alignment = 1
 
-[node name="MessageRiche" type="RichTextLabel" parent="."]
+[node name="MessageRiche" type="RichTextLabel" parent="." unique_id=630852021]
 anchors_preset = 14
 anchor_top = 0.5
 anchor_right = 1.0

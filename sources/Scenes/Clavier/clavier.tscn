@@ -1,4 +1,4 @@
-[gd_scene load_steps=11 format=3 uid="uid://knrlkm4pili5"]
+[gd_scene format=3 uid="uid://knrlkm4pili5"]
 
 [ext_resource type="Script" uid="uid://c246fr65aiech" path="res://Scenes/Clavier/clavier.gd" id="1_qstpo"]
 
@@ -29,15 +29,15 @@ bg_color = Color(0.494249, 0, 0, 1)
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_wv4e4"]
 bg_color = Color(0.9996951, 0.17504364, 0.12794408, 1)
 
-[node name="Clavier" type="CanvasLayer"]
+[node name="Clavier" type="CanvasLayer" unique_id=851373569]
 script = ExtResource("1_qstpo")
 
-[node name="Fond" type="ColorRect" parent="."]
+[node name="Fond" type="ColorRect" parent="." unique_id=1042846441]
 offset_right = 480.0
 offset_bottom = 250.0
 color = Color(0, 0, 0, 1)
 
-[node name="ZoneEdition" type="LineEdit" parent="Fond"]
+[node name="ZoneEdition" type="LineEdit" parent="Fond" unique_id=884418]
 layout_mode = 1
 anchors_preset = -1
 offset_right = 480.0
@@ -45,14 +45,14 @@ offset_bottom = 31.0
 size_flags_vertical = 4
 placeholder_text = "saisir votre pseudo (10 caracteres max)"
 
-[node name="FondClavier" type="ColorRect" parent="Fond"]
+[node name="FondClavier" type="ColorRect" parent="Fond" unique_id=1933823743]
 layout_mode = 0
 offset_top = 40.0
 offset_right = 480.0
 offset_bottom = 210.0
 color = Color(0.61131424, 0.083724625, 0.39321736, 1)
 
-[node name="Valider" type="Button" parent="Fond"]
+[node name="Valider" type="Button" parent="Fond" unique_id=404076659]
 layout_mode = 0
 offset_top = 216.0
 offset_right = 160.0
@@ -64,7 +64,7 @@ theme_override_styles/pressed = SubResource("StyleBoxFlat_ek28u")
 theme_override_styles/hover = SubResource("StyleBoxFlat_uee3b")
 text = "  Valider  "
 
-[node name="Effacer" type="Button" parent="Fond"]
+[node name="Effacer" type="Button" parent="Fond" unique_id=587350912]
 layout_mode = 0
 offset_left = 160.0
 offset_top = 216.0
@@ -77,7 +77,7 @@ theme_override_styles/pressed = SubResource("StyleBoxFlat_j6qrx")
 theme_override_styles/hover = SubResource("StyleBoxFlat_cdfmx")
 text = "  Effacer  "
 
-[node name="Annuler" type="Button" parent="Fond"]
+[node name="Annuler" type="Button" parent="Fond" unique_id=1020729674]
 layout_mode = 0
 offset_left = 320.0
 offset_top = 216.0

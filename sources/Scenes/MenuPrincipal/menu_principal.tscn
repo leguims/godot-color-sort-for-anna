@@ -1,7 +1,7 @@
-[gd_scene load_steps=12 format=3 uid="uid://due674pwfguqp"]
+[gd_scene format=3 uid="uid://due674pwfguqp"]
 
 [ext_resource type="Script" uid="uid://cab0yaq8331s4" path="res://Scenes/MenuPrincipal/menu_principal.gd" id="1_64slw"]
-[ext_resource type="Texture2D" uid="uid://bl3jiqwpmmvbq" path="res://Art/Images/fond_cubes_480x720.png" id="2_wsrww"]
+[ext_resource type="Texture2D" uid="uid://pq65gq7bt1p" path="res://Art/Images/fond_cubes_480x720.png" id="2_wsrww"]
 [ext_resource type="PackedScene" uid="uid://knrlkm4pili5" path="res://Scenes/Clavier/clavier.tscn" id="3_y3ggv"]
 
 [sub_resource type="SystemFont" id="SystemFont_jisel"]
@@ -28,7 +28,7 @@ bg_color = Color(0.87451, 0, 0.87451, 1)
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_dfj4a"]
 bg_color = Color(0.537255, 0, 0.537255, 1)
 
-[node name="Menu_principal" type="Control"]
+[node name="Menu_principal" type="Control" unique_id=313760940]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -37,7 +37,7 @@ grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_64slw")
 
-[node name="Fond" type="TextureRect" parent="."]
+[node name="Fond" type="TextureRect" parent="." unique_id=1990272667]
 self_modulate = Color(0.589096, 0.589096, 0.589096, 1)
 layout_mode = 1
 anchors_preset = 15
@@ -47,7 +47,7 @@ grow_horizontal = 2
 grow_vertical = 2
 texture = ExtResource("2_wsrww")
 
-[node name="Marge" type="MarginContainer" parent="."]
+[node name="Marge" type="MarginContainer" parent="." unique_id=354410368]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -59,17 +59,17 @@ theme_override_constants/margin_top = 20
 theme_override_constants/margin_right = 20
 theme_override_constants/margin_bottom = 20
 
-[node name="HBoxContainer" type="HBoxContainer" parent="Marge"]
+[node name="HBoxContainer" type="HBoxContainer" parent="Marge" unique_id=1462702040]
 layout_mode = 2
 alignment = 1
 
-[node name="VBoxContainer" type="VBoxContainer" parent="Marge/HBoxContainer"]
+[node name="VBoxContainer" type="VBoxContainer" parent="Marge/HBoxContainer" unique_id=291310967]
 layout_mode = 2
 size_flags_horizontal = 3
 theme_override_constants/separation = 30
 alignment = 1
 
-[node name="Titre du jeu" type="Label" parent="Marge/HBoxContainer/VBoxContainer"]
+[node name="Titre du jeu" type="Label" parent="Marge/HBoxContainer/VBoxContainer" unique_id=1370740222]
 layout_mode = 2
 theme_override_colors/font_color = Color(0.87451, 0, 0.87451, 1)
 theme_override_fonts/font = SubResource("SystemFont_jisel")
@@ -80,67 +80,67 @@ pour Anna d'Amour !"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="Marge" type="MarginContainer" parent="Marge/HBoxContainer/VBoxContainer"]
+[node name="Marge" type="MarginContainer" parent="Marge/HBoxContainer/VBoxContainer" unique_id=937286899]
 layout_mode = 2
 theme_override_constants/margin_left = 80
 theme_override_constants/margin_top = 20
 theme_override_constants/margin_right = 80
 theme_override_constants/margin_bottom = 20
 
-[node name="VBoxContainer" type="VBoxContainer" parent="Marge/HBoxContainer/VBoxContainer/Marge"]
+[node name="VBoxContainer" type="VBoxContainer" parent="Marge/HBoxContainer/VBoxContainer/Marge" unique_id=2099875903]
 layout_mode = 2
 theme_override_constants/separation = 30
 alignment = 1
 
-[node name="BoutonCampagne" type="Button" parent="Marge/HBoxContainer/VBoxContainer/Marge/VBoxContainer"]
+[node name="BoutonCampagne" type="Button" parent="Marge/HBoxContainer/VBoxContainer/Marge/VBoxContainer" unique_id=1367881778]
 layout_mode = 2
 theme_override_font_sizes/font_size = 21
 theme_override_styles/normal = SubResource("StyleBoxFlat_mef5e")
 theme_override_styles/hover = SubResource("StyleBoxFlat_so4s0")
 text = "Campagne"
 
-[node name="JoueursCampagne" type="GridContainer" parent="Marge/HBoxContainer/VBoxContainer/Marge/VBoxContainer"]
+[node name="JoueursCampagne" type="GridContainer" parent="Marge/HBoxContainer/VBoxContainer/Marge/VBoxContainer" unique_id=574496295]
 visible = false
 layout_mode = 2
 
-[node name="BoutonScores" type="Button" parent="Marge/HBoxContainer/VBoxContainer/Marge/VBoxContainer"]
+[node name="BoutonScores" type="Button" parent="Marge/HBoxContainer/VBoxContainer/Marge/VBoxContainer" unique_id=1989412153]
 layout_mode = 2
 theme_override_font_sizes/font_size = 21
 theme_override_styles/normal = SubResource("StyleBoxFlat_urgqo")
 theme_override_styles/hover = SubResource("StyleBoxFlat_0rh52")
 text = "Scores"
 
-[node name="BoutonRéférences" type="Button" parent="Marge/HBoxContainer/VBoxContainer/Marge/VBoxContainer"]
+[node name="BoutonRéférences" type="Button" parent="Marge/HBoxContainer/VBoxContainer/Marge/VBoxContainer" unique_id=1453020531]
 layout_mode = 2
 theme_override_font_sizes/font_size = 21
 theme_override_styles/normal = SubResource("StyleBoxFlat_p4mar")
 theme_override_styles/hover = SubResource("StyleBoxFlat_dfj4a")
 text = "Références"
 
-[node name="VBoxContainer" type="VBoxContainer" parent="Marge/HBoxContainer/VBoxContainer/Marge/VBoxContainer"]
+[node name="VBoxContainer" type="VBoxContainer" parent="Marge/HBoxContainer/VBoxContainer/Marge/VBoxContainer" unique_id=1410496567]
 layout_mode = 2
 
-[node name="BoutonMusiques" type="CheckButton" parent="Marge/HBoxContainer/VBoxContainer/Marge/VBoxContainer/VBoxContainer"]
+[node name="BoutonMusiques" type="CheckButton" parent="Marge/HBoxContainer/VBoxContainer/Marge/VBoxContainer/VBoxContainer" unique_id=1562500741]
 layout_mode = 2
 button_pressed = true
 action_mode = 0
 text = "Musiques"
 
-[node name="BoutonEffetsSonores" type="CheckButton" parent="Marge/HBoxContainer/VBoxContainer/Marge/VBoxContainer/VBoxContainer"]
+[node name="BoutonEffetsSonores" type="CheckButton" parent="Marge/HBoxContainer/VBoxContainer/Marge/VBoxContainer/VBoxContainer" unique_id=647157064]
 layout_mode = 2
 button_pressed = true
 action_mode = 0
 text = "Effets sonores"
 
-[node name="BoutonVibrations" type="CheckButton" parent="Marge/HBoxContainer/VBoxContainer/Marge/VBoxContainer/VBoxContainer"]
+[node name="BoutonVibrations" type="CheckButton" parent="Marge/HBoxContainer/VBoxContainer/Marge/VBoxContainer/VBoxContainer" unique_id=2062815306]
 layout_mode = 2
 button_pressed = true
 action_mode = 0
 text = "Vibrations"
 
-[node name="Clavier" parent="." instance=ExtResource("3_y3ggv")]
+[node name="Clavier" parent="." unique_id=1467586721 instance=ExtResource("3_y3ggv")]
 
-[node name="Version" type="Label" parent="."]
+[node name="Version" type="Label" parent="." unique_id=1924438185]
 layout_mode = 1
 anchors_preset = 3
 anchor_left = 1.0
