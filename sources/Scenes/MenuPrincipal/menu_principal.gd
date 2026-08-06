@@ -19,12 +19,10 @@ func _on_bouton_scores_pressed() -> void:
 	AudioService.son_menu_click()
 
 func _on_nouveau_joueur_text_submitted(nom_nouveau_joueur: String) -> void:
+	_on_clavier_pseudo_annule() # Par precaution
 	LogService.log_debug("Nouveau joueur : ", nom_nouveau_joueur)
-	if nom_nouveau_joueur.to_lower() == 'Anna'.to_lower():
-		var nom_anna_triche = String.chr(0x1F5A4) + '*Anna*' + String.chr(0x1F9E1)
-		if OS.has_feature("web"):
-			nom_anna_triche = '*Anna*'
-		nom_nouveau_joueur = nom_anna_triche
+	if ScoreService.nouveau_joueur_est_nom_anna_triche(nom_nouveau_joueur):
+		nom_nouveau_joueur = ScoreService.lire_nom_anna_triche()
 	$Marge/HBoxContainer/VBoxContainer/Marge/VBoxContainer/JoueursCampagne.get_node("nouveau_joueur").clear()
 	if not ProgressionCampagneService.ajouter_un_nouveau_joueur_pour_la_campagne(nom_nouveau_joueur):
 		LogService.log_erreur("Erreur : Le nom *" + nom_nouveau_joueur + "* n'est pas libre")
