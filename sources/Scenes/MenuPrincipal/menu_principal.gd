@@ -11,11 +11,11 @@ func _ready() -> void:
 		$Marge/HBoxContainer/VBoxContainer/Marge/VBoxContainer/VBoxContainer/BoutonVibrations.hide()
 
 func _on_bouton_références_pressed() -> void:
-	get_tree().change_scene_to_file("res://Scenes/References/references.tscn")
+	get_tree().change_scene_to_file("res://Scenes/MenuPrincipal/References/references.tscn")
 	AudioService.son_menu_click()
 
 func _on_bouton_scores_pressed() -> void:
-	get_tree().change_scene_to_file("res://Scenes/Scores/scores.tscn")
+	get_tree().change_scene_to_file("res://Scenes/MenuPrincipal/Scores/scores.tscn")
 	AudioService.son_menu_click()
 
 func _on_nouveau_joueur_text_submitted(nom_nouveau_joueur: String) -> void:

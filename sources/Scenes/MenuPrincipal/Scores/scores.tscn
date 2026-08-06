@@ -1,6 +1,6 @@
 [gd_scene format=3 uid="uid://syi3krptex2w"]
 
-[ext_resource type="Script" uid="uid://baltgx8np41fx" path="res://Scenes/Scores/scores.gd" id="1_4sbfv"]
+[ext_resource type="Script" uid="uid://baltgx8np41fx" path="res://Scenes/MenuPrincipal/Scores/scores.gd" id="1_4sbfv"]
 [ext_resource type="Texture2D" uid="uid://bphpqsaqkwivq" path="res://Art/Images/fond_scores_2_480x720.png" id="2_63kir"]
 
 [node name="Scores" type="Node" unique_id=228610321]

@@ -1,4 +1,4 @@
-extends "res://Scenes/References/retour_menu_principal.gd"
+extends "res://Scenes/MenuPrincipal/References/retour_menu_principal.gd"
 
 const TOP_N := 5
 var liste_format_scores = {
