@@ -2,7 +2,7 @@
 
 [ext_resource type="Script" uid="uid://cab0yaq8331s4" path="res://Scenes/MenuPrincipal/menu_principal.gd" id="1_64slw"]
 [ext_resource type="Texture2D" uid="uid://pq65gq7bt1p" path="res://Art/Images/fond_cubes_480x720.png" id="2_wsrww"]
-[ext_resource type="PackedScene" uid="uid://knrlkm4pili5" path="res://Scenes/Clavier/clavier.tscn" id="3_y3ggv"]
+[ext_resource type="PackedScene" uid="uid://knrlkm4pili5" path="res://Scenes/MenuPrincipal/Clavier/clavier.tscn" id="3_y3ggv"]
 
 [sub_resource type="SystemFont" id="SystemFont_jisel"]
 font_names = PackedStringArray("Impact")

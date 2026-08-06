@@ -1,6 +1,6 @@
 [gd_scene format=3 uid="uid://knrlkm4pili5"]
 
-[ext_resource type="Script" uid="uid://c246fr65aiech" path="res://Scenes/Clavier/clavier.gd" id="1_qstpo"]
+[ext_resource type="Script" uid="uid://c246fr65aiech" path="res://Scenes/MenuPrincipal/Clavier/clavier.gd" id="1_qstpo"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_qstpo"]
 bg_color = Color(1.0107458e-06, 0.53601325, 5.7756904e-07, 1)
