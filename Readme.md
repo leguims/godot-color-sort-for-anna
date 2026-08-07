@@ -28,21 +28,17 @@ Depuis la phase de tests internes de la version V0.3.0, les fonctionnalités son
 - (Faro) Aligner les piles sur la même ligne pour que ca soit plus facile à jouer (-1 Totol)
 - Sauvegarder l'état du plateau en cours après chaque coup. Le joueur qui quitte le jeu, reprend là où il était. Quand il revient, il commence avec son temps moyen sur ce type de niveau.
 - (Aleksandar): thème sur le fond du décors. Trop austère.
-- Sauvegarder l'état du plateau en cours après chaque coup. Le joueur qui quitte le jeu, reprend là où il était. Quand il revient, il commence avec son temps moyen sur ce type de niveau.
 - Selon ton humeur, demander 5 plateaux faciles ou 5 ultras difficiles. (mode libre)
 - pour les plateaux impossibles à perdre, les classer dans DÉTENTE
 - pour les plateaux impossibles à gagner, proposer au joueur de trouver la combinaison pour perdre. (Mode No Win)
 - Pouvoir effacer un joueur (avec confirmation)
 - Effacer automatiquement un joueur sans fichier de statistiques.
 - Ajouter un menu pour effacer un joueur (avec resolution d'un plateau pour confirmer)
+- (Anatole) Gagner des pieces sur des reussite majeur et les utiliser pour passer un plateau.
 
 #### Web
-- ~~Filtrer le menu des vibrations~~
-- ~~Ajouter un clavier pour ajouter un joueur~~
-- ~~Afficher l'avancement dans l'ascension + Campagne au lieu des icones moches. (Android, Windows et WEB)~~
 - Ajouter un menu pour exporter les sauvegardes (avec chiffrage secret)
 - Ajouter un menu pour importer les sauvegardes chiffrées
-- Ajouter un clavier virtuel pour saisir le nom du joueur
 
 #### Ascensions
 - Gérer la difficulté relative des différentes 'ascensions':
@@ -112,9 +108,6 @@ Depuis la phase de tests internes de la version V0.3.0, les fonctionnalités son
 #### Android
 - Pour Android : voir si une astuce de zoom existe sur Godot pour grandir les piles suivant la taille des piles.
 
-#### Deploiement de versions
-- ~~prévoir un champs de sauvegarde avec les infos : plateau courant (niveau, indice, nom et "nom" actuel).~~ ABANDON (je ne comprends plus)
-
 #### Ambiance
 - (Anna) Le score est animé quand il augmente. Comme une machine à sous.
 - (Faro) Ajouter de la musique dans les menus (+1 Totol)
@@ -125,13 +118,18 @@ Depuis la phase de tests internes de la version V0.3.0, les fonctionnalités son
 - (Guigui) Pour le son de fin de rangée, interroger la taille de la rangée pour boucler un son en fonction de sa taille.
 - (Guigui) Changer de thème quand on joue une 2onde fois un plateau en échec. (Rouge avec un logo "Attention")
 - (Guigui) en jeu, afficher la complétion de l'ascension et de la campagne sous le nom sous forme de pourcentage.
+- (Guigui) Cloner les sons de  victoire, debut, fin, echecs pour varier les plaisirs.
+- (Anatole) Fond d'écran mobile avec un lapin mignon qui devient flippant, furieux après 2 minutes, puis tout mignon à nouveau. Un screamer à 2 minutes.
 
 #### Accessibilité
 - Le tremblement peut faire selectioner/désélectionner une pile dans le même temps. Faire une tempo pour sélectionner une pile afin de se protéger des tremblements.
-- ~~Faire une sorte de buzz pour les mouvements interdits. Pas de son si la selection périme.~~ V0.4.3
+- Augmenter la zone de sélection des piles
+- Augmenter le contraste des cases vides
+- Augmenter le temps de deselection automatique
 
 ## V1.0 : Pour une version long terme
-### Jeu
+
+### Divers
 - faire une animation du bloc qui se déplace
 - enregistrer dans les données immédiatement les déplacements, mais l'animation décide quand afficher/masquer les jetons selon son avancement. (idée, plusieurs coups sont enchaînés et joués même si l'animation n'est pas terminée. Le résultat donne une séquence d'animation magique)
 - pour les jetons, dissocier les caractéristiques : indice de jeton, couleur, nom, famille. Une famille pourrait avoir plusieurs jetons avec un nom ou une couleur différente.
@@ -144,6 +142,45 @@ Depuis la phase de tests internes de la version V0.3.0, les fonctionnalités son
 - Surement faisable avec des EMOJI : String.chr(unicode) (https://www.unicode.org/emoji/charts/emoji-list.html)
 - Idee de nouveau gameplay, chaque colonne est en mouvement, comme si les jetons étaient sur un tapis roulant. Le joueurs doit donner l'ordre d'échange au bon moment !
 - (Anna) Réaliser une version portugaise.
+
+### Nouveaux styles de jeux:
+  - CLASSIQUE :
+    - Regle du jeu actuel.
+  - DÉFI DU GOSSE:
+    - Pour les plateaux avec plusieurs longueur de solutions
+    - Indiquer la longueur de la solution la plus courte
+    - Un bonus est donné selon la logueur de la solution trouvée.
+    - Difficulté : faible
+  - DÉFI DU BOSS:
+    - Pour les plateaux avec plusieurs longueur de solutions
+    - Indiquer la longueur de la solution la plus courte
+    - La partie est perdue si la solution la plus courte n'est pas trouvée
+    - Afficher le compteur de coups actuel à coté de la cible
+    - Difficulté : élevée
+  - MÉMOIRE :
+    - Commencer le chrono quand le premier coup est joué.
+    - Prévoir tous les les coups jusqu'à le fin. 
+    - Tout s'anime quand c'est fini. 
+    - ??? Définir quel type de plateau conviendrait.
+  - QUI PERD GAGNE :
+    - Regle du jeu actuel inversée.
+    - Il faut trouver une position de plateau bloquée et non résolue
+  - FLEMMARD / ECOLOGIE :
+    - Commencer le chrono quand le premier coup est joué.
+    - Résoudre le plateau avec le moins de déplacement de jeton
+    - Chaque jeton qui bouge augmente un "malus"
+    - 2 jetons qui bougent coutent plus de malus qu'1 seul jeton
+    - Afficher le malus en direct
+  - DOUBLE FACE :
+    - Présenter le plateau dans les 2 modes CLASSIQUE et QUI PERD GAGNE en simultané.
+    - Le joueur gagne en résolvant l'un des deux.
+    - À lui de choisir le plus avantageux.
+    - Adapté pour les plateaux avec peu de jetons (hauteur et largeur)
+  - DICO:
+    - la résolution du plateau forme un mot (ANNA, LOVE, SEXE ...).
+  - [GFX] STATS : faire apparaître le type de game play pour chaque min et max.
+  - [GFX] CHRONO : le chrono est tout le temps visible sur l'écran.
+  - [GFX] COUPS : le nombre de coups courant est tout le temps visible sur l'écran.
 
 ## V2.0 : Idées du futur:
 - Game play "Message" :

@@ -1,5 +1,21 @@
 # Liste des fonctionnalités
 
+## V0.4.4
+
+### Jeu
+
+#### Web
+- Filtrer le menu des vibrations
+- Ajouter un clavier virtuel pour saisir le nom du joueur
+- Afficher l'avancement dans l'ascension + Campagne au lieu des icones moches. (Android, Windows et WEB)
+
+
+#### Deploiement de versions
+- prévoir un champs de sauvegarde avec les infos : plateau courant (niveau, indice, nom et "nom" actuel). ABANDON (je ne comprends plus)
+
+#### Accessibilité
+- Faire une sorte de buzz pour les mouvements interdits. Pas de son si la selection périme. V0.4.3
+
 
 ## V0.4.3
 
