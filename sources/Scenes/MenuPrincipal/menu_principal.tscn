@@ -1,11 +1,13 @@
 [gd_scene format=3 uid="uid://due674pwfguqp"]
 
 [ext_resource type="Script" uid="uid://cab0yaq8331s4" path="res://Scenes/MenuPrincipal/menu_principal.gd" id="1_64slw"]
+[ext_resource type="PackedScene" uid="uid://bk2tcetj1o2l1" path="res://Scenes/MenuPrincipal/ImportExport/import_export_sauvegarde.tscn" id="2_gmnht"]
 [ext_resource type="Texture2D" uid="uid://pq65gq7bt1p" path="res://Art/Images/fond_cubes_480x720.png" id="2_wsrww"]
 [ext_resource type="PackedScene" uid="uid://knrlkm4pili5" path="res://Scenes/MenuPrincipal/Clavier/clavier.tscn" id="3_y3ggv"]
 
 [sub_resource type="SystemFont" id="SystemFont_jisel"]
 font_names = PackedStringArray("Impact")
+subpixel_positioning = 0
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ruejn"]
 bg_color = Color(0, 0, 0, 1)
@@ -36,6 +38,8 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_64slw")
+
+[node name="ImportExportSauvegarde" parent="." unique_id=337886138 instance=ExtResource("2_gmnht")]
 
 [node name="Fond" type="TextureRect" parent="." unique_id=1990272667]
 self_modulate = Color(0.589096, 0.589096, 0.589096, 1)
@@ -117,6 +121,25 @@ theme_override_styles/normal = SubResource("StyleBoxFlat_p4mar")
 theme_override_styles/hover = SubResource("StyleBoxFlat_dfj4a")
 text = "Références"
 
+[node name="HBoxContainer" type="HBoxContainer" parent="Marge/HBoxContainer/VBoxContainer/Marge/VBoxContainer" unique_id=1584033778]
+layout_mode = 2
+
+[node name="BoutonExport" type="Button" parent="Marge/HBoxContainer/VBoxContainer/Marge/VBoxContainer/HBoxContainer" unique_id=1385706471]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_font_sizes/font_size = 21
+theme_override_styles/normal = SubResource("StyleBoxFlat_p4mar")
+theme_override_styles/hover = SubResource("StyleBoxFlat_dfj4a")
+text = "Export"
+
+[node name="BoutonImport" type="Button" parent="Marge/HBoxContainer/VBoxContainer/Marge/VBoxContainer/HBoxContainer" unique_id=801670807]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_font_sizes/font_size = 21
+theme_override_styles/normal = SubResource("StyleBoxFlat_p4mar")
+theme_override_styles/hover = SubResource("StyleBoxFlat_dfj4a")
+text = "Import"
+
 [node name="VBoxContainer" type="VBoxContainer" parent="Marge/HBoxContainer/VBoxContainer/Marge/VBoxContainer" unique_id=1410496567]
 layout_mode = 2
 
@@ -158,6 +181,8 @@ vertical_alignment = 2
 [connection signal="pressed" from="Marge/HBoxContainer/VBoxContainer/Marge/VBoxContainer/BoutonCampagne" to="." method="_on_bouton_campagne_pressed"]
 [connection signal="pressed" from="Marge/HBoxContainer/VBoxContainer/Marge/VBoxContainer/BoutonScores" to="." method="_on_bouton_scores_pressed"]
 [connection signal="pressed" from="Marge/HBoxContainer/VBoxContainer/Marge/VBoxContainer/BoutonRéférences" to="." method="_on_bouton_références_pressed"]
+[connection signal="pressed" from="Marge/HBoxContainer/VBoxContainer/Marge/VBoxContainer/HBoxContainer/BoutonExport" to="." method="_on_bouton_export_pressed"]
+[connection signal="pressed" from="Marge/HBoxContainer/VBoxContainer/Marge/VBoxContainer/HBoxContainer/BoutonImport" to="." method="_on_bouton_import_pressed"]
 [connection signal="toggled" from="Marge/HBoxContainer/VBoxContainer/Marge/VBoxContainer/VBoxContainer/BoutonMusiques" to="." method="_on_bouton_musiques_toggled"]
 [connection signal="toggled" from="Marge/HBoxContainer/VBoxContainer/Marge/VBoxContainer/VBoxContainer/BoutonEffetsSonores" to="." method="_on_bouton_effets_sonores_toggled"]
 [connection signal="toggled" from="Marge/HBoxContainer/VBoxContainer/Marge/VBoxContainer/VBoxContainer/BoutonVibrations" to="." method="_on_bouton_vibrations_toggled"]

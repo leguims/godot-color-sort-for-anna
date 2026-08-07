@@ -18,6 +18,13 @@ func _on_bouton_scores_pressed() -> void:
 	get_tree().change_scene_to_file("res://Scenes/MenuPrincipal/Scores/scores.tscn")
 	AudioService.son_menu_click()
 
+func _on_bouton_export_pressed() -> void:
+	$ImportExportSauvegarde.export_user_json()
+
+func _on_bouton_import_pressed() -> void:
+	# TODO : Conditionner l'apparition sur l'absence de sauvegarde
+	$ImportExportSauvegarde.import_user_json()
+
 func _on_nouveau_joueur_text_submitted(nom_nouveau_joueur: String) -> void:
 	_on_clavier_pseudo_annule() # Par precaution
 	LogService.log_debug("Nouveau joueur : ", nom_nouveau_joueur)
