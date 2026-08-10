@@ -11,3 +11,11 @@ Voici la liste ordonnées des évolutions votées lors de la version V0.4.4 (Ran
 7. thème sur le fond du décors. Trop austère
 8. Pour le son de fin de rangée, interroger la taille de la rangée pour boucler un son en fonction de sa taille.
 9. Prevoir une musique spéciale pour la réussite de la derniere ascension possible et le message de félicitations.
+
+# Classements des gameplay selon Anna:
+
+- TOP : Classique
+- TOP : Dico
+- TOP : Défi Du Boss
+- ...
+- BOF : Qui Perd Gagne

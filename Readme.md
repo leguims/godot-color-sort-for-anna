@@ -178,15 +178,14 @@ Depuis la phase de tests internes de la version V0.3.0, les fonctionnalités son
     - Adapté pour les plateaux avec peu de jetons (hauteur et largeur)
   - DICO:
     - la résolution du plateau forme un mot (ANNA, LOVE, SEXE ...).
+  	- Réaliser des tableaux dont la solution est un message (Anna.Loves.Sex).
+  	- Réorganiser Jeton et construction de plateau pour arriver à ce résultat.
+  	- (Anna / Aleksandar): +1 sur le mode avec des mots.
   - [GFX] STATS : faire apparaître le type de game play pour chaque min et max.
   - [GFX] CHRONO : le chrono est tout le temps visible sur l'écran.
   - [GFX] COUPS : le nombre de coups courant est tout le temps visible sur l'écran.
 
 ## V2.0 : Idées du futur:
-- Game play "Message" :
-	- Réaliser des tableaux dont la solution est un message (Anna.Loves.Sex).
-	- Réorganiser Jeton et construction de plateau pour arriver à ce résultat.
-	- (Aleksandar): +1 sur le mode avec des mots.
 - jeu en réseau : course de joueurs sur un même plateau avec chrono
 - chrono enregistré sur les plateaux. Plateau masqué avant le départ.
 - fond de plateaux dynamiques :
