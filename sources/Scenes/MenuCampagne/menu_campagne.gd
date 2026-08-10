@@ -93,7 +93,7 @@ func _on_bouton_menu_principal_pressed() -> void:
 
 func _on_bouton_statistiques_pressed() -> void:
 	AudioService.son_menu_click()
-	get_tree().change_scene_to_file("res://Scenes/Statistiques/statistiques.tscn")
+	get_tree().change_scene_to_file("res://Scenes/MenuCampagne/Statistiques/statistiques.tscn")
 
 
 

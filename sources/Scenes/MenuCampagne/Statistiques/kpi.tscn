@@ -1,6 +1,6 @@
 [gd_scene format=3 uid="uid://bgsyo7w2m28pi"]
 
-[ext_resource type="Script" uid="uid://bv2tlxh3umb5p" path="res://Scenes/Statistiques/kpi.gd" id="1_fclr6"]
+[ext_resource type="Script" uid="uid://bv2tlxh3umb5p" path="res://Scenes/MenuCampagne/Statistiques/kpi.gd" id="1_fclr6"]
 
 [node name="KPI" type="Control" unique_id=1096352937]
 custom_minimum_size = Vector2(140, 50)

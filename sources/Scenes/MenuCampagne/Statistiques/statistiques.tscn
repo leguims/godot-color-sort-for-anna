@@ -1,11 +1,11 @@
 [gd_scene format=3 uid="uid://ce35s8h6fj434"]
 
-[ext_resource type="Script" uid="uid://d213tcxl8hfw3" path="res://Scenes/Statistiques/statistiques.gd" id="1_y2h7b"]
+[ext_resource type="Script" uid="uid://d213tcxl8hfw3" path="res://Scenes/MenuCampagne/Statistiques/statistiques.gd" id="1_y2h7b"]
 [ext_resource type="Texture2D" uid="uid://tc7fhacmys11" path="res://Art/Images/fond_statistiques_480x720.png" id="2_se7pp"]
-[ext_resource type="PackedScene" uid="uid://bgsyo7w2m28pi" path="res://Scenes/Statistiques/kpi.tscn" id="2_xsdck"]
-[ext_resource type="PackedScene" uid="uid://c8uyx36tscdpp" path="res://Scenes/Statistiques/diagramme_en_barres.tscn" id="3_se7pp"]
-[ext_resource type="Script" uid="uid://dv22g4vxsw80c" path="res://Scenes/Statistiques/jauge.gd" id="3_xsdck"]
-[ext_resource type="PackedScene" uid="uid://bi52323mrj54t" path="res://Scenes/Statistiques/courbe.tscn" id="4_7ukwp"]
+[ext_resource type="PackedScene" uid="uid://bgsyo7w2m28pi" path="res://Scenes/MenuCampagne/Statistiques/kpi.tscn" id="2_xsdck"]
+[ext_resource type="PackedScene" uid="uid://c8uyx36tscdpp" path="res://Scenes/MenuCampagne/Statistiques/diagramme_en_barres.tscn" id="3_se7pp"]
+[ext_resource type="Script" uid="uid://dv22g4vxsw80c" path="res://Scenes/MenuCampagne/Statistiques/jauge.gd" id="3_xsdck"]
+[ext_resource type="PackedScene" uid="uid://bi52323mrj54t" path="res://Scenes/MenuCampagne/Statistiques/courbe.tscn" id="4_7ukwp"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_se7pp"]
 bg_color = Color(0, 0, 0, 1)

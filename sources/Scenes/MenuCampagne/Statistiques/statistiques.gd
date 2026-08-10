@@ -32,7 +32,7 @@ func _input(event):
 			get_tree().change_scene_to_file("res://Scenes/MenuPrincipal/menu_principal.tscn")
 		else:
 			# Retour au menu de campagne
-			get_tree().change_scene_to_file("res://Scenes/Campagne/campagne.tscn")
+			get_tree().change_scene_to_file("res://Scenes/MenuCampagne/Campagne/campagne.tscn")
 
 
 func campagne():
