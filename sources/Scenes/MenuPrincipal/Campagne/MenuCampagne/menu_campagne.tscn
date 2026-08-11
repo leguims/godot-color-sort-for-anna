@@ -1,6 +1,6 @@
 [gd_scene format=3 uid="uid://xsrt777ms37l"]
 
-[ext_resource type="Script" uid="uid://cvnvhf4dvkux3" path="res://Scenes/MenuCampagne/menu_campagne.gd" id="1_88fpq"]
+[ext_resource type="Script" uid="uid://cvnvhf4dvkux3" path="res://Scenes/MenuPrincipal/Campagne/MenuCampagne/menu_campagne.gd" id="1_v46tq"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_4v47e"]
 bg_color = Color(0, 0, 0, 1)
@@ -24,7 +24,7 @@ font_size = 30
 bg_color = Color(0.13, 0.13, 0.13, 0.843137)
 
 [node name="MenuCampagne" type="CanvasLayer" unique_id=162026973]
-script = ExtResource("1_88fpq")
+script = ExtResource("1_v46tq")
 
 [node name="BoutonMenuPrincipal" type="Button" parent="." unique_id=935163631]
 anchors_preset = 10

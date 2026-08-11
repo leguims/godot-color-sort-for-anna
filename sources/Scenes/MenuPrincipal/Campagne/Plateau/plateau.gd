@@ -2,13 +2,13 @@ extends Node
 
 class_name Plateau
 
-signal victoire
 signal plateau_invalide
 signal abandon
 
 var layout := PlateauLayoutService.new()
 var decodeur := PlateauDecodeurService.new()
 var regles := PlateauReglesDuJeuService.new()
+var gameplay_est_termine: Callable
 
 @export var pile_scene: PackedScene
 var liste_piles = []
@@ -16,7 +16,34 @@ static var ESPACE = 32
 
 var sauvegarde_indice_pile_depart : int = -1
 
+func enregistrer_callback_est_termine(cb: Callable):
+	gameplay_est_termine = cb
+
+func enregistrer_gameplay(gameplay : String):
+	$Top/Gameplay.text = gameplay
+
+func enregistrer_chrono(chrono : String):
+	$Top/Chrono.text = chrono
+
+func enregistrer_coups(coups : String):
+	$Top/Coups.text = coups
+
+func show():
+	$Fond.show()
+	$Top.show()
+	$Top/BoutonAbandonner.show()
+
+func hide():
+	$Fond.hide()
+	$Top.hide()
+	$Top/BoutonAbandonner.hide()
+
+func cacher_accueil():
+	hide()
+	$Fond.show()
+
 func commencer_un_nouveau_plateau(plateau_texte : String) -> void:
+	effacer_le_plateau()
 	if decodeur.est_valide(plateau_texte):
 		var plateau = decodeur.decoder_plateau(plateau_texte)
 		_creer_un_plateau(plateau)
@@ -28,7 +55,7 @@ func effacer_le_plateau() -> void:
 		pile.effacer_la_pile()
 		pile.queue_free()
 	liste_piles.clear()
-	$BoutonAbandon.show()
+	show()
 
 func est_valide(plateau_texte : String) -> bool:
 	return decodeur.est_valide(plateau_texte)
@@ -77,7 +104,7 @@ func _initialiser_une_pile(pile: Pile, jetons_pile_texte) -> void:
 func _positionner_une_pile(nb_piles_plateau: int, indice_pile: int) -> Vector2:
 	# Definir la position de la pile sur le plateau
 	# Constantes pour layout
-	layout.taille_bouton_abandonner_originale = $BoutonAbandon.size.y
+	layout.taille_bouton_abandonner_originale = $Top/BoutonAbandonner.size.y
 	layout.taille_fenetre_jeu = get_viewport().get_visible_rect().size
 	layout.taille_pile_pixels = Vector2(liste_piles[0].largeur(), liste_piles[0].hauteur())
 	return layout.calculer_la_position_de_la_pile(nb_piles_plateau, indice_pile)
@@ -108,20 +135,20 @@ func on_pile_clique_gauche(indice_pile : int) -> void:
 		if regles.realiser_le_tansfert_de_pile(liste_piles, sauvegarde_indice_pile_depart, indice_pile):
 			if pile_cible.est_termine():
 				pile_cible.bloquer()
-				# Vérifier si la partie est achevée
-				if regles.est_termine(liste_piles):
-					$BoutonAbandon.hide()
-					victoire.emit()
-					VibrationService.vibration_fin_de_plateau()
-				else:
-					VibrationService.vibration_fin_de_pile()
-					AudioService.son_jeton_deplacer_pile_pleine()
+				VibrationService.vibration_fin_de_pile()
+				AudioService.son_jeton_deplacer_pile_pleine()
 			else:
 				VibrationService.vibration_de_jeton()
 				AudioService.son_jeton_deplacer_succes()
 		else:
 			AudioService.son_jeton_deplacer_echec()
 		_on_selection_pile_timeout()
+	# Vérifier si la partie est achevée (auprès du gameplay)
+	if not gameplay_est_termine.is_valid():
+		LogService.log_erreur("gameplay_est_termine() n'est pas enregistré !")
+	elif gameplay_est_termine.call(liste_piles):
+		$Top/BoutonAbandonner.hide()
+		VibrationService.vibration_fin_de_plateau()
 
 func _on_selection_pile_timeout() -> void:
 	# Deselecitonner toutes les piles
@@ -131,8 +158,12 @@ func _on_selection_pile_timeout() -> void:
 	sauvegarde_indice_pile_depart = -1
 	# LogService.log_debug("Annulation du coup en cours")
 
-func _on_bouton_abandon_pressed() -> void:
-	$BoutonAbandon.hide()
+# TODO : UI : Titre du GamePlay ($Top/Gameplay)
+# TODO : UI : Ajouter un Chrono ($Top/Chrono)
+# TODO : UI : Ajouter Numéro du Coup ($Top/Coup)
+
+func _on_bouton_abandonner_pressed() -> void:
+	$Top/BoutonAbandonner.hide()
 	abandon.emit()
 
 func _on_fond_gui_input(event: InputEvent) -> void:
@@ -141,4 +172,3 @@ func _on_fond_gui_input(event: InputEvent) -> void:
 			# LogService.log_debug("Clique souris sur le fond du plateau")
 			# Parcourir les piles et déselectionner la pile (comme "timeout" sur la selection)
 			_on_selection_pile_timeout()
-			

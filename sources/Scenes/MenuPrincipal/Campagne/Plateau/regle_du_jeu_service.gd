@@ -44,13 +44,3 @@ func realiser_le_tansfert_de_pile(liste_piles : Array, indice_pile_depart : int,
 		SauvegardeBddJoueursService.ajouter_un_nouveau_coup(indice_pile_depart, indice_pile_arrivee)
 		return true
 	return false
-
-func est_termine(liste_piles) -> bool:
-	# Vérifier si la partie est achevée
-	var termine = true
-	for pile in liste_piles:
-		# Vérifier que les piles qui ne sont pas vides sont terminées.
-		if not pile.est_vide() and not pile.est_termine():
-			termine = false
-			break
-	return termine

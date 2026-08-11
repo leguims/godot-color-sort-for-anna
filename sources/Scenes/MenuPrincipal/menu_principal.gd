@@ -50,12 +50,12 @@ func _on_joueurs_campagne_pressed(nom_joueur: String) -> void:
 		var succes: bool = ProgressionCampagneService.choisir_le_joueur_pour_la_campagne(nom_joueur)
 		if succes:
 			AudioService.son_menu_click()
-			get_tree().change_scene_to_file("res://Scenes/MenuCampagne/Campagne/campagne.tscn")
+			get_tree().change_scene_to_file("res://Scenes/MenuPrincipal/Campagne/campagne.tscn")
 		else:
 			LogService.log_erreur("Erreur : Impossible de choisir le joueur *" + nom_joueur + "*.")
 	else:
 		AudioService.son_menu_click()
-		get_tree().change_scene_to_file("res://Scenes/MenuCampagne/Statistiques/statistiques.tscn")
+		get_tree().change_scene_to_file("res://Scenes/MenuPrincipal/Campagne/MenuCampagne/Statistiques/statistiques.tscn")
 
 func _mettre_a_jour_configuration():
 	$Marge/HBoxContainer/VBoxContainer/Marge/VBoxContainer/VBoxContainer/BoutonMusiques.button_pressed = SauvegardeConfigurationService.musiques_sont_actives()
