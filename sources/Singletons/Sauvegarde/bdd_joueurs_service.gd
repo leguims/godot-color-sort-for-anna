@@ -33,6 +33,7 @@ var sauvegarde_joueur = {
 # 			'plateaux': [
 # 				{
 # 					'nom': "AA .BB .AB ",
+#					TODO : 'gameplay': 'CLASSIQUE', # 'CLASSIQUE', 'MEMOIRE', 'DEFI_DU_GOSSE', 'DEFI_DU_BOSS', 'QUI_PERD_GAGNE', 'FLEMMARD', 'DOUBLE_FACE', 'DICO'
 # 					'date_debut': 1748785865.997,
 # 					'date_fin': 1748785855.0,
 # 					'niveau': 18,

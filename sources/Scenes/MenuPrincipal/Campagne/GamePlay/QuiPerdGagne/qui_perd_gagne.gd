@@ -31,11 +31,11 @@ func cacher_accueil():
 
 # Signaux de "Plateau" relayé à "Campagne"
 func _on_plateau_plateau_invalide() -> void:
-	print("QuiPerdGagne : plateau_invalide.emit()")
+	LogService.log_debug("QuiPerdGagne : plateau_invalide.emit()")
 	plateau_invalide.emit()
 
 func _on_plateau_abandon() -> void:
-	print("QuiPerdGagne : abandon.emit()")
+	LogService.log_debug("QuiPerdGagne : abandon.emit()")
 	abandon.emit()
 
 # Callback pour "Plateau"
@@ -49,6 +49,6 @@ func est_termine(liste_piles) -> bool:
 			termine = false
 			break
 	if termine:
-		print("QuiPerdGagne : victoire.emit()")
+		LogService.log_debug("QuiPerdGagne : victoire.emit()")
 		victoire.emit()
 	return termine

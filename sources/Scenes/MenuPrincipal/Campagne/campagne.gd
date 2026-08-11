@@ -10,7 +10,13 @@ var heure_debut_en_ms : int
 var duree_en_ms : int
 enum Gameplay {
 	CLASSIQUE,
-	QUI_PERD_GAGNE
+	MEMOIRE,
+	DEFI_DU_GOSSE,
+	DEFI_DU_BOSS,
+	QUI_PERD_GAGNE,
+	FLEMMARD,
+	DOUBLE_FACE,
+	DICO
 }
 
 # Called when the node enters the scene tree for the first time.

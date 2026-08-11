@@ -16,6 +16,8 @@ static var ESPACE = 32
 
 var sauvegarde_indice_pile_depart : int = -1
 
+# #############
+# API Gameplay
 func enregistrer_callback_est_termine(cb: Callable):
 	gameplay_est_termine = cb
 
@@ -43,14 +45,14 @@ func cacher_accueil():
 	$Fond.show()
 
 func commencer_un_nouveau_plateau(plateau_texte : String) -> void:
-	effacer_le_plateau()
-	if decodeur.est_valide(plateau_texte):
+	_effacer_le_plateau()
+	if est_valide(plateau_texte):
 		var plateau = decodeur.decoder_plateau(plateau_texte)
 		_creer_un_plateau(plateau)
 	else:
 		plateau_invalide.emit()
 
-func effacer_le_plateau() -> void:
+func _effacer_le_plateau() -> void:
 	for pile in liste_piles:
 		pile.effacer_la_pile()
 		pile.queue_free()
@@ -98,7 +100,7 @@ func _initialiser_une_pile(pile: Pile, jetons_pile_texte) -> void:
 	# Traiter le cas d'une pile invalide.
 	if not valide:
 		# la pile est invalide, le plateau aussi
-		effacer_le_plateau()
+		_effacer_le_plateau()
 		plateau_invalide.emit()
 
 func _positionner_une_pile(nb_piles_plateau: int, indice_pile: int) -> Vector2:
@@ -157,10 +159,6 @@ func _on_selection_pile_timeout() -> void:
 	# Annulation du coup en cours
 	sauvegarde_indice_pile_depart = -1
 	# LogService.log_debug("Annulation du coup en cours")
-
-# TODO : UI : Titre du GamePlay ($Top/Gameplay)
-# TODO : UI : Ajouter un Chrono ($Top/Chrono)
-# TODO : UI : Ajouter Numéro du Coup ($Top/Coup)
 
 func _on_bouton_abandonner_pressed() -> void:
 	$Top/BoutonAbandonner.hide()
