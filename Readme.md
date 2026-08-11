@@ -14,7 +14,7 @@ Listes des évolutions votées par les testeurs:
 
 Depuis la phase de tests internes de la version V0.3.0, les fonctionnalités sont votées par les testeurs. L'attribution des fonctionnalités par versions ci-dessous devrait devenir obsolète pour préférer un classement global des testeurs. Cependant, les deux vont vivre pendant une phase de transition.
 
-## V0.4.4 : Travaux pour la prochaine version
+## V0.5.0 : Travaux pour la prochaine version
 
 ### Bugs
 
@@ -25,6 +25,26 @@ Depuis la phase de tests internes de la version V0.3.0, les fonctionnalités son
 - Définir une combinaison secrete pour declencher l'export des fichiers JSON.
 
 ### Jeu
+
+#### Changement d'architecture pour accueillir plusieurs gameplay
+- ~~Séparer la gestions du plateaux : plateau, pile et jeton~~
+- ~~Séparer les regles de vies des plateaux : creation plateau, deplacement de jetons~~
+- ~~Séparer les regles du plateau et les regles du jeu : condition de victoire appartient au gameplay~~
+- ~~Séparer la campagne des plateaux et interfacer le gameplay entre eux.~~
+- La campagne adresse un gameplay (avec sa presentation et ses regles) qui adresse un plateau (avec des regles universelles)
+- La campagne devient une séquence de plateaux imposés avec des gameplay imposés
+- Structurer le fichier 'Solutions_classees.json' pour incorporer le déroulé de la campagne (sequence plateaux et gameplay)
+  - Le contenu devra être identique à la section "Campagne" du fichier vierge de sauvegarde d'un joueur.
+- Structurer la sauvegarde 'sauvegarde_joueur_XX.json' pour incorporer la campagne
+  - "ascensions" devient "Enregistrement_Campagne" pour les statistiques
+  - Un plateau terminé en campagne devient accessible pour le jeu libre
+  - La liste des plateaux de la campagne contient le gameplay de chacun + spécificités facultatives (coups_min, dico)
+- Associer les statistiques à la campagne
+- Ajuster les decodages de fichiers plateaux : bdd_plateaux_service
+- Ajuster les decodages de fichiers de progression campagne : progression_campagne_service
+- Effacer tous les outils d'initialisation libre de la campagne (jauge + nombre de plateau)
+
+#### Suggestions générales
 - (Faro) Aligner les piles sur la même ligne pour que ca soit plus facile à jouer (-1 Totol)
 - Sauvegarder l'état du plateau en cours après chaque coup. Le joueur qui quitte le jeu, reprend là où il était. Quand il revient, il commence avec son temps moyen sur ce type de niveau.
 - (Aleksandar): thème sur le fond du décors. Trop austère.
@@ -149,13 +169,16 @@ Depuis la phase de tests internes de la version V0.3.0, les fonctionnalités son
   - DÉFI DU GOSSE:
     - Pour les plateaux avec plusieurs longueur de solutions
     - Indiquer la longueur de la solution la plus courte
-    - Un bonus est donné selon la logueur de la solution trouvée.
+    - Afficher le compteur de coups actuel à coté de la cible
+    - Le plateau se gagne sans limite de coup
+    - Un bonus est donné selon la longueur de la solution trouvée.
     - Difficulté : faible
   - DÉFI DU BOSS:
     - Pour les plateaux avec plusieurs longueur de solutions
     - Indiquer la longueur de la solution la plus courte
-    - La partie est perdue si la solution la plus courte n'est pas trouvée
     - Afficher le compteur de coups actuel à coté de la cible
+    - La partie s'arrete quand le nombre de coup cible est atteint
+    - La partie est perdue si la solution la plus courte n'est pas trouvée
     - Difficulté : élevée
   - MÉMOIRE :
     - Commencer le chrono quand le premier coup est joué.
