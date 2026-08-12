@@ -43,6 +43,9 @@ Depuis la phase de tests internes de la version V0.3.0, les fonctionnalités son
 - Ajuster les decodages de fichiers plateaux : bdd_plateaux_service
 - Ajuster les decodages de fichiers de progression campagne : progression_campagne_service
 - Effacer tous les outils d'initialisation libre de la campagne (jauge + nombre de plateau)
+- Les enregistrements de campagne permettent de conserver plusieurs niveaux en cours. (exemple : Niveau_1 et Niveau_10)
+- Comme tous les niveaux sont enregistrés dans la campagne, on pourrait commencer plusieurs niveaux sans avoir fini le précédent.
+- On pourrait dire qu'un niveau passé à moitié ouvre l'accès au niveau suivant.
 
 #### Suggestions générales
 - (Faro) Aligner les piles sur la même ligne pour que ca soit plus facile à jouer (-1 Totol)

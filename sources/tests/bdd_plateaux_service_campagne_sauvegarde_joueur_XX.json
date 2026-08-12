@@ -3,7 +3,7 @@
         {
             "date_debut": 1786407216.866,
             "date_fin": 0.0,
-            "longueur_detour": 25.0,
+            "longueur_detour": 1.0,
             "longueur_initiale": 9.0,
             "niveau_courant": 14,
             "niveau_debut": 10.0,
@@ -114,10 +114,6 @@
     "nom": "Alain Konu",
     "nombre_de_parties": {},
     "campagne": {
-        "description_Campagne": "Sequence des niveaux de la campagne",
-        "description_gameplay": ["CLASSIQUE", "MEMOIRE", "DEFI_DU_GOSSE", "DEFI_DU_BOSS", "QUI_PERD_GAGNE", "FLEMMARD", "DOUBLE_FACE", "DICO"],
-        "description_coups_min": "Longueur de resolution la plus courte",
-        "description_dico": "Mot à réaliser pour le DICO",
         "niveau_2": [
             {
                 "niveau": 10,
@@ -276,9 +272,6 @@
         ]
     },
     "plateaux_libres": {
-        "description": "Plateaux disponibles pour le jeu libre",
-        "description_coups_min": "Longueur de resolution la plus courte - Autorise les modes DEFI_DU_GOSSE et DEFI_DU_BOSS",
-        "description_dico": "Mot à réaliser pour le DICO - Autorise le mode DICO",
         "10": [{"nom": "DDA.CCB.AAB.   .DBC"}],
         "11": [{"nom": "AC.BD.CD.EA.FB.FE.  "}],
         "12": [{"nom": "DA .CDC.BA .BB .DCA"}],
