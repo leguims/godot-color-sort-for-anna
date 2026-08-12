@@ -1,13 +1,13 @@
 {
-    "Enregistrement_Campagne": ["Liste des niveaux de la campagne joués"],
+    "enregistrement_campagne": ["Liste des niveaux de la campagne joués"],
     "nom": "Alain Konu",
     "nombre_de_parties": {},
-    "Campagne": {
+    "campagne": {
         "description_Campagne": "Sequence des niveaux de la campagne",
         "description_gameplay": ["CLASSIQUE", "MEMOIRE", "DEFI_DU_GOSSE", "DEFI_DU_BOSS", "QUI_PERD_GAGNE", "FLEMMARD", "DOUBLE_FACE", "DICO"],
         "description_coups_min": "Longueur de resolution la plus courte",
         "description_dico": "Mot à réaliser pour le DICO",
-        "Niveau_2": [
+        "niveau_2": [
             {
                 "niveau": 10,
                 "gameplay": "CLASSIQUE",
@@ -59,7 +59,7 @@
                 "nom": "ADB.DCD.CBA.ACB.   "
             }
         ],
-        "Niveau_3": [
+        "niveau_3": [
             {
                 "niveau": 10,
                 "gameplay": "CLASSIQUE",
@@ -111,7 +111,7 @@
                 "nom": "AD .BA .BBD.CCD.CA "
             }
         ],
-        "Niveau_4": [
+        "niveau_4": [
             {
                 "niveau": 10,
                 "gameplay": "CLASSIQUE",
@@ -164,7 +164,7 @@
             }
         ]
     },
-    "Plateaux": {
+    "plateaux": {
         "description": "Plateaux disponibles pour le jeu libre",
         "description_coups_min": "Longueur de resolution la plus courte - Autorise les modes DEFI_DU_GOSSE et DEFI_DU_BOSS",
         "description_dico": "Mot à réaliser pour le DICO - Autorise le mode DICO",

@@ -1,13 +1,13 @@
 {
-	"Campagne": {
-        "Niveau_1": [
+	"campagne": {
+        "niveau_1": [
             {"niveau": 1, "gameplay": "CLASSIQUE", "nom": "AAA.BBB.CCC"},
             {"niveau": 2, "gameplay": "MEMOIRE", "nom": "DDD.EEE.FFF"}
         ],
-        "Niveau_2": [
+        "niveau_2": [
             {"niveau": 3, "gameplay": "DEFI_DU_GOSSE", "nom": "GGG.HHH.III"}
         ],
-        "Niveau_10": [
+        "niveau_10": [
             {"niveau": 5, "gameplay": "DEFI_DU_BOSS", "nom": "GGG.HHH.III"}
         ]
     }

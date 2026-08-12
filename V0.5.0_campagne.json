@@ -1,10 +1,10 @@
 {
-    "Campagne": {
+    "campagne": {
         "description_Campagne": "Sequence des niveaux de la campagne",
         "description_gameplay": ["CLASSIQUE", "MEMOIRE", "DEFI_DU_GOSSE", "DEFI_DU_BOSS", "QUI_PERD_GAGNE", "FLEMMARD", "DOUBLE_FACE", "DICO"],
         "description_coups_min": "[Facultatif] Longueur de resolution la plus courte",
         "description_dico": "[Facultatif] Mot à réaliser pour le DICO",
-        "Niveau_1": [
+        "niveau_1": [
             {
                 "niveau": 10,
                 "gameplay": "CLASSIQUE",
@@ -56,7 +56,7 @@
                 "nom": "DA .DB .CA .ACB.CDB"
             }
         ],
-        "Niveau_2": [
+        "niveau_2": [
             {
                 "niveau": 10,
                 "gameplay": "CLASSIQUE",
@@ -108,7 +108,7 @@
                 "nom": "ADB.DCD.CBA.ACB.   "
             }
         ],
-        "Niveau_3": [
+        "niveau_3": [
             {
                 "niveau": 10,
                 "gameplay": "CLASSIQUE",
@@ -160,7 +160,7 @@
                 "nom": "AD .BA .BBD.CCD.CA "
             }
         ],
-        "Niveau_4": [
+        "niveau_4": [
             {
                 "niveau": 10,
                 "gameplay": "CLASSIQUE",

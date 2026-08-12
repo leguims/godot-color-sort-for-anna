@@ -65,6 +65,6 @@ func test_duplicate_retourne_une_copie():
 	var copie = singleton.plateau_liste_difficulte_duplicate()
 	assert_eq(copie, singleton.plateau_campagne)
 	# Modifier le contenu pour voir que c'est disjoint.
-	copie["Niveau_1"][0]["niveau"] += 1
+	copie[singleton.nom_niveau(1)][0]["niveau"] += 1
 	assert_ne(copie, singleton.plateau_campagne)
-	assert_eq(copie["Niveau_1"][0]["nom"], "AAA.BBB.CCC")
+	assert_eq(copie[singleton.nom_niveau(1)][0]["nom"], "AAA.BBB.CCC")
