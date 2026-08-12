@@ -1,11 +1,9 @@
 {
-    "Enregistrement_Campagne": [],
-    "nom": "Alain Konu",
-    "nombre_de_parties": {},
     "Campagne": {
         "description_Campagne": "Sequence des niveaux de la campagne",
         "description_gameplay": ["CLASSIQUE", "MEMOIRE", "DEFI_DU_GOSSE", "DEFI_DU_BOSS", "QUI_PERD_GAGNE", "FLEMMARD", "DOUBLE_FACE", "DICO"],
-        "description_coups_min": "Longueur de resolution la plus courte",
+        "description_coups_min": "[Facultatif] Longueur de resolution la plus courte",
+        "description_dico": "[Facultatif] Mot à réaliser pour le DICO",
         "Niveau_1": [
             {
                 "niveau": 10,
@@ -214,8 +212,5 @@
                 "nom": "AAC.DCB.ABC.BDD.   "
             }
         ]
-    },
-    "Plateaux": {
-        "description": "Plateaux disponibles pour le jeu libre"
     }
 }
