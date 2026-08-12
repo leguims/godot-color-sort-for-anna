@@ -33,14 +33,14 @@ Depuis la phase de tests internes de la version V0.3.0, les fonctionnalités son
 - ~~Séparer la campagne des plateaux et interfacer le gameplay entre eux.~~
 - La campagne adresse un gameplay (avec sa presentation et ses regles) qui adresse un plateau (avec des regles universelles)
 - La campagne devient une séquence de plateaux imposés avec des gameplay imposés
-- Structurer le fichier 'Solutions_classees.json' pour incorporer le déroulé de la campagne (sequence plateaux et gameplay)
-  - Le contenu devra être identique à la section "Campagne" du fichier vierge de sauvegarde d'un joueur.
-- Structurer la sauvegarde 'sauvegarde_joueur_XX.json' pour incorporer la campagne
-  - "ascensions" devient "Enregistrement_Campagne" pour les statistiques
+- ~~Structurer le fichier 'Solutions_classees.json' pour incorporer le déroulé de la campagne (sequence plateaux et gameplay)~~
+  - ~~Le contenu devra être identique à la section "Campagne" du fichier vierge de sauvegarde d'un joueur.~~
+- ~~Structurer la sauvegarde 'sauvegarde_joueur_XX.json' pour incorporer la campagne~~
+  - "ascensions" devient "enregistrement_campagne" pour les statistiques
   - Un plateau terminé en campagne devient accessible pour le jeu libre
   - La liste des plateaux de la campagne contient le gameplay de chacun + spécificités facultatives (coups_min, dico)
 - Associer les statistiques à la campagne
-- Ajuster les decodages de fichiers plateaux : bdd_plateaux_service
+- ~~Ajuster les decodages de fichiers plateaux : bdd_plateaux_service~~
 - Ajuster les decodages de fichiers de progression campagne : progression_campagne_service
 - Effacer tous les outils d'initialisation libre de la campagne (jauge + nombre de plateau)
 - Les enregistrements de campagne permettent de conserver plusieurs niveaux en cours. (exemple : Niveau_1 et Niveau_10)
