@@ -85,12 +85,12 @@ func mettre_a_jour_score_ascension() -> Dictionary:
 	"Calculer le score suite à une ascension achevée"
 	var bonus_ascension = 0
 	var niveau_ascension_longueur_totale = 0
-	if not SauvegardeBddJoueursService.ascension_en_cours():
+	if not SauvegardeBddJoueursService.niveau_en_cours():
 		var nom_joueur = SauvegardeBddJoueursService.lire_nom_joueur()
 		niveau_ascension_longueur_totale = SauvegardeBddJoueursService.lire_niveau_ascension_longueur_initiale()
 		# bonus = 100 x Dénivelé ^2 (bonus non linéaire)
 		bonus_ascension = roundi(50 * pow(niveau_ascension_longueur_totale, 2))
-		SauvegardeBddJoueursService.modifier_score_ascension(bonus_ascension)
+		SauvegardeBddJoueursService.modifier_score_niveau(bonus_ascension)
 		SauvegardeTableauDesScoresService.incrementer_score_joueur(nom_joueur, bonus_ascension)
 		return {'type':'ascension', 'longueur': niveau_ascension_longueur_totale, 'points': bonus_ascension}
 	return{}
@@ -98,11 +98,11 @@ func mettre_a_jour_score_ascension() -> Dictionary:
 func mettre_a_jour_score_ascension_sans_detour() -> Dictionary:
 	"Calculer le score suite à une ascension parfaite achevée"
 	var bonus_ascension_sans_detour = 0
-	if not SauvegardeBddJoueursService.ascension_en_cours() \
+	if not SauvegardeBddJoueursService.niveau_en_cours() \
 		and SauvegardeBddJoueursService.lire_longueur_detour_ascension() == 0:
 		var nom_joueur = SauvegardeBddJoueursService.lire_nom_joueur()
-		bonus_ascension_sans_detour = SauvegardeBddJoueursService.lire_score_ascension()
-		SauvegardeBddJoueursService.modifier_score_ascension_sans_detour(bonus_ascension_sans_detour)
+		bonus_ascension_sans_detour = SauvegardeBddJoueursService.lire_score_niveau()
+		SauvegardeBddJoueursService.modifier_score_niveau_sans_detour(bonus_ascension_sans_detour)
 		SauvegardeTableauDesScoresService.incrementer_score_joueur(nom_joueur, bonus_ascension_sans_detour)
 		return {'type':'ascension_sans_detour', 'bonus': 'x2', 'points': bonus_ascension_sans_detour}
 	return{}

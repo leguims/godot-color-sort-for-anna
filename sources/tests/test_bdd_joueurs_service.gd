@@ -50,24 +50,24 @@ func test_le_niveau_est_termine():
 # TESTS SUR L’ASCENSION
 # ---------------------------------------------------------
 
-func test_ascension_existe():
-	assert_true(singleton.ascension_existe())
+func test_niveau_existe():
+	assert_true(singleton.niveau_existe())
 
 
-func test_ascension_en_cours():
-	assert_true(singleton.ascension_en_cours())
+func test_niveau_en_cours():
+	assert_true(singleton.niveau_en_cours())
 
 
 func test_lire_niveau_joueur():
 	assert_eq(singleton.lire_niveau_joueur(), 14)
 
 
-func test_lire_niveau_debut_ascension():
-	assert_eq(singleton.lire_niveau_debut_ascension(), 10)
+func test_lire_difficulte_debut_niveau():
+	assert_eq(singleton.lire_difficulte_debut_niveau(), 10)
 
 
-func test_lire_niveau_fin_ascension():
-	assert_eq(singleton.lire_niveau_fin_ascension(), 18)
+func test_lire_difficulte_fin_niveau():
+	assert_eq(singleton.lire_difficulte_fin_niveau(), 18)
 
 
 func test_lire_longueur_detour():

@@ -55,7 +55,7 @@ func afficher_accueil_nouvelle_ascension():
 	_afficher_message("")
 	$BoutonCommencer.show()
 
-func afficher_accueil_ascension_en_cours():
+func afficher_accueil_niveau_en_cours():
 	$BoutonMenuPrincipal.show()
 	$BoutonStatistiques.show()
 	mettre_a_jour_infos_joueur()

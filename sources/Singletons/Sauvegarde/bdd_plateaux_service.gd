@@ -8,24 +8,24 @@ var plateau_campagne = {
 	#"description_dico": "[Facultatif] Mot à réaliser pour le DICO",
 	#"niveau_1": [
 		#{
-			#"niveau": 10,
+			#"difficulte": 10,
 			#"gameplay": "CLASSIQUE",
 			#"nom": "DDA.CCB.AAB.   .DBC"
 		#},
 		#{
-			#"niveau": 11,
+			#"difficulte": 11,
 			#"gameplay": "QUI_PERD_GAGNE",
 			#"nom": "AC.BD.CD.EA.FB.FE.  "
 		#}
 	#],
 	#"niveau_2": [
 		#{
-			#"niveau": 10,
+			#"difficulte": 10,
 			#"gameplay": "CLASSIQUE",
 			#"nom": "DC .ABC.BBA.C  .DAD"
 		#},
 		#{
-			#"niveau": 11,
+			#"difficulte": 11,
 			#"gameplay": "QUI_PERD_GAGNE",
 			#"nom": " AAC.CB .DB .DDC.BA "
 		#}
@@ -48,9 +48,8 @@ func _initialiser_les_plateaux() -> void:
 		if 'campagne' in fichier_plateaux:
 			var dico_campagne = fichier_plateaux.get('campagne')
 			for niveau in dico_campagne.keys():
-				if niveau.begins_with("niveau_"):
-					# Copie tous les niveaux, sauf 'None'
-					plateau_campagne[niveau] = dico_campagne.get(niveau).duplicate(true)
+				# Copie tous les niveaux, sauf 'None'
+				plateau_campagne[niveau] = dico_campagne.get(niveau).duplicate(true)
 
 func plateau_liste_difficulte_duplicate() -> Dictionary:
 	return plateau_campagne.duplicate(true)

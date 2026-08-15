@@ -46,6 +46,17 @@ Depuis la phase de tests internes de la version V0.3.0, les fonctionnalités son
 - Les enregistrements de campagne permettent de conserver plusieurs niveaux en cours. (exemple : Niveau_1 et Niveau_10)
 - Comme tous les niveaux sont enregistrés dans la campagne, on pourrait commencer plusieurs niveaux sans avoir fini le précédent.
 - On pourrait dire qu'un niveau passé à moitié ouvre l'accès au niveau suivant.
+- Changement de vocable:
+  - Notions globales:
+    - Campagne = Campagne
+      - Ascension => Niveau
+        - Plateau => Plateau
+          - Niveau => Difficulté
+          - 0 => Gameplay
+  - fichier de sauvegarde:
+    - ascension => enregistrement_campagne
+    - plateaux => campagne
+    - plateaux => plateaux_libres (peuplé par les plateaux de campagne terminés)
 
 #### Suggestions générales
 - (Faro) Aligner les piles sur la même ligne pour que ca soit plus facile à jouer (-1 Totol)

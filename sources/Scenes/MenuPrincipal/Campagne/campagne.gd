@@ -30,9 +30,9 @@ func _ready() -> void:
 	cacher_les_gameplays()
 	$MenuCampagne.cacher_accueil()
 	$MenuCampagne.show()
-	if ProgressionCampagneService.ascension_en_cours():
+	if ProgressionCampagneService.niveau_en_cours():
 		enregistrer_infos_joueur_pour_menu()
-		$MenuCampagne.afficher_accueil_ascension_en_cours()
+		$MenuCampagne.afficher_accueil_niveau_en_cours()
 	else:
 		enregistrer_longueur_max_plateaux_pour_menu()
 		$MenuCampagne.afficher_accueil_nouvelle_ascension()
@@ -67,7 +67,7 @@ func _on_classique_victoire() -> void:
 	$MenuCampagne.show()
 	if ProgressionCampagneService.la_campagne_est_terminee():
 		$MenuCampagne.afficher_fin_campagne()
-	elif not ProgressionCampagneService.ascension_en_cours():
+	elif not ProgressionCampagneService.niveau_en_cours():
 		enregistrer_longueur_max_plateaux_pour_menu()
 		$MenuCampagne.afficher_fin_ascension()
 	else:
@@ -124,7 +124,7 @@ func enregistrer_infos_joueur_pour_menu():
 	# Transmet les infos pour mettre à jour la banniere 'infos joueur' du menu
 	var nom = SauvegardeBddJoueursService.lire_nom_joueur()
 	var trophee = SauvegardeTableauDesScoresService.lire_le_trophee_du_joueur(nom)
-	var pourcentage_ascension_realise = StatsService.ascension_taux_completion() * 100.
+	var pourcentage_ascension_realise = StatsService.niveau_taux_completion() * 100.
 	var pourcentage_campagne_realise = StatsService.campagne_taux_completion() * 100.
 	var score_texte = SauvegardeTableauDesScoresService.lire_score_txt_joueur(nom)
 	$MenuCampagne.enregistrer_infos_joueur(	nom, trophee, pourcentage_ascension_realise, pourcentage_campagne_realise, score_texte)
