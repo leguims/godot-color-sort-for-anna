@@ -86,7 +86,7 @@ func supprimer_un_joueur(nom_joueur : String, fichier_joueur : String) -> bool:
 	var succes: bool = supprimer_un_joueur_orphelin_de_sauvegarde(nom_joueur, fichier_joueur)
 	if succes:
 		# Effacer le fichier
-		FichiersJsonService.remove_json_file(fichier_joueur)
+		FichiersJsonService.remove_json_file("user://" + fichier_joueur)
 	return succes
 
 func supprimer_un_joueur_orphelin_de_sauvegarde(nom_joueur : String, fichier_joueur : String) -> bool:
@@ -95,13 +95,9 @@ func supprimer_un_joueur_orphelin_de_sauvegarde(nom_joueur : String, fichier_jou
 		return false
 	if not fichier_joueur:
 		return false
-	# Vérifie que le nom est libre
-	if le_joueur_existe(nom_joueur):
-		# Crée le compte à effacer
-		var compte = {
-			'nom': nom_joueur,
-			'fichier_sauvegarde': fichier_joueur
-		}
-		liste_des_joueurs.erase(compte)
-		_enregistrer_la_liste_des_joueurs()
-	return true
+	for joueur in liste_des_joueurs:
+		if joueur.get('nom') == nom_joueur and joueur.get('fichier_sauvegarde') == fichier_joueur:
+			liste_des_joueurs.erase(joueur)
+			_enregistrer_la_liste_des_joueurs()
+			return true
+	return false
