@@ -34,28 +34,24 @@ func _initialiser_la_configuration() -> void:
 	
 	var version_courante_disque = fichier_configuration.get('version')
 	
-	# Copier les niveaux lus
+	# Conserver les réglages utilisateur avant d'enregistrer la nouvelle version.
 	if fichier_configuration:
-		if version_courante_disque != lire_la_version():
-			# Reset campagne
-			if version_courante_disque in ['V0.3.3', 'V0.3.4', 'V0.3.5', 'V0.3.6',
-											'V0.4.0.beta1', 'V0.4.0.beta2', 'V0.4.0.beta3',
-											'V0.4.0.beta4', 'V0.4.0.beta5', 'V0.4.0.beta6',
-											'V0.4.0.beta7']:
-				SauvegardeBddJoueursService.remplacer_campagne_des_joueur()
-				SauvegardeTableauDesScoresService.remise_a_zero()
-			# CONVERSION [V0.3.2 -> V0.3.3]
-			# TODO : conversion vers V0.3.3
-			# TODO : Nouvelle campagne => reset des sauvegardes
-			# Ecrire la nouvelle version après conversion
-			_enregistrer_la_configuration()
-			pass
 		if 'musiques' in fichier_configuration:
 			configuration_du_jeu['musiques'] = fichier_configuration.get('musiques')
 		if 'effets sonores' in fichier_configuration:
 			configuration_du_jeu['effets sonores'] = fichier_configuration.get('effets sonores')
 		if 'vibrations' in fichier_configuration:
 			configuration_du_jeu['vibrations'] = fichier_configuration.get('vibrations')
+		if version_courante_disque != lire_la_version():
+			# Les versions explicitement couvertes remplacent la campagne et
+			# remettent les scores à zéro avant d'enregistrer la version courante.
+			if version_courante_disque in ['V0.3.3', 'V0.3.4', 'V0.3.5', 'V0.3.6',
+											'V0.4.0.beta1', 'V0.4.0.beta2', 'V0.4.0.beta3',
+											'V0.4.0.beta4', 'V0.4.0.beta5', 'V0.4.0.beta6',
+											'V0.4.0.beta7']:
+				SauvegardeBddJoueursService.remplacer_campagne_des_joueur()
+				SauvegardeTableauDesScoresService.remise_a_zero()
+			_enregistrer_la_configuration()
 	else:
 		# Création du fichier initial
 		_enregistrer_la_configuration()
