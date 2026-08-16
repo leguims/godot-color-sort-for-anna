@@ -48,6 +48,7 @@ func initialiser_le_nouveau_joueur_pour_la_campagne(nom_nouveau_joueur : String)
 					return true
 				FichiersJsonService.remove_json_file("user://" + nom_fichier)
 			SauvegardeListeJoueursService.supprimer_un_joueur_orphelin_de_sauvegarde(nom_nouveau_joueur, nom_fichier)
+			SauvegardeBddJoueursService.liberer_le_joueur()
 	return false
 
 ####################################

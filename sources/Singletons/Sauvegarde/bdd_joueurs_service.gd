@@ -85,10 +85,13 @@ func _print_bdd_joueurs() -> void:
 	#if len(sauvegarde_joueur.get('ascensions')):
 	#	LogService.log_debug('\t', "derniere ascensions=", sauvegarde_joueur.get('ascensions').back())
 
-func _enregistrer_sauvegarde_joueur() -> void:
+func _enregistrer_sauvegarde_joueur() -> bool:
 	if fichier_sauvegarde:
-		FichiersJsonService.write_json_file("user://" + fichier_sauvegarde, sauvegarde_joueur.duplicate(true))
-		LogService.log_debug("Progression sauvegardée")
+		var succes = FichiersJsonService.write_json_file("user://" + fichier_sauvegarde, sauvegarde_joueur.duplicate(true))
+		if succes:
+			LogService.log_debug("Progression sauvegardée")
+		return succes
+	return false
 
 func le_joueur_existe() -> bool:
 	return fichier_sauvegarde != ""
@@ -117,8 +120,10 @@ func ajouter_un_nouveau_joueur(nom_nouveau_joueur : String, nom_nouveau_fichier 
 	sauvegarde_joueur['plateaux'] = SauvegardeBddPlateauxService.plateau_liste_difficulte_duplicate()
 	
 	fichier_sauvegarde = nom_nouveau_fichier
-	_enregistrer_sauvegarde_joueur()
-	return true
+	if _enregistrer_sauvegarde_joueur():
+		return true
+	liberer_le_joueur()
+	return false
 
 func remplacer_campagne_des_joueur():
 	"""Parcourir tous les joueurs et remplacer les plateaux à jouer par ceux du fichier courant"""
