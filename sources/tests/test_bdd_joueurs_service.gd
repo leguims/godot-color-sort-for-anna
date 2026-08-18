@@ -1,4 +1,4 @@
-extends GutTest
+﻿extends GutTest
 
 var singleton
 
@@ -47,39 +47,39 @@ func test_le_niveau_est_termine():
 
 
 # ---------------------------------------------------------
-# TESTS SUR L’ASCENSION
+# TESTS SUR Le niveau
 # ---------------------------------------------------------
 
-func test_ascension_existe():
-	assert_true(singleton.ascension_existe())
+func test_niveau_existe():
+	assert_true(singleton.niveau_existe())
 
 
-func test_ascension_en_cours():
-	assert_true(singleton.ascension_en_cours())
+func test_niveau_en_cours():
+	assert_true(singleton.niveau_en_cours())
 
 
 func test_lire_niveau_joueur():
 	assert_eq(singleton.lire_niveau_joueur(), 14)
 
 
-func test_lire_niveau_debut_ascension():
-	assert_eq(singleton.lire_niveau_debut_ascension(), 10)
+func test_lire_niveau_debut_niveau():
+	assert_eq(singleton.lire_niveau_debut_niveau(), 10)
 
 
-func test_lire_niveau_fin_ascension():
-	assert_eq(singleton.lire_niveau_fin_ascension(), 18)
+func test_lire_niveau_fin_niveau():
+	assert_eq(singleton.lire_niveau_fin_niveau(), 18)
 
 
 func test_lire_longueur_detour():
-	assert_eq(singleton.lire_longueur_detour_ascension(), 1)
+	assert_eq(singleton.lire_longueur_detour_niveau(), 1)
 
 
 func test_lire_longueur_initiale():
-	assert_eq(singleton.lire_niveau_ascension_longueur_initiale(), 9)
+	assert_eq(singleton.lire_niveau_longueur_initiale(), 9)
 
 
 func test_ratio_reussite():
-	var ratio = singleton.lire_ratio_reussite_ascension()
+	var ratio = singleton.lire_ratio_reussite_niveau()
 	assert_true(ratio >= 0 and ratio <= 100)
 
 
@@ -130,3 +130,4 @@ func test_ajouter_un_nouveau_coup():
 	# assert_true(singleton.ajouter_un_nouveau_coup(1, 2))
 	# var plateau_apres = singleton.lire_nombre_coups()
 	# assert_eq(plateau_apres, plateau_avant + 1)
+

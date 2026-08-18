@@ -1,4 +1,4 @@
-# Implemente toutes les spécificité de la campagnes:
+﻿# Implemente toutes les spécificité de la campagnes:
 # Lectures des "Sauvegarde*" + synthese en croisant les données
 # Il gere tous les mecanismes de regles, de donnees et de comportements de la campagne.
 
@@ -23,22 +23,22 @@ enum Gameplay {
 func _ready() -> void:
 	# Connecter les signaux attendus
 	var pcs = get_node("/root/ProgressionCampagneService")
-	pcs.progression_ascension.connect(_on_progression_campagne_service_progression_ascension)
-	pcs.fin_ascension.connect(_on_progression_campagne_service_fin_ascension)
+	pcs.progression_niveau.connect(_on_progression_campagne_service_progression_niveau)
+	pcs.fin_niveau.connect(_on_progression_campagne_service_fin_niveau)
 
 	# $MenuCampagne.modifier_message_vertical_align(VERTICAL_ALIGNMENT_CENTER)
 	cacher_les_gameplays()
 	$MenuCampagne.cacher_accueil()
 	$MenuCampagne.show()
-	if ProgressionCampagneService.ascension_en_cours():
+	if ProgressionCampagneService.niveau_en_cours():
 		enregistrer_infos_joueur_pour_menu()
-		$MenuCampagne.afficher_accueil_ascension_en_cours()
+		$MenuCampagne.afficher_accueil_niveau_en_cours()
 	else:
 		enregistrer_longueur_max_plateaux_pour_menu()
-		$MenuCampagne.afficher_accueil_nouvelle_ascension()
+		$MenuCampagne.afficher_accueil_nouvelle_niveau()
 
 func _on_menu_commencer_plateau() -> void:
-	ProgressionCampagneService.commencer_un_plateau($MenuCampagne/LongueurAscension/VBox/Pourcentage.value)
+	ProgressionCampagneService.commencer_un_plateau($MenuCampagne/LongueurNiveau/VBox/Pourcentage.value)
 	_lancer_plateau_de_campagne(SauvegardeBddJoueursService.lire_nom_plateau())
 
 func _lancer_plateau_de_campagne(plateau : String) -> void:
@@ -67,9 +67,9 @@ func _on_classique_victoire() -> void:
 	$MenuCampagne.show()
 	if ProgressionCampagneService.la_campagne_est_terminee():
 		$MenuCampagne.afficher_fin_campagne()
-	elif not ProgressionCampagneService.ascension_en_cours():
+	elif not ProgressionCampagneService.niveau_en_cours():
 		enregistrer_longueur_max_plateaux_pour_menu()
-		$MenuCampagne.afficher_fin_ascension()
+		$MenuCampagne.afficher_fin_niveau()
 	else:
 		$MenuCampagne.afficher_gagner_un_plateau(roundi(duree_en_ms / 1000.0))
 	AudioService.son_gagner_un_plateau()
@@ -95,10 +95,10 @@ func _on_qui_perd_gagne_abandon() -> void:
 	# TODO : ce cas peut etre détécté automatiquement. à reflechir
 	_on_classique_abandon()
 
-func _on_progression_campagne_service_progression_ascension():
+func _on_progression_campagne_service_progression_niveau():
 	enregistrer_infos_joueur_pour_menu()
 
-func _on_progression_campagne_service_fin_ascension():
+func _on_progression_campagne_service_fin_niveau():
 	enregistrer_longueur_max_plateaux_pour_menu()
 
 func cacher_les_gameplays() -> void:
@@ -124,13 +124,14 @@ func enregistrer_infos_joueur_pour_menu():
 	# Transmet les infos pour mettre à jour la banniere 'infos joueur' du menu
 	var nom = SauvegardeBddJoueursService.lire_nom_joueur()
 	var trophee = SauvegardeTableauDesScoresService.lire_le_trophee_du_joueur(nom)
-	var pourcentage_ascension_realise = StatsService.ascension_taux_completion() * 100.
+	var pourcentage_niveau_realise = StatsService.niveau_taux_completion() * 100.
 	var pourcentage_campagne_realise = StatsService.campagne_taux_completion() * 100.
 	var score_texte = SauvegardeTableauDesScoresService.lire_score_txt_joueur(nom)
-	$MenuCampagne.enregistrer_infos_joueur(	nom, trophee, pourcentage_ascension_realise, pourcentage_campagne_realise, score_texte)
+	$MenuCampagne.enregistrer_infos_joueur(	nom, trophee, pourcentage_niveau_realise, pourcentage_campagne_realise, score_texte)
 
 # TODO : Déplacer le code. Le menu doit demande au SERVICE les infos necessiares.
 func enregistrer_longueur_max_plateaux_pour_menu():
-	# Transmet la longueur max de plateau d'une ascension
-	var longueur_max_ascension = SauvegardeBddJoueursService.lire_nombre_de_niveaux_realisables()
-	$MenuCampagne.enregistrer_longueur_max_ascension(longueur_max_ascension)
+	# Transmet la longueur max de plateau d'Un niveau
+	var longueur_max_niveau = SauvegardeBddJoueursService.lire_nombre_de_niveaux_realisables()
+	$MenuCampagne.enregistrer_longueur_max_niveau(longueur_max_niveau)
+
