@@ -134,10 +134,10 @@ func niveaux():
 func difficultes():
 	# Identifier le joueur
 	# Consulter la BDD pour obtenir les indicateurs à afficher
-	# TODO : niveaux : diagrammes et courbes
+	# TODO : difficultés : diagrammes et courbes
 
 	# KPI
-	# TODO : niveaux : KPI
+	# TODO : difficultés : KPI
 	pass
 
 func plateaux():

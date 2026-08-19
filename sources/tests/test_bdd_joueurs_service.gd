@@ -1,4 +1,4 @@
-extends GutTest
+﻿extends GutTest
 
 var singleton
 
@@ -47,7 +47,7 @@ func test_le_niveau_est_termine():
 
 
 # ---------------------------------------------------------
-# TESTS SUR L’ASCENSION
+# TESTS SUR Le niveau
 # ---------------------------------------------------------
 
 func test_niveau_existe():
@@ -71,15 +71,15 @@ func test_lire_difficulte_fin_niveau():
 
 
 func test_lire_longueur_detour():
-	assert_eq(singleton.lire_longueur_detour_ascension(), 1)
+	assert_eq(singleton.lire_longueur_detour_niveau(), 1)
 
 
 func test_lire_longueur_initiale():
-	assert_eq(singleton.lire_niveau_ascension_longueur_initiale(), 9)
+	assert_eq(singleton.lire_niveau_longueur_initiale(), 9)
 
 
 func test_ratio_reussite():
-	var ratio = singleton.lire_ratio_reussite_ascension()
+	var ratio = singleton.lire_ratio_reussite_niveau()
 	assert_true(ratio >= 0 and ratio <= 100)
 
 
@@ -130,3 +130,4 @@ func test_ajouter_un_nouveau_coup():
 	# assert_true(singleton.ajouter_un_nouveau_coup(1, 2))
 	# var plateau_apres = singleton.lire_nombre_coups()
 	# assert_eq(plateau_apres, plateau_avant + 1)
+

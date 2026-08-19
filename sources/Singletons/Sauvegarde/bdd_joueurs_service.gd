@@ -1,4 +1,4 @@
-###############################################
+﻿###############################################
 # Gestion des sauvegardes de joueurs
 ###############################################
 
@@ -16,7 +16,7 @@ var sauvegarde_joueur = {
 	#'plateaux_libres': {  },
 }
 
-# Exemple de sauvegarde avec une ascension en cours
+# Exemple de sauvegarde avec Un niveau en cours
 # {
 # 	"nom": "nom joueur",
 # 	"nombre_de_parties": { "18": 5, "20": 4, "24": 4 },
@@ -64,13 +64,13 @@ var fichier_sauvegarde = ""
 func _ready() -> void:
 	# Connecter les signaux attendus
 	var pcs = get_node("/root/ProgressionCampagneService")
-	pcs.fin_ascension.connect(_on_progression_campagne_service_fin_ascension)
+	pcs.fin_niveau.connect(_on_progression_campagne_service_fin_niveau)
 
 	# Creation compte initial 'Alain Konu'
 	if not FichiersJsonService.json_file_exists("user://sauvegarde_joueur_00.json"):
 		ajouter_un_nouveau_joueur('Alain Konu', 'sauvegarde_joueur_00.json')
 
-func _on_progression_campagne_service_fin_ascension():
+func _on_progression_campagne_service_fin_niveau():
 	_terminer_niveau()
 
 func _lire_sauvegarde_joueur(fichier : String) -> bool:
@@ -136,7 +136,7 @@ func remplacer_campagne_des_joueur():
 	for nom_joueur in SauvegardeListeJoueursService.retourner_la_liste_des_joueurs():
 		fichier_sauvegarde = SauvegardeListeJoueursService.retourner_le_fichier_de_sauvegarde(nom_joueur)
 		_lire_sauvegarde_joueur(fichier_sauvegarde)
-		# Clore toute ascension en cours.
+		# Clore toute niveau en cours.
 		terminer_plateau()
 		_terminer_niveau()
 		# Remplacer les plateaux residuels d'une ancienne campagne.
@@ -280,18 +280,18 @@ func lire_nombre_de_parties_joueur_pour_niveau(niveau : int) -> int: # TODO : IN
 ###############################################
 
 func niveau_existe() -> bool:
-	"Indique si une ascension existe"
+	"Indique si un niveau existe"
 	return le_joueur_existe() and not sauvegarde_joueur.get('enregistrement_campagne').is_empty()
 
 func lire_dernier_niveau() -> Dictionary:
-	"Retourne la derniere ascension"
+	"Retourne le dernier niveau"
 	if niveau_existe():
 		var enregistrement_campagne = sauvegarde_joueur.get('enregistrement_campagne').back()
 		return enregistrement_campagne
 	return {}
 
 func niveau_en_cours() -> bool:
-	"Indique si une ascension est en cours de réalisation"
+	"Indique si un niveau est en cours de réalisation"
 	var enregistrement_campagne = lire_dernier_niveau()
 	if enregistrement_campagne:
 		return not enregistrement_campagne.get('date_fin')
@@ -300,7 +300,7 @@ func niveau_en_cours() -> bool:
 func initialiser_un_nouveau_niveau(nb_niveau : int, # TODO : INUTILISE !
 										niveau_debut : int,
 										niveau_fin : int) -> bool:
-	"Crée et initialise une nouvelle ascension"
+	"Crée et initialise un nouveau niveau"
 	if not niveau_en_cours():
 		var ascension = {
 			'date_debut': Time.get_unix_time_from_system(), # Timestamp
@@ -308,13 +308,13 @@ func initialiser_un_nouveau_niveau(nb_niveau : int, # TODO : INUTILISE !
 			'score': {},
 			'plateaux': []
 			}
-		sauvegarde_joueur['enregistrement_campagne'].append(ascension)
+		sauvegarde_joueur['enregistrement_campagne'].append(niveau)
 		_enregistrer_sauvegarde_joueur()
 		return true
 	return false
 
 func _terminer_niveau() -> void:
-	"Enregistre la date de fin d'une ascension"
+	"Enregistre la date de fin d'un niveau"
 	var enregistrement_campagne = lire_dernier_niveau()
 	if enregistrement_campagne:
 		enregistrement_campagne['date_fin'] = Time.get_unix_time_from_system() # Timestamp
@@ -383,7 +383,7 @@ func lire_niveau_longueur_restante() -> int: # TODO : INUTILISE !
 func lire_pourcentage_niveau_realise() -> int:
 	"Pourcentage de réalisation (retourne 99 pour 99%, 15 pour 15% ...)"
 	if niveau_en_cours():
-		var nb_niveaux_totaux = lire_niveau_ascension_longueur_initiale()
+		var nb_niveaux_totaux = lire_niveau_longueur_initiale()
 		var nb_niveaux_realises = lire_niveau_longueur_realisee()
 		return roundi(100. * nb_niveaux_realises / nb_niveaux_totaux)
 	return 0
@@ -420,34 +420,34 @@ func lire_ratio_reussite_niveau() -> int:
 	return 0
 
 ###############################################
-# Niveaux / Score / Ascension et Ascension sans détour
-# 'score': { 'ascension': 500000, 'ascension_sans_detour': 500000},
+# Niveaux / Score / Niveau et Niveau sans détour
+# 'score': { 'niveau': 500000, 'niveau_sans_detour': 500000},
 ###############################################
 
 func modifier_score_niveau(score : int) -> void:
 	var enregistrement_campagne = lire_dernier_niveau()
 	if enregistrement_campagne:
-		enregistrement_campagne['score']['ascension'] = score
+		enregistrement_campagne['score']['niveau'] = score
 		_enregistrer_sauvegarde_joueur()
 
 func modifier_score_niveau_sans_detour(score : int) -> void:
 	var enregistrement_campagne = lire_dernier_niveau()
 	if enregistrement_campagne:
-		enregistrement_campagne['score']['ascension_sans_detour'] = score
+		enregistrement_campagne['score']['niveau_sans_detour'] = score
 		_enregistrer_sauvegarde_joueur()
 
 func lire_score_niveau() -> int:
 	var enregistrement_campagne = lire_dernier_niveau()
 	if enregistrement_campagne:
-		if enregistrement_campagne.get('score') and enregistrement_campagne.get('score').get('ascension'):
-			return enregistrement_campagne.get('score').get('ascension')
+		if enregistrement_campagne.get('score') and enregistrement_campagne.get('score').get('niveau'):
+			return enregistrement_campagne.get('score').get('niveau')
 	return 0
 
 func lire_score_niveau_sans_detour() -> int: # TODO : INUTILISE !
 	var enregistrement_campagne = lire_dernier_niveau()
 	if enregistrement_campagne:
-		if enregistrement_campagne.get('score') and enregistrement_campagne.get('score').get('ascension_sans_detour'):
-			return enregistrement_campagne.get('score').get('ascension_sans_detour')
+		if enregistrement_campagne.get('score') and enregistrement_campagne.get('score').get('niveau_sans_detour'):
+			return enregistrement_campagne.get('score').get('niveau_sans_detour')
 	return 0
 
 
@@ -504,7 +504,7 @@ func _initialiser_un_nouveau_plateau(nom : String,
 	return false
 
 func terminer_plateau() -> void:
-	"Enregistre la date de fin d'une ascension"
+	"Enregistre la date de fin d'Un niveau"
 	if plateau_en_cours():
 		var enregistrement_campagne = lire_dernier_niveau()
 		var plateau = enregistrement_campagne.get('plateaux').back()
@@ -623,7 +623,7 @@ func lire_le_temps_du_joueur() -> String: # TODO : INUTILISE !
 	return ""
 
 ###############################################
-# Niveaux / Score / Ascension et Ascension sans détour
+# Niveaux / Score / Niveau et Niveau sans détour
 # 'score': { 'duree': 4000, 'ratio_reussite': 2000 }
 ###############################################
 
@@ -707,7 +707,7 @@ func gagner_un_plateau(duree_en_ms : int) -> void:
 
 func abandonner_un_plateau() -> void:
 	# En cas d'abandon, pas d'enrgistrement du temps.
-	incrementer_longueur_detour_ascension()
+	incrementer_longueur_detour_niveau()
 	modifier_statut_plateau('abandonné')
 	terminer_plateau()
 
@@ -720,3 +720,8 @@ func commencer_un_plateau() -> void:
 
 	# Incrémenter le compteur de parties du niveau courant
 	_incrementer_nombre_de_parties_joueur_pour_niveau_courant()
+
+
+
+
+

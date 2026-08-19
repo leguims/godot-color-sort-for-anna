@@ -92,34 +92,34 @@ layout_mode = 2
 layout_mode = 2
 text = " "
 
-[node name="Titre Ascension" parent="Marge/HBoxContainer/VBoxContainer" unique_id=779359739 instance=ExtResource("2_xsdck")]
+[node name="Titre Niveau" parent="Marge/HBoxContainer/VBoxContainer" unique_id=779359739 instance=ExtResource("2_xsdck")]
 layout_mode = 2
-titre = "Ascension"
+titre = "Niveau"
 couleur_fond = Color(0, 0.6559956, 0.9749271, 1)
 taille_minimum = Vector2(240, 25)
 
-[node name="KPI_Ascension" type="HBoxContainer" parent="Marge/HBoxContainer/VBoxContainer" unique_id=33257685]
+[node name="KPI_Niveau" type="HBoxContainer" parent="Marge/HBoxContainer/VBoxContainer" unique_id=33257685]
 layout_mode = 2
 
-[node name="KPI_Completion" parent="Marge/HBoxContainer/VBoxContainer/KPI_Ascension" unique_id=1137873945 instance=ExtResource("2_xsdck")]
+[node name="KPI_Completion" parent="Marge/HBoxContainer/VBoxContainer/KPI_Niveau" unique_id=1137873945 instance=ExtResource("2_xsdck")]
 layout_mode = 2
 
-[node name="KPI_Terminees" parent="Marge/HBoxContainer/VBoxContainer/KPI_Ascension" unique_id=936457462 instance=ExtResource("2_xsdck")]
+[node name="KPI_Terminees" parent="Marge/HBoxContainer/VBoxContainer/KPI_Niveau" unique_id=936457462 instance=ExtResource("2_xsdck")]
 layout_mode = 2
 
-[node name="KPI_Longueur" parent="Marge/HBoxContainer/VBoxContainer/KPI_Ascension" unique_id=1822369981 instance=ExtResource("2_xsdck")]
+[node name="KPI_Longueur" parent="Marge/HBoxContainer/VBoxContainer/KPI_Niveau" unique_id=1822369981 instance=ExtResource("2_xsdck")]
 layout_mode = 2
 
-[node name="KPI_Ascension2" type="HBoxContainer" parent="Marge/HBoxContainer/VBoxContainer" unique_id=2057883709]
+[node name="KPI_Niveau2" type="HBoxContainer" parent="Marge/HBoxContainer/VBoxContainer" unique_id=2057883709]
 layout_mode = 2
 
-[node name="KPI_MinMax_Titre" parent="Marge/HBoxContainer/VBoxContainer/KPI_Ascension2" unique_id=609447550 instance=ExtResource("2_xsdck")]
+[node name="KPI_MinMax_Titre" parent="Marge/HBoxContainer/VBoxContainer/KPI_Niveau2" unique_id=609447550 instance=ExtResource("2_xsdck")]
 layout_mode = 2
 
-[node name="KPI_Taux_Min" parent="Marge/HBoxContainer/VBoxContainer/KPI_Ascension2" unique_id=1911297063 instance=ExtResource("2_xsdck")]
+[node name="KPI_Taux_Min" parent="Marge/HBoxContainer/VBoxContainer/KPI_Niveau2" unique_id=1911297063 instance=ExtResource("2_xsdck")]
 layout_mode = 2
 
-[node name="KPI_Taux_Max" parent="Marge/HBoxContainer/VBoxContainer/KPI_Ascension2" unique_id=366345603 instance=ExtResource("2_xsdck")]
+[node name="KPI_Taux_Max" parent="Marge/HBoxContainer/VBoxContainer/KPI_Niveau2" unique_id=366345603 instance=ExtResource("2_xsdck")]
 layout_mode = 2
 
 [node name="SEPARATEUR VIDE2" type="Label" parent="Marge/HBoxContainer/VBoxContainer" unique_id=567384229]

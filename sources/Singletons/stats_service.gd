@@ -1,4 +1,4 @@
-extends Node
+﻿extends Node
 
 #func _ready() -> void:
 	## TODO : Utile pour les tests de la page.
@@ -31,10 +31,10 @@ func niveau_taux_completion() -> float:
 	return taux_completion_niveau()
 
 func niveau_terminees() -> int:
-	return nombre_niveau_terminees()
+	return nombre_niveaux_terminees()
 
 func niveau_longueur_max() -> int:
-	return longueur_max_niveau_termine()
+	return longueur_max_niveau_terminee()
 
 func niveau_taux_reussite_infos() -> Dictionary:
 	"Niveaux taux de réussite : min, max et longueur"
@@ -214,7 +214,7 @@ func longueur_max_niveau_termine() -> int:
 					longueur_niveau_initiale = realises - (2 * echecs)
 				if longueur_niveau_initiale > lg_max_niveau_termine:
 					lg_max_niveau_termine = longueur_niveau_initiale
-	LogService.log_debug("joueur:",joueur, ' longueur_max_niveau_terminee=', lg_max_niveau_termine)
+	LogService.log_debug("joueur:",joueur, ' longueur_max_niveau_termine=', lg_max_niveau_termine)
 	return lg_max_niveau_termine
 
 func niveau_taux_reussite_les_infos() -> Dictionary:

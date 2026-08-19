@@ -5,25 +5,25 @@ class_name FormatterMenuCampagne
 ###############
 var nom : String = ""
 var trophee : String = ""
-var pourcentage_ascension_realise : int = 0
+var pourcentage_niveau_realise : int = 0
 var pourcentage_campagne_realise : int = 0
 var score_texte : String = "0"
 
 func enregistrer_infos_joueur(	_nom : String = "",
 								_trophee : String = "",
-								_pourcentage_ascension_realise : int = 0,
+								_pourcentage_niveau_realise : int = 0,
 								_pourcentage_campagne_realise : int = 0,
 								_score_texte : String = "0") -> void:
 	nom = _nom
 	trophee = _trophee
-	pourcentage_ascension_realise = _pourcentage_ascension_realise
+	pourcentage_niveau_realise = _pourcentage_niveau_realise
 	pourcentage_campagne_realise = _pourcentage_campagne_realise
 	score_texte = _score_texte
 
 func formater_infos_joueur() -> String:
 	var texte = "[center][font_size=30]"
 	texte += nom + " " + trophee + " " + score_texte + "\n"
-	texte += "[font_size=20]Ascension : " + String.num_int64(pourcentage_ascension_realise) + "%"
+	texte += "[font_size=20]Niveau : " + String.num_int64(pourcentage_niveau_realise) + "%"
 	texte += " - "
 	texte += "Campagne : " + String.num_int64(pourcentage_campagne_realise) + "%[/font_size]"
 	texte += "[/font_size][/center]"
@@ -64,28 +64,28 @@ func formater_detail_score(detail_score : Dictionary) -> Dictionary:
 	bbcode_complet += bbcode_ratio_reussite
 	score_total += detail_score.get('ratio_reussite').get('points')
 
-	# ascension
-	if detail_score.get('ascension'):
-		var bbcode_ascension = """[b]Ascension[/b]
+	# niveau
+	if detail_score.get('niveau'):
+		var bbcode_niveau = """[b]Niveau[/b]
 [ul] Longueur: #asc_long# plateaux[/ul]
 [ul] #asc_pts# points[/ul]"""
-		bbcode_ascension = bbcode_ascension.replace('#asc_long#', str(detail_score.get('ascension').get('longueur')))
-		points_txt = SauvegardeTableauDesScoresService.nombre_avec_separateur_de_milliers(detail_score.get('ascension').get('points'), '.')
-		bbcode_ascension = bbcode_ascension.replace('#asc_pts#', points_txt)
-		bbcode_complet += bbcode_ascension
-		score_total += detail_score.get('ascension').get('points')
+		bbcode_niveau = bbcode_niveau.replace('#asc_long#', str(detail_score.get('niveau').get('longueur')))
+		points_txt = SauvegardeTableauDesScoresService.nombre_avec_separateur_de_milliers(detail_score.get('niveau').get('points'), '.')
+		bbcode_niveau = bbcode_niveau.replace('#asc_pts#', points_txt)
+		bbcode_complet += bbcode_niveau
+		score_total += detail_score.get('niveau').get('points')
 		size_y += 80
 
-	# ascension_sans_detour
-	if detail_score.get('ascension_sans_detour'):
-		var bbcode_ascension_sans_detour = """[b]Ascension sans détour[/b]
+	# niveau_sans_detour
+	if detail_score.get('niveau_sans_detour'):
+		var bbcode_niveau_sans_detour = """[b]Niveau sans détour[/b]
 [ul] Bonus: #asc_detour_bonus#[/ul]
 [ul] #asc_detour_pts# points[/ul]"""
-		bbcode_ascension_sans_detour = bbcode_ascension_sans_detour.replace('#asc_detour_bonus#', str(detail_score.get('ascension_sans_detour').get('bonus')))
-		points_txt = SauvegardeTableauDesScoresService.nombre_avec_separateur_de_milliers(detail_score.get('ascension_sans_detour').get('points'), '.')
-		bbcode_ascension_sans_detour = bbcode_ascension_sans_detour.replace('#asc_detour_pts#', points_txt)
-		bbcode_complet += bbcode_ascension_sans_detour
-		score_total += detail_score.get('ascension_sans_detour').get('points')
+		bbcode_niveau_sans_detour = bbcode_niveau_sans_detour.replace('#asc_detour_bonus#', str(detail_score.get('niveau_sans_detour').get('bonus')))
+		points_txt = SauvegardeTableauDesScoresService.nombre_avec_separateur_de_milliers(detail_score.get('niveau_sans_detour').get('points'), '.')
+		bbcode_niveau_sans_detour = bbcode_niveau_sans_detour.replace('#asc_detour_pts#', points_txt)
+		bbcode_complet += bbcode_niveau_sans_detour
+		score_total += detail_score.get('niveau_sans_detour').get('points')
 		size_y += 80
 
 	# campagne
