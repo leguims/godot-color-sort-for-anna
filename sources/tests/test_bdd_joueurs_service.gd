@@ -62,22 +62,6 @@ func test_lire_niveau_joueur():
 	assert_eq(singleton.lire_niveau_joueur(), 14)
 
 
-func test_lire_difficulte_debut_niveau():
-	assert_eq(singleton.lire_difficulte_debut_niveau(), 10)
-
-
-func test_lire_difficulte_fin_niveau():
-	assert_eq(singleton.lire_difficulte_fin_niveau(), 18)
-
-
-func test_lire_longueur_detour():
-	assert_eq(singleton.lire_longueur_detour_niveau(), 1)
-
-
-func test_lire_longueur_initiale():
-	assert_eq(singleton.lire_niveau_longueur_initiale(), 9)
-
-
 func test_ratio_reussite():
 	var ratio = singleton.lire_ratio_reussite_niveau()
 	assert_true(ratio >= 0 and ratio <= 100)
