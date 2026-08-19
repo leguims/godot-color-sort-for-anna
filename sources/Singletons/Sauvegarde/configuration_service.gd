@@ -42,7 +42,7 @@ func _initialiser_la_configuration() -> void:
 											'V0.4.0.beta1', 'V0.4.0.beta2', 'V0.4.0.beta3',
 											'V0.4.0.beta4', 'V0.4.0.beta5', 'V0.4.0.beta6',
 											'V0.4.0.beta7']:
-				SauvegardeBddJoueursService.remplacer_campagne_des_joueur()
+				SauvegardeBddJoueursService.remplacer_campagne_des_joueurs()
 				SauvegardeTableauDesScoresService.remise_a_zero()
 			# CONVERSION [V0.3.2 -> V0.3.3]
 			# TODO : conversion vers V0.3.3

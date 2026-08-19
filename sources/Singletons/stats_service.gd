@@ -1,4 +1,4 @@
-﻿extends Node
+extends Node
 
 #func _ready() -> void:
 	## TODO : Utile pour les tests de la page.
@@ -31,10 +31,10 @@ func niveau_taux_completion() -> float:
 	return taux_completion_niveau()
 
 func niveau_terminees() -> int:
-	return nombre_niveaux_terminees()
+	return nombre_niveaux_termines()
 
 func niveau_longueur_max() -> int:
-	return longueur_max_niveau_terminee()
+	return longueur_max_niveau_termine()
 
 func niveau_taux_reussite_infos() -> Dictionary:
 	"Niveaux taux de réussite : min, max et longueur"
@@ -145,7 +145,7 @@ func duree_totale_plateaux_tous_les_niveaux_en_s() -> Dictionary:
 		'terminees': duree_totale_plateaux_tous_les_niveaux_termines
 	}
 
-func nombre_niveau_terminees() -> int:
+func nombre_niveaux_termines() -> int:
 	var date_debut_campagne = SauvegardeConfigurationService.lire_la_date_debut_campagne_timestamp()
 	var nb_niveaux: int = 0
 	if SauvegardeBddJoueursService.sauvegarde_joueur.get("enregistrement_campagne", null):
@@ -156,11 +156,11 @@ func nombre_niveau_terminees() -> int:
 	return nb_niveaux
 
 func duree_moyenne_niveaux_terminees_en_s() -> float:
-	var nnt = nombre_niveau_terminees()
+	var nnt = nombre_niveaux_termines()
 	if nnt == 0:
 		return 0.
 	var duree_niveaux = duree_totale_plateaux_tous_les_niveaux_en_s()
-	return duree_niveaux.get('terminees') / nombre_niveau_terminees()
+	return duree_niveaux.get('terminees') / nombre_niveaux_termines()
 
 func nombre_de_plateau_reussis_abandonnes() -> Dictionary:
 	var joueur = SauvegardeBddJoueursService.lire_nom_joueur()
@@ -218,7 +218,7 @@ func longueur_max_niveau_termine() -> int:
 	return lg_max_niveau_termine
 
 func niveau_taux_reussite_les_infos() -> Dictionary:
-	"Retourne le nombre de niveaux parfaites et la longueur de la plus longue"
+	"Retourne le nombre de niveaux parfaits et la longueur de la plus longue"
 	var joueur = SauvegardeBddJoueursService.lire_nom_joueur()
 	var date_debut_campagne = SauvegardeConfigurationService.lire_la_date_debut_campagne_timestamp()
 	# Nombre de niveaux sans erreur
@@ -230,19 +230,20 @@ func niveau_taux_reussite_les_infos() -> Dictionary:
 	if SauvegardeBddJoueursService.sauvegarde_joueur.get("enregistrement_campagne", null):
 		for niveau in SauvegardeBddJoueursService.sauvegarde_joueur.get("enregistrement_campagne"):
 			if  niveau.get("date_debut") > date_debut_campagne:
-				var initial = niveau.get("longueur_initiale", 0)
-				var echecs = niveau.get("longueur_detour", null)
-				var realises = niveau.get("plateaux", null).size()
-				if initial == 0:
-					# ancienne facon de retrouver la longueur initiale.
-					initial = realises - (2 * echecs)
-				var taux = 1. * (realises - echecs) / realises
-				if taux < taux_min:
-					taux_min = taux
-					taux_min_lg = initial
-				if taux > taux_max:
-					taux_max = taux
-					taux_max_lg = initial
+				# TODO : Revoir l'organisation entre les modules
+				var realises = len(niveau.get("plateaux", []))
+				if realises:
+					var succes = 0
+					for plateau in niveau.get("plateaux", []):
+						if plateau.get("statut", '') == 'reussi':
+							succes += 1
+					var taux = 1. * succes / realises
+					if taux < taux_min:
+						taux_min = taux
+						taux_min_lg = succes
+					if taux > taux_max:
+						taux_max = taux
+						taux_max_lg = succes
 	# Gommer les valeurs initiales
 	if taux_min == 101.:
 		taux_min = 0.

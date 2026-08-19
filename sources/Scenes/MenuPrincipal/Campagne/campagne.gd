@@ -1,4 +1,4 @@
-﻿# Implemente toutes les spécificité de la campagnes:
+# Implemente toutes les spécificité de la campagnes:
 # Lectures des "Sauvegarde*" + synthese en croisant les données
 # Il gere tous les mecanismes de regles, de donnees et de comportements de la campagne.
 
@@ -134,4 +134,3 @@ func enregistrer_longueur_max_plateaux_pour_menu():
 	# Transmet la longueur max de plateau d'Un niveau
 	var longueur_max_niveau = SauvegardeBddJoueursService.lire_nombre_de_niveaux_realisables()
 	$MenuCampagne.enregistrer_longueur_max_niveau(longueur_max_niveau)
-

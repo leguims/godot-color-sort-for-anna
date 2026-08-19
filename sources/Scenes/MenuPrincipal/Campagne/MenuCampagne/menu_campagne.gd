@@ -1,4 +1,4 @@
-﻿extends CanvasLayer
+extends CanvasLayer
 
 class_name MenuCampagne
 
@@ -205,4 +205,3 @@ func _on_progression_campagne_service_detail_score_plateau(detail_score: Diction
 func _on_message_riche_gui_input(event: InputEvent) -> void:
 	print('click score !!!')
 	fin_lecture_score.emit()
-
