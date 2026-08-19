@@ -1,8 +1,8 @@
-extends Node
+﻿extends Node
 
-signal progression_niveau
+signal progression_DIFFICULTE
 signal detail_score_plateau(detail_score : Dictionary)
-signal fin_niveau
+signal fin_DIFFICULTE
 # TODO : signal fin_campagne
 
 ####################################
@@ -54,82 +54,83 @@ func initialiser_le_nouveau_joueur_pour_la_campagne(nom_nouveau_joueur : String)
 # Evenements de jeu du plateau
 ##############################
 
-func niveau_en_cours() -> bool:
-	return SauvegardeBddJoueursService.niveau_en_cours()
+func DIFFICULTE_en_cours() -> bool:
+	return SauvegardeBddJoueursService.DIFFICULTE_en_cours()
 
 func la_campagne_est_terminee() -> bool:
 	return SauvegardeBddJoueursService.la_campagne_est_terminee()
 
 func commencer_un_plateau(pourcentage_longueur : float) -> void:
-	if not SauvegardeBddJoueursService.niveau_en_cours():
-		initialiser_un_nouveau_niveau(pourcentage_longueur)
+	if not SauvegardeBddJoueursService.DIFFICULTE_en_cours():
+		initialiser_un_nouveau_DIFFICULTE(pourcentage_longueur)
 	if SauvegardeBddJoueursService.plateau_en_cours():
 		# Si un plateau était en cours, mais pas terminé, le considérer abandonné
 		abandonner_un_plateau()
 
-	# Ajouter le nouveau plateau et incrémenter le compteur de parties du niveau courant
+	# Ajouter le nouveau plateau et incrémenter le compteur de parties du DIFFICULTE courant
 	SauvegardeBddJoueursService.commencer_un_plateau()
-	LogService.log_debug("Nombre de parties = ", SauvegardeBddJoueursService.lire_nombre_de_parties_joueur_pour_niveau_courant())
+	LogService.log_debug("Nombre de parties = ", SauvegardeBddJoueursService.lire_nombre_de_parties_joueur_pour_DIFFICULTE_courant())
 
 func gagner_un_plateau(duree_en_ms : int) -> void:
 	# Valider le plateau courant (effacer de la liste des plateaux jouables)
 	SauvegardeBddJoueursService.gagner_un_plateau(duree_en_ms)
 
-	# Calculer le score du plateau et l'enregistrer dans l'historique de Le niveau
+	# Calculer le score du plateau et l'enregistrer dans l'historique de Le DIFFICULTE
 	var detail_score = ScoreService.mettre_a_jour_score_pour_victoire(duree_en_ms)
 	detail_score_plateau.emit(detail_score)
 
-	# Emmettre un signal de mise à jour du niveau
-	progression_niveau.emit() # Pour mise à jour des bandeaux d'infos
-	afficher_niveau_plateau_parties()
+	# Emmettre un signal de mise à jour du DIFFICULTE
+	progression_DIFFICULTE.emit() # Pour mise à jour des bandeaux d'infos
+	afficher_DIFFICULTE_plateau_parties()
 
 func abandonner_un_plateau() -> void:
 	# En cas d'abandon, pas d'enrgistrement du temps.
 	SauvegardeBddJoueursService.abandonner_un_plateau()
 	# On reste sur le même plateau
-	# La campagne et le niveaux sont inchangés
+	# La campagne et le DIFFICULTES sont inchangés
 
-func initialiser_un_nouveau_niveau(pourcentage_longueur : float):
-		# TODO : supprimer les notions de pourcentage pour le demarrage du niveau
-		# TODO : gerer le choix du niveau de campagne
-		SauvegardeBddJoueursService.initialiser_un_nouveau_niveau(2)
+func initialiser_un_nouveau_DIFFICULTE(pourcentage_longueur : float):
+		# TODO : supprimer les notions de pourcentage pour le demarrage du DIFFICULTE
+		# TODO : gerer le choix du DIFFICULTE de campagne
+		SauvegardeBddJoueursService.initialiser_un_nouveau_DIFFICULTE(2)
 
-func afficher_niveau_plateau_parties():
-	LogService.log_debug("[Campagne] Niveau = ", str(SauvegardeBddJoueursService.lire_niveau_joueur()),
+func afficher_DIFFICULTE_plateau_parties():
+	LogService.log_debug("[Campagne] DIFFICULTE = ", str(SauvegardeBddJoueursService.lire_DIFFICULTE_joueur()),
 	 " - Plateau = '", str(SauvegardeBddJoueursService.lire_nom_plateau()).replace(' ', '-'), "'",
-	 " - Pourcentage niveau = ", str(SauvegardeBddJoueursService.lire_pourcentage_niveau_realise()),"%")
+	 " - Pourcentage DIFFICULTE = ", str(SauvegardeBddJoueursService.lire_pourcentage_DIFFICULTE_realise()),"%")
 
-# Traitement de niveau
+# Traitement de DIFFICULTE
 ######################
 
-func retourner_le_niveau_le_plus_bas() -> int:
-	# Retourner le plus bas niveau réalisable
-	for niveau_le_plus_bas in range(0, 300):
+func retourner_le_DIFFICULTE_le_plus_bas() -> int:
+	# Retourner le plus bas DIFFICULTE réalisable
+	for DIFFICULTE_le_plus_bas in range(0, 300):
 		# Vérifier qu'il reste des plateaux à réaliser par le joueur
-		if not SauvegardeBddJoueursService.le_niveau_est_termine(niveau_le_plus_bas):
-			return niveau_le_plus_bas
+		if not SauvegardeBddJoueursService.le_DIFFICULTE_est_termine(DIFFICULTE_le_plus_bas):
+			return DIFFICULTE_le_plus_bas
 	return -1
 
 # TODO : Cette methode est inutilisée
-func retourner_le_niveau_le_plus_haut() -> int:
-	# Retourner le plus haut niveau réalisable
-	for niveau_le_plus_haut in range(300, -1, -1):
+func retourner_le_DIFFICULTE_le_plus_haut() -> int:
+	# Retourner le plus haut DIFFICULTE réalisable
+	for DIFFICULTE_le_plus_haut in range(300, -1, -1):
 		# Vérifier qu'il reste des plateaux à réaliser par le joueur
-		if not SauvegardeBddJoueursService.le_niveau_est_termine(niveau_le_plus_haut):
-			return niveau_le_plus_haut
+		if not SauvegardeBddJoueursService.le_DIFFICULTE_est_termine(DIFFICULTE_le_plus_haut):
+			return DIFFICULTE_le_plus_haut
 	return -1
 
-func retourner_le_niveau_nieme(nb_niveaux : int) -> int:
-	var niveau = -1
-	for niveau_le_plus_bas in range(0, 300):
+func retourner_le_DIFFICULTE_nieme(nb_DIFFICULTES : int) -> int:
+	var DIFFICULTE = -1
+	for DIFFICULTE_le_plus_bas in range(0, 300):
 		# Vérifier qu'il reste des plateaux à réaliser par le joueur
-		if not SauvegardeBddJoueursService.le_niveau_est_termine(niveau_le_plus_bas):
-			nb_niveaux -= 1
-			niveau = niveau_le_plus_bas
-			if not nb_niveaux:
+		if not SauvegardeBddJoueursService.le_DIFFICULTE_est_termine(DIFFICULTE_le_plus_bas):
+			nb_DIFFICULTES -= 1
+			DIFFICULTE = DIFFICULTE_le_plus_bas
+			if not nb_DIFFICULTES:
 				break
-	return niveau
+	return DIFFICULTE
 
-func retourner_le_niveau_suivant() -> int:
-	# Parcourir le niveau supérieur
-	return retourner_le_niveau_le_plus_bas()
+func retourner_le_DIFFICULTE_suivant() -> int:
+	# Parcourir le DIFFICULTE supérieur
+	return retourner_le_DIFFICULTE_le_plus_bas()
+
