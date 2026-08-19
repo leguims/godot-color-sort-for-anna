@@ -1,4 +1,4 @@
-﻿###############################################
+###############################################
 # Gestion des sauvegardes de joueurs
 ###############################################
 
@@ -181,10 +181,10 @@ func _supprimer_plateau_courant() -> bool:
 		var plateau_courant = sauvegarde_joueur.get('campagne').get(str_niveau).pop_front()
 		# TODO : extraire difficulté de 'plateau_courant'
 		var difficulte_int = plateau_courant.get('difficulte')
-		var difficulte_int_str = str(difficulte_plateau)
+		var difficulte_int_str = str(difficulte_int)
 		# Deplacer le plateau dans les plateaux libres
 		if difficulte_int_str in sauvegarde_joueur.get('plateaux_libres'):
-			sauvegarde_joueur.get('plateaux_libres').get(difficulte_int_str).append(plateau)
+			sauvegarde_joueur.get('plateaux_libres').get(difficulte_int_str).append(plateau_courant)
 		else:
 			sauvegarde_joueur.get('plateaux_libres')[difficulte_int_str] = [plateau_courant]
 		if sauvegarde_joueur.get('campagne').get(str_niveau).is_empty():
