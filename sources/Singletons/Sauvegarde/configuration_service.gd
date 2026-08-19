@@ -1,4 +1,4 @@
-####################################
+﻿####################################
 # Gestion de la confiruation du jeu
 ####################################
 
@@ -34,7 +34,7 @@ func _initialiser_la_configuration() -> void:
 	
 	var version_courante_disque = fichier_configuration.get('version')
 	
-	# Copier les niveaux lus
+	# Copier les DIFFICULTES lus
 	if fichier_configuration:
 		if version_courante_disque != lire_la_version():
 			# Reset campagne
@@ -114,3 +114,4 @@ func lire_la_version() -> String:
 func lire_la_date_debut_campagne_timestamp() -> int:
 	var datetime = configuration_du_jeu.get('date_debut_campagne', '?')
 	return Time.get_unix_time_from_datetime_string(datetime)
+
