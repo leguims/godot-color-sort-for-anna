@@ -1,7 +1,7 @@
 [gd_scene format=3 uid="uid://dpvlgfl5dhgt2"]
 
 [ext_resource type="Script" uid="uid://b2i1rc4hk5ctg" path="res://Scenes/MenuPrincipal/Campagne/GamePlay/Classique/classique.gd" id="1_ho47t"]
-[ext_resource type="PackedScene" uid="uid://cfqcdseqsuy1l" path="res://Scenes/MenuPrincipal/Campagne/Plateau/plateau.tscn" id="2_sr5dy"]
+[ext_resource type="PackedScene" uid="uid://cfqcdseqsuy1l" path="res://Scenes/MenuPrincipal/Campagne/GamePlay/Plateau/plateau.tscn" id="2_sr5dy"]
 
 [node name="Classique" type="Node" unique_id=1128983127]
 script = ExtResource("1_ho47t")

@@ -171,7 +171,7 @@ func _lire_prochain_plateau_pour_niveau_courant() -> Dictionary:
 	"Désigne le prochain plateau de campagne à jouer pour le niveau courant"
 	if le_joueur_existe():
 		var str_niveau = lire_nom_niveau_joueur()
-		return sauvegarde_joueur.get('campagne').get(str_niveau).front()
+		return sauvegarde_joueur.get('campagne').get(str_niveau, [{}]).front()
 	return {}
 
 func _supprimer_plateau_courant() -> bool:
@@ -199,7 +199,7 @@ func _supprimer_plateau_courant() -> bool:
 func lire_nombre_de_plateaux_realisables_pour_niveau_courant() -> int: # TODO : INUTILISE !
 	if le_joueur_existe():
 		var str_niveau = lire_nom_niveau_joueur()
-		return len(sauvegarde_joueur.get('campagne').get(str_niveau))
+		return len(sauvegarde_joueur.get('campagne').get(str_niveau, []))
 	return 0
 
 func lire_nombre_de_niveaux_realisables() -> int:
@@ -712,11 +712,15 @@ func abandonner_un_plateau() -> void:
 func commencer_un_plateau() -> void:
 	# Ajouter le nouveau plateau
 	var prochain_plateau = _lire_prochain_plateau_pour_niveau_courant()
-	_initialiser_un_nouveau_plateau(
-				prochain_plateau.get('nom'),
-				prochain_plateau.get('gameplay'),
-				prochain_plateau.get('difficulte')
-				)
+	if prochain_plateau:
+		_initialiser_un_nouveau_plateau(
+					prochain_plateau.get('nom'),
+					prochain_plateau.get('gameplay'),
+					prochain_plateau.get('difficulte')
+					)
 
-	# Incrémenter le compteur de parties de la difficulte courante
-	_incrementer_nombre_de_parties_joueur_pour_difficulte_courante()
+		# Incrémenter le compteur de parties de la difficulte courante
+		_incrementer_nombre_de_parties_joueur_pour_difficulte_courante()
+	else:
+		LogService.log_erreur("Pas de prochain plateau pour le niveau courant")
+		# TODO : Gros bug : Un plateau est affiché, mais on ne peut pas y jouer.

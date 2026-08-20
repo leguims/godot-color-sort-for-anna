@@ -1,4 +1,4 @@
-﻿extends Node
+extends Node
 
 func mettre_a_jour_score_pour_victoire(duree_en_ms : int) -> Dictionary:
 	"Calculer le score suite à une victoire (duree, ratio réussites, niveau, campagne)"
@@ -34,7 +34,7 @@ func mettre_a_jour_score_duree(duree_en_ms : int) -> Dictionary:
 		100 : 120.
 		}
 
-	var difficulte = SauvegardeBddJoueursService.lire_difficulte_joueur()
+	var difficulte = SauvegardeBddJoueursService.lire_difficulte_plateau()
 	var temps_reference_en_s = temps_reference_par_difficulte[9]
 	if difficulte <= 9:
 		temps_reference_en_s = temps_reference_par_difficulte[9]
@@ -137,4 +137,3 @@ func lire_nom_anna_triche() -> String:
 	if OS.has_feature("web"):
 		nom_anna_triche = '*Anna*'
 	return nom_anna_triche
-

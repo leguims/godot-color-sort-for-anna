@@ -1,7 +1,7 @@
 [gd_scene format=3 uid="uid://chc4x5hks4sxg"]
 
 [ext_resource type="Script" uid="uid://ce672asn2cayv" path="res://Scenes/MenuPrincipal/Campagne/GamePlay/QuiPerdGagne/qui_perd_gagne.gd" id="1_68vyc"]
-[ext_resource type="PackedScene" uid="uid://cfqcdseqsuy1l" path="res://Scenes/MenuPrincipal/Campagne/Plateau/plateau.tscn" id="2_0fkrr"]
+[ext_resource type="PackedScene" uid="uid://cfqcdseqsuy1l" path="res://Scenes/MenuPrincipal/Campagne/GamePlay/Plateau/plateau.tscn" id="2_0fkrr"]
 
 [node name="QuiPerdGagne" type="Node" unique_id=1128983127]
 script = ExtResource("1_68vyc")
