@@ -1,5 +1,5 @@
 ####################################
-# Gestion de la confiruation du jeu
+# Gestion de la configuration du jeu
 ####################################
 
 extends Node
@@ -8,7 +8,7 @@ extends Node
 
 # Dico : {'caracteristique': reglage}
 var configuration_du_jeu = {
-	'version': 'V0.4.5',
+	'version': 'V0.4.5.1',
 	'date_debut_campagne': "2026-05-08 18:24:14",
 	'musiques': true,
 	'effets sonores': true,
