@@ -44,7 +44,10 @@ func initialiser_le_nouveau_joueur_pour_la_campagne(nom_nouveau_joueur : String)
 			# Ajouter la sauvegarde personnelle du joueur
 			if SauvegardeBddJoueursService.ajouter_un_nouveau_joueur(nom_nouveau_joueur, nom_fichier):
 				# Ajouter le joueur dans le tableau des scores
-				return SauvegardeTableauDesScoresService.ajouter_un_nouveau_joueur(nom_nouveau_joueur)
+				if SauvegardeTableauDesScoresService.ajouter_un_nouveau_joueur(nom_nouveau_joueur):
+					return true
+				SauvegardeBddJoueursService.annuler_creation_joueur(nom_fichier)
+			SauvegardeListeJoueursService.supprimer_un_joueur_orphelin_de_sauvegarde(nom_nouveau_joueur, nom_fichier)
 	return false
 
 ####################################

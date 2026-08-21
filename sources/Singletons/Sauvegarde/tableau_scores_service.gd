@@ -23,9 +23,11 @@ func _initialiser_la_liste_des_scores() -> void:
 		_enregistrer_la_liste_des_scores()
 		LogService.log_debug("Création du fichier de score initial")
 
-func _enregistrer_la_liste_des_scores() -> void:
-	FichiersJsonService.write_json_file("user://scores.json", liste_des_scores.duplicate(true))
-	LogService.log_debug("Scores sauvegardés")
+func _enregistrer_la_liste_des_scores() -> bool:
+	var succes = FichiersJsonService.write_json_file("user://scores.json", liste_des_scores.duplicate(true))
+	if succes:
+		LogService.log_debug("Scores sauvegardés")
+	return succes
 
 func _retourner_le_joueur(nom_joueur : String) -> Dictionary:
 	for joueur in liste_des_scores:
@@ -58,9 +60,12 @@ func ajouter_un_nouveau_joueur(nom_nouveau_joueur : String) -> bool:
 		'score': 0,
 		'score_txt': "0"
 	}
+	var liste_avant_ajout = liste_des_scores.duplicate(true)
 	liste_des_scores.append(score.duplicate(true))
-	_mettre_a_jour_les_rangs()
-	return true
+	if _mettre_a_jour_les_rangs():
+		return true
+	liste_des_scores = liste_avant_ajout
+	return false
 
 func lire_rang_joueur(nom_joueur : String) -> int:
 	var joueur = _retourner_le_joueur(nom_joueur)
@@ -133,7 +138,7 @@ func retourner_classement() -> Array:
 				classement.append(joueur.duplicate(true))
 	return classement
 
-func _mettre_a_jour_les_rangs() -> void:
+func _mettre_a_jour_les_rangs() -> bool:
 	"""Cette méthode met à jour les rangs dans la liste des scores"""
 	# Cartographier les scores et les joueurs
 	var liste_score_decroissant = []
@@ -160,7 +165,7 @@ func _mettre_a_jour_les_rangs() -> void:
 				joueur['rang'] = rang
 		rang += len(dico_score_nom_joueur[score])
 	
-	_enregistrer_la_liste_des_scores()
+	return _enregistrer_la_liste_des_scores()
 
 func nombre_avec_separateur_de_milliers(nombre : int, separateur : String) -> String:
 	var nombre_texte = ''

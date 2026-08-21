@@ -33,9 +33,11 @@ func _corriger_absence_indice() -> void:
 		if maj:
 			_enregistrer_la_liste_des_joueurs()
 
-func _enregistrer_la_liste_des_joueurs() -> void:
-	FichiersJsonService.write_json_file("user://liste_des_joueurs.json", liste_des_joueurs.duplicate(true))
-	LogService.log_debug("Liste des joueurs sauvegardée")
+func _enregistrer_la_liste_des_joueurs() -> bool:
+	var succes = FichiersJsonService.write_json_file("user://liste_des_joueurs.json", liste_des_joueurs.duplicate(true))
+	if succes:
+		LogService.log_debug("Liste des joueurs sauvegardée")
+	return succes
 
 func le_joueur_existe(nom_joueur : String) -> bool:
 	"""Verifie si le joueur existe"""
@@ -77,16 +79,29 @@ func ajouter_un_nouveau_joueur(nom_nouveau_joueur : String) -> bool:
 		'fichier_sauvegarde': 'sauvegarde_joueur_' + str(indice).pad_zeros(2) + '.json'
 	}
 	liste_des_joueurs.append(compte.duplicate(true))
-	_enregistrer_la_liste_des_joueurs()
-	return true
+	if _enregistrer_la_liste_des_joueurs():
+		return true
+	liste_des_joueurs.pop_back()
+	return false
 
 func supprimer_un_joueur(nom_joueur : String, fichier_joueur : String) -> bool:
 	"""Supprime un joueur"""
+	var compte_a_restaurer: Dictionary = {}
+	var indice_a_restaurer: int = -1
+	for indice in range(liste_des_joueurs.size()):
+		var joueur = liste_des_joueurs[indice]
+		if joueur.get('nom') == nom_joueur and joueur.get('fichier_sauvegarde') == fichier_joueur:
+			compte_a_restaurer = joueur.duplicate(true)
+			indice_a_restaurer = indice
+			break
 	# Effacer le joueur
 	var succes: bool = supprimer_un_joueur_orphelin_de_sauvegarde(nom_joueur, fichier_joueur)
 	if succes:
 		# Effacer le fichier
-		FichiersJsonService.remove_json_file(fichier_joueur)
+		succes = FichiersJsonService.remove_json_file("user://" + fichier_joueur)
+		if not succes and indice_a_restaurer >= 0:
+			liste_des_joueurs.insert(indice_a_restaurer, compte_a_restaurer)
+			_enregistrer_la_liste_des_joueurs()
 	return succes
 
 func supprimer_un_joueur_orphelin_de_sauvegarde(nom_joueur : String, fichier_joueur : String) -> bool:
@@ -95,13 +110,13 @@ func supprimer_un_joueur_orphelin_de_sauvegarde(nom_joueur : String, fichier_jou
 		return false
 	if not fichier_joueur:
 		return false
-	# Vérifie que le nom est libre
-	if le_joueur_existe(nom_joueur):
-		# Crée le compte à effacer
-		var compte = {
-			'nom': nom_joueur,
-			'fichier_sauvegarde': fichier_joueur
-		}
-		liste_des_joueurs.erase(compte)
-		_enregistrer_la_liste_des_joueurs()
-	return true
+	for joueur in liste_des_joueurs:
+		if joueur.get('nom') == nom_joueur and joueur.get('fichier_sauvegarde') == fichier_joueur:
+			var indice = liste_des_joueurs.find(joueur)
+			liste_des_joueurs.erase(joueur)
+			if _enregistrer_la_liste_des_joueurs():
+				return true
+			# Restaurer le compte en mémoire si l'enregistrement de la suppression échoue.
+			liste_des_joueurs.insert(indice, joueur)
+			return false
+	return false
