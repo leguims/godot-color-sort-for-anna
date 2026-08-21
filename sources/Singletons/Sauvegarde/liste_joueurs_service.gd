@@ -116,6 +116,7 @@ func supprimer_un_joueur_orphelin_de_sauvegarde(nom_joueur : String, fichier_jou
 			liste_des_joueurs.erase(joueur)
 			if _enregistrer_la_liste_des_joueurs():
 				return true
+			# Restaurer le compte en mémoire si l'enregistrement de la suppression échoue.
 			liste_des_joueurs.insert(indice, joueur)
 			return false
 	return false

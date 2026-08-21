@@ -46,9 +46,8 @@ func initialiser_le_nouveau_joueur_pour_la_campagne(nom_nouveau_joueur : String)
 				# Ajouter le joueur dans le tableau des scores
 				if SauvegardeTableauDesScoresService.ajouter_un_nouveau_joueur(nom_nouveau_joueur):
 					return true
-				FichiersJsonService.remove_json_file("user://" + nom_fichier)
+				SauvegardeBddJoueursService.annuler_creation_joueur(nom_fichier)
 			SauvegardeListeJoueursService.supprimer_un_joueur_orphelin_de_sauvegarde(nom_nouveau_joueur, nom_fichier)
-			SauvegardeBddJoueursService.liberer_le_joueur()
 	return false
 
 ####################################
