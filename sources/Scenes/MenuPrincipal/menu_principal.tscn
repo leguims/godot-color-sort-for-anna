@@ -1,7 +1,7 @@
 [gd_scene load_steps=18 format=3 uid="uid://due674pwfguqp"]
 
 [ext_resource type="Script" uid="uid://cab0yaq8331s4" path="res://Scenes/MenuPrincipal/menu_principal.gd" id="1_64slw"]
-[ext_resource type="Texture2D" path="res://Art/Images/MenuPrincipal/bg_menu_cubes.png" id="2_bg"]
+[ext_resource type="Texture2D" path="res://Art/Images/MenuPrincipal/fond_480x720.png" id="2_bg"]
 [ext_resource type="PackedScene" uid="uid://knrlkm4pili5" path="res://Scenes/MenuPrincipal/Clavier/clavier.tscn" id="3_y3ggv"]
 [ext_resource type="Texture2D" path="res://Art/Images/MenuPrincipal/title_menu_principal.png" id="4_title"]
 [ext_resource type="Texture2D" path="res://Art/Images/MenuPrincipal/icon_campaign.png" id="5_campaign"]
