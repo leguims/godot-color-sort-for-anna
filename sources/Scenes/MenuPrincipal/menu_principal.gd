@@ -147,25 +147,34 @@ func _creer_style_tuile_joueur_campagne(tuile : Control, nom : String, campagne_
 	if tuile is LineEdit:
 		pass
 	
-	# Créer un StyleBoxFlat pour le hover et normal
-	# La couleur de la tuile est grise si la campagne est terminée
+	# Créer un StyleBoxFlat pour le hover et normal.
+	# On conserve la logique existante, seule la présentation est alignée sur le nouveau menu.
 	var normal_style = StyleBoxFlat.new()
 	if campagne_terminee:
 		normal_style.bg_color = Color.html("404040")
 	else:
-		normal_style.bg_color = Color.html("df00df")
+		normal_style.bg_color = Color.html("f86950")
 	normal_style.content_margin_left = 10
 	normal_style.content_margin_right = 10
-	normal_style.content_margin_top = 5
-	normal_style.content_margin_bottom = 5
+	normal_style.content_margin_top = 6
+	normal_style.content_margin_bottom = 6
+	normal_style.corner_radius_top_left = 10
+	normal_style.corner_radius_top_right = 10
+	normal_style.corner_radius_bottom_right = 10
+	normal_style.corner_radius_bottom_left = 10
 	tuile.add_theme_stylebox_override("normal", normal_style)
+
 	var hover_style = StyleBoxFlat.new()
 	if campagne_terminee:
 		hover_style.bg_color = Color.html("202020")
 	else:
-		hover_style.bg_color = Color.html("890089")
+		hover_style.bg_color = Color.html("ff7e66")
 	hover_style.content_margin_left = 10
 	hover_style.content_margin_right = 10
-	hover_style.content_margin_top = 5
-	hover_style.content_margin_bottom = 5
+	hover_style.content_margin_top = 6
+	hover_style.content_margin_bottom = 6
+	hover_style.corner_radius_top_left = 10
+	hover_style.corner_radius_top_right = 10
+	hover_style.corner_radius_bottom_right = 10
+	hover_style.corner_radius_bottom_left = 10
 	tuile.add_theme_stylebox_override("hover", hover_style)
