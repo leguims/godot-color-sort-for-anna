@@ -42,16 +42,15 @@ func _initialiser_la_configuration() -> void:
 			configuration_du_jeu['effets sonores'] = fichier_configuration.get('effets sonores')
 		if 'vibrations' in fichier_configuration:
 			configuration_du_jeu['vibrations'] = fichier_configuration.get('vibrations')
-		if version_courante_disque != lire_la_version():
-			# Les versions explicitement couvertes remplacent la campagne et
-			# remettent les scores à zéro avant d'enregistrer la version courante.
-			if version_courante_disque in ['V0.3.3', 'V0.3.4', 'V0.3.5', 'V0.3.6',
-											'V0.4.0.beta1', 'V0.4.0.beta2', 'V0.4.0.beta3',
-											'V0.4.0.beta4', 'V0.4.0.beta5', 'V0.4.0.beta6',
-											'V0.4.0.beta7']:
-				SauvegardeBddJoueursService.remplacer_campagne_des_joueur()
-				SauvegardeTableauDesScoresService.remise_a_zero()
-			_enregistrer_la_configuration()
+		# Les versions explicitement couvertes remplacent la campagne et
+		# remettent les scores à zéro avant d'enregistrer la version courante.
+		if version_courante_disque in ['V0.3.3', 'V0.3.4', 'V0.3.5', 'V0.3.6',
+										'V0.4.0.beta1', 'V0.4.0.beta2', 'V0.4.0.beta3',
+										'V0.4.0.beta4', 'V0.4.0.beta5', 'V0.4.0.beta6',
+										'V0.4.0.beta7']:
+			SauvegardeBddJoueursService.remplacer_campagne_des_joueur()
+			SauvegardeTableauDesScoresService.remise_a_zero()
+		_enregistrer_la_configuration()
 	else:
 		# Création du fichier initial
 		_enregistrer_la_configuration()
