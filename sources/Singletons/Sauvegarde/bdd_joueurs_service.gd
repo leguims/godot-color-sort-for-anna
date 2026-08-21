@@ -724,3 +724,4 @@ func commencer_un_plateau() -> void:
 	else:
 		LogService.log_erreur("Pas de prochain plateau pour le niveau courant")
 		# TODO : Gros bug : Un plateau est affiché, mais on ne peut pas y jouer.
+		# TODO : Le dernier niveau enregistré n'a plus de plateau et a disparu de la campagne..
