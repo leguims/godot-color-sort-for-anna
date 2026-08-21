@@ -102,6 +102,10 @@ func choisir_le_joueur(nom : String, fichier : String) -> bool:
 func liberer_le_joueur():
 	fichier_sauvegarde = ""
 
+func liberer_le_joueur_si_selectionne(nom : String, fichier : String) -> void:
+	if fichier_sauvegarde == fichier and lire_nom_joueur() == nom:
+		liberer_le_joueur()
+
 func ajouter_un_nouveau_joueur(nom_nouveau_joueur : String, nom_nouveau_fichier : String) -> bool:
 	"""Crée un nouveau joueur si le nom est libre"""
 	# Vérifie que le nom est libre

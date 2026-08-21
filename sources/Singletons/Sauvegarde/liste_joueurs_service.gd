@@ -99,7 +99,9 @@ func supprimer_un_joueur(nom_joueur : String, fichier_joueur : String) -> bool:
 	if succes:
 		# Effacer le fichier
 		succes = FichiersJsonService.remove_json_file("user://" + fichier_joueur)
-		if not succes and indice_a_restaurer >= 0:
+		if succes:
+			SauvegardeBddJoueursService.liberer_le_joueur_si_selectionne(nom_joueur, fichier_joueur)
+		elif indice_a_restaurer >= 0:
 			liste_des_joueurs.insert(indice_a_restaurer, compte_a_restaurer)
 			_enregistrer_la_liste_des_joueurs()
 	return succes
