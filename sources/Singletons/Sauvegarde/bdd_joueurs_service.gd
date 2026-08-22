@@ -344,9 +344,11 @@ func modifier_niveau_joueur(niveau : int) -> void: # TODO : INUTILISE !
 		_enregistrer_sauvegarde_joueur()
 
 func lire_niveau_joueur() -> int:
-	var niveau = lire_dernier_niveau()
-	if niveau:
-		return niveau.get('niveau')
+	var dict_niveau = lire_dernier_niveau()
+	if dict_niveau:
+		var niveau = dict_niveau.get('niveau')
+		if niveau:
+			return SauvegardeBddPlateauxService.valeur_niveau(niveau)
 	return 0
 
 func lire_nom_niveau_joueur() -> String:
