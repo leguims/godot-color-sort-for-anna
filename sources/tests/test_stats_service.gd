@@ -18,14 +18,14 @@ func before_each():
 		"nom": "Joueur Test",
 		# Nouvelle convention : 'campagne' ne contient que les niveaux actifs.
 		# Les niveaux terminés sont archivés dans 'enregistrement_campagne' et sortis de la campagne active.
-		# Les niveaux terminés sont ajoutés dans 'plateaux_libres'
+		# En jeu libre, les plateaux sortis sont indexés par leur difficulté dans 'plateaux_libres'.
 		"campagne": {
 			"niveau_2": [
-				{"nom": "R3"}
+				{"nom": "R3", "difficulte": 2}
 			],
 			"niveau_3": [
-				{"nom": "R1"},
-				{"nom": "R2"}
+				{"nom": "R1", "difficulte": 1},
+				{"nom": "R2", "difficulte": 2}
 			]
 		},
 		"enregistrement_campagne": [
@@ -74,28 +74,32 @@ func test_campagne_et_niveau_statistiques():
 	assert_true("niveau_3" in campagne)
 	assert_true(historique.size() >= 1)
 	assert_eq(historique[0].get("nom"), "niveau_1")
+	assert_true("1" in SauvegardeBddJoueursService.sauvegarde_joueur.get("plateaux_libres", {}))
+	assert_true("2" in SauvegardeBddJoueursService.sauvegarde_joueur.get("plateaux_libres", {}))
+	assert_true("3" in SauvegardeBddJoueursService.sauvegarde_joueur.get("plateaux_libres", {}))
+	assert_true("4" in SauvegardeBddJoueursService.sauvegarde_joueur.get("plateaux_libres", {}))
 
 	assert_eq(service.campagne_nom_joueur(), "Joueur Test")
 	assert_eq(service.nombre_de_plateau_inacheves(), 3)
-	assert_eq(service.nombre_de_plateau_acheves(), 4)
-	assert_true(abs(service.campagne_taux_completion() - (4.0 / 7.0)) < 0.0001)
-	assert_true(abs(service.campagne_taux_reussite() - 0.8) < 0.0001)
-	assert_eq(service.campagne_serie_max_reussite(), 3)
+	assert_eq(service.nombre_de_plateau_acheves(), 5)
+	assert_true(abs(service.campagne_taux_completion() - (5.0 / 8.0)) < 0.0001)
+	assert_true(abs(service.campagne_taux_reussite() - (5.0 / 6.0)) < 0.0001)
+	assert_eq(service.campagne_serie_max_reussite(), 4)
 
 	assert_true(abs(service.niveau_taux_completion() - (2.0 / 3.0)) < 0.0001)
 	assert_eq(service.niveau_terminees(), 1)
-	assert_eq(service.niveau_longueur_max(), 2)
+	assert_eq(service.niveau_longueur_max(), 3)
 
 	var infos_taux = service.niveau_taux_reussite_infos()
-	assert_true(abs(infos_taux.get("taux_min") - (2.0 / 3.0)) < 0.0001)
-	assert_eq(infos_taux.get("taux_min_lg"), 2)
+	assert_true(abs(infos_taux.get("taux_min") - 0.75) < 0.0001)
+	assert_eq(infos_taux.get("taux_min_lg"), 3)
 	assert_true(abs(infos_taux.get("taux_max") - 1.0) < 0.0001)
 	assert_eq(infos_taux.get("taux_max_lg"), 2)
 
 
 func test_plateau_statistiques():
-	assert_true(abs(service.campagne_temps_total_en_s() - 53.0) < 0.0001)
-	assert_true(abs(service.plateau_temps_moyen_en_s() - 10.6) < 0.0001)
+	assert_true(abs(service.campagne_temps_total_en_s() - 68.0) < 0.0001)
+	assert_true(abs(service.plateau_temps_moyen_en_s() - (68.0 / 6.0)) < 0.0001)
 
 	var plus_rapide = service.plateau_plus_rapide_infos()
 	assert_true(abs(plus_rapide.get("temps_en_s") - 8.0) < 0.0001)
@@ -106,6 +110,6 @@ func test_plateau_statistiques():
 	assert_eq(plus_lent.get("difficulte"), 2)
 
 	var plus_galere = service.plateau_plus_galere_infos()
-	assert_eq(plus_galere.get("nom"), "A")
+	assert_eq(plus_galere.get("nom"), "B")
 	assert_eq(plus_galere.get("essais"), 2)
-	assert_eq(plus_galere.get("difficulte"), 1)
+	assert_eq(plus_galere.get("difficulte"), 2)
