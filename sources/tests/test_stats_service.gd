@@ -16,13 +16,16 @@ func before_each():
 	SauvegardeBddJoueursService.fichier_sauvegarde = "test_stats_service.json"
 	SauvegardeBddJoueursService.sauvegarde_joueur = {
 		"nom": "Joueur Test",
+		# Nouvelle convention : 'campagne' ne contient que les niveaux actifs.
+		# Les niveaux terminés sont archivés dans 'enregistrement_campagne' et sortis de la campagne active.
+		# Les niveaux terminés sont ajoutés dans 'plateaux_libres'
 		"campagne": {
-			"niveau_1": [
-				{"nom": "R1"},
-				{"nom": "R2"}
-			],
 			"niveau_2": [
 				{"nom": "R3"}
+			],
+			"niveau_3": [
+				{"nom": "R1"},
+				{"nom": "R2"}
 			]
 		},
 		"enregistrement_campagne": [
@@ -45,7 +48,12 @@ func before_each():
 					{"nom": "A", "date_debut": 1700002020, "duree": 8000, "difficulte": 4, "statut": "reussi"}
 				]
 			}
-		]
+		],
+		"plateaux_libres": {
+			"1": [{"nom": "A"}, {"nom": "B"}, {"nom": "C"}],
+			"2": [{"nom": "R3"}],
+			"3": [{"nom": "R1"}, {"nom": "R2"}]
+		}
 	}
 
 

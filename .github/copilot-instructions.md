@@ -105,13 +105,25 @@ Infos de conceptions :
 
 ---
 
-## 6. Vocabulaire spécifique au jeu
+## 6. Vocabulaire et comportement du jeu
+
+### Plateau, pile et jeton
 
 - Un jeton est un cube de couleur qui contient une lettre pour etre reconnu par le joueur.
 - Un jeton se déplace dans une pile vide ou dans une pile qui a un espace vide en haut pour l'accueillir et s'il est posé sur un jeton de même couleurs.
 - Une pile est un ensemble de jetons empilés les uns sur les autres. Le but du jeu est de former des piles avec des jetons de la même couleur.
 - Un plateau est un ensemble de piles de jetons. Le but du jeu est de former des piles avec des jetons de la même couleur.
 - Un plateau peut se jouer avec des objectifs et des regles différentes. C'est ce que je désigne par "gameplay".
+
+### Niveau, campagne et fichier de sauvegarde
+
 - Un Niveau est un ensemble de plateaux. Un niveau est terminé lorsque tous les plateaux qui le composent sont résolus.
 - Un Niveau est un ensemble de plateaux dont les gameplay peuvent être différents.
 - Une campagne est un ensemble de niveaux. Une campagne est terminée lorsque tous les niveaux qui la composent sont résolus.
+- Le fichier de campagne "campagne.json" contient la liste des niveaux et des plateaux qui composent la campagne. Il est utilisé pour charger les niveaux et les plateaux dans le jeu.
+- Chaque joueur copie le fichier de campagne "campagne.json" dans son propre fichier de sauvegarde. Il est utilisé pour suivre la progression du joueur dans la campagne.
+- Quand un plateau de campagne est résolu, il est enregistré dans le fichier de sauvegarde du joueur au niveau de "enregistrement_campagne". Il est utilisé pour suivre la progression du joueur dans la campagne.
+- Quand un plateau de campagne est résolu, il est effacé de la liste des plateaux de son niveau.
+- Quand un plateau de campagne est résolu, il est ajouté dans la liste des plateaux de jeu libre " avec la clé "plateaux_libres" dans le fichier de sauvegarde du joueur. Il est utilisé pour permettre au joueur de rejouer les plateaux qu'il a déjà résolus avec les gameplay de son choix.
+- Le jeux libre n'enregistre aucune statistique de jeu.
+- Quand un niveau n'a plus de plateau dans "campagne", il est considéré comme terminé et le joueur peut passer au niveau suivant. La clé du niveau est effacée de "campagne".
