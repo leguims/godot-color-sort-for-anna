@@ -2,7 +2,15 @@ extends GutTest
 
 var singleton
 
+func _nettoyer_fichiers_utilisateur():
+	FichiersJsonService.remove_json_file("user://test_sauvegarde_joueur_XX.json")
+	FichiersJsonService.remove_json_file("user://sauvegarde_joueur_00.json")
+	FichiersJsonService.remove_json_file("user://liste_des_joueurs.json")
+	FichiersJsonService.remove_json_file("user://scores.json")
+
 func before_all():
+	_nettoyer_fichiers_utilisateur()
+
 	# Charger le singleton
 	singleton = load("res://Singletons/Sauvegarde/bdd_joueurs_service.gd").new()
 
@@ -12,6 +20,18 @@ func before_all():
 
 	# Lire la sauvegarde dans le singleton
 	singleton._lire_sauvegarde_joueur("test_sauvegarde_joueur_XX.json")
+
+func before_each():
+	_nettoyer_fichiers_utilisateur()
+	var contenu = FichiersJsonService.read_json_file("res://tests/bdd_plateaux_service_campagne_sauvegarde_joueur_XX.json")
+	FichiersJsonService.write_json_file("user://test_sauvegarde_joueur_XX.json", contenu)
+	singleton._lire_sauvegarde_joueur("test_sauvegarde_joueur_XX.json")
+
+func after_each():
+	_nettoyer_fichiers_utilisateur()
+
+func after_all():
+	_nettoyer_fichiers_utilisateur()
 
 
 # ---------------------------------------------------------

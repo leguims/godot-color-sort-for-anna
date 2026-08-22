@@ -105,9 +105,8 @@ func afficher_niveau_plateau_parties():
 ######################
 
 func retourner_le_niveau_le_plus_bas() -> int:
-	# Retourner le plus bas niveau réalisable
+	# Retourner le premier niveau non terminé
 	for niveau_le_plus_bas in range(0, 300):
-		# Vérifier qu'il reste des plateaux à réaliser par le joueur
 		if not SauvegardeBddJoueursService.le_niveau_est_termine(niveau_le_plus_bas):
 			return niveau_le_plus_bas
 	return -1
