@@ -1,4 +1,4 @@
-extends Node
+﻿extends Node
 
 func mettre_a_jour_score_pour_victoire(duree_en_ms : int) -> Dictionary:
 	"Calculer le score suite à une victoire (duree, ratio réussites, niveau, campagne)"
@@ -87,7 +87,7 @@ func mettre_a_jour_score_niveau() -> Dictionary:
 	var niveau_longueur_totale = 0
 	if not SauvegardeBddJoueursService.niveau_en_cours():
 		var nom_joueur = SauvegardeBddJoueursService.lire_nom_joueur()
-		niveau_longueur_totale = SauvegardeBddJoueursService.lire_niveau_longueur_initiale()
+		niveau_longueur_totale = SauvegardeBddJoueursService.lire_longueur_niveau()
 		# bonus = 100 x Dénivelé ^2 (bonus non linéaire)
 		bonus_niveau = roundi(50 * pow(niveau_longueur_totale, 2))
 		SauvegardeBddJoueursService.modifier_score_niveau(bonus_niveau)
@@ -98,8 +98,10 @@ func mettre_a_jour_score_niveau() -> Dictionary:
 func mettre_a_jour_score_niveau_sans_detour() -> Dictionary:
 	"Calculer le score suite à un niveau parfaitement achevé (sans détour)"
 	var bonus_niveau_sans_detour = 0
+	var lg_niveau = SauvegardeBddJoueursService.lire_longueur_niveau()
+	var succes = SauvegardeBddJoueursService.lire_succes_niveau()
 	if not SauvegardeBddJoueursService.niveau_en_cours() \
-		and SauvegardeBddJoueursService.lire_longueur_detour_niveau() == 0:
+		and lg_niveau == succes:
 		var nom_joueur = SauvegardeBddJoueursService.lire_nom_joueur()
 		bonus_niveau_sans_detour = SauvegardeBddJoueursService.lire_score_niveau()
 		SauvegardeBddJoueursService.modifier_score_niveau_sans_detour(bonus_niveau_sans_detour)

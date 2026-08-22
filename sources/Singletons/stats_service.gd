@@ -239,7 +239,6 @@ func longueur_max_niveau_termine() -> int:
 func niveau_taux_reussite_les_infos() -> Dictionary:
 	"Retourne le meilleur et pire taux de réussite les longueurs associées"
 	var joueur = SauvegardeBddJoueursService.lire_nom_joueur()
-	var date_debut_campagne = SauvegardeConfigurationService.lire_la_date_debut_campagne_timestamp()
 	# Nombre de niveaux sans erreur
 	var taux_min: float = 101.
 	var taux_min_lg: int = 0

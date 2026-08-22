@@ -356,22 +356,31 @@ func lire_nom_niveau(niveau : int) -> String:
 	return SauvegardeBddPlateauxService.nom_niveau(niveau)
 
 func lire_niveau_longueur_realisee() -> int:
+	"Retourne le nombre de plateaux du niveau réalisé"
+	var dernier_niveau = lire_dernier_niveau()
+	if dernier_niveau and le_niveau_est_termine(dernier_niveau):
+		var lg_niveau = 0
+		for plateau in dernier_niveau.get('plateaux'):
+			if plateau.get('statut') == 'reussi':
+				lg_niveau += 1
+		return lg_niveau
+	return 0
+
+func lire_longueur_niveau() -> int:
+	"Retourne le nombre de plateaux du niveau (réalisé)"
+	var lg_niveau = lire_nombre_de_plateaux_realisables_pour_niveau_courant()
+	lg_niveau += lire_succes_niveau()
+	return lg_niveau
+
+func lire_succes_niveau() -> int:
+	"Retourne le nombre de plateaux du niveau (réalisé)"
+	var nb_succes = 0
 	var dernier_niveau = lire_dernier_niveau()
 	if dernier_niveau:
-		var liste_niveaux = []
-		# TODO : Revoir l'algo !
 		for plateau in dernier_niveau.get('plateaux'):
-			var niveau = plateau.get('difficulte')
-			if not le_niveau_est_termine(niveau) :
-				if niveau not in liste_niveaux \
-					and plateau.get('statut') == 'reussi':
-					 # Ajouter le niveau réussi
-					liste_niveaux.append(niveau)
-				elif plateau.get('statut') == 'abandonné':
-					 # Supprimer le precedent niveau quand le niveau courant est abandonné
-					liste_niveaux.pop_back()
-		return len(liste_niveaux)
-	return 0
+			if plateau.get('statut') == 'reussi':
+				nb_succes += 1
+	return nb_succes
 
 func lire_niveau_longueur_restante() -> int: # TODO : INUTILISE !
 	return lire_nombre_de_plateaux_realisables_pour_niveau_courant()
