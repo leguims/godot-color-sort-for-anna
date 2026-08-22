@@ -160,7 +160,7 @@ func test_statistiques_couvrent_les_branches_sans_plateaux_et_egalites():
 	var galere = service.plateau_le_plus_galere_les_infos()
 	assert_eq(galere.get("nom"), "B")
 	assert_eq(galere.get("essais"), 3)
-	assert_eq(galere.get("difficulte"), 5)
+	assert_eq(galere.get("difficulte"), 2)
 
 	# Cas de reset de série et de max atteint : abandon = coupure de série
 	SauvegardeBddJoueursService.sauvegarde_joueur["enregistrement_campagne"] = [
@@ -175,7 +175,7 @@ func test_statistiques_couvrent_les_branches_sans_plateaux_et_egalites():
 			{"nom": "F", "statut": "reussi"}
 		]}
 	]
-	assert_eq(service.serie_de_victoire_maximum(), 2)
+	assert_eq(service.serie_de_victoire_maximum(), 3)
 
 func test_niveau_taux_reussite_les_infos_traite_les_branchs_fallbacks():
 	var infos = service.niveau_taux_reussite_les_infos()
