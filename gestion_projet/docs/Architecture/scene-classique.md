@@ -4,33 +4,33 @@ Type : Gameplay
 
 Fichier principal : `sources/Scenes/MenuPrincipal/Campagne/GamePlay/Classique/classique.gd`
 
-## R'le
+## Rôle
 
-Gameplay principal. Une pile est gagn'e quand toutes les piles non vides sont monochromes.
+Mode de jeu standard. Ce script traduit la règle métier du plateau en événements de fin de partie, de victoire ou d’abandon.
 
-## Responsabilit' principale
+## Responsabilité principale
 
-- Le composant est la source de v'rit' de son p'rim'tre.
-- Il ne doit pas absorber la logique des autres domaines en dehors de son r'le.
-- Il communique par signaux, services et appels directs vers les pi'ces qui lui servent de d'pendances.
+- Évalue si le plateau est terminé selon la logique de jeu classique.
+- Émet les signaux de victoire ou d’abandon lorsque la règle est validée.
+- Garde la logique de variante propre au mode classique, sans gérer les sauvegardes.
 
-## D'pendances
+## Dépendances
 
 - `Plateau`
 - `Campagne`
 - `LogService`
 
-## Actions cl's
+## Actions clés
 
-- 'met victoire quand le plateau est termin'
-- Relaye abandon et invalidit'
+- Déclenche la victoire quand le plateau est terminé
+- Relaye abandon et invalidité
 - Couvre la logique de victoire standard
 
 ## Points de vigilance
 
-- L''cran ne doit pas 'crire directement la sauvegarde si la logique de persistance est d'j' dans un service.
-- Les signaux doivent rester orient's m'tier et ne pas m'langer affichage, r'gles et donn'es.
-- Le composant est plus lisible s'il ne contient qu'une logique sp'cifique ' son p'rim'tre.
+- L'écran ne doit pas écrire directement la sauvegarde si la logique de persistance est déjà dans un service.
+- Les signaux doivent rester orientés métier et ne pas mélanger affichage, règles et données.
+- Le composant est plus lisible s'il ne contient qu'une logique spécifique à son périmètre.
 
 ## Voir aussi
 

@@ -4,31 +4,31 @@ Type : UI
 
 Fichier principal : `sources/Scenes/MenuPrincipal/Campagne/MenuCampagne/Statistiques/diagramme_en_barres.gd`
 
-## R'le
+## Rôle
 
-Composant visuel g'n'rique pour repr'senter des valeurs par barres.
+Composant visuel de comparaison. Il transforme un ensemble de valeurs en diagramme horizontal ou vertical lisible.
 
-## Responsabilit' principale
+## Responsabilité principale
 
-- Le composant est la source de v'rit' de son p'rim'tre.
-- Il ne doit pas absorber la logique des autres domaines en dehors de son r'le.
-- Il communique par signaux, services et appels directs vers les pi'ces qui lui servent de d'pendances.
+- Affiche une série de données sous forme de barres pour comparer les performances.
+- Organise la lecture visuelle sans ajouter de logique métier au calcul.
+- Fournit un support réutilisable pour le tableau de statistiques du jeu.
 
-## D'pendances
+## Dépendances
 
 - `Statistiques`
 - `StatsService`
 
-## Actions cl's
+## Actions clés
 
-- Dessine les barres selon des s'ries ou des valeurs
-- Pr'pare le support visuel des courbes de succ's ou de parties
+- Dessine les barres selon des séries ou des valeurs
+- Prépare le support visuel des courbes de succès ou de parties
 
 ## Points de vigilance
 
-- L''cran ne doit pas 'crire directement la sauvegarde si la logique de persistance est d'j' dans un service.
-- Les signaux doivent rester orient's m'tier et ne pas m'langer affichage, r'gles et donn'es.
-- Le composant est plus lisible s'il ne contient qu'une logique sp'cifique ' son p'rim'tre.
+- L'écran ne doit pas écrire directement la sauvegarde si la logique de persistance est déjà dans un service.
+- Les signaux doivent rester orientés métier et ne pas mélanger affichage, règles et données.
+- Le composant est plus lisible s'il ne contient qu'une logique spécifique à son périmètre.
 
 ## Voir aussi
 

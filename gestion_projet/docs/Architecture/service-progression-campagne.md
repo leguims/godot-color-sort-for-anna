@@ -4,34 +4,34 @@ Type : Service
 
 Fichier principal : `sources/Singletons/progression_campagne_service.gd`
 
-## R'le
+## Rôle
 
-Le c'ur de la logique de progression. Il choisit le joueur, initialise une ascension, avance le niveau courant et publie les 'v'nements de victoire ou d'abandon.
+Cœur de la progression du jeu. Il décide de l’état de l’ascension, du niveau courant et des événements de fin de campagne.
 
-## Responsabilit' principale
+## Responsabilité principale
 
-- Le composant est la source de v'rit' de son p'rim'tre.
-- Il ne doit pas absorber la logique des autres domaines en dehors de son r'le.
-- Il communique par signaux, services et appels directs vers les pi'ces qui lui servent de d'pendances.
+- Initialise ou met à jour l’ascension en cours selon le résultat d’une partie.
+- Publie les signaux de progression et de fin de campagne pour le reste du système.
+- Centralise l’état métier de la campagne, sans dépendre directement du rendu UI.
 
-## D'pendances
+## Dépendances
 
 - `SauvegardeBddJoueursService`
 - `SauvegardeListeJoueursService`
 - `SauvegardeTableauDesScoresService`
 - `ScoreService`
 
-## Actions cl's
+## Actions clés
 
-- Cr'e une nouvelle ascension
-- Passe au niveau sup'rieur ou inf'rieur selon le r'sultat
-- 'met les signaux progression_ascension et fin_ascension
+- Crée une nouvelle ascension
+- Passe au niveau supérieur ou inférieur selon le résultat
+- Émet les signaux progression_ascension et fin_ascension
 
 ## Points de vigilance
 
-- L''cran ne doit pas 'crire directement la sauvegarde si la logique de persistance est d'j' dans un service.
-- Les signaux doivent rester orient's m'tier et ne pas m'langer affichage, r'gles et donn'es.
-- Le composant est plus lisible s'il ne contient qu'une logique sp'cifique ' son p'rim'tre.
+- L'écran ne doit pas écrire directement la sauvegarde si la logique de persistance est déjà dans un service.
+- Les signaux doivent rester orientés métier et ne pas mélanger affichage, règles et données.
+- Le composant est plus lisible s'il ne contient qu'une logique spécifique à son périmètre.
 
 ## Voir aussi
 

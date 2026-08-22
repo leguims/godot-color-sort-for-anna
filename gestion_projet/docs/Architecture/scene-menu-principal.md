@@ -4,34 +4,34 @@ Type : Scene
 
 Fichier principal : `sources/Scenes/MenuPrincipal/menu_principal.gd`
 
-## R'le
+## Rôle
 
-Point d'entr'e de la navigation du jeu. G're la s'lection du joueur, ouverture de la campagne, scores, r'f'rences et configuration.
+Point d’entrée de la navigation du jeu. Le script oriente la sélection du profil, ouvre les écrans de campagne, de scores et de références, et délègue la logique métier aux services.
 
-## Responsabilit' principale
+## Responsabilité principale
 
-- Le composant est la source de v'rit' de son p'rim'tre.
-- Il ne doit pas absorber la logique des autres domaines en dehors de son r'le.
-- Il communique par signaux, services et appels directs vers les pi'ces qui lui servent de d'pendances.
+- Choisit le profil courant et prépare le flux de navigation du jeu.
+- Ouvre les écrans de campagne, de scores et de références sans gérer les règles du plateau.
+- Relie la configuration et la sauvegarde aux interactions de l’interface.
 
-## D'pendances
+## Dépendances
 
 - `ProgressionCampagneService`
 - `SauvegardeListeJoueursService`
 - `SauvegardeConfigurationService`
 - `AudioService`
 
-## Actions cl's
+## Actions clés
 
-- Ouvre les sc'nes de campagne, scores et r'f'rences
-- Affiche et met ' jour les boutons de joueurs
-- Applique les r'glages audio/vibration
+- Ouvre les scènes de campagne, scores et références
+- Affiche et met à jour les boutons de joueurs
+- Applique les réglages audio/vibration
 
 ## Points de vigilance
 
-- L''cran ne doit pas 'crire directement la sauvegarde si la logique de persistance est d'j' dans un service.
-- Les signaux doivent rester orient's m'tier et ne pas m'langer affichage, r'gles et donn'es.
-- Le composant est plus lisible s'il ne contient qu'une logique sp'cifique ' son p'rim'tre.
+- L'écran ne doit pas écrire directement la sauvegarde si la logique de persistance est déjà dans un service.
+- Les signaux doivent rester orientés métier et ne pas mélanger affichage, règles et données.
+- Le composant est plus lisible s'il ne contient qu'une logique spécifique à son périmètre.
 
 ## Voir aussi
 

@@ -4,33 +4,33 @@ Type : Service
 
 Fichier principal : `sources/Singletons/score_service.gd`
 
-## R'le
+## Rôle
 
-Calcule les points gagn's apr's un plateau r'ussi et r'partit les bonus li's au temps, au ratio, ' l'ascension et ' la campagne.
+Calculateur de score. Il convertit le déroulement d’une partie en score exploitable par la progression et le classement.
 
-## Responsabilit' principale
+## Responsabilité principale
 
-- Le composant est la source de v'rit' de son p'rim'tre.
-- Il ne doit pas absorber la logique des autres domaines en dehors de son r'le.
-- Il communique par signaux, services et appels directs vers les pi'ces qui lui servent de d'pendances.
+- Compose le score final à partir du résultat, du temps et du contexte de campagne.
+- Applique les bonus ou coefficients propres à une ascension ou à un niveau.
+- Exporte un résultat cohérent pour les services de sauvegarde et d’affichage.
 
-## D'pendances
+## Dépendances
 
 - `SauvegardeBddJoueursService`
 - `SauvegardeTableauDesScoresService`
 - `LogService`
 
-## Actions cl's
+## Actions clés
 
-- 'value le score de dur'e
-- 'value le score de ratio de r'ussite
+- Évalue le score de durée
+- Évalue le score de ratio de réussite
 - Applique le bonus Anna
 
 ## Points de vigilance
 
-- L''cran ne doit pas 'crire directement la sauvegarde si la logique de persistance est d'j' dans un service.
-- Les signaux doivent rester orient's m'tier et ne pas m'langer affichage, r'gles et donn'es.
-- Le composant est plus lisible s'il ne contient qu'une logique sp'cifique ' son p'rim'tre.
+- L'écran ne doit pas écrire directement la sauvegarde si la logique de persistance est déjà dans un service.
+- Les signaux doivent rester orientés métier et ne pas mélanger affichage, règles et données.
+- Le composant est plus lisible s'il ne contient qu'une logique spécifique à son périmètre.
 
 ## Voir aussi
 

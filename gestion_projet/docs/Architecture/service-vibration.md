@@ -4,32 +4,32 @@ Type : Service
 
 Fichier principal : `sources/Singletons/vibration_service.gd`
 
-## R'le
+## Rôle
 
-Service de retour haptique. Il ne fait rien si les vibrations sont d'sactiv'es.
+Retour haptique du jeu. Il active les vibrations lorsque le joueur ou le système le demande, selon la configuration active.
 
-## Responsabilit' principale
+## Responsabilité principale
 
-- Le composant est la source de v'rit' de son p'rim'tre.
-- Il ne doit pas absorber la logique des autres domaines en dehors de son r'le.
-- Il communique par signaux, services et appels directs vers les pi'ces qui lui servent de d'pendances.
+- Contrôle les vibrations de l’appareil selon les événements de jeu.
+- Respecte la configuration de l’utilisateur et les préférences d’accessibilité.
+- Reste un service transversal, sans prendre en charge la logique de plateau.
 
-## D'pendances
+## Dépendances
 
 - `SauvegardeConfigurationService`
 - `Input`
 
-## Actions cl's
+## Actions clés
 
-- Vibre ' la fin d'un plateau
-- Vibre ' la fin d'une pile
-- Vibre ' chaque jeton d'plac'
+- Vibre à la fin d'un plateau
+- Vibre à la fin d'une pile
+- Vibre à chaque jeton déplacé
 
 ## Points de vigilance
 
-- L''cran ne doit pas 'crire directement la sauvegarde si la logique de persistance est d'j' dans un service.
-- Les signaux doivent rester orient's m'tier et ne pas m'langer affichage, r'gles et donn'es.
-- Le composant est plus lisible s'il ne contient qu'une logique sp'cifique ' son p'rim'tre.
+- L'écran ne doit pas écrire directement la sauvegarde si la logique de persistance est déjà dans un service.
+- Les signaux doivent rester orientés métier et ne pas mélanger affichage, règles et données.
+- Le composant est plus lisible s'il ne contient qu'une logique spécifique à son périmètre.
 
 ## Voir aussi
 

@@ -4,33 +4,33 @@ Type : Service
 
 Fichier principal : `sources/Singletons/stats_service.gd`
 
-## R'le
+## Rôle
 
-Agr'gateur de statistiques. Il lit l''tat de sauvegarde pour exposer les KPI et quantit's utiles ' l''cran de statistiques.
+Agrégateur de statistiques. Il transforme les données du jeu en métriques lisibles et réutilisables par l’UI.
 
-## Responsabilit' principale
+## Responsabilité principale
 
-- Le composant est la source de v'rit' de son p'rim'tre.
-- Il ne doit pas absorber la logique des autres domaines en dehors de son r'le.
-- Il communique par signaux, services et appels directs vers les pi'ces qui lui servent de d'pendances.
+- Collecte les indicateurs de jeu et d’ascension en un état centralisé.
+- Calcule les moyennes, totaux et courbes utiles aux écrans de statistiques.
+- Fournit des données prêtes à afficher sans mordre sur la logique de rendu.
 
-## D'pendances
+## Dépendances
 
 - `SauvegardeBddJoueursService`
 - `SauvegardeConfigurationService`
 - `LogService`
 
-## Actions cl's
+## Actions clés
 
-- Calcule le taux de completion
-- D'duit la dur'e moyenne des ascensions et des plateaux
+- Calcule le taux de complétion
+- Déduit la durée moyenne des ascensions et des plateaux
 - Expose les infos pour l'UI de statistiques
 
 ## Points de vigilance
 
-- L''cran ne doit pas 'crire directement la sauvegarde si la logique de persistance est d'j' dans un service.
-- Les signaux doivent rester orient's m'tier et ne pas m'langer affichage, r'gles et donn'es.
-- Le composant est plus lisible s'il ne contient qu'une logique sp'cifique ' son p'rim'tre.
+- L'écran ne doit pas écrire directement la sauvegarde si la logique de persistance est déjà dans un service.
+- Les signaux doivent rester orientés métier et ne pas mélanger affichage, règles et données.
+- Le composant est plus lisible s'il ne contient qu'une logique spécifique à son périmètre.
 
 ## Voir aussi
 

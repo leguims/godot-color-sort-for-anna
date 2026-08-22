@@ -4,31 +4,31 @@ Type : UI
 
 Fichier principal : `sources/Scenes/MenuPrincipal/Campagne/MenuCampagne/Statistiques/courbe.gd`
 
-## R'le
+## Rôle
 
-Composant visuel de suivi temporel ou progression sur plusieurs niveaux.
+Composant de visualisation temporelle. Il montre l’évolution d’un indicateur sur la durée de la campagne ou d’une ascension.
 
-## Responsabilit' principale
+## Responsabilité principale
 
-- Le composant est la source de v'rit' de son p'rim'tre.
-- Il ne doit pas absorber la logique des autres domaines en dehors de son r'le.
-- Il communique par signaux, services et appels directs vers les pi'ces qui lui servent de d'pendances.
+- Trace une courbe à partir des données disponibles en entrée.
+- Met en valeur la progression ou la variation d’un indicateur sur le temps.
+- Reste un outil d’affichage, sans décider de la progression ni des règles du jeu.
 
-## D'pendances
+## Dépendances
 
 - `StatsService`
 - `Statistiques`
 
-## Actions cl's
+## Actions clés
 
-- Trace la courbe d''volution du temps ou du score
-- Compl'te l'offre visuelle des statistiques
+- Trace la courbe d'évolution du temps ou du score
+- Complète l'offre visuelle des statistiques
 
 ## Points de vigilance
 
-- L''cran ne doit pas 'crire directement la sauvegarde si la logique de persistance est d'j' dans un service.
-- Les signaux doivent rester orient's m'tier et ne pas m'langer affichage, r'gles et donn'es.
-- Le composant est plus lisible s'il ne contient qu'une logique sp'cifique ' son p'rim'tre.
+- L'écran ne doit pas écrire directement la sauvegarde si la logique de persistance est déjà dans un service.
+- Les signaux doivent rester orientés métier et ne pas mélanger affichage, règles et données.
+- Le composant est plus lisible s'il ne contient qu'une logique spécifique à son périmètre.
 
 ## Voir aussi
 

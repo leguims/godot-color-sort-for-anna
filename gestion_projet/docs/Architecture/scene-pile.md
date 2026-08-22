@@ -4,33 +4,33 @@ Type : Scene
 
 Fichier principal : `sources/Scenes/MenuPrincipal/Campagne/Plateau/Pile/pile.gd`
 
-## R'le
+## Rôle
 
-Repr'sente une colonne, donc un tas de jetons et ses r'gles de s'lection / ordre.
+Colonne de jeu du plateau. Elle représente une pile concrète et garde le sens de l’ordre et de la hauteur des jetons.
 
-## Responsabilit' principale
+## Responsabilité principale
 
-- Le composant est la source de v'rit' de son p'rim'tre.
-- Il ne doit pas absorber la logique des autres domaines en dehors de son r'le.
-- Il communique par signaux, services et appels directs vers les pi'ces qui lui servent de d'pendances.
+- Stocke l’état interne d’une pile et ses jetons actifs.
+- Détermine si la pile est jouable, sélectionnable ou bloquée selon la règle de jeu.
+- Fournit le contexte visuel nécessaire aux interactions de déplacement sur le plateau.
 
-## D'pendances
+## Dépendances
 
 - `Jeton`
 - `Plateau`
 - `PlateauReglesDuJeuService`
 
-## Actions cl's
+## Actions clés
 
-- Applique les couleurs et la validit' du sommet
-- Choisit le jeton de d'part et les destinations valides
-- Marque les piles bloqu'es ou termin'es
+- Applique les couleurs et la validité du sommet
+- Choisit le jeton de départ et les destinations valides
+- Marque les piles bloquées ou terminées
 
 ## Points de vigilance
 
-- L''cran ne doit pas 'crire directement la sauvegarde si la logique de persistance est d'j' dans un service.
-- Les signaux doivent rester orient's m'tier et ne pas m'langer affichage, r'gles et donn'es.
-- Le composant est plus lisible s'il ne contient qu'une logique sp'cifique ' son p'rim'tre.
+- L'écran ne doit pas écrire directement la sauvegarde si la logique de persistance est déjà dans un service.
+- Les signaux doivent rester orientés métier et ne pas mélanger affichage, règles et données.
+- Le composant est plus lisible s'il ne contient qu'une logique spécifique à son périmètre.
 
 ## Voir aussi
 

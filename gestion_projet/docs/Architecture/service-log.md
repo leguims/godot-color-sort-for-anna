@@ -4,30 +4,30 @@ Type : Service
 
 Fichier principal : `sources/Singletons/log_service.gd`
 
-## R'le
+## Rôle
 
-Service d'observabilit'. Centralise les logs de d'bogage et d'erreur du projet.
+Service de journalisation. Il centralise les événements techniques et les messages utiles au diagnostic.
 
-## Responsabilit' principale
+## Responsabilité principale
 
-- Le composant est la source de v'rit' de son p'rim'tre.
-- Il ne doit pas absorber la logique des autres domaines en dehors de son r'le.
-- Il communique par signaux, services et appels directs vers les pi'ces qui lui servent de d'pendances.
+- Enregistre les événements importants du système et des erreurs de runtime.
+- Aide au débogage sans intervenir sur l’état du gameplay ni sur la UI.
+- Conserve une vue unifiée des logs pour les développeurs et la maintenance.
 
-## D'pendances
+## Dépendances
 
 - `OS`
 
-## Actions cl's
+## Actions clés
 
-- Consolide les arguments en une cha'ne de texte
-- Affiche les messages de debogage uniquement en build debug
+- Consolide les arguments en une chaîne de texte
+- Affiche les messages de débogage uniquement en build debug
 
 ## Points de vigilance
 
-- L''cran ne doit pas 'crire directement la sauvegarde si la logique de persistance est d'j' dans un service.
-- Les signaux doivent rester orient's m'tier et ne pas m'langer affichage, r'gles et donn'es.
-- Le composant est plus lisible s'il ne contient qu'une logique sp'cifique ' son p'rim'tre.
+- L'écran ne doit pas écrire directement la sauvegarde si la logique de persistance est déjà dans un service.
+- Les signaux doivent rester orientés métier et ne pas mélanger affichage, règles et données.
+- Le composant est plus lisible s'il ne contient qu'une logique spécifique à son périmètre.
 
 ## Voir aussi
 

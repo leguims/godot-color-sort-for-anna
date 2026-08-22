@@ -4,31 +4,31 @@ Type : Service de sauvegarde
 
 Fichier principal : `sources/Singletons/Sauvegarde/liste_joueurs_service.gd`
 
-## R'le
+## Rôle
 
-Index global des joueurs connus et de la correspondance nom -> fichier de sauvegarde.
+Index des profils connus. Il centralise la liste des joueurs et la correspondance avec leur sauvegarde associée.
 
-## Responsabilit' principale
+## Responsabilité principale
 
-- Le composant est la source de v'rit' de son p'rim'tre.
-- Il ne doit pas absorber la logique des autres domaines en dehors de son r'le.
-- Il communique par signaux, services et appels directs vers les pi'ces qui lui servent de d'pendances.
+- Maintient la liste des profils disponibles pour le jeu.
+- Résout le bon fichier de sauvegarde pour un joueur donné.
+- Fournit une couche de navigation durable entre la sélection du joueur et la persistance.
 
-## D'pendances
+## Dépendances
 
 - `FichiersJsonService`
 
-## Actions cl's
+## Actions clés
 
-- Cr'e la fiche d'un nouveau joueur
-- V'rifie si un joueur existe
-- Retourne le fichier de sauvegarde associ'
+- Crée la fiche d'un nouveau joueur
+- Vérifie si un joueur existe
+- Retourne le fichier de sauvegarde associé
 
 ## Points de vigilance
 
-- L''cran ne doit pas 'crire directement la sauvegarde si la logique de persistance est d'j' dans un service.
-- Les signaux doivent rester orient's m'tier et ne pas m'langer affichage, r'gles et donn'es.
-- Le composant est plus lisible s'il ne contient qu'une logique sp'cifique ' son p'rim'tre.
+- L'écran ne doit pas écrire directement la sauvegarde si la logique de persistance est déjà dans un service.
+- Les signaux doivent rester orientés métier et ne pas mélanger affichage, règles et données.
+- Le composant est plus lisible s'il ne contient qu'une logique spécifique à son périmètre.
 
 ## Voir aussi
 

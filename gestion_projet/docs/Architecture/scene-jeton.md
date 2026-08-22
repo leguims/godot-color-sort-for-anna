@@ -4,32 +4,32 @@ Type : Scene
 
 Fichier principal : `sources/Scenes/MenuPrincipal/Campagne/Plateau/Pile/Jeton/jeton.gd`
 
-## R'le
+## Rôle
 
-Unit' visuelle de jeu : couleur, 'tat s'lectionn', 'tat soud' et position dans la pile.
+Unité élémentaire du plateau. Il porte la couleur, la sélection et le rendu du jeton au sein de la pile.
 
-## Responsabilit' principale
+## Responsabilité principale
 
-- Le composant est la source de v'rit' de son p'rim'tre.
-- Il ne doit pas absorber la logique des autres domaines en dehors de son r'le.
-- Il communique par signaux, services et appels directs vers les pi'ces qui lui servent de d'pendances.
+- Représente visuellement un jeton avec ses attributs de couleur et de position.
+- Renseigne la pile sur l’état de sélection et de connexion avec les jetons adjacents.
+- Permet au plateau de raisonner sur des éléments simples et homogènes.
 
-## D'pendances
+## Dépendances
 
 - `Pile`
 - `Plateau`
 
-## Actions cl's
+## Actions clés
 
-- G're l'apparence du jeton
-- Indique son niveau de s'lection et de soudure
+- Gère l'apparence du jeton
+- Indique son niveau de sélection et de soudure
 - Fournit la couleur / index au plateau
 
 ## Points de vigilance
 
-- L''cran ne doit pas 'crire directement la sauvegarde si la logique de persistance est d'j' dans un service.
-- Les signaux doivent rester orient's m'tier et ne pas m'langer affichage, r'gles et donn'es.
-- Le composant est plus lisible s'il ne contient qu'une logique sp'cifique ' son p'rim'tre.
+- L'écran ne doit pas écrire directement la sauvegarde si la logique de persistance est déjà dans un service.
+- Les signaux doivent rester orientés métier et ne pas mélanger affichage, règles et données.
+- Le composant est plus lisible s'il ne contient qu'une logique spécifique à son périmètre.
 
 ## Voir aussi
 

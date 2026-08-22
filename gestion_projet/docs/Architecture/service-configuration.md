@@ -4,30 +4,30 @@ Type : Service de sauvegarde
 
 Fichier principal : `sources/Singletons/Sauvegarde/configuration_service.gd`
 
-## R'le
+## Rôle
 
-M'morise les r'glages globaux (musique, effets, vibration, version du jeu).
+Service de paramètres globaux. Il garde les préférences du jeu et les transmet à tous les composants qui les utilisent.
 
-## Responsabilit' principale
+## Responsabilité principale
 
-- Le composant est la source de v'rit' de son p'rim'tre.
-- Il ne doit pas absorber la logique des autres domaines en dehors de son r'le.
-- Il communique par signaux, services et appels directs vers les pi'ces qui lui servent de d'pendances.
+- Stocke les options de jeu telles que la musique, les effets et les vibrations.
+- Expose les paramètres à l’interface et aux services qui en ont besoin.
+- Centralise l’état des réglages pour éviter la duplication dans les scènes.
 
-## D'pendances
+## Dépendances
 
 - `FichiersJsonService`
 
-## Actions cl's
+## Actions clés
 
-- Lit et 'crit la configuration du jeu
-- V'rifie la version et migre les anciennes sauvegardes si n'cessaire
+- Lit et écrit la configuration du jeu
+- Vérifie la version et migre les anciennes sauvegardes si nécessaire
 
 ## Points de vigilance
 
-- L''cran ne doit pas 'crire directement la sauvegarde si la logique de persistance est d'j' dans un service.
-- Les signaux doivent rester orient's m'tier et ne pas m'langer affichage, r'gles et donn'es.
-- Le composant est plus lisible s'il ne contient qu'une logique sp'cifique ' son p'rim'tre.
+- L'écran ne doit pas écrire directement la sauvegarde si la logique de persistance est déjà dans un service.
+- Les signaux doivent rester orientés métier et ne pas mélanger affichage, règles et données.
+- Le composant est plus lisible s'il ne contient qu'une logique spécifique à son périmètre.
 
 ## Voir aussi
 

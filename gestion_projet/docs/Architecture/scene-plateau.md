@@ -4,17 +4,17 @@ Type : Scene
 
 Fichier principal : `sources/Scenes/MenuPrincipal/Campagne/Plateau/plateau.gd`
 
-## R'le
+## Rôle
 
-Moteur du plateau : construit les piles, valide les mouvements et relaye la fin de partie au gameplay.
+Moteur visuel du plateau. Il construit la structure du terrain, valide les mouvements et reflète l’état du jeu au bon niveau de granularité.
 
-## Responsabilit' principale
+## Responsabilité principale
 
-- Le composant est la source de v'rit' de son p'rim'tre.
-- Il ne doit pas absorber la logique des autres domaines en dehors de son r'le.
-- Il communique par signaux, services et appels directs vers les pi'ces qui lui servent de d'pendances.
+- Crée les piles et les jetons à partir de la configuration du niveau.
+- Valide les déplacements au niveau du plateau et applique la logique de sélection.
+- Relaye la fin de partie au gameplay sans absorber la logique métier de progression.
 
-## D'pendances
+## Dépendances
 
 - `PlateauLayoutService`
 - `PlateauDecodeurService`
@@ -23,17 +23,17 @@ Moteur du plateau : construit les piles, valide les mouvements et relaye la fin 
 - `AudioService`
 - `VibrationService`
 
-## Actions cl's
+## Actions clés
 
-- Cr'e les piles ' partir du texte du plateau
-- Valide le d'placement d'un jeton ou d'une pile
-- D'tecte la fin de partie via le callback gameplay
+- Crée les piles à partir du texte du plateau
+- Valide le déplacement d'un jeton ou d'une pile
+- Détecte la fin de partie via le callback gameplay
 
 ## Points de vigilance
 
-- L''cran ne doit pas 'crire directement la sauvegarde si la logique de persistance est d'j' dans un service.
-- Les signaux doivent rester orient's m'tier et ne pas m'langer affichage, r'gles et donn'es.
-- Le composant est plus lisible s'il ne contient qu'une logique sp'cifique ' son p'rim'tre.
+- L'écran ne doit pas écrire directement la sauvegarde si la logique de persistance est déjà dans un service.
+- Les signaux doivent rester orientés métier et ne pas mélanger affichage, règles et données.
+- Le composant est plus lisible s'il ne contient qu'une logique spécifique à son périmètre.
 
 ## Voir aussi
 

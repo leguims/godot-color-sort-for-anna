@@ -4,17 +4,17 @@ Type : Scene
 
 Fichier principal : `sources/Scenes/MenuPrincipal/Campagne/campagne.gd`
 
-## R'le
+## Rôle
 
-Orchestre une ascension de niveaux et relie le MenuCampagne au gameplay courant.
+Orchestrateur de la campagne. Il décide quelle variante de jeu est lancée, suit les résultats et fait passer l’état de progression d’un écran à l’autre.
 
-## Responsabilit' principale
+## Responsabilité principale
 
-- Le composant est la source de v'rit' de son p'rim'tre.
-- Il ne doit pas absorber la logique des autres domaines en dehors de son r'le.
-- Il communique par signaux, services et appels directs vers les pi'ces qui lui servent de d'pendances.
+- Lance la scène de gameplay correspondante à la progression du joueur.
+- Relie les événements de victoire, défaite et abandon au service de progression.
+- Ne calcule pas le plateau : il coordonne le parcours de jeu et l’affichage associé.
 
-## D'pendances
+## Dépendances
 
 - `ProgressionCampagneService`
 - `SauvegardeBddJoueursService`
@@ -22,17 +22,17 @@ Orchestre une ascension de niveaux et relie le MenuCampagne au gameplay courant.
 - `StatsService`
 - `AudioService`
 
-## Actions cl's
+## Actions clés
 
 - Lance le bon gameplay pour un plateau
-- Met ' jour la progression de l'ascension
-- Fais 'voluer l''tat de victoire ou d'abandon
+- Met à jour la progression de l'ascension
+- Fait évoluer l'état de victoire ou d'abandon
 
 ## Points de vigilance
 
-- L''cran ne doit pas 'crire directement la sauvegarde si la logique de persistance est d'j' dans un service.
-- Les signaux doivent rester orient's m'tier et ne pas m'langer affichage, r'gles et donn'es.
-- Le composant est plus lisible s'il ne contient qu'une logique sp'cifique ' son p'rim'tre.
+- L'écran ne doit pas écrire directement la sauvegarde si la logique de persistance est déjà dans un service.
+- Les signaux doivent rester orientés métier et ne pas mélanger affichage, règles et données.
+- Le composant est plus lisible s'il ne contient qu'une logique spécifique à son périmètre.
 
 ## Voir aussi
 

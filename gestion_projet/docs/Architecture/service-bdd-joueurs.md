@@ -4,33 +4,33 @@ Type : Service de sauvegarde
 
 Fichier principal : `sources/Singletons/Sauvegarde/bdd_joueurs_service.gd`
 
-## R'le
+## Rôle
 
-Stockage de la progression sp'cifique ' chaque joueur : campagne, ascension courante, plateaux restant, scores et historique des parties.
+Sauvegarde du profil et de la progression du joueur. Il garde l’état du compte, de l’ascension et des données de jeu en cours.
 
-## Responsabilit' principale
+## Responsabilité principale
 
-- Le composant est la source de v'rit' de son p'rim'tre.
-- Il ne doit pas absorber la logique des autres domaines en dehors de son r'le.
-- Il communique par signaux, services et appels directs vers les pi'ces qui lui servent de d'pendances.
+- Lit et écrit les données personnelles du joueur courant.
+- Conserve les plateaux restants, l’ascension en cours et l’état de progression.
+- Fournit la source de vérité des données de joueur pour la campagne et l’UI.
 
-## D'pendances
+## Dépendances
 
 - `FichiersJsonService`
 - `ProgressionCampagneService`
 - `SauvegardeListeJoueursService`
 
-## Actions cl's
+## Actions clés
 
-- Lit / 'crit la sauvegarde du joueur
-- G're les plateaux non jou's et les plateaux en cours
+- Lit / écrit la sauvegarde du joueur
+- Gère les plateaux non joués et les plateaux en cours
 - Termine ou abandonne un plateau/ascension
 
 ## Points de vigilance
 
-- L''cran ne doit pas 'crire directement la sauvegarde si la logique de persistance est d'j' dans un service.
-- Les signaux doivent rester orient's m'tier et ne pas m'langer affichage, r'gles et donn'es.
-- Le composant est plus lisible s'il ne contient qu'une logique sp'cifique ' son p'rim'tre.
+- L'écran ne doit pas écrire directement la sauvegarde si la logique de persistance est déjà dans un service.
+- Les signaux doivent rester orientés métier et ne pas mélanger affichage, règles et données.
+- Le composant est plus lisible s'il ne contient qu'une logique spécifique à son périmètre.
 
 ## Voir aussi
 

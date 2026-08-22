@@ -4,32 +4,32 @@ Type : Service technique
 
 Fichier principal : `sources/Singletons/Sauvegarde/fichiers_json_service.gd`
 
-## R'le
+## Rôle
 
-Abstraction de lecture/'criture JSON en user://. Il centralise les acc's disque et les erreurs de parsing.
+Couche technique de lecture et d’écriture JSON. Il gère les fichiers de données sans répartir cette responsabilité dans les scènes.
 
-## Responsabilit' principale
+## Responsabilité principale
 
-- Le composant est la source de v'rit' de son p'rim'tre.
-- Il ne doit pas absorber la logique des autres domaines en dehors de son r'le.
-- Il communique par signaux, services et appels directs vers les pi'ces qui lui servent de d'pendances.
+- Lit les structures JSON du jeu et les transforme en objets utilisables.
+- Écrit les données persistantes et centralise les erreurs de chargement.
+- Fournit une interface stable à la persistance sans coupler les services à un format brut.
 
-## D'pendances
+## Dépendances
 
 - `FileAccess`
 - `JSON`
 
-## Actions cl's
+## Actions clés
 
 - Lit un fichier JSON
-- 'crit un fichier JSON
-- Supprime ou v'rifie l'existence d'un fichier
+- Écrit un fichier JSON
+- Supprime ou vérifie l'existence d'un fichier
 
 ## Points de vigilance
 
-- L''cran ne doit pas 'crire directement la sauvegarde si la logique de persistance est d'j' dans un service.
-- Les signaux doivent rester orient's m'tier et ne pas m'langer affichage, r'gles et donn'es.
-- Le composant est plus lisible s'il ne contient qu'une logique sp'cifique ' son p'rim'tre.
+- L'écran ne doit pas écrire directement la sauvegarde si la logique de persistance est déjà dans un service.
+- Les signaux doivent rester orientés métier et ne pas mélanger affichage, règles et données.
+- Le composant est plus lisible s'il ne contient qu'une logique spécifique à son périmètre.
 
 ## Voir aussi
 

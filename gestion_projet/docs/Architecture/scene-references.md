@@ -1,32 +1,32 @@
-# R'f'rences
+# Références
 
 Type : UI
 
 Fichier principal : `sources/Scenes/MenuPrincipal/References/retour_menu_principal.gd`
 
-## R'le
+## Rôle
 
-'cran de r'f'rences. Permet de revenir au menu principal sans logique m'tier complexe.
+Écran de références et d’information. Il centralise le contexte du projet et les liens utiles sans prendre de décision de jeu.
 
-## Responsabilit' principale
+## Responsabilité principale
 
-- Le composant est la source de v'rit' de son p'rim'tre.
-- Il ne doit pas absorber la logique des autres domaines en dehors de son r'le.
-- Il communique par signaux, services et appels directs vers les pi'ces qui lui servent de d'pendances.
+- Affiche les références au projet et les éléments d’aide contextuelle.
+- Fournit les points d’entrée de navigation vers les autres écrans.
+- Conserve un rôle de documentation et d’orientation, sans logique métier.
 
-## D'pendances
+## Dépendances
 
 - `AudioService`
 
-## Actions cl's
+## Actions clés
 
 - Retourne au menu principal
 
 ## Points de vigilance
 
-- L''cran ne doit pas 'crire directement la sauvegarde si la logique de persistance est d'j' dans un service.
-- Les signaux doivent rester orient's m'tier et ne pas m'langer affichage, r'gles et donn'es.
-- Le composant est plus lisible s'il ne contient qu'une logique sp'cifique ' son p'rim'tre.
+- L'écran ne doit pas écrire directement la sauvegarde si la logique de persistance est déjà dans un service.
+- Les signaux doivent rester orientés métier et ne pas mélanger affichage, règles et données.
+- Le composant est plus lisible s'il ne contient qu'une logique spécifique à son périmètre.
 
 ## Voir aussi
 

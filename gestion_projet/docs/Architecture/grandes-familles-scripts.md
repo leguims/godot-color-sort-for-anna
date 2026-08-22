@@ -91,7 +91,7 @@ Ces scripts ne calculent pas la logique métier ; ils affichent les résultats.
 
 ## 5. Services globaux
 
-Ces scripts fournissent un service transverses au projet.
+Ces scripts fournissent un service transverse au projet.
 
 - `audio_service.gd` : musique et effets sonores.
 - `log_service.gd` : journal de débogage.
