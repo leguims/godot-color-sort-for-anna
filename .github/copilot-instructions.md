@@ -105,7 +105,19 @@ Infos de conceptions :
 
 ---
 
-## 6. Vocabulaire et comportement du jeu
+## 6. Consignes pour les tests
+
+```text
+# INSTRUCTIONS POUR COPILOT
+# - Couverture exhaustive
+# - Couvrir toutes les méthodes
+# - Couvrir plusieurs chemins dans les méthodes
+# - Réaliser plusieurs niveaux de couvertures de code pour chaque methodes.
+```
+
+---
+
+## 7. Vocabulaire et comportement du jeu
 
 ### Plateau, pile et jeton
 

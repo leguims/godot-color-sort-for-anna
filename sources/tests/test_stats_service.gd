@@ -113,3 +113,99 @@ func test_plateau_statistiques():
 	assert_eq(plus_galere.get("nom"), "B")
 	assert_eq(plus_galere.get("essais"), 2)
 	assert_eq(plus_galere.get("difficulte"), 2)
+
+func test_statistiques_couvrent_les_branches_sans_plateaux_et_egalites():
+	# Cas sans enregistrement de niveau : zéro/ratio limite
+	SauvegardeBddJoueursService.sauvegarde_joueur["enregistrement_campagne"] = []
+	assert_eq(service.nombre_niveaux_termines(), 0)
+	assert_eq(service.duree_moyenne_niveaux_terminees_en_s(), 0.0)
+	assert_eq(service.taux_de_reussite_des_plateaux(), 0.0)
+	assert_eq(service.taux_completion_niveau(), 0.0)
+	assert_eq(service.plateau_le_plus_rapide_les_infos().get("temps_en_s"), 0.0)
+	assert_eq(service.plateau_le_plus_lent_les_infos().get("temps_en_s"), 0.0)
+
+	# Cas avec valeurs identiques : la difficulté la plus élevée doit être retenue
+	SauvegardeBddJoueursService.sauvegarde_joueur["enregistrement_campagne"] = [
+		{
+			"nom": "niveau_1",
+			"date_debut": 1700000000,
+			"date_fin": 1700001000,
+			"plateaux": [
+				{"nom": "A", "date_debut": 1700000010, "duree": 10000, "difficulte": 2, "statut": "reussi"},
+				{"nom": "B", "date_debut": 1700000020, "duree": 10000, "difficulte": 5, "statut": "reussi"}
+			]
+		}
+	]
+	var rapid = service.plateau_le_plus_rapide_les_infos()
+	assert_true(abs(rapid.get("temps_en_s") - 10.0) < 0.0001)
+	assert_eq(rapid.get("difficulte"), 5)
+
+	var lent = service.plateau_le_plus_lent_les_infos()
+	assert_true(abs(lent.get("temps_en_s") - 10.0) < 0.0001)
+	assert_eq(lent.get("difficulte"), 5)
+
+	# Cas avec mêmes noms de plateau pour déclencher le chemin de doublon dans l'indexation
+	SauvegardeBddJoueursService.sauvegarde_joueur["enregistrement_campagne"] = [
+		{
+			"nom": "niveau_1",
+			"date_debut": 1700000000,
+			"date_fin": 1700001000,
+			"plateaux": [
+				{"nom": "B", "date_debut": 1700000010, "duree": 5000, "difficulte": 2, "statut": "reussi"},
+				{"nom": "B", "date_debut": 1700000020, "duree": 7000, "difficulte": 3, "statut": "abandonné"},
+				{"nom": "B", "date_debut": 1700000030, "duree": 11000, "difficulte": 5, "statut": "reussi"}
+			]
+		}
+	]
+	var galere = service.plateau_le_plus_galere_les_infos()
+	assert_eq(galere.get("nom"), "B")
+	assert_eq(galere.get("essais"), 3)
+	assert_eq(galere.get("difficulte"), 5)
+
+	# Cas de reset de série et de max atteint : abandon = coupure de série
+	SauvegardeBddJoueursService.sauvegarde_joueur["enregistrement_campagne"] = [
+		{"nom": "niveau_1", "date_debut": 1700000000, "date_fin": 1700001000, "plateaux": [
+			{"nom": "A", "statut": "reussi"},
+			{"nom": "B", "statut": "reussi"},
+			{"nom": "C", "statut": "abandonné"},
+			{"nom": "D", "statut": "reussi"},
+			{"nom": "E", "statut": "reussi"}
+		]},
+		{"nom": "niveau_2", "date_debut": 1700002000, "date_fin": 1700003000, "plateaux": [
+			{"nom": "F", "statut": "reussi"}
+		]}
+	]
+	assert_eq(service.serie_de_victoire_maximum(), 2)
+
+func test_niveau_taux_reussite_les_infos_traite_les_branchs_fallbacks():
+	var infos = service.niveau_taux_reussite_les_infos()
+	assert_true(infos.get("taux_min") >= 0.0)
+	assert_true(infos.get("taux_max") <= 1.0)
+	assert_true(infos.get("taux_min_lg") >= 0)
+	assert_true(infos.get("taux_max_lg") >= 0)
+
+	SauvegardeBddJoueursService.sauvegarde_joueur["enregistrement_campagne"] = [
+		{"nom": "niveau_1", "date_debut": 1700000000, "date_fin": 1700001000, "plateaux": [
+			{"nom": "A", "date_debut": 1700000010, "duree": 10000, "difficulte": 2, "statut": "reussi"},
+			{"nom": "B", "date_debut": 1700000020, "duree": 20000, "difficulte": 5, "statut": "abandonné"}]
+		},
+		{"nom": "niveau_2", "date_debut": 1700002000, "date_fin": 1700003000, "plateaux": []}
+	]
+	var infos_2 = service.niveau_taux_reussite_les_infos()
+	assert_true(abs(infos_2.get("taux_min") - 0.5) < 0.0001)
+	assert_eq(infos_2.get("taux_min_lg"), 1)
+	assert_true(abs(infos_2.get("taux_max") - 0.5) < 0.0001)
+	assert_eq(infos_2.get("taux_max_lg"), 1)
+
+func test_reussis_abandonnes_par_niveau_et_completion_niveau_couvrent_les_zeros():
+	var par_niveau = service.nombre_de_plateau_reussis_abandonnes_pour_niveau("niveau_2")
+	assert_eq(par_niveau.get("reussis"), 2)
+	assert_eq(par_niveau.get("abandonnes"), 0)
+	assert_true(abs(service.taux_completion_niveau() - (2.0 / 3.0)) < 0.0001)
+
+	SauvegardeBddJoueursService.sauvegarde_joueur["campagne"] = {"niveau_99": []}
+	SauvegardeBddJoueursService.sauvegarde_joueur["enregistrement_campagne"] = [
+		{"nom": "niveau_99", "date_debut": 1700000000, "date_fin": 1700001000, "plateaux": []}
+	]
+	assert_eq(service.nombre_de_plateau_reussis_abandonnes_pour_niveau("niveau_99").get("reussis"), 0)
+	assert_true(abs(service.taux_completion_niveau()) < 0.0001)
