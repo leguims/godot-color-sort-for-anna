@@ -34,9 +34,10 @@ func before_each():
 				"date_debut": 1700000000,
 				"date_fin": 1700001000,
 				"plateaux": [
-					{"nom": "A", "date_debut": 1700000010, "duree": 10000, "difficulte": 1, "statut": "reussi"},
+					{"nom": "A1", "date_debut": 1700000010, "duree": 10000, "difficulte": 1, "statut": "reussi"},
 					{"nom": "B", "date_debut": 1700000020, "duree": 11000, "difficulte": 2, "statut": "abandonné"},
-					{"nom": "C", "date_debut": 1700000030, "duree": 9000, "difficulte": 3, "statut": "reussi"}
+					{"nom": "B", "date_debut": 1700000030, "duree": 15000, "difficulte": 2, "statut": "reussi"},
+					{"nom": "C", "date_debut": 1700000040, "duree": 9000, "difficulte": 3, "statut": "reussi"}
 				]
 			},
 			{
@@ -45,14 +46,15 @@ func before_each():
 				"date_fin": 0,
 				"plateaux": [
 					{"nom": "D", "date_debut": 1700002010, "duree": 15000, "difficulte": 2, "statut": "reussi"},
-					{"nom": "A", "date_debut": 1700002020, "duree": 8000, "difficulte": 4, "statut": "reussi"}
+					{"nom": "A2", "date_debut": 1700002020, "duree": 8000, "difficulte": 4, "statut": "reussi"}
 				]
 			}
 		],
 		"plateaux_libres": {
-			"1": [{"nom": "A"}, {"nom": "B"}, {"nom": "C"}],
-			"2": [{"nom": "R3"}],
-			"3": [{"nom": "R1"}, {"nom": "R2"}]
+			"1": [{"nom": "A1"}],
+			"2": [{"nom": "B"}, {"nom": "D"}],
+			"3": [{"nom": "C"}],
+			"4": [{"nom": "A2"}]
 		}
 	}
 
@@ -64,7 +66,18 @@ func after_each():
 
 
 func test_campagne_et_niveau_statistiques():
+	var campagne = SauvegardeBddJoueursService.sauvegarde_joueur.get("campagne", {})
+	var historique = SauvegardeBddJoueursService.sauvegarde_joueur.get("enregistrement_campagne", [])
+
+	assert_false("niveau_1" in campagne)
+	assert_true("niveau_2" in campagne)
+	assert_true("niveau_3" in campagne)
+	assert_true(historique.size() >= 1)
+	assert_eq(historique[0].get("nom"), "niveau_1")
+
 	assert_eq(service.campagne_nom_joueur(), "Joueur Test")
+	assert_eq(service.nombre_de_plateau_inacheves(), 3)
+	assert_eq(service.nombre_de_plateau_acheves(), 4)
 	assert_true(abs(service.campagne_taux_completion() - (4.0 / 7.0)) < 0.0001)
 	assert_true(abs(service.campagne_taux_reussite() - 0.8) < 0.0001)
 	assert_eq(service.campagne_serie_max_reussite(), 3)
