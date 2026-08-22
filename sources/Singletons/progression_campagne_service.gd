@@ -33,11 +33,11 @@ func _choisir_et_corriger_le_joueur(nom_joueur : String) -> bool:
 func liberer_le_joueur_pour_la_campagne():
 	SauvegardeBddJoueursService.liberer_le_joueur()
 
-func ajouter_un_nouveau_joueur_pour_la_campagne(nom_nouveau_joueur : String) -> bool:
+func autoriser_le_nouveau_joueur_pour_la_campagne(nom_nouveau_joueur : String) -> bool:
 	return not SauvegardeListeJoueursService.le_joueur_existe(nom_nouveau_joueur)
 
 func initialiser_le_nouveau_joueur_pour_la_campagne(nom_nouveau_joueur : String) -> bool:
-	if not SauvegardeListeJoueursService.le_joueur_existe(nom_nouveau_joueur):
+	if autoriser_le_nouveau_joueur_pour_la_campagne(nom_nouveau_joueur):
 		# Ajouter le joueur dans la liste des joueurs
 		if SauvegardeListeJoueursService.ajouter_un_nouveau_joueur(nom_nouveau_joueur):
 			var nom_fichier = SauvegardeListeJoueursService.retourner_le_fichier_de_sauvegarde(nom_nouveau_joueur)
@@ -61,6 +61,8 @@ func la_campagne_est_terminee() -> bool:
 	return SauvegardeBddJoueursService.la_campagne_est_terminee()
 
 func commencer_un_plateau(pourcentage_longueur : float) -> void:
+	# TODO : supprimer les notions de pourcentage pour le demarrage du plateau
+	# TODO : gerer le choix du niveau de campagne
 	if not SauvegardeBddJoueursService.niveau_en_cours():
 		initialiser_un_nouveau_niveau(pourcentage_longueur)
 	if SauvegardeBddJoueursService.plateau_en_cours():
@@ -110,26 +112,7 @@ func retourner_le_niveau_le_plus_bas() -> int:
 			return niveau_le_plus_bas
 	return -1
 
-# TODO : Cette methode est inutilisée
-func retourner_le_niveau_le_plus_haut() -> int:
-	# Retourner le plus haut niveau réalisable
-	for niveau_le_plus_haut in range(300, -1, -1):
-		# Vérifier qu'il reste des plateaux à réaliser par le joueur
-		if not SauvegardeBddJoueursService.le_niveau_est_termine(niveau_le_plus_haut):
-			return niveau_le_plus_haut
-	return -1
-
-func retourner_le_niveau_nieme(nb_niveaux : int) -> int:
-	var niveau = -1
-	for niveau_le_plus_bas in range(0, 300):
-		# Vérifier qu'il reste des plateaux à réaliser par le joueur
-		if not SauvegardeBddJoueursService.le_niveau_est_termine(niveau_le_plus_bas):
-			nb_niveaux -= 1
-			niveau = niveau_le_plus_bas
-			if not nb_niveaux:
-				break
-	return niveau
-
+# TODO : Voir s'il faut arbitrer enter les 2 methodes : retourner_le_niveau_suivant() et lire_prochain_niveau()
 func retourner_le_niveau_suivant() -> int:
 	# Parcourir le niveau supérieur
 	return retourner_le_niveau_le_plus_bas()

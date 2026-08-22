@@ -179,8 +179,8 @@ func _supprimer_plateau_courant() -> bool:
 	if le_joueur_existe() and _lire_statut_plateau() == 'en cours':
 		var str_niveau = lire_nom_niveau_joueur()
 		var plateau_courant = sauvegarde_joueur.get('campagne').get(str_niveau).pop_front()
-		# TODO : extraire difficulté de 'plateau_courant'
-		var difficulte_int = plateau_courant.get('difficulte')
+		# extraire difficulté de 'plateau_courant'
+		var difficulte_int = int(plateau_courant.get('difficulte'))
 		var difficulte_int_str = str(difficulte_int)
 		# Deplacer le plateau dans les plateaux libres
 		if difficulte_int_str in sauvegarde_joueur.get('plateaux_libres'):
@@ -216,7 +216,8 @@ func le_niveau_est_termine(niveau : int) -> bool:
 
 func la_campagne_est_terminee() -> bool:
 	if le_joueur_existe():
-		return sauvegarde_joueur.get('campagne').is_empty()
+		return 'campagne' not in sauvegarde_joueur \
+				or sauvegarde_joueur.get('campagne').is_empty()
 	return true
 
 ###############################################
@@ -291,6 +292,17 @@ func lire_dernier_niveau() -> Dictionary:
 		return dernier_niveau
 	return {}
 
+func lire_prochain_niveau() -> Dictionary:
+	"Retourne le prochain niveau"
+	var dernier_niveau = lire_dernier_niveau()
+	var prochain_niveau_campagne = sauvegarde_joueur.get('campagne').front()
+	if dernier_niveau.get('niveau') != prochain_niveau_campagne.get('niveau'):
+		return prochain_niveau_campagne
+	elif lire_nombre_de_niveaux_realisables() >= 2:
+		var prochain_niveau = sauvegarde_joueur.get('campagne')[1]
+		return prochain_niveau
+	return {}
+
 func niveau_en_cours() -> bool:
 	"Indique si un niveau est en cours de réalisation"
 	var niveau_courant = lire_dernier_niveau()
@@ -300,9 +312,13 @@ func niveau_en_cours() -> bool:
 
 func initialiser_un_nouveau_niveau(niveau : int) -> bool:
 	"Crée et initialise un nouveau niveau"
+	# TODO : Mettre en place un mécanisme pour choisir le niveau à joueur.
+	# TODO : Le parametre 'niveau' doit etre utilisé à la place de 'prochain_niveau'
+	var prochain_niveau = lire_prochain_niveau().get('niveau') # TODO : remplacer par 'niveau' !!!
+	var nom_niveau = SauvegardeBddPlateauxService.nom_niveau(prochain_niveau)
 	if not niveau_en_cours():
 		var enregistrement_niveau = {
-			'niveau': niveau,
+			'niveau': nom_niveau,
 			'date_debut': Time.get_unix_time_from_system(), # Timestamp
 			'date_fin': 0.,
 			'score': {},

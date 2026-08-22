@@ -25,7 +25,7 @@ func _on_nouveau_joueur_text_submitted(nom_nouveau_joueur: String) -> void:
 		nom_nouveau_joueur = ScoreService.lire_nom_anna_triche()
 		LogService.log_debug("Anna la tricheuse s'inscrit !")
 	$Marge/HBoxContainer/VBoxContainer/Marge/VBoxContainer/JoueursCampagne.get_node("nouveau_joueur").clear()
-	if not ProgressionCampagneService.ajouter_un_nouveau_joueur_pour_la_campagne(nom_nouveau_joueur):
+	if not ProgressionCampagneService.autoriser_le_nouveau_joueur_pour_la_campagne(nom_nouveau_joueur):
 		LogService.log_erreur("Erreur : Le nom *" + nom_nouveau_joueur + "* n'est pas libre")
 		$Marge/HBoxContainer/VBoxContainer/Marge/VBoxContainer/JoueursCampagne.get_node("nouveau_joueur").placeholder_text = 'Erreur !'
 	else:
