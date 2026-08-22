@@ -90,6 +90,8 @@ Infos de conceptions :
 # - $AutoStartTimer
 ```
 
+---
+
 ## 5. Consignes pour refactoriser un fichier
 
 ```text
@@ -100,3 +102,16 @@ Infos de conceptions :
 # - Ajouter des signaux si l’UI doit réagir.
 # - Ne pas modifier les signatures publiques existantes.
 ```
+
+---
+
+## 6. Vocabulaire spécifique au jeu
+
+- Un jeton est un cube de couleur qui contient une lettre pour etre reconnu par le joueur.
+- Un jeton se déplace dans une pile vide ou dans une pile qui a un espace vide en haut pour l'accueillir et s'il est posé sur un jeton de même couleurs.
+- Une pile est un ensemble de jetons empilés les uns sur les autres. Le but du jeu est de former des piles avec des jetons de la même couleur.
+- Un plateau est un ensemble de piles de jetons. Le but du jeu est de former des piles avec des jetons de la même couleur.
+- Un plateau peut se jouer avec des objectifs et des regles différentes. C'est ce que je désigne par "gameplay".
+- Un Niveau est un ensemble de plateaux. Un niveau est terminé lorsque tous les plateaux qui le composent sont résolus.
+- Un Niveau est un ensemble de plateaux dont les gameplay peuvent être différents.
+- Une campagne est un ensemble de niveaux. Une campagne est terminée lorsque tous les niveaux qui la composent sont résolus.

@@ -72,6 +72,9 @@ func nb_niveaux() -> int: # TODO : INUTILISE !
 func nom_niveau(niveau : int) -> String:
 	return 'niveau_'+str(niveau)
 
+func valeur_niveau(niveau : String) -> int:
+	return int(niveau.replace('niveau_', ''))
+
 func lire_liste_plateaux_du_niveau(niveau : int) -> Array:
 	if niveau_existe(niveau):
 		return plateau_campagne.get(nom_niveau(niveau))

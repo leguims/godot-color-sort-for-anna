@@ -1,4 +1,4 @@
-﻿extends GutTest
+extends GutTest
 
 var singleton
 
@@ -114,4 +114,3 @@ func test_ajouter_un_nouveau_coup():
 	# assert_true(singleton.ajouter_un_nouveau_coup(1, 2))
 	# var plateau_apres = singleton.lire_nombre_coups()
 	# assert_eq(plateau_apres, plateau_avant + 1)
-

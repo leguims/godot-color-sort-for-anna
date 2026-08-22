@@ -358,9 +358,9 @@ func lire_nom_niveau(niveau : int) -> String:
 func lire_niveau_longueur_realisee() -> int:
 	"Retourne le nombre de plateaux du niveau réalisé"
 	var dernier_niveau = lire_dernier_niveau()
-	if dernier_niveau and le_niveau_est_termine(dernier_niveau):
+	if dernier_niveau:
 		var lg_niveau = 0
-		for plateau in dernier_niveau.get('plateaux'):
+		for plateau in dernier_niveau.get('plateaux', []):
 			if plateau.get('statut') == 'reussi':
 				lg_niveau += 1
 		return lg_niveau
@@ -418,10 +418,9 @@ func lire_date_fin_niveau() -> float: # TODO : INUTILISE !
 func lire_ratio_reussite_niveau() -> int:
 	"Pourcentage de réussite du niveau (retourne 99 pour 99%, 15 pour 15% ...)"
 	if niveau_existe():
-		# TODO : Revoir l'algo !
 		var nb_essais  = _lire_nombre_plateaux()
 		var nb_succes = lire_niveau_longueur_realisee()
-		return roundi(100. * nb_essais / nb_essais)
+		return roundi(100. * nb_succes / nb_essais)
 	return 0
 
 ###############################################
