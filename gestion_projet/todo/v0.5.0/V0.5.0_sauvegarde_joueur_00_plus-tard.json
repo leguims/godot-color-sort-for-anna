@@ -1,6 +1,7 @@
 {
     "enregistrement_campagne": [
         {
+            "nom": "niveau_1",
             "date_debut": 1786407216.866,
             "date_fin": 0.0,
             "plateaux": [
