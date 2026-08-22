@@ -4,6 +4,24 @@ Ce fichier contient toutes les consignes destinées à GitHub Copilot pour garan
 
 ---
 
+## 0. Fichier d’instructions pour GitHub Copilot
+
+Infos Godot:
+- Version : v4.7.2-rc1
+- Executable Godot : C:\Program Files\Godot\Godot_v4.7.2-rc1_win64.exe
+- Executable Console Godot : C:\Program Files\Godot\Godot_v4.7.2-rc1_win64_console.exe
+
+Infos Git:
+- Chemin du depot : C:\Users\legui\Documents\Sources\godot\godot-csfa_next
+- Branche de travail actuelle : multi_gameplay
+
+Infos de conceptions :
+- C:\Users\legui\Documents\Sources\godot\godot-csfa_next\gestion_projet\docs\Architecture
+- Testing : GUT
+- Rules: keep logic in scripts, avoid UI in logic, prefer reproducible tests
+
+---
+
 ## 1. Règles générales pour GitHub Copilot
 
 - Respecter le pattern **API/Logic**.
@@ -56,6 +74,8 @@ Ce fichier contient toutes les consignes destinées à GitHub Copilot pour garan
     <Module>UI.gd
 ```
 
+---
+
 ## 4. Instructions pour les scènes Godot (fichier *.tscn)
 
 ```text
@@ -70,7 +90,7 @@ Ce fichier contient toutes les consignes destinées à GitHub Copilot pour garan
 # - $AutoStartTimer
 ```
 
-## Consignes pour refactoriser un fichier
+## 5. Consignes pour refactoriser un fichier
 
 ```text
 # INSTRUCTIONS POUR COPILOT
