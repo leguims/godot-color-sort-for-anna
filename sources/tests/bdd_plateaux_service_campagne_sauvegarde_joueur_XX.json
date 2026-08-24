@@ -3,11 +3,7 @@
         {
             "date_debut": 1786407216.866,
             "date_fin": 0.0,
-            "longueur_detour": 1.0,
-            "longueur_initiale": 9.0,
-            "niveau_courant": 14,
-            "niveau_debut": 10.0,
-            "niveau_fin": 18.0,
+            "niveau": "niveau_14",
             "plateaux": [
                 {
                     "coups joués": [],

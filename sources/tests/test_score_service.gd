@@ -2,12 +2,22 @@ extends GutTest
 
 var service
 var sauvegarde_joueur_initiale
+var fichier_sauvegarde_initial
 var configuration_initiale
 var tableau_scores_initial
 
+func _nettoyer_fichiers_utilisateur():
+	FichiersJsonService.remove_json_file("user://test_score_service.json")
+
+func _activer_joueur_test():
+	FichiersJsonService.write_json_file("user://test_score_service.json", SauvegardeBddJoueursService.sauvegarde_joueur)
+	assert_true(SauvegardeBddJoueursService.choisir_le_joueur("Joueur Test", "test_score_service.json"))
+
 func before_each():
+	_nettoyer_fichiers_utilisateur()
 	service = load("res://Singletons/score_service.gd").new()
 	sauvegarde_joueur_initiale = SauvegardeBddJoueursService.sauvegarde_joueur.duplicate(true)
+	fichier_sauvegarde_initial = SauvegardeBddJoueursService.fichier_sauvegarde
 	configuration_initiale = SauvegardeConfigurationService.configuration_du_jeu.duplicate(true)
 	tableau_scores_initial = SauvegardeTableauDesScoresService.liste_des_scores.duplicate(true)
 
@@ -52,11 +62,14 @@ func before_each():
 			"4": [{"nom": "A2"}]
 		}
 	}
+	_activer_joueur_test()
 
 func after_each():
 	SauvegardeBddJoueursService.sauvegarde_joueur = sauvegarde_joueur_initiale
+	SauvegardeBddJoueursService.fichier_sauvegarde = fichier_sauvegarde_initial
 	SauvegardeConfigurationService.configuration_du_jeu = configuration_initiale
 	SauvegardeTableauDesScoresService.liste_des_scores = tableau_scores_initial
+	_nettoyer_fichiers_utilisateur()
 
 func _niveau_en_cours_avec_plateau_actif() -> void:
 	var niveau = SauvegardeBddJoueursService.sauvegarde_joueur.get("enregistrement_campagne").back()
@@ -84,7 +97,7 @@ func test_mettre_a_jour_score_duree_couvre_les_seuils_de_difficulte():
 
 func test_mettre_a_jour_score_pour_victoire_retourne_une_grille_complete():
 	_level_finishes_current_level_as_won()
-	var score = service.mettre_a_jour_score_pour_victoire(8000)
+	var score = service.mettre_a_jour_score_pour_victoire()
 
 	assert_true(score.has("duree"))
 	assert_true(score.has("ratio_reussite"))
@@ -119,6 +132,7 @@ func test_mettre_a_jour_score_niveau_sans_detour_declenche_quand_le_niveau_est_p
 	var niveau = SauvegardeBddJoueursService.sauvegarde_joueur.get("enregistrement_campagne").back()
 	niveau["date_fin"] = 1700003000
 	niveau["plateaux"] = [{"nom": "D", "date_debut": 1700002010, "duree": 15000, "difficulte": 2, "statut": "reussi"}]
+	SauvegardeBddJoueursService.sauvegarde_joueur["campagne"].erase("niveau_2")
 	var result = service.mettre_a_jour_score_niveau_sans_detour()
 	assert_eq(result.get("type"), "niveau_sans_detour")
 	assert_true(result.get("points", 0) >= 0)
@@ -179,4 +193,5 @@ func _level_finishes_current_level_as_won():
 		{"nom": "A2", "date_debut": 1700002020, "duree": 8000, "difficulte": 4, "statut": "reussi"}
 	]
 	niveau["date_fin"] = 1700003000
+	SauvegardeBddJoueursService.sauvegarde_joueur["campagne"].erase("niveau_2")
 	SauvegardeBddJoueursService._enregistrer_sauvegarde_joueur()

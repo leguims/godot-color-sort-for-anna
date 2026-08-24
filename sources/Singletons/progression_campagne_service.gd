@@ -106,10 +106,10 @@ func afficher_niveau_plateau_parties():
 
 func retourner_le_niveau_le_plus_bas() -> int:
 	# Retourner le premier niveau non terminé
-	for niveau_le_plus_bas in range(0, 300):
+	for niveau_le_plus_bas in range(1, 300):
 		if not SauvegardeBddJoueursService.le_niveau_est_termine(niveau_le_plus_bas):
 			return niveau_le_plus_bas
-	return -1
+	return 0
 
 # TODO : Voir s'il faut arbitrer enter les 2 methodes : retourner_le_niveau_suivant() et lire_prochain_niveau_de_campagne()
 func retourner_le_niveau_suivant() -> int:

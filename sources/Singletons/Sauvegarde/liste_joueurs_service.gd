@@ -95,13 +95,11 @@ func supprimer_un_joueur_orphelin_de_sauvegarde(nom_joueur : String, fichier_jou
 		return false
 	if not fichier_joueur:
 		return false
-	# Vérifie que le nom est libre
 	if le_joueur_existe(nom_joueur):
-		# Crée le compte à effacer
-		var compte = {
-			'nom': nom_joueur,
-			'fichier_sauvegarde': fichier_joueur
-		}
-		liste_des_joueurs.erase(compte)
-		_enregistrer_la_liste_des_joueurs()
-	return true
+		for index in range(len(liste_des_joueurs)):
+			var joueur = liste_des_joueurs.get(index)
+			if joueur.get('nom') == nom_joueur and joueur.get('fichier_sauvegarde') == fichier_joueur:
+				liste_des_joueurs.remove_at(index)
+				_enregistrer_la_liste_des_joueurs()
+				return true
+	return false

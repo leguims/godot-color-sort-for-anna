@@ -211,8 +211,9 @@ func lire_nombre_de_niveaux_realisables() -> int:
 func le_niveau_est_termine(niveau : int) -> bool:
 	if le_joueur_existe():
 		var str_niveau = lire_nom_niveau(niveau)
-		return str_niveau not in sauvegarde_joueur.get('campagne') \
-				or sauvegarde_joueur.get('campagne').get(str_niveau).is_empty()
+		if str_niveau in sauvegarde_joueur.get('campagne') \
+				and not sauvegarde_joueur.get('campagne').get(str_niveau).is_empty():
+			return false
 	return true
 
 func la_campagne_est_terminee() -> bool:

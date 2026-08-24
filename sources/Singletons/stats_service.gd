@@ -362,7 +362,7 @@ func plateau_le_plus_galere_les_infos() -> Dictionary:
 			if niveau.get("plateaux", null) \
 				and niveau.get("date_debut") > date_debut_campagne:
 				for plateau_joue in niveau.get("plateaux"):
-					var nom_plateau = plateau_joue.get("niveau", 'inconnu')
+					var nom_plateau = plateau_joue.get("nom", 'inconnu')
 					if nom_plateau in plateaux_essais:
 						plateaux_essais[nom_plateau]['essais'] += 1
 					else:

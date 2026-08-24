@@ -108,7 +108,7 @@ func test_initialiser_le_nouveau_joueur_pour_la_campagne_cree_le_compte():
 func test_niveau_en_cours_et_la_campagne_est_terminee_sont_coherents():
 	service.choisir_le_joueur_pour_la_campagne("Alpha")
 	assert_true(SauvegardeBddJoueursService.niveau_en_cours())
-	assert_false(service.niveau_en_cours())
+	assert_true(service.niveau_en_cours())
 	assert_false(service.la_campagne_est_terminee())
 
 	SauvegardeBddJoueursService.sauvegarde_joueur["campagne"] = {}
@@ -148,23 +148,23 @@ func test_afficher_niveau_plateau_parties_ne_crashe_pas():
 	assert_true(true)
 
 func test_retourner_le_niveau_le_plus_bas_trouve_le_plus_bas_non_termine():
-	SauvegardeBddJoueursService.sauvegarde_joueur = {
+	FichiersJsonService.write_json_file("user://sauvegarde_joueur_alpha.json", {
 		"nom": "Alpha",
 		"campagne": {"niveau_2": [{"nom": "P2", "difficulte": 2, "gameplay": "CLASSIQUE"}]},
 		"enregistrement_campagne": [],
 		"plateaux_libres": {},
 		"nombre_de_parties": {}
-	}
-	SauvegardeBddJoueursService.fichier_sauvegarde = "sauvegarde_joueur_alpha.json"
-	assert_eq(service.retourner_le_niveau_le_plus_bas(), 0)
+	})
+	assert_true(service.choisir_le_joueur_pour_la_campagne("Alpha"))
+	assert_eq(service.retourner_le_niveau_le_plus_bas(), 2)
 
 func test_retourner_le_niveau_suivant_redirige_vers_le_plus_bas():
-	SauvegardeBddJoueursService.sauvegarde_joueur = {
+	FichiersJsonService.write_json_file("user://sauvegarde_joueur_alpha.json", {
 		"nom": "Alpha",
 		"campagne": {"niveau_2": [{"nom": "P2", "difficulte": 2, "gameplay": "CLASSIQUE"}]},
 		"enregistrement_campagne": [],
 		"plateaux_libres": {},
 		"nombre_de_parties": {}
-	}
-	SauvegardeBddJoueursService.fichier_sauvegarde = "sauvegarde_joueur_alpha.json"
+	})
+	assert_true(service.choisir_le_joueur_pour_la_campagne("Alpha"))
 	assert_eq(service.retourner_le_niveau_suivant(), service.retourner_le_niveau_le_plus_bas())
