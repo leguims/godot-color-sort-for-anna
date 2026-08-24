@@ -124,7 +124,7 @@ func afficher_abandonner_un_plateau():
 	await get_tree().create_timer(3.0).timeout
 	$BoutonCommencer.show()
 
-func afficher_gagner_un_plateau(duree : int) -> void:
+func afficher_gagner_un_plateau() -> void:
 	_afficher_message("Bravo!", 0.5)
 	# Attendre l'affichage du texte
 	await get_tree().create_timer(0.5).timeout

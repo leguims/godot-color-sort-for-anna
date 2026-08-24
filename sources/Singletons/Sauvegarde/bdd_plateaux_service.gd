@@ -55,25 +55,29 @@ func plateau_liste_difficulte_duplicate() -> Dictionary:
 	return plateau_campagne.duplicate(true)
 
 func niveau_min() -> int: # TODO : INUTILISE !
-	for i in range(0, 300):
+	for i in range(1, 300):
 		if niveau_existe(i):
 			return i
-	return -1
+	return 0
 
 func niveau_max() -> int: # TODO : INUTILISE !
 	for i in range(300, 0, -1):
 		if niveau_existe(i):
 			return i
-	return -1
+	return 0
 
 func nb_niveaux() -> int: # TODO : INUTILISE !
 	return len(plateau_campagne.keys())
 
 func nom_niveau(niveau : int) -> String:
-	return 'niveau_'+str(niveau)
+	if niveau:
+		return 'niveau_'+str(niveau)
+	return ""
 
 func valeur_niveau(niveau : String) -> int:
-	return int(niveau.replace('niveau_', ''))
+	if niveau:
+		return int(niveau.replace('niveau_', ''))
+	return 0
 
 func lire_liste_plateaux_du_niveau(niveau : int) -> Array:
 	if niveau_existe(niveau):

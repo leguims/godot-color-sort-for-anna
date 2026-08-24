@@ -30,7 +30,7 @@ func before_each():
 		},
 		"enregistrement_campagne": [
 			{
-				"nom": "niveau_1",
+				"niveau": "niveau_1",
 				"date_debut": 1700000000,
 				"date_fin": 1700001000,
 				"plateaux": [
@@ -41,7 +41,7 @@ func before_each():
 				]
 			},
 			{
-				"nom": "niveau_2",
+				"niveau": "niveau_2",
 				"date_debut": 1700002000,
 				"date_fin": 0,
 				"plateaux": [
@@ -73,7 +73,7 @@ func test_campagne_et_niveau_statistiques():
 	assert_true("niveau_2" in campagne)
 	assert_true("niveau_3" in campagne)
 	assert_true(historique.size() >= 1)
-	assert_eq(historique[0].get("nom"), "niveau_1")
+	assert_eq(historique[0].get("niveau"), "niveau_1")
 	assert_true("1" in SauvegardeBddJoueursService.sauvegarde_joueur.get("plateaux_libres", {}))
 	assert_true("2" in SauvegardeBddJoueursService.sauvegarde_joueur.get("plateaux_libres", {}))
 	assert_true("3" in SauvegardeBddJoueursService.sauvegarde_joueur.get("plateaux_libres", {}))
@@ -127,7 +127,7 @@ func test_statistiques_couvrent_les_branches_sans_plateaux_et_egalites():
 	# Cas avec valeurs identiques : la difficulté la plus élevée doit être retenue
 	SauvegardeBddJoueursService.sauvegarde_joueur["enregistrement_campagne"] = [
 		{
-			"nom": "niveau_1",
+			"niveau": "niveau_1",
 			"date_debut": 1700000000,
 			"date_fin": 1700001000,
 			"plateaux": [
@@ -147,7 +147,7 @@ func test_statistiques_couvrent_les_branches_sans_plateaux_et_egalites():
 	# Cas avec mêmes noms de plateau pour déclencher le chemin de doublon dans l'indexation
 	SauvegardeBddJoueursService.sauvegarde_joueur["enregistrement_campagne"] = [
 		{
-			"nom": "niveau_1",
+			"niveau": "niveau_1",
 			"date_debut": 1700000000,
 			"date_fin": 1700001000,
 			"plateaux": [
@@ -164,14 +164,14 @@ func test_statistiques_couvrent_les_branches_sans_plateaux_et_egalites():
 
 	# Cas de reset de série et de max atteint : abandon = coupure de série
 	SauvegardeBddJoueursService.sauvegarde_joueur["enregistrement_campagne"] = [
-		{"nom": "niveau_1", "date_debut": 1700000000, "date_fin": 1700001000, "plateaux": [
+		{"niveau": "niveau_1", "date_debut": 1700000000, "date_fin": 1700001000, "plateaux": [
 			{"nom": "A", "statut": "reussi"},
 			{"nom": "B", "statut": "reussi"},
 			{"nom": "C", "statut": "abandonné"},
 			{"nom": "D", "statut": "reussi"},
 			{"nom": "E", "statut": "reussi"}
 		]},
-		{"nom": "niveau_2", "date_debut": 1700002000, "date_fin": 1700003000, "plateaux": [
+		{"niveau": "niveau_2", "date_debut": 1700002000, "date_fin": 1700003000, "plateaux": [
 			{"nom": "F", "statut": "reussi"}
 		]}
 	]
@@ -185,11 +185,11 @@ func test_niveau_taux_reussite_les_infos_traite_les_branchs_fallbacks():
 	assert_true(infos.get("taux_max_lg") >= 0)
 
 	SauvegardeBddJoueursService.sauvegarde_joueur["enregistrement_campagne"] = [
-		{"nom": "niveau_1", "date_debut": 1700000000, "date_fin": 1700001000, "plateaux": [
+		{"niveau": "niveau_1", "date_debut": 1700000000, "date_fin": 1700001000, "plateaux": [
 			{"nom": "A", "date_debut": 1700000010, "duree": 10000, "difficulte": 2, "statut": "reussi"},
 			{"nom": "B", "date_debut": 1700000020, "duree": 20000, "difficulte": 5, "statut": "abandonné"}]
 		},
-		{"nom": "niveau_2", "date_debut": 1700002000, "date_fin": 1700003000, "plateaux": []}
+		{"niveau": "niveau_2", "date_debut": 1700002000, "date_fin": 1700003000, "plateaux": []}
 	]
 	var infos_2 = service.niveau_taux_reussite_les_infos()
 	assert_true(abs(infos_2.get("taux_min") - 0.5) < 0.0001)
@@ -205,7 +205,7 @@ func test_reussis_abandonnes_par_niveau_et_completion_niveau_couvrent_les_zeros(
 
 	SauvegardeBddJoueursService.sauvegarde_joueur["campagne"] = {"niveau_99": []}
 	SauvegardeBddJoueursService.sauvegarde_joueur["enregistrement_campagne"] = [
-		{"nom": "niveau_99", "date_debut": 1700000000, "date_fin": 1700001000, "plateaux": []}
+		{"niveau": "niveau_99", "date_debut": 1700000000, "date_fin": 1700001000, "plateaux": []}
 	]
 	assert_eq(service.nombre_de_plateau_reussis_abandonnes_pour_niveau("niveau_99").get("reussis"), 0)
 	assert_true(abs(service.taux_completion_niveau()) < 0.0001)

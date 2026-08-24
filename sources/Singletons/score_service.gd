@@ -1,8 +1,8 @@
 ﻿extends Node
 
-func mettre_a_jour_score_pour_victoire(duree_en_ms : int) -> Dictionary:
+func mettre_a_jour_score_pour_victoire() -> Dictionary:
 	"Calculer le score suite à une victoire (duree, ratio réussites, niveau, campagne)"
-	var score_duree = mettre_a_jour_score_duree(duree_en_ms)
+	var score_duree = mettre_a_jour_score_duree() 
 	var score_ratio_reussite = mettre_a_jour_score_ratio_reussite()
 	var score_niveau = mettre_a_jour_score_niveau()
 	var score_niveau_sans_detour = mettre_a_jour_score_niveau_sans_detour()
@@ -19,7 +19,7 @@ func mettre_a_jour_score_pour_victoire(duree_en_ms : int) -> Dictionary:
 	bonus_score_anna_damour(score_global)
 	return score_global
 
-func mettre_a_jour_score_duree(duree_en_ms : int) -> Dictionary:
+func mettre_a_jour_score_duree() -> Dictionary:
 	"Calculer le score relatif au temps"
 	var temps_reference_par_difficulte = {
 		9 : 9.,
@@ -61,7 +61,7 @@ func mettre_a_jour_score_duree(duree_en_ms : int) -> Dictionary:
 
 	var bonus_duree = 0
 	var nom_joueur = SauvegardeBddJoueursService.lire_nom_joueur()
-	var duree_en_s = duree_en_ms / 1000.
+	var duree_en_s = SauvegardeBddJoueursService.lire_duree_plateau()
 	# Score sur le ratio du temps référence/joué
 	var ratio_temps = temps_reference_en_s / duree_en_s
 	bonus_duree = roundi(100 * difficulte * ratio_temps)

@@ -42,12 +42,12 @@ func before_each():
 	FichiersJsonService.write_json_file("user://sauvegarde_joueur_alpha.json", {
 		"nom": "Alpha",
 		"campagne": {
-			"niveau_2": [{"nom": "P2", "difficulte": 2}],
-			"niveau_3": [{"nom": "P3", "difficulte": 3}]
+			"niveau_2": [{"nom": "P2", "difficulte": 2, "gameplay": "CLASSIQUE"}],
+			"niveau_3": [{"nom": "P3", "difficulte": 3, "gameplay": "DEFI_DU_GOSSE"}]
 		},
 		"enregistrement_campagne": [
-			{"nom": "niveau_1", "date_debut": 100, "date_fin": 200, "plateaux": [{"nom": "Q1", "date_debut": 110, "duree": 1000, "difficulte": 1, "statut": "reussi"}]},
-			{"nom": "niveau_2", "date_debut": 500, "date_fin": 0, "plateaux": [{"nom": "Q2", "date_debut": 510, "duree": 1500, "difficulte": 2, "statut": "en_cours"}]}
+			{"niveau": "niveau_1", "date_debut": 100, "date_fin": 200, "plateaux": [{"nom": "Q1", "date_debut": 110, "duree": 1000, "difficulte": 1, "statut": "reussi"}]},
+			{"niveau": "niveau_2", "date_debut": 500, "date_fin": 0, "plateaux": [{"nom": "Q2", "date_debut": 510, "duree": 1500, "difficulte": 2, "statut": "en_cours"}]}
 		],
 		"plateaux_libres": {"1": [{"nom": "Externe"}]},
 		"nombre_de_parties": {"2": 1}
@@ -125,7 +125,7 @@ func test_commencer_un_plateau_demarre_le_niveau_si_absent_et_abandonne_le_prece
 func test_gagner_un_plateau_emet_les_signaux_et_maj_score():
 	service.choisir_le_joueur_pour_la_campagne("Alpha")
 	var score_before = SauvegardeTableauDesScoresService.lire_score_joueur("Alpha")
-	service.gagner_un_plateau(8000)
+	service.gagner_un_plateau()
 	assert_true(progression_emitted)
 	assert_true(detail_score_received != null)
 	assert_true(detail_score_received.has("duree"))
@@ -150,7 +150,7 @@ func test_afficher_niveau_plateau_parties_ne_crashe_pas():
 func test_retourner_le_niveau_le_plus_bas_trouve_le_plus_bas_non_termine():
 	SauvegardeBddJoueursService.sauvegarde_joueur = {
 		"nom": "Alpha",
-		"campagne": {"niveau_2": [{"nom": "P2", "difficulte": 2}]},
+		"campagne": {"niveau_2": [{"nom": "P2", "difficulte": 2, "gameplay": "CLASSIQUE"}]},
 		"enregistrement_campagne": [],
 		"plateaux_libres": {},
 		"nombre_de_parties": {}
@@ -161,7 +161,7 @@ func test_retourner_le_niveau_le_plus_bas_trouve_le_plus_bas_non_termine():
 func test_retourner_le_niveau_suivant_redirige_vers_le_plus_bas():
 	SauvegardeBddJoueursService.sauvegarde_joueur = {
 		"nom": "Alpha",
-		"campagne": {"niveau_2": [{"nom": "P2", "difficulte": 2}]},
+		"campagne": {"niveau_2": [{"nom": "P2", "difficulte": 2, "gameplay": "CLASSIQUE"}]},
 		"enregistrement_campagne": [],
 		"plateaux_libres": {},
 		"nombre_de_parties": {}

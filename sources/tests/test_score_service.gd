@@ -20,12 +20,12 @@ func before_each():
 	SauvegardeBddJoueursService.sauvegarde_joueur = {
 		"nom": "Joueur Test",
 		"campagne": {
-			"niveau_2": [{"nom": "R3", "difficulte": 2}],
-			"niveau_3": [{"nom": "R1", "difficulte": 1}, {"nom": "R2", "difficulte": 2}]
+			"niveau_2": [{"nom": "R3", "difficulte": 2, "gameplay": "CLASSIQUE"}],
+			"niveau_3": [{"nom": "R1", "difficulte": 1, "gameplay": "DEFI_DU_GOSSE"}, {"nom": "R2", "difficulte": 2, "gameplay": "DEFI_DU_BOSS"}]
 		},
 		"enregistrement_campagne": [
 			{
-				"nom": "niveau_1",
+				"niveau": "niveau_1",
 				"date_debut": 1700000000,
 				"date_fin": 1700001000,
 				"plateaux": [
@@ -36,7 +36,7 @@ func before_each():
 				]
 			},
 			{
-				"nom": "niveau_2",
+				"niveau": "niveau_2",
 				"date_debut": 1700002000,
 				"date_fin": 0,
 				"plateaux": [
@@ -67,7 +67,7 @@ func _niveau_en_cours_avec_plateau_actif() -> void:
 	SauvegardeBddJoueursService._enregistrer_sauvegarde_joueur()
 
 func test_mettre_a_jour_score_duree_et_ratio_reussite_sont_calcules():
-	var score_duree = service.mettre_a_jour_score_duree(8000)
+	var score_duree = service.mettre_a_jour_score_duree()
 	assert_eq(score_duree.get("type"), "duree")
 	assert_true(score_duree.get("points", 0) >= 0)
 
@@ -78,7 +78,7 @@ func test_mettre_a_jour_score_duree_et_ratio_reussite_sont_calcules():
 func test_mettre_a_jour_score_duree_couvre_les_seuils_de_difficulte():
 	for diff in [5, 9, 15, 30, 55, 75, 90, 120]:
 		_set_last_plateau_difficulte(diff)
-		var score = service.mettre_a_jour_score_duree(8000)
+		var score = service.mettre_a_jour_score_duree()
 		assert_eq(score.get("type"), "duree")
 		assert_true(score.get("points", 0) >= 0)
 

@@ -6,8 +6,6 @@ extends Node
 
 class_name Campagne
 
-var heure_debut_en_ms : int
-var duree_en_ms : int
 enum Gameplay {
 	CLASSIQUE,
 	MEMOIRE,
@@ -53,7 +51,6 @@ func _lancer_plateau_de_campagne(plateau : String) -> void:
 		i_gameplay.commencer_un_nouveau_plateau(plateau)
 		AudioService.son_commencer_un_plateau()
 		AudioService.jouer_la_musique()
-		heure_debut_en_ms = Time.get_ticks_msec() # TODO : statistiques !
 	else:
 		_on_classique_plateau_invalide()
 
@@ -62,8 +59,7 @@ func _on_classique_plateau_invalide() -> void:
 	LogService.log_erreur("_on_classique_plateau_invalide pour la campagne IMPOSSIBLE ! WTF !")
 
 func _on_classique_victoire() -> void:
-	duree_en_ms = Time.get_ticks_msec() - heure_debut_en_ms # TODO : statistiques !
-	ProgressionCampagneService.gagner_un_plateau(duree_en_ms)
+	ProgressionCampagneService.gagner_un_plateau()
 	$MenuCampagne.show()
 	if ProgressionCampagneService.la_campagne_est_terminee():
 		$MenuCampagne.afficher_fin_campagne()
@@ -71,7 +67,7 @@ func _on_classique_victoire() -> void:
 		enregistrer_longueur_max_plateaux_pour_menu()
 		$MenuCampagne.afficher_fin_niveau()
 	else:
-		$MenuCampagne.afficher_gagner_un_plateau(roundi(duree_en_ms / 1000.0))
+		$MenuCampagne.afficher_gagner_un_plateau()
 	AudioService.son_gagner_un_plateau()
 	AudioService.arreter_la_musique()
 

@@ -92,7 +92,7 @@ func taux_completion_niveau() -> float:
 	# Consulter le dernier niveau de campagne enregistré
 	if SauvegardeBddJoueursService.sauvegarde_joueur.get("enregistrement_campagne", null):
 		var niveau = SauvegardeBddJoueursService.sauvegarde_joueur.get('enregistrement_campagne').back()
-		var nom_niveau = niveau.get("nom", "")
+		var nom_niveau = niveau.get("niveau", "")
 		if nom_niveau:
 			var npra_pour_niveau = nombre_de_plateau_reussis_abandonnes_pour_niveau(nom_niveau)
 			var campagne_niveau = SauvegardeBddJoueursService.sauvegarde_joueur.get('campagne').get(nom_niveau, [])
@@ -189,7 +189,7 @@ func nombre_de_plateau_reussis_abandonnes_pour_niveau(nom_niveau : String) -> Di
 	if SauvegardeBddJoueursService.sauvegarde_joueur.get("enregistrement_campagne", null):
 		for niveau in SauvegardeBddJoueursService.sauvegarde_joueur.get("enregistrement_campagne"):
 			# Comptabiliser les plateaux reussis
-			if niveau.get("nom") == nom_niveau:
+			if niveau.get("niveau", "") == nom_niveau:
 				if niveau.get("plateaux", null):
 					for plateau_joue in niveau.get("plateaux"):
 						if plateau_joue.get("date_debut") > date_debut_campagne:
@@ -225,7 +225,7 @@ func longueur_max_niveau_termine() -> int:
 				and niveau.get("date_fin", null) \
 				and niveau.get("date_debut") > date_debut_campagne:
 				# Longueur niveau
-				var nom_niveau = niveau.get("nom")
+				var nom_niveau = niveau.get("niveau", "")
 				var npra_pour_niveau = nombre_de_plateau_reussis_abandonnes_pour_niveau(nom_niveau)
 				var longueur_niveau: int = npra_pour_niveau.get("reussis", 0)
 				if longueur_niveau > lg_max_niveau_termine:
@@ -247,7 +247,7 @@ func niveau_taux_reussite_les_infos() -> Dictionary:
 	# Parcourir la liste des enregistrements de la campagne
 	if SauvegardeBddJoueursService.sauvegarde_joueur.get("enregistrement_campagne", null):
 		for niveau in SauvegardeBddJoueursService.sauvegarde_joueur.get("enregistrement_campagne"):
-			var nom_niveau = niveau.get("nom")
+			var nom_niveau = niveau.get("niveau", "")
 			var npra_pour_niveau = nombre_de_plateau_reussis_abandonnes_pour_niveau(nom_niveau)
 			var reussis = npra_pour_niveau.get("reussis", 0)
 			var abandonnes = npra_pour_niveau.get("abandonnes", 0)
@@ -362,7 +362,7 @@ func plateau_le_plus_galere_les_infos() -> Dictionary:
 			if niveau.get("plateaux", null) \
 				and niveau.get("date_debut") > date_debut_campagne:
 				for plateau_joue in niveau.get("plateaux"):
-					var nom_plateau = plateau_joue.get("nom", 'inconnu')
+					var nom_plateau = plateau_joue.get("niveau", 'inconnu')
 					if nom_plateau in plateaux_essais:
 						plateaux_essais[nom_plateau]['essais'] += 1
 					else:

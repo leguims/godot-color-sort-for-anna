@@ -73,12 +73,12 @@ func commencer_un_plateau(pourcentage_longueur : float) -> void:
 	SauvegardeBddJoueursService.commencer_un_plateau()
 	LogService.log_debug("Nombre de parties = ", SauvegardeBddJoueursService.lire_nombre_de_parties_joueur_pour_difficulte_courante())
 
-func gagner_un_plateau(duree_en_ms : int) -> void:
+func gagner_un_plateau() -> void:
 	# Valider le plateau courant (effacer de la liste des plateaux jouables)
-	SauvegardeBddJoueursService.gagner_un_plateau(duree_en_ms)
+	SauvegardeBddJoueursService.gagner_un_plateau()
 
 	# Calculer le score du plateau et l'enregistrer dans l'historique du niveau
-	var detail_score = ScoreService.mettre_a_jour_score_pour_victoire(duree_en_ms)
+	var detail_score = ScoreService.mettre_a_jour_score_pour_victoire()
 	detail_score_plateau.emit(detail_score)
 
 	# Emmettre un signal de mise à jour du niveau
@@ -94,7 +94,7 @@ func abandonner_un_plateau() -> void:
 func initialiser_un_nouveau_niveau(pourcentage_longueur : float):
 		# TODO : supprimer les notions de pourcentage pour le demarrage du niveau
 		# TODO : gerer le choix du niveau de campagne
-		SauvegardeBddJoueursService.initialiser_un_nouveau_niveau(2)
+		SauvegardeBddJoueursService.initialiser_un_nouveau_niveau(pourcentage_longueur)
 
 func afficher_niveau_plateau_parties():
 	LogService.log_debug("[Campagne] Niveau = ", str(SauvegardeBddJoueursService.lire_niveau_joueur()),
@@ -111,7 +111,7 @@ func retourner_le_niveau_le_plus_bas() -> int:
 			return niveau_le_plus_bas
 	return -1
 
-# TODO : Voir s'il faut arbitrer enter les 2 methodes : retourner_le_niveau_suivant() et lire_prochain_niveau()
+# TODO : Voir s'il faut arbitrer enter les 2 methodes : retourner_le_niveau_suivant() et lire_prochain_niveau_de_campagne()
 func retourner_le_niveau_suivant() -> int:
 	# Parcourir le niveau supérieur
 	return retourner_le_niveau_le_plus_bas()
