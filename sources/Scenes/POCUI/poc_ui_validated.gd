@@ -169,6 +169,27 @@ func _jouer(root: Control) -> void:
 	header.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	masque_header.add_child(header)
 
+	# La flèche appartenait aux pixels de la maquette, sans Control ni
+	# navigation associés. La décision produit la retire en réemployant un
+	# fragment voisin du même décor statique, sans altérer l'asset source.
+	var decor_sans_retour := TextureRect.new()
+	decor_sans_retour.name = "MasqueFlecheRetourSupprimee"
+	decor_sans_retour.position = Vector2(58, 4)
+	decor_sans_retour.size = Vector2(60, 65)
+	var fragment_decor := AtlasTexture.new()
+	fragment_decor.atlas = REFERENCE_JOUER
+	fragment_decor.region = Rect2(3, 48, 48, 53)
+	decor_sans_retour.texture = fragment_decor
+	decor_sans_retour.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
+	decor_sans_retour.stretch_mode = TextureRect.STRETCH_SCALE
+	var fondu_bords := Shader.new()
+	fondu_bords.code = "shader_type canvas_item;\nvoid fragment() {\n\tvec4 pixel = texture(TEXTURE, UV);\n\tvec2 uv_local = (UV - REGION_RECT.xy) / REGION_RECT.zw;\n\tfloat bord = min(min(uv_local.x, 1.0 - uv_local.x), min(uv_local.y, 1.0 - uv_local.y));\n\tpixel.a *= smoothstep(0.0, 0.16, bord);\n\tCOLOR = pixel;\n}"
+	var materiau_fondu := ShaderMaterial.new()
+	materiau_fondu.shader = fondu_bords
+	decor_sans_retour.material = materiau_fondu
+	decor_sans_retour.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	root.add_child(decor_sans_retour)
+
 
 func _draw_players_icon(parent: Control, position_: Vector2, couleur: Color) -> void:
 	_panel(parent, Rect2(position_ + Vector2(2, 1), Vector2(7, 7)), couleur, 4)
