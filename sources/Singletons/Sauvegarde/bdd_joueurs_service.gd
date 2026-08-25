@@ -113,7 +113,7 @@ func ajouter_un_nouveau_joueur(nom_nouveau_joueur : String, nom_nouveau_fichier 
 	# Vérifie que le nom est libre
 	if not nom_nouveau_joueur:
 		return false
-	if not nom_nouveau_fichier or FichiersJsonService.json_file_exists(nom_nouveau_fichier):
+	if not nom_nouveau_fichier or FichiersJsonService.json_file_exists("user://" + nom_nouveau_fichier):
 		return false
 	# Crée le compte et l'enregistre
 	sauvegarde_joueur = {

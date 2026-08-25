@@ -16,7 +16,7 @@ func _ready() -> void:
 
 func _initialiser_la_liste_des_joueurs() -> void:
 	var lecture_liste_des_joueurs = FichiersJsonService.read_json_file("user://liste_des_joueurs.json")
-	if lecture_liste_des_joueurs:
+	if lecture_liste_des_joueurs != null:
 		liste_des_joueurs = lecture_liste_des_joueurs.duplicate(true)
 		LogService.log_debug("liste_des_joueurs = ", liste_des_joueurs)
 	else:
@@ -87,7 +87,7 @@ func supprimer_un_joueur(nom_joueur : String, fichier_joueur : String) -> bool:
 	var succes: bool = supprimer_un_joueur_orphelin_de_sauvegarde(nom_joueur, fichier_joueur)
 	if succes:
 		# Effacer le fichier
-		FichiersJsonService.remove_json_file(fichier_joueur)
+		FichiersJsonService.remove_json_file("user://" + fichier_joueur)
 	return succes
 
 func supprimer_un_joueur_orphelin_de_sauvegarde(nom_joueur : String, fichier_joueur : String) -> bool:
