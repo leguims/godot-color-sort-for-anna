@@ -67,14 +67,14 @@ func _ready() -> void:
 	pcs.fin_niveau.connect(_on_progression_campagne_service_fin_niveau)
 
 	# Creation compte initial 'Alain Konu'
-	if not FichiersJsonService.json_file_exists("user://sauvegarde_joueur_00.json"):
+	if not FichiersJsonService.json_file_exists("sauvegarde_joueur_00.json"):
 		ajouter_un_nouveau_joueur('Alain Konu', 'sauvegarde_joueur_00.json')
 
 func _on_progression_campagne_service_fin_niveau():
 	_terminer_niveau()
 
 func _lire_sauvegarde_joueur(fichier : String) -> bool:
-	var lecture_sauvegarde_joueur = FichiersJsonService.read_json_file("user://" + fichier)
+	var lecture_sauvegarde_joueur = FichiersJsonService.read_json_file(fichier)
 	if lecture_sauvegarde_joueur:
 		fichier_sauvegarde = fichier
 		sauvegarde_joueur = lecture_sauvegarde_joueur.duplicate(true)
@@ -82,7 +82,7 @@ func _lire_sauvegarde_joueur(fichier : String) -> bool:
 		return true
 	else:
 		fichier_sauvegarde = ""
-		LogService.log_erreur("Erreur de lecture de la sauvegarde du joueur actuel (user://" + fichier + ")")
+		LogService.log_erreur("Erreur de lecture de la sauvegarde du joueur actuel (", fichier, ")")
 	return false
 
 func _print_bdd_joueurs() -> void:
@@ -96,7 +96,7 @@ func _print_bdd_joueurs() -> void:
 
 func _enregistrer_sauvegarde_joueur() -> void:
 	if fichier_sauvegarde:
-		FichiersJsonService.write_json_file("user://" + fichier_sauvegarde, sauvegarde_joueur.duplicate(true))
+		FichiersJsonService.write_json_file(fichier_sauvegarde, sauvegarde_joueur.duplicate(true))
 		LogService.log_debug("Progression sauvegardée")
 
 func le_joueur_existe() -> bool:
@@ -113,7 +113,7 @@ func ajouter_un_nouveau_joueur(nom_nouveau_joueur : String, nom_nouveau_fichier 
 	# Vérifie que le nom est libre
 	if not nom_nouveau_joueur:
 		return false
-	if not nom_nouveau_fichier or FichiersJsonService.json_file_exists("user://" + nom_nouveau_fichier):
+	if not nom_nouveau_fichier or FichiersJsonService.json_file_exists(nom_nouveau_fichier):
 		return false
 	# Crée le compte et l'enregistre
 	sauvegarde_joueur = {

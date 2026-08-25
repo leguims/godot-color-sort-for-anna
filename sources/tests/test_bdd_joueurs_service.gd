@@ -1,30 +1,23 @@
 extends GutTest
 
 var singleton
+const RACINE_TEST = "tests/test_bdd_joueurs_service"
 
 func _nettoyer_fichiers_utilisateur():
-	FichiersJsonService.remove_json_file("user://test_sauvegarde_joueur_XX.json")
-	FichiersJsonService.remove_json_file("user://sauvegarde_joueur_00.json")
-	FichiersJsonService.remove_json_file("user://liste_des_joueurs.json")
-	FichiersJsonService.remove_json_file("user://scores.json")
+	FichiersJsonService.remove_json_file("test_sauvegarde_joueur_XX.json")
+	FichiersJsonService.remove_json_file("sauvegarde_joueur_00.json")
+	FichiersJsonService.remove_json_file("liste_des_joueurs.json")
+	FichiersJsonService.remove_json_file("scores.json")
 
 func before_all():
+	FichiersJsonService.definir_racine_utilisateur(RACINE_TEST)
 	_nettoyer_fichiers_utilisateur()
-
-	# Charger le singleton
-	singleton = load("res://Singletons/Sauvegarde/bdd_joueurs_service.gd").new()
-
-	# Charger ton fichier de sauvegarde réel dans user://
-	var contenu = FichiersJsonService.read_json_file("res://tests/bdd_plateaux_service_campagne_sauvegarde_joueur_XX.json")
-	FichiersJsonService.write_json_file("user://test_sauvegarde_joueur_XX.json", contenu)
-
-	# Lire la sauvegarde dans le singleton
-	singleton._lire_sauvegarde_joueur("test_sauvegarde_joueur_XX.json")
 
 func before_each():
 	_nettoyer_fichiers_utilisateur()
+	singleton = add_child_autofree(load("res://Singletons/Sauvegarde/bdd_joueurs_service.gd").new())
 	var contenu = FichiersJsonService.read_json_file("res://tests/bdd_plateaux_service_campagne_sauvegarde_joueur_XX.json")
-	FichiersJsonService.write_json_file("user://test_sauvegarde_joueur_XX.json", contenu)
+	FichiersJsonService.write_json_file("test_sauvegarde_joueur_XX.json", contenu)
 	singleton._lire_sauvegarde_joueur("test_sauvegarde_joueur_XX.json")
 
 func after_each():
@@ -32,6 +25,7 @@ func after_each():
 
 func after_all():
 	_nettoyer_fichiers_utilisateur()
+	FichiersJsonService.reinitialiser_racine_utilisateur()
 
 
 # ---------------------------------------------------------

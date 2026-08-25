@@ -1,19 +1,18 @@
 extends GutTest
 
 var service
-var scores_avant_tests_existent := false
-var scores_avant_tests = null
+const RACINE_TEST = "tests/test_tableau_scores_service"
 
 func _nettoyer_fichier_scores() -> void:
-	FichiersJsonService.remove_json_file("user://scores.json")
+	FichiersJsonService.remove_json_file("scores.json")
 
 func _lire_fichier_scores():
-	return FichiersJsonService.read_json_file("user://scores.json")
+	return FichiersJsonService.read_json_file("scores.json")
 
 func _creer_service(scores = null):
 	_nettoyer_fichier_scores()
 	if scores != null:
-		FichiersJsonService.write_json_file("user://scores.json", scores)
+		FichiersJsonService.write_json_file("scores.json", scores)
 	service = add_child_autofree(load("res://Singletons/Sauvegarde/tableau_scores_service.gd").new())
 	return service
 
@@ -28,18 +27,13 @@ func _assert_liste_scores_eq(liste_actuelle : Array, liste_attendue : Array) -> 
 	for index in range(liste_attendue.size()):
 		_assert_score_eq(liste_actuelle[index], liste_attendue[index])
 
-func before_all():
-	scores_avant_tests_existent = FichiersJsonService.json_file_exists("user://scores.json")
-	if scores_avant_tests_existent:
-		scores_avant_tests = _lire_fichier_scores()
+func before_each():
+	FichiersJsonService.definir_racine_utilisateur(RACINE_TEST)
+	_nettoyer_fichier_scores()
 
 func after_each():
 	_nettoyer_fichier_scores()
-
-func after_all():
-	_nettoyer_fichier_scores()
-	if scores_avant_tests_existent and scores_avant_tests != null:
-		FichiersJsonService.write_json_file("user://scores.json", scores_avant_tests)
+	FichiersJsonService.reinitialiser_racine_utilisateur()
 
 func test_ready_cree_le_fichier_initial_si_absent():
 	_creer_service()
@@ -51,7 +45,7 @@ func test_ready_cree_le_fichier_initial_si_absent():
 		"score_txt": "0"
 	}
 
-	assert_true(FichiersJsonService.json_file_exists("user://scores.json"))
+	assert_true(FichiersJsonService.json_file_exists("scores.json"))
 	_assert_liste_scores_eq(service.liste_des_scores, [score_initial])
 	_assert_liste_scores_eq(_lire_fichier_scores(), [score_initial])
 

@@ -1,24 +1,23 @@
 extends GutTest
 
 var service
-var liste_avant_tests_existe := false
-var liste_avant_tests = null
+const RACINE_TEST = "tests/test_liste_joueurs_service"
 
 func _nettoyer_fichiers_utilisateur() -> void:
-	FichiersJsonService.remove_json_file("user://liste_des_joueurs.json")
-	FichiersJsonService.remove_json_file("user://test_liste_joueurs_00.json")
-	FichiersJsonService.remove_json_file("user://test_liste_joueurs_01.json")
-	FichiersJsonService.remove_json_file("user://test_liste_joueurs_02.json")
-	FichiersJsonService.remove_json_file("user://test_liste_joueurs_07.json")
-	FichiersJsonService.remove_json_file("user://test_liste_joueurs_08.json")
+	FichiersJsonService.remove_json_file("liste_des_joueurs.json")
+	FichiersJsonService.remove_json_file("test_liste_joueurs_00.json")
+	FichiersJsonService.remove_json_file("test_liste_joueurs_01.json")
+	FichiersJsonService.remove_json_file("test_liste_joueurs_02.json")
+	FichiersJsonService.remove_json_file("test_liste_joueurs_07.json")
+	FichiersJsonService.remove_json_file("test_liste_joueurs_08.json")
 
 func _lire_liste_fichier():
-	return FichiersJsonService.read_json_file("user://liste_des_joueurs.json")
+	return FichiersJsonService.read_json_file("liste_des_joueurs.json")
 
 func _creer_service(liste_joueurs = null):
 	_nettoyer_fichiers_utilisateur()
 	if liste_joueurs != null:
-		FichiersJsonService.write_json_file("user://liste_des_joueurs.json", liste_joueurs)
+		FichiersJsonService.write_json_file("liste_des_joueurs.json", liste_joueurs)
 	service = add_child_autofree(load("res://Singletons/Sauvegarde/liste_joueurs_service.gd").new())
 	return service
 
@@ -32,18 +31,13 @@ func _assert_liste_joueurs_eq(liste_actuelle : Array, liste_attendue : Array) ->
 	for index in range(liste_attendue.size()):
 		_assert_joueur_eq(liste_actuelle[index], liste_attendue[index])
 
-func before_all():
-	liste_avant_tests_existe = FichiersJsonService.json_file_exists("user://liste_des_joueurs.json")
-	if liste_avant_tests_existe:
-		liste_avant_tests = _lire_liste_fichier()
+func before_each():
+	FichiersJsonService.definir_racine_utilisateur(RACINE_TEST)
+	_nettoyer_fichiers_utilisateur()
 
 func after_each():
 	_nettoyer_fichiers_utilisateur()
-
-func after_all():
-	_nettoyer_fichiers_utilisateur()
-	if liste_avant_tests_existe and liste_avant_tests != null:
-		FichiersJsonService.write_json_file("user://liste_des_joueurs.json", liste_avant_tests)
+	FichiersJsonService.reinitialiser_racine_utilisateur()
 
 func test_ready_garde_la_liste_par_defaut_si_le_fichier_est_absent():
 	_creer_service()
@@ -55,7 +49,7 @@ func test_ready_garde_la_liste_par_defaut_si_le_fichier_est_absent():
 	}]
 
 	_assert_liste_joueurs_eq(service.liste_des_joueurs, liste_par_defaut)
-	assert_false(FichiersJsonService.json_file_exists("user://liste_des_joueurs.json"))
+	assert_false(FichiersJsonService.json_file_exists("liste_des_joueurs.json"))
 
 func test_ready_charge_la_liste_des_joueurs_depuis_le_fichier():
 	var liste = [
@@ -165,19 +159,19 @@ func test_supprimer_un_joueur_retourne_false_si_le_joueur_ne_peut_pas_etre_suppr
 	_creer_service([
 		{"indice": 0, "nom": "Alice", "fichier_sauvegarde": "test_liste_joueurs_00.json"}
 	])
-	FichiersJsonService.write_json_file("user://test_liste_joueurs_00.json", {"nom": "Alice"})
+	FichiersJsonService.write_json_file("test_liste_joueurs_00.json", {"nom": "Alice"})
 
 	assert_false(service.supprimer_un_joueur("Bob", "test_liste_joueurs_00.json"))
 	assert_true(service.le_joueur_existe("Alice"))
-	assert_true(FichiersJsonService.json_file_exists("user://test_liste_joueurs_00.json"))
+	assert_true(FichiersJsonService.json_file_exists("test_liste_joueurs_00.json"))
 
 func test_supprimer_un_joueur_supprime_aussi_le_fichier_de_sauvegarde_du_joueur():
 	_creer_service([
 		{"indice": 0, "nom": "Alice", "fichier_sauvegarde": "test_liste_joueurs_00.json"}
 	])
-	FichiersJsonService.write_json_file("user://test_liste_joueurs_00.json", {"nom": "Alice"})
+	FichiersJsonService.write_json_file("test_liste_joueurs_00.json", {"nom": "Alice"})
 
-	assert_true(FichiersJsonService.json_file_exists("user://test_liste_joueurs_00.json"))
+	assert_true(FichiersJsonService.json_file_exists("test_liste_joueurs_00.json"))
 	assert_true(service.supprimer_un_joueur("Alice", "test_liste_joueurs_00.json"))
 	assert_false(service.le_joueur_existe("Alice"))
-	assert_false(FichiersJsonService.json_file_exists("user://test_liste_joueurs_00.json"))
+	assert_false(FichiersJsonService.json_file_exists("test_liste_joueurs_00.json"))

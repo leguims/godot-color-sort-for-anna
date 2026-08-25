@@ -5,21 +5,23 @@ var initial_liste_joueurs
 var initial_bdd_joueur
 var initial_bdd_fichier
 var initial_tableau_scores
+const RACINE_TEST = "tests/test_progression_campagne_service"
 
 var progression_emitted = false
 var detail_score_received = null
 
 func _nettoyer_fichiers_utilisateur():
-	FichiersJsonService.remove_json_file("user://sauvegarde_joueur_alpha.json")
-	FichiersJsonService.remove_json_file("user://sauvegarde_joueur_beta.json")
-	FichiersJsonService.remove_json_file("user://sauvegarde_joueur_gamma.json")
-	FichiersJsonService.remove_json_file("user://sauvegarde_joueur_00.json")
-	FichiersJsonService.remove_json_file("user://liste_des_joueurs.json")
-	FichiersJsonService.remove_json_file("user://scores.json")
+	FichiersJsonService.remove_json_file("sauvegarde_joueur_alpha.json")
+	FichiersJsonService.remove_json_file("sauvegarde_joueur_beta.json")
+	FichiersJsonService.remove_json_file("sauvegarde_joueur_gamma.json")
+	FichiersJsonService.remove_json_file("sauvegarde_joueur_00.json")
+	FichiersJsonService.remove_json_file("liste_des_joueurs.json")
+	FichiersJsonService.remove_json_file("scores.json")
 
 func before_each():
+	FichiersJsonService.definir_racine_utilisateur(RACINE_TEST)
 	_nettoyer_fichiers_utilisateur()
-	service = load("res://Singletons/progression_campagne_service.gd").new()
+	service = add_child_autofree(load("res://Singletons/progression_campagne_service.gd").new())
 	initial_liste_joueurs = SauvegardeListeJoueursService.liste_des_joueurs.duplicate(true)
 	initial_bdd_joueur = SauvegardeBddJoueursService.sauvegarde_joueur.duplicate(true)
 	initial_bdd_fichier = SauvegardeBddJoueursService.fichier_sauvegarde
@@ -39,7 +41,7 @@ func before_each():
 	SauvegardeBddJoueursService.fichier_sauvegarde = ""
 	SauvegardeBddJoueursService.sauvegarde_joueur = {}
 
-	FichiersJsonService.write_json_file("user://sauvegarde_joueur_alpha.json", {
+	FichiersJsonService.write_json_file("sauvegarde_joueur_alpha.json", {
 		"nom": "Alpha",
 		"campagne": {
 			"niveau_2": [{"nom": "P2", "difficulte": 2, "gameplay": "CLASSIQUE"}],
@@ -52,7 +54,7 @@ func before_each():
 		"plateaux_libres": {"1": [{"nom": "Externe"}]},
 		"nombre_de_parties": {"2": 1}
 	})
-	FichiersJsonService.write_json_file("user://sauvegarde_joueur_beta.json", {
+	FichiersJsonService.write_json_file("sauvegarde_joueur_beta.json", {
 		"nom": "Beta",
 		"campagne": {},
 		"enregistrement_campagne": [],
@@ -69,6 +71,7 @@ func after_each():
 	SauvegardeBddJoueursService.fichier_sauvegarde = initial_bdd_fichier
 	SauvegardeTableauDesScoresService.liste_des_scores = initial_tableau_scores.duplicate(true)
 	_nettoyer_fichiers_utilisateur()
+	FichiersJsonService.reinitialiser_racine_utilisateur()
 
 func _on_progression_niveau():
 	progression_emitted = true
@@ -86,7 +89,7 @@ func test_choisir_le_joueur_pour_la_campagne_charge_un_joueur_existant():
 	assert_eq(SauvegardeBddJoueursService.fichier_sauvegarde, "sauvegarde_joueur_alpha.json")
 
 func test_choisir_et_corriger_le_joueur_supprime_un_joueur_orphelin():
-	FichiersJsonService.write_json_file("user://sauvegarde_joueur_alpha.json", {"nom": "Autre", "campagne": {}, "enregistrement_campagne": [], "plateaux_libres": {}, "nombre_de_parties": {}})
+	FichiersJsonService.write_json_file("sauvegarde_joueur_alpha.json", {"nom": "Autre", "campagne": {}, "enregistrement_campagne": [], "plateaux_libres": {}, "nombre_de_parties": {}})
 	assert_false(service._choisir_et_corriger_le_joueur("Alpha"))
 	assert_false(SauvegardeListeJoueursService.le_joueur_existe("Alpha"))
 
@@ -148,7 +151,7 @@ func test_afficher_niveau_plateau_parties_ne_crashe_pas():
 	assert_true(true)
 
 func test_retourner_le_niveau_le_plus_bas_trouve_le_plus_bas_non_termine():
-	FichiersJsonService.write_json_file("user://sauvegarde_joueur_alpha.json", {
+	FichiersJsonService.write_json_file("sauvegarde_joueur_alpha.json", {
 		"nom": "Alpha",
 		"campagne": {"niveau_2": [{"nom": "P2", "difficulte": 2, "gameplay": "CLASSIQUE"}]},
 		"enregistrement_campagne": [],
@@ -159,7 +162,7 @@ func test_retourner_le_niveau_le_plus_bas_trouve_le_plus_bas_non_termine():
 	assert_eq(service.retourner_le_niveau_le_plus_bas(), 2)
 
 func test_retourner_le_niveau_suivant_redirige_vers_le_plus_bas():
-	FichiersJsonService.write_json_file("user://sauvegarde_joueur_alpha.json", {
+	FichiersJsonService.write_json_file("sauvegarde_joueur_alpha.json", {
 		"nom": "Alpha",
 		"campagne": {"niveau_2": [{"nom": "P2", "difficulte": 2, "gameplay": "CLASSIQUE"}]},
 		"enregistrement_campagne": [],

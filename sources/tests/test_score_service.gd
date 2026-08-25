@@ -5,15 +5,17 @@ var sauvegarde_joueur_initiale
 var fichier_sauvegarde_initial
 var configuration_initiale
 var tableau_scores_initial
+const RACINE_TEST = "tests/test_score_service"
 
 func _nettoyer_fichiers_utilisateur():
-	FichiersJsonService.remove_json_file("user://test_score_service.json")
+	FichiersJsonService.remove_json_file("test_score_service.json")
 
 func _activer_joueur_test():
-	FichiersJsonService.write_json_file("user://test_score_service.json", SauvegardeBddJoueursService.sauvegarde_joueur)
+	FichiersJsonService.write_json_file("test_score_service.json", SauvegardeBddJoueursService.sauvegarde_joueur)
 	assert_true(SauvegardeBddJoueursService.choisir_le_joueur("Joueur Test", "test_score_service.json"))
 
 func before_each():
+	FichiersJsonService.definir_racine_utilisateur(RACINE_TEST)
 	_nettoyer_fichiers_utilisateur()
 	service = load("res://Singletons/score_service.gd").new()
 	sauvegarde_joueur_initiale = SauvegardeBddJoueursService.sauvegarde_joueur.duplicate(true)
@@ -70,6 +72,7 @@ func after_each():
 	SauvegardeConfigurationService.configuration_du_jeu = configuration_initiale
 	SauvegardeTableauDesScoresService.liste_des_scores = tableau_scores_initial
 	_nettoyer_fichiers_utilisateur()
+	FichiersJsonService.reinitialiser_racine_utilisateur()
 
 func _niveau_en_cours_avec_plateau_actif() -> void:
 	var niveau = SauvegardeBddJoueursService.sauvegarde_joueur.get("enregistrement_campagne").back()

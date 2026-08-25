@@ -1,12 +1,7 @@
 extends GutTest
 
 var service
-var configuration_avant_tests_existe := false
-var configuration_avant_tests = null
-var liste_joueurs_avant_tests_existe := false
-var liste_joueurs_avant_tests = null
-var scores_avant_tests_existent := false
-var scores_avant_tests = null
+const RACINE_TEST = "tests/test_configuration_service"
 
 var configuration_initiale
 var liste_joueurs_initiale
@@ -15,14 +10,14 @@ var sauvegarde_joueur_initiale
 var fichier_sauvegarde_initial
 
 func _nettoyer_fichiers_utilisateur() -> void:
-	FichiersJsonService.remove_json_file("user://configuration_du_jeu.json")
-	FichiersJsonService.remove_json_file("user://sauvegarde.json")
-	FichiersJsonService.remove_json_file("user://liste_des_joueurs.json")
-	FichiersJsonService.remove_json_file("user://scores.json")
-	FichiersJsonService.remove_json_file("user://test_configuration_joueur_00.json")
+	FichiersJsonService.remove_json_file("configuration_du_jeu.json")
+	FichiersJsonService.remove_json_file("sauvegarde.json")
+	FichiersJsonService.remove_json_file("liste_des_joueurs.json")
+	FichiersJsonService.remove_json_file("scores.json")
+	FichiersJsonService.remove_json_file("test_configuration_joueur_00.json")
 
 func _lire_configuration_fichier():
-	return FichiersJsonService.read_json_file("user://configuration_du_jeu.json")
+	return FichiersJsonService.read_json_file("configuration_du_jeu.json")
 
 func _configuration_par_defaut() -> Dictionary:
 	return {
@@ -36,22 +31,12 @@ func _configuration_par_defaut() -> Dictionary:
 func _creer_service(configuration = null):
 	_nettoyer_fichiers_utilisateur()
 	if configuration != null:
-		FichiersJsonService.write_json_file("user://configuration_du_jeu.json", configuration)
+		FichiersJsonService.write_json_file("configuration_du_jeu.json", configuration)
 	service = add_child_autofree(load("res://Singletons/Sauvegarde/configuration_service.gd").new())
 	return service
 
-func before_all():
-	configuration_avant_tests_existe = FichiersJsonService.json_file_exists("user://configuration_du_jeu.json")
-	if configuration_avant_tests_existe:
-		configuration_avant_tests = _lire_configuration_fichier()
-	liste_joueurs_avant_tests_existe = FichiersJsonService.json_file_exists("user://liste_des_joueurs.json")
-	if liste_joueurs_avant_tests_existe:
-		liste_joueurs_avant_tests = FichiersJsonService.read_json_file("user://liste_des_joueurs.json")
-	scores_avant_tests_existent = FichiersJsonService.json_file_exists("user://scores.json")
-	if scores_avant_tests_existent:
-		scores_avant_tests = FichiersJsonService.read_json_file("user://scores.json")
-
 func before_each():
+	FichiersJsonService.definir_racine_utilisateur(RACINE_TEST)
 	configuration_initiale = SauvegardeConfigurationService.configuration_du_jeu.duplicate(true)
 	liste_joueurs_initiale = SauvegardeListeJoueursService.liste_des_joueurs.duplicate(true)
 	tableau_scores_initial = SauvegardeTableauDesScoresService.liste_des_scores.duplicate(true)
@@ -66,23 +51,15 @@ func after_each():
 	SauvegardeBddJoueursService.sauvegarde_joueur = sauvegarde_joueur_initiale.duplicate(true)
 	SauvegardeBddJoueursService.fichier_sauvegarde = fichier_sauvegarde_initial
 	_nettoyer_fichiers_utilisateur()
-
-func after_all():
-	_nettoyer_fichiers_utilisateur()
-	if configuration_avant_tests_existe and configuration_avant_tests != null:
-		FichiersJsonService.write_json_file("user://configuration_du_jeu.json", configuration_avant_tests)
-	if liste_joueurs_avant_tests_existe and liste_joueurs_avant_tests != null:
-		FichiersJsonService.write_json_file("user://liste_des_joueurs.json", liste_joueurs_avant_tests)
-	if scores_avant_tests_existent and scores_avant_tests != null:
-		FichiersJsonService.write_json_file("user://scores.json", scores_avant_tests)
+	FichiersJsonService.reinitialiser_racine_utilisateur()
 
 func test_ready_cree_le_fichier_initial_et_supprime_la_sauvegarde_obsolete():
-	FichiersJsonService.write_json_file("user://sauvegarde.json", {"obsolete": true})
+	FichiersJsonService.write_json_file("sauvegarde.json", {"obsolete": true})
 
 	_creer_service()
 
-	assert_true(FichiersJsonService.json_file_exists("user://configuration_du_jeu.json"))
-	assert_false(FichiersJsonService.json_file_exists("user://sauvegarde.json"))
+	assert_true(FichiersJsonService.json_file_exists("configuration_du_jeu.json"))
+	assert_false(FichiersJsonService.json_file_exists("sauvegarde.json"))
 	assert_eq(service.configuration_du_jeu, _configuration_par_defaut())
 	assert_eq(_lire_configuration_fichier(), _configuration_par_defaut())
 
@@ -110,7 +87,7 @@ func test_ready_convertit_une_ancienne_version_et_reinitialise_campagne_et_score
 	SauvegardeTableauDesScoresService.liste_des_scores = [
 		{"nom": "Alice", "rang": 1, "score": 999, "score_txt": "999"}
 	]
-	FichiersJsonService.write_json_file("user://test_configuration_joueur_00.json", {
+	FichiersJsonService.write_json_file("test_configuration_joueur_00.json", {
 		"nom": "Alice",
 		"campagne": {"niveau_99": [{"nom": "Ancien", "difficulte": 9, "gameplay": "CLASSIQUE"}]},
 		"enregistrement_campagne": [],
@@ -124,7 +101,7 @@ func test_ready_convertit_une_ancienne_version_et_reinitialise_campagne_et_score
 		"effets sonores": false,
 		"vibrations": false
 	}
-	FichiersJsonService.write_json_file("user://configuration_du_jeu.json", ancienne_configuration)
+	FichiersJsonService.write_json_file("configuration_du_jeu.json", ancienne_configuration)
 	service = add_child_autofree(load("res://Singletons/Sauvegarde/configuration_service.gd").new())
 
 	assert_eq(service.lire_la_version(), "V0.5.0")

@@ -4,16 +4,18 @@ var service
 var sauvegarde_joueur_initiale
 var fichier_sauvegarde_initial
 var configuration_initiale
+const RACINE_TEST = "tests/test_stats_service"
 
 func _nettoyer_fichiers_utilisateur():
-	FichiersJsonService.remove_json_file("user://test_stats_service.json")
+	FichiersJsonService.remove_json_file("test_stats_service.json")
 
 func _activer_joueur_test():
-	FichiersJsonService.write_json_file("user://test_stats_service.json", SauvegardeBddJoueursService.sauvegarde_joueur)
+	FichiersJsonService.write_json_file("test_stats_service.json", SauvegardeBddJoueursService.sauvegarde_joueur)
 	assert_true(SauvegardeBddJoueursService.choisir_le_joueur("Joueur Test", "test_stats_service.json"))
 
 
 func before_each():
+	FichiersJsonService.definir_racine_utilisateur(RACINE_TEST)
 	_nettoyer_fichiers_utilisateur()
 	service = load("res://Singletons/stats_service.gd").new()
 	sauvegarde_joueur_initiale = SauvegardeBddJoueursService.sauvegarde_joueur.duplicate(true)
@@ -72,6 +74,7 @@ func after_each():
 	SauvegardeBddJoueursService.fichier_sauvegarde = fichier_sauvegarde_initial
 	SauvegardeConfigurationService.configuration_du_jeu = configuration_initiale
 	_nettoyer_fichiers_utilisateur()
+	FichiersJsonService.reinitialiser_racine_utilisateur()
 
 
 func test_campagne_et_niveau_statistiques():
