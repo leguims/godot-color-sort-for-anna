@@ -8,7 +8,7 @@ var tableau_scores_initial
 const RACINE_TEST = "tests/test_score_service"
 
 func _nettoyer_fichiers_utilisateur():
-	FichiersJsonService.remove_json_file("test_score_service.json")
+	FichiersJsonService.effacer_racine_utilisateur()
 
 func _activer_joueur_test():
 	FichiersJsonService.write_json_file("test_score_service.json", SauvegardeBddJoueursService.sauvegarde_joueur)

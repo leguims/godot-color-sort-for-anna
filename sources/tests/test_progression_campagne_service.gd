@@ -11,12 +11,7 @@ var progression_emitted = false
 var detail_score_received = null
 
 func _nettoyer_fichiers_utilisateur():
-	FichiersJsonService.remove_json_file("sauvegarde_joueur_alpha.json")
-	FichiersJsonService.remove_json_file("sauvegarde_joueur_beta.json")
-	FichiersJsonService.remove_json_file("sauvegarde_joueur_gamma.json")
-	FichiersJsonService.remove_json_file("sauvegarde_joueur_00.json")
-	FichiersJsonService.remove_json_file("liste_des_joueurs.json")
-	FichiersJsonService.remove_json_file("scores.json")
+	FichiersJsonService.effacer_racine_utilisateur()
 
 func before_each():
 	FichiersJsonService.definir_racine_utilisateur(RACINE_TEST)

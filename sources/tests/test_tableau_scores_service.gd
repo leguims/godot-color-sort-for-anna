@@ -4,7 +4,7 @@ var service
 const RACINE_TEST = "tests/test_tableau_scores_service"
 
 func _nettoyer_fichier_scores() -> void:
-	FichiersJsonService.remove_json_file("scores.json")
+	FichiersJsonService.effacer_racine_utilisateur()
 
 func _lire_fichier_scores():
 	return FichiersJsonService.read_json_file("scores.json")

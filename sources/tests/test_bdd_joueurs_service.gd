@@ -4,10 +4,7 @@ var singleton
 const RACINE_TEST = "tests/test_bdd_joueurs_service"
 
 func _nettoyer_fichiers_utilisateur():
-	FichiersJsonService.remove_json_file("test_sauvegarde_joueur_XX.json")
-	FichiersJsonService.remove_json_file("sauvegarde_joueur_00.json")
-	FichiersJsonService.remove_json_file("liste_des_joueurs.json")
-	FichiersJsonService.remove_json_file("scores.json")
+	FichiersJsonService.effacer_racine_utilisateur()
 
 func before_all():
 	FichiersJsonService.definir_racine_utilisateur(RACINE_TEST)

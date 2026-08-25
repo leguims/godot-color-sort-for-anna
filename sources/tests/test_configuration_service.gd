@@ -10,11 +10,7 @@ var sauvegarde_joueur_initiale
 var fichier_sauvegarde_initial
 
 func _nettoyer_fichiers_utilisateur() -> void:
-	FichiersJsonService.remove_json_file("configuration_du_jeu.json")
-	FichiersJsonService.remove_json_file("sauvegarde.json")
-	FichiersJsonService.remove_json_file("liste_des_joueurs.json")
-	FichiersJsonService.remove_json_file("scores.json")
-	FichiersJsonService.remove_json_file("test_configuration_joueur_00.json")
+	FichiersJsonService.effacer_racine_utilisateur()
 
 func _lire_configuration_fichier():
 	return FichiersJsonService.read_json_file("configuration_du_jeu.json")

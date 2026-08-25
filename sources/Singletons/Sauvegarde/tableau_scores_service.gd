@@ -15,7 +15,7 @@ func _ready() -> void:
 
 func _initialiser_la_liste_des_scores() -> void:
 	var lecture_liste_des_scores = FichiersJsonService.read_json_file("scores.json")
-	if lecture_liste_des_scores:
+	if lecture_liste_des_scores != null:
 		liste_des_scores = lecture_liste_des_scores.duplicate(true)
 		LogService.log_debug("liste_des_scores = ", liste_des_scores)
 	else:

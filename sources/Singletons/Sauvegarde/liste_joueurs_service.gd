@@ -20,7 +20,9 @@ func _initialiser_la_liste_des_joueurs() -> void:
 		liste_des_joueurs = lecture_liste_des_joueurs.duplicate(true)
 		LogService.log_debug("liste_des_joueurs = ", liste_des_joueurs)
 	else:
-		LogService.log_erreur("Erreur de lecture de la sauvegarde de la liste des joueurs")
+		# Création du fichier initial
+		_enregistrer_la_liste_des_joueurs()
+		LogService.log_debug("Création du fichier de la liste des joueurs initial")
 
 func _corriger_absence_indice() -> void:
 	# Methode pour ajouter l'indice qui était absent dans les anciennes versions du jeu

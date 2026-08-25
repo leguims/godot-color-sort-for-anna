@@ -7,7 +7,7 @@ var configuration_initiale
 const RACINE_TEST = "tests/test_audio_service"
 
 func _nettoyer_fichiers_utilisateur():
-	FichiersJsonService.remove_json_file("test_audio_service.json")
+	FichiersJsonService.effacer_racine_utilisateur()
 
 func _activer_joueur_test(reussis: int, restants: int) -> void:
 	var plateaux_reussis = []

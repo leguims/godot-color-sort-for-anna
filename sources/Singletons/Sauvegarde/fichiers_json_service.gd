@@ -6,6 +6,7 @@ var clonage_prefixe: String = "RLC_"
 var racine_utilisateur: String = "user://"
 
 func definir_racine_utilisateur(racine: String) -> void:
+	"Tests Unitaires : Permet de définir un répertoire de sauvegarde spécifique pour les tests unitaires"
 	if not racine:
 		racine_utilisateur = "user://"
 	elif "://" in racine:
@@ -17,9 +18,18 @@ func definir_racine_utilisateur(racine: String) -> void:
 		racine_utilisateur += "/"
 
 func reinitialiser_racine_utilisateur() -> void:
+	"Tests Unitaires : Permet de réinitialiser le répertoire de sauvegarde des tests unitaires"
 	racine_utilisateur = "user://"
 
+func effacer_racine_utilisateur() -> void:
+	"Tests Unitaires : Permet d'effacer le répertoire de sauvegarde des tests unitaires"
+	if racine_utilisateur == "user://":
+		return
+	var racine = racine_utilisateur.trim_suffix("/")
+	_effacer_repertoire_recursivement(racine)
+
 func _normaliser_chemin(chemin: String) -> String:
+	"Tests Unitaires : Permet de normaliser un chemin de fichier par rapport au répertoire de sauvegarde des tests unitaires"
 	if not chemin:
 		return chemin
 	if "://" in chemin:
@@ -108,6 +118,34 @@ func write_json_file(chemin : String, contenu) -> void:
 		fichier.close()
 
 func _creer_repertoire_parent_si_necessaire(chemin: String) -> void:
+	"Tests Unitaires : Permet de créer le répertoire parent d'un fichier si nécessaire"
 	var chemin_parent = chemin.get_base_dir()
 	if chemin_parent and not DirAccess.dir_exists_absolute(chemin_parent):
 		DirAccess.make_dir_recursive_absolute(chemin_parent)
+
+func _effacer_repertoire_recursivement(chemin: String) -> void:
+	"Tests Unitaires : Permet d'effacer un répertoire et son contenu récursivement"
+	if not chemin or not DirAccess.dir_exists_absolute(chemin):
+		return
+	var repertoire = DirAccess.open(chemin)
+	if repertoire == null:
+		LogService.log_erreur("Erreur : Ouverture du répertoire : ", chemin)
+		return
+	repertoire.list_dir_begin()
+	var nom = repertoire.get_next()
+	while nom != "":
+		if nom != "." and nom != "..":
+			var chemin_enfant = chemin.path_join(nom)
+			if repertoire.current_is_dir():
+				_effacer_repertoire_recursivement(chemin_enfant)
+			else:
+				var erreur_fichier = DirAccess.remove_absolute(chemin_enfant)
+				if erreur_fichier != OK:
+					LogService.log_erreur("Erreur : Effacement du fichier : ", chemin_enfant,
+						 " avec l'erreur : ", erreur_fichier)
+		nom = repertoire.get_next()
+	repertoire.list_dir_end()
+	var erreur_repertoire = DirAccess.remove_absolute(chemin)
+	if erreur_repertoire != OK:
+		LogService.log_erreur("Erreur : Effacement du répertoire : ", chemin,
+				 " avec l'erreur : ", erreur_repertoire)

@@ -4,12 +4,7 @@ var service
 const RACINE_TEST = "tests/test_liste_joueurs_service"
 
 func _nettoyer_fichiers_utilisateur() -> void:
-	FichiersJsonService.remove_json_file("liste_des_joueurs.json")
-	FichiersJsonService.remove_json_file("test_liste_joueurs_00.json")
-	FichiersJsonService.remove_json_file("test_liste_joueurs_01.json")
-	FichiersJsonService.remove_json_file("test_liste_joueurs_02.json")
-	FichiersJsonService.remove_json_file("test_liste_joueurs_07.json")
-	FichiersJsonService.remove_json_file("test_liste_joueurs_08.json")
+	FichiersJsonService.effacer_racine_utilisateur()
 
 func _lire_liste_fichier():
 	return FichiersJsonService.read_json_file("liste_des_joueurs.json")
