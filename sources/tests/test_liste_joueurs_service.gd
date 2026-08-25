@@ -44,7 +44,8 @@ func test_ready_garde_la_liste_par_defaut_si_le_fichier_est_absent():
 	}]
 
 	_assert_liste_joueurs_eq(service.liste_des_joueurs, liste_par_defaut)
-	assert_false(FichiersJsonService.json_file_exists("liste_des_joueurs.json"))
+	assert_true(FichiersJsonService.json_file_exists("liste_des_joueurs.json"))
+	_assert_liste_joueurs_eq(_lire_liste_fichier(), liste_par_defaut)
 
 func test_ready_charge_la_liste_des_joueurs_depuis_le_fichier():
 	var liste = [
