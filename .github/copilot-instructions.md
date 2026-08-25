@@ -7,9 +7,9 @@ Ce fichier contient toutes les consignes destinées à GitHub Copilot pour garan
 ## 0. Fichier d’instructions pour GitHub Copilot
 
 Infos Godot:
-- Version : v4.7.2-rc1
-- Executable Godot : C:\Program Files\Godot\Godot_v4.7.2-rc1_win64.exe
-- Executable Console Godot : C:\Program Files\Godot\Godot_v4.7.2-rc1_win64_console.exe
+- Version : v4.7.2
+- Executable Godot : C:\Program Files\Godot\Godot_v4.7.2-stable_win64.exe
+- Executable Console Godot : C:\Program Files\Godot\Godot_v4.7.2-stable_win64_console.exe
 
 Infos Git:
 - Chemin du depot : C:\Users\legui\Documents\Sources\godot\godot-csfa_next
