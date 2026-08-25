@@ -23,6 +23,7 @@ func _initialiser_la_liste_des_joueurs() -> void:
 		LogService.log_erreur("Erreur de lecture de la sauvegarde de la liste des joueurs")
 
 func _corriger_absence_indice() -> void:
+	# Methode pour ajouter l'indice qui était absent dans les anciennes versions du jeu
 	if not liste_des_joueurs.is_empty():
 		var maj: bool = false
 		for joueur in liste_des_joueurs:

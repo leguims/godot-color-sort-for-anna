@@ -175,4 +175,6 @@ func nombre_avec_separateur_de_milliers(nombre : int, separateur : String) -> St
 				# Premiere partie du nombre : pas de séparateur entre milliers ou de remplissage de zero.
 				nombre_texte += str(dividende)
 			nombre -= dividende * division
+	if not nombre_texte:
+		nombre_texte = "0"
 	return nombre_texte
