@@ -458,7 +458,7 @@ func enregistrement_lire_valeur_niveau_joueur() -> int:
 	"Retourne le niveau actuel du joueur"
 	var dict_niveau = enregistrement_lire_dernier_niveau()
 	if dict_niveau:
-		var nom_du_niveau = dict_niveau.get('nom_du_niveau')
+		var nom_du_niveau = dict_niveau.get('niveau')
 		if nom_du_niveau:
 			return valeur_niveau(nom_du_niveau)
 	return 0
@@ -816,4 +816,3 @@ func plateaux_libres_lire_liste_plateaux_de_difficulte(difficulte : int) -> Arra
 	if plateaux_libres_difficulte_existe(difficulte):
 		return plateaux_libres().get(str(difficulte))
 	return [] # Liste plateaux vide
-

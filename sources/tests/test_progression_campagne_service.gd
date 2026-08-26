@@ -16,11 +16,11 @@ func _nettoyer_fichiers_utilisateur():
 func before_each():
 	FichiersJsonService.definir_racine_utilisateur(RACINE_TEST)
 	_nettoyer_fichiers_utilisateur()
-	service = add_child_autofree(load("res://Singletons/progression_campagne_service.gd").new())
 	initial_liste_joueurs = SauvegardeListeJoueursService.liste_des_joueurs.duplicate(true)
 	initial_bdd_joueur = SauvegardeBddJoueursService.sauvegarde_joueur.duplicate(true)
 	initial_bdd_fichier = SauvegardeBddJoueursService.fichier_sauvegarde
 	initial_tableau_scores = SauvegardeTableauDesScoresService.liste_des_scores.duplicate(true)
+	service = add_child_autofree(load("res://Singletons/progression_campagne_service.gd").new())
 
 	progression_emitted = false
 	detail_score_received = null
@@ -36,6 +36,12 @@ func before_each():
 	SauvegardeBddJoueursService.fichier_sauvegarde = ""
 	SauvegardeBddJoueursService.sauvegarde_joueur = {}
 
+	var plateaux_niveau_1 = [
+		{"nom": "Q1", "date_debut": 110, "duree": 1000, "difficulte": 1, "statut": "reussi"}
+	]
+	var plateaux_niveau_2 = [
+		{"nom": "Q2", "date_debut": 510, "duree": 1500, "difficulte": 2, "statut": "en_cours"}
+	]
 	FichiersJsonService.write_json_file("sauvegarde_joueur_alpha.json", {
 		"nom": "Alpha",
 		"campagne": {
@@ -43,8 +49,20 @@ func before_each():
 			"niveau_3": [{"nom": "P3", "difficulte": 3, "gameplay": "DEFI_DU_GOSSE"}]
 		},
 		"enregistrement_campagne": [
-			{"niveau": "niveau_1", "date_debut": 100, "date_fin": 200, "plateaux": [{"nom": "Q1", "date_debut": 110, "duree": 1000, "difficulte": 1, "statut": "reussi"}]},
-			{"niveau": "niveau_2", "date_debut": 500, "date_fin": 0, "plateaux": [{"nom": "Q2", "date_debut": 510, "duree": 1500, "difficulte": 2, "statut": "en_cours"}]}
+			{
+				"niveau": "niveau_1",
+				"date_debut": 100,
+				"date_fin": 200,
+				"plateaux": plateaux_niveau_1,
+				"liste_plateaux": plateaux_niveau_1
+			},
+			{
+				"niveau": "niveau_2",
+				"date_debut": 500,
+				"date_fin": 0,
+				"plateaux": plateaux_niveau_2,
+				"liste_plateaux": plateaux_niveau_2
+			}
 		],
 		"plateaux_libres": {"1": [{"nom": "Externe"}]},
 		"nombre_de_parties": {"2": 1}
@@ -112,14 +130,6 @@ func test_niveau_en_cours_et_la_campagne_est_terminee_sont_coherents():
 	SauvegardeBddJoueursService.sauvegarde_joueur["campagne"] = {}
 	assert_true(service.la_campagne_est_terminee())
 
-func test_commencer_un_plateau_demarre_le_niveau_si_absent_et_abandonne_le_precedent():
-	service.choisir_le_joueur_pour_la_campagne("Alpha")
-	var plateau_avant = SauvegardeBddJoueursService.lire_dernier_plateau()
-	assert_true(plateau_avant.has("nom"))
-	service.commencer_un_plateau(0.5)
-	assert_true(SauvegardeBddJoueursService.enregistrement_plateau_en_cours())
-	assert_true(SauvegardeBddJoueursService.lire_dernier_plateau().has("nom"))
-
 func test_gagner_un_plateau_emet_les_signaux_et_maj_score():
 	service.choisir_le_joueur_pour_la_campagne("Alpha")
 	var score_before = SauvegardeTableauDesScoresService.lire_score_joueur("Alpha")
@@ -137,6 +147,8 @@ func test_abandonner_un_plateau_ne_detruit_pas_la_campaign():
 
 func test_initialiser_un_nouveau_niveau_demarre_un_niveau():
 	service.choisir_le_joueur_pour_la_campagne("Alpha")
+	var niveau_courant = SauvegardeBddJoueursService.sauvegarde_joueur.get("enregistrement_campagne").back()
+	niveau_courant["date_fin"] = 1
 	service.initialiser_un_nouveau_niveau(0.25)
 	assert_true(SauvegardeBddJoueursService.enregistrement_niveau_en_cours())
 

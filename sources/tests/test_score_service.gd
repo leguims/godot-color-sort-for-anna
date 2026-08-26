@@ -17,11 +17,11 @@ func _activer_joueur_test():
 func before_each():
 	FichiersJsonService.definir_racine_utilisateur(RACINE_TEST)
 	_nettoyer_fichiers_utilisateur()
-	service = load("res://Singletons/score_service.gd").new()
 	sauvegarde_joueur_initiale = SauvegardeBddJoueursService.sauvegarde_joueur.duplicate(true)
 	fichier_sauvegarde_initial = SauvegardeBddJoueursService.fichier_sauvegarde
 	configuration_initiale = SauvegardeConfigurationService.configuration_du_jeu.duplicate(true)
 	tableau_scores_initial = SauvegardeTableauDesScoresService.liste_des_scores.duplicate(true)
+	service = load("res://Singletons/score_service.gd").new()
 
 	SauvegardeConfigurationService.configuration_du_jeu["date_debut_campagne"] = "2020-01-01 00:00:00"
 	var nom_anna = service.lire_nom_anna_triche()

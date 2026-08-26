@@ -37,7 +37,7 @@ func _ready() -> void:
 
 func _on_menu_commencer_plateau() -> void:
 	ProgressionCampagneService.commencer_un_plateau($MenuCampagne/LongueurNiveau/VBox/Pourcentage.value)
-	_lancer_plateau_de_campagne(SauvegardeBddJoueursService.lire_nom_plateau())
+	_lancer_plateau_de_campagne(SauvegardeBddJoueursService.enregistrement_lire_nom_plateau())
 
 func _lancer_plateau_de_campagne(plateau : String) -> void:
 	# TODO : Définir le type de plateau à lancer => Ajouter un parametre 'gameplay'

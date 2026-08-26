@@ -97,8 +97,8 @@ func initialiser_un_nouveau_niveau(pourcentage_longueur : float):
 		SauvegardeBddJoueursService.enregistrement_initialiser_un_nouveau_niveau(pourcentage_longueur)
 
 func afficher_niveau_plateau_parties():
-	LogService.log_debug("[Campagne] Niveau = ", str(SauvegardeBddJoueursService.lire_niveau_joueur()),
-	 " - Plateau = '", str(SauvegardeBddJoueursService.lire_nom_plateau()).replace(' ', '-'), "'",
+	LogService.log_debug("[Campagne] Niveau = ", str(SauvegardeBddJoueursService.enregistrement_lire_valeur_niveau_joueur()),
+	 " - Plateau = '", str(SauvegardeBddJoueursService.enregistrement_lire_nom_plateau()).replace(' ', '-'), "'",
 	 " - Pourcentage niveau = ", str(SauvegardeBddJoueursService.lire_pourcentage_niveau_realise()),"%")
 
 # Traitement de niveau

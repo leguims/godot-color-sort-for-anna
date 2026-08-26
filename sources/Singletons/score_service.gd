@@ -34,7 +34,7 @@ func mettre_a_jour_score_duree() -> Dictionary:
 		100 : 120.
 		}
 
-	var difficulte = SauvegardeBddJoueursService.lire_difficulte_plateau()
+	var difficulte = SauvegardeBddJoueursService.enregistrement_lire_difficulte_plateau()
 	var temps_reference_en_s = temps_reference_par_difficulte[9]
 	if difficulte <= 9:
 		temps_reference_en_s = temps_reference_par_difficulte[9]
@@ -61,7 +61,7 @@ func mettre_a_jour_score_duree() -> Dictionary:
 
 	var bonus_duree = 0
 	var nom_joueur = SauvegardeBddJoueursService.lire_nom_joueur()
-	var duree_en_s = SauvegardeBddJoueursService.lire_duree_plateau()
+	var duree_en_s = SauvegardeBddJoueursService.enregistrement_lire_duree_plateau()
 	# Score sur le ratio du temps référence/joué
 	var ratio_temps = temps_reference_en_s / duree_en_s
 	bonus_duree = roundi(100 * difficulte * ratio_temps)
@@ -73,11 +73,11 @@ func mettre_a_jour_score_ratio_reussite() -> Dictionary:
 	"Calculer le score relatif au temps"
 	var bonus_ratio_reussite = 0
 	var nom_joueur = SauvegardeBddJoueursService.lire_nom_joueur()
-	var niveau = SauvegardeBddJoueursService.lire_niveau_joueur()
+	var niveau = SauvegardeBddJoueursService.enregistrement_lire_valeur_niveau_joueur()
 	var int_ratio_reussite = SauvegardeBddJoueursService.enregistrment_lire_ratio_reussite_niveau()
 	var ratio_reussite = SauvegardeBddJoueursService.enregistrment_lire_ratio_reussite_niveau() / 100.
 	bonus_ratio_reussite = roundi(100 * niveau * ratio_reussite)
-	SauvegardeBddJoueursService.modifier_score_ratio_reussite_plateau(bonus_ratio_reussite)
+	SauvegardeBddJoueursService.enregistrement_modifier_score_ratio_reussite_plateau(bonus_ratio_reussite)
 	SauvegardeTableauDesScoresService.incrementer_score_joueur(nom_joueur, bonus_ratio_reussite)
 	return {'type':'ratio_reussite', 'ratio': int_ratio_reussite, 'points': bonus_ratio_reussite}
 
@@ -103,7 +103,7 @@ func mettre_a_jour_score_niveau_sans_detour() -> Dictionary:
 	if not SauvegardeBddJoueursService.enregistrement_niveau_en_cours() \
 		and lg_niveau == succes:
 		var nom_joueur = SauvegardeBddJoueursService.lire_nom_joueur()
-		bonus_niveau_sans_detour = SauvegardeBddJoueursService.lire_score_niveau()
+		bonus_niveau_sans_detour = SauvegardeBddJoueursService.enregistrement_lire_score_niveau()
 		SauvegardeBddJoueursService.enregistrement_modifier_score_niveau_sans_detour(bonus_niveau_sans_detour)
 		SauvegardeTableauDesScoresService.incrementer_score_joueur(nom_joueur, bonus_niveau_sans_detour)
 		return {'type':'niveau_sans_detour', 'bonus': 'x2', 'points': bonus_niveau_sans_detour}
