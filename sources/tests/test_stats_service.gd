@@ -43,10 +43,10 @@ func before_each():
 				"date_debut": 1700000000,
 				"date_fin": 1700001000,
 				"plateaux": [
-					{"nom": "A1", "date_debut": 1700000010, "duree": 10000, "difficulte": 1, "statut": "reussi"},
-					{"nom": "B", "date_debut": 1700000020, "duree": 11000, "difficulte": 2, "statut": "abandonné"},
-					{"nom": "B", "date_debut": 1700000030, "duree": 15000, "difficulte": 2, "statut": "reussi"},
-					{"nom": "C", "date_debut": 1700000040, "duree": 9000, "difficulte": 3, "statut": "reussi"}
+					{"nom": "A1", "date_debut": 1700000010, "duree": 10, "difficulte": 1, "statut": "reussi"},
+					{"nom": "B", "date_debut": 1700000020, "duree": 11, "difficulte": 2, "statut": "abandonné"},
+					{"nom": "B", "date_debut": 1700000030, "duree": 15, "difficulte": 2, "statut": "reussi"},
+					{"nom": "C", "date_debut": 1700000040, "duree": 9, "difficulte": 3, "statut": "reussi"}
 				]
 			},
 			{
@@ -54,8 +54,8 @@ func before_each():
 				"date_debut": 1700002000,
 				"date_fin": 0,
 				"plateaux": [
-					{"nom": "D", "date_debut": 1700002010, "duree": 15000, "difficulte": 2, "statut": "reussi"},
-					{"nom": "A2", "date_debut": 1700002020, "duree": 8000, "difficulte": 4, "statut": "reussi"}
+					{"nom": "D", "date_debut": 1700002010, "duree": 15, "difficulte": 2, "statut": "reussi"},
+					{"nom": "A2", "date_debut": 1700002020, "duree": 8, "difficulte": 4, "statut": "reussi"}
 				]
 			}
 		],
@@ -143,8 +143,8 @@ func test_statistiques_couvrent_les_branches_sans_plateaux_et_egalites():
 			"date_debut": 1700000000,
 			"date_fin": 1700001000,
 			"plateaux": [
-				{"nom": "A", "date_debut": 1700000010, "duree": 10000, "difficulte": 2, "statut": "reussi"},
-				{"nom": "B", "date_debut": 1700000020, "duree": 10000, "difficulte": 5, "statut": "reussi"}
+				{"nom": "A", "date_debut": 1700000010, "duree": 10, "difficulte": 2, "statut": "reussi"},
+				{"nom": "B", "date_debut": 1700000020, "duree": 10, "difficulte": 5, "statut": "reussi"}
 			]
 		}
 	]
@@ -163,9 +163,9 @@ func test_statistiques_couvrent_les_branches_sans_plateaux_et_egalites():
 			"date_debut": 1700000000,
 			"date_fin": 1700001000,
 			"plateaux": [
-				{"nom": "B", "date_debut": 1700000010, "duree": 5000, "difficulte": 2, "statut": "reussi"},
-				{"nom": "B", "date_debut": 1700000020, "duree": 7000, "difficulte": 3, "statut": "abandonné"},
-				{"nom": "B", "date_debut": 1700000030, "duree": 11000, "difficulte": 5, "statut": "reussi"}
+				{"nom": "B", "date_debut": 1700000010, "duree": 5, "difficulte": 2, "statut": "reussi"},
+				{"nom": "B", "date_debut": 1700000020, "duree": 7, "difficulte": 3, "statut": "abandonné"},
+				{"nom": "B", "date_debut": 1700000030, "duree": 11, "difficulte": 5, "statut": "reussi"}
 			]
 		}
 	]
@@ -198,8 +198,8 @@ func test_niveau_taux_reussite_les_infos_traite_les_branchs_fallbacks():
 
 	SauvegardeBddJoueursService.sauvegarde_joueur["enregistrement_campagne"] = [
 		{"niveau": "niveau_1", "date_debut": 1700000000, "date_fin": 1700001000, "plateaux": [
-			{"nom": "A", "date_debut": 1700000010, "duree": 10000, "difficulte": 2, "statut": "reussi"},
-			{"nom": "B", "date_debut": 1700000020, "duree": 20000, "difficulte": 5, "statut": "abandonné"}]
+			{"nom": "A", "date_debut": 1700000010, "duree": 10, "difficulte": 2, "statut": "reussi"},
+			{"nom": "B", "date_debut": 1700000020, "duree": 20, "difficulte": 5, "statut": "abandonné"}]
 		},
 		{"niveau": "niveau_2", "date_debut": 1700002000, "date_fin": 1700003000, "plateaux": []}
 	]
