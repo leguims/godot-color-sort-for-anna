@@ -311,7 +311,7 @@ func plateau_le_plus_rapide_les_infos() -> Dictionary:
 				for plateau_joue in niveau.get("plateaux"):
 					var duree_en_ms = plateau_joue.get("duree", 0)
 					if duree_en_ms:
-						var difficulte = plateau_joue.get("difficulte", 0)
+						var difficulte = roundi(plateau_joue.get("difficulte", 0))
 						if duree_en_ms <= plus_rapide_temps or plus_rapide_temps == 0.:
 							if duree_en_ms == plus_rapide_temps and difficulte > plus_rapide_difficulte:
 								plus_rapide_difficulte = difficulte
@@ -338,7 +338,7 @@ func plateau_le_plus_lent_les_infos() -> Dictionary:
 				for plateau_joue in niveau.get("plateaux"):
 					var duree_en_ms = plateau_joue.get("duree", 0)
 					if duree_en_ms:
-						var difficulte = plateau_joue.get("difficulte", 0)
+						var difficulte = roundi(plateau_joue.get("difficulte", 0))
 						if duree_en_ms >= plus_lent_temps or plus_lent_temps == 0.:
 							if duree_en_ms == plus_lent_temps and difficulte > plus_lent_difficulte:
 								plus_lent_difficulte = difficulte
@@ -366,7 +366,7 @@ func plateau_le_plus_galere_les_infos() -> Dictionary:
 					if nom_plateau in plateaux_essais:
 						plateaux_essais[nom_plateau]['essais'] += 1
 					else:
-						var plateaux_difficulte = plateau_joue.get("difficulte", 0)
+						var plateaux_difficulte : int = roundi(plateau_joue.get("difficulte", 0))
 						plateaux_essais[nom_plateau] = {'essais': 1, 'difficulte': plateaux_difficulte}
 	var plus_galere_nom: String = ''
 	var plus_galere_essais: int = 0
@@ -375,7 +375,7 @@ func plateau_le_plus_galere_les_infos() -> Dictionary:
 		if plateaux_essais.get(nom_plateau).get('essais') > plus_galere_essais:
 			plus_galere_nom = nom_plateau
 			plus_galere_essais = plateaux_essais.get(nom_plateau).get('essais')
-			plus_galere_difficulte = plateaux_essais.get(nom_plateau).get('difficulte')
+			plus_galere_difficulte = roundi(plateaux_essais.get(nom_plateau).get('difficulte'))
 	# Chercher le plateau avec le plus d'essais
 	LogService.log_debug("joueur:",joueur,
 						' plus_galere_nom=', plus_galere_nom,

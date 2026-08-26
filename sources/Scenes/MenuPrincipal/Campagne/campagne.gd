@@ -128,5 +128,5 @@ func enregistrer_infos_joueur_pour_menu():
 # TODO : Déplacer le code. Le menu doit demande au SERVICE les infos necessiares.
 func enregistrer_longueur_max_plateaux_pour_menu():
 	# Transmet la longueur max de plateau d'Un niveau
-	var longueur_max_niveau = SauvegardeBddJoueursService.lire_nombre_de_niveaux_realisables()
+	var longueur_max_niveau = SauvegardeBddJoueursService.campagne_lire_nombre_de_niveaux_realisables()
 	$MenuCampagne.enregistrer_longueur_max_niveau(longueur_max_niveau)

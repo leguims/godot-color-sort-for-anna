@@ -65,7 +65,7 @@ func mettre_a_jour_score_duree() -> Dictionary:
 	# Score sur le ratio du temps référence/joué
 	var ratio_temps = temps_reference_en_s / duree_en_s
 	bonus_duree = roundi(100 * difficulte * ratio_temps)
-	SauvegardeBddJoueursService.modifier_score_duree_plateau(bonus_duree)
+	SauvegardeBddJoueursService.enregistrement_modifier_score_duree_plateau(bonus_duree)
 	SauvegardeTableauDesScoresService.incrementer_score_joueur(nom_joueur, bonus_duree)
 	return {'type':'duree', 'reference': temps_reference_en_s, 'realise': duree_en_s, 'points': bonus_duree}
 
@@ -74,8 +74,8 @@ func mettre_a_jour_score_ratio_reussite() -> Dictionary:
 	var bonus_ratio_reussite = 0
 	var nom_joueur = SauvegardeBddJoueursService.lire_nom_joueur()
 	var niveau = SauvegardeBddJoueursService.lire_niveau_joueur()
-	var int_ratio_reussite = SauvegardeBddJoueursService.lire_ratio_reussite_niveau()
-	var ratio_reussite = SauvegardeBddJoueursService.lire_ratio_reussite_niveau() / 100.
+	var int_ratio_reussite = SauvegardeBddJoueursService.enregistrment_lire_ratio_reussite_niveau()
+	var ratio_reussite = SauvegardeBddJoueursService.enregistrment_lire_ratio_reussite_niveau() / 100.
 	bonus_ratio_reussite = roundi(100 * niveau * ratio_reussite)
 	SauvegardeBddJoueursService.modifier_score_ratio_reussite_plateau(bonus_ratio_reussite)
 	SauvegardeTableauDesScoresService.incrementer_score_joueur(nom_joueur, bonus_ratio_reussite)
@@ -85,12 +85,12 @@ func mettre_a_jour_score_niveau() -> Dictionary:
 	"Calculer le score suite à un niveau achevé"
 	var bonus_niveau = 0
 	var niveau_longueur_totale = 0
-	if not SauvegardeBddJoueursService.niveau_en_cours():
+	if not SauvegardeBddJoueursService.enregistrement_niveau_en_cours():
 		var nom_joueur = SauvegardeBddJoueursService.lire_nom_joueur()
-		niveau_longueur_totale = SauvegardeBddJoueursService.lire_longueur_niveau()
+		niveau_longueur_totale = SauvegardeBddJoueursService.lire_longueur_niveau_courant()
 		# bonus = 100 x Dénivelé ^2 (bonus non linéaire)
 		bonus_niveau = roundi(50 * pow(niveau_longueur_totale, 2))
-		SauvegardeBddJoueursService.modifier_score_niveau(bonus_niveau)
+		SauvegardeBddJoueursService.enregistrement_modifier_score_niveau(bonus_niveau)
 		SauvegardeTableauDesScoresService.incrementer_score_joueur(nom_joueur, bonus_niveau)
 		return {'type':'niveau', 'longueur': niveau_longueur_totale, 'points': bonus_niveau}
 	return{}
@@ -98,13 +98,13 @@ func mettre_a_jour_score_niveau() -> Dictionary:
 func mettre_a_jour_score_niveau_sans_detour() -> Dictionary:
 	"Calculer le score suite à un niveau parfaitement achevé (sans détour)"
 	var bonus_niveau_sans_detour = 0
-	var lg_niveau = SauvegardeBddJoueursService.lire_longueur_niveau()
-	var succes = SauvegardeBddJoueursService.lire_succes_niveau()
-	if not SauvegardeBddJoueursService.niveau_en_cours() \
+	var lg_niveau = SauvegardeBddJoueursService.lire_longueur_niveau_courant()
+	var succes = SauvegardeBddJoueursService.enregistrement_lire_niveau_longueur_realisee()
+	if not SauvegardeBddJoueursService.enregistrement_niveau_en_cours() \
 		and lg_niveau == succes:
 		var nom_joueur = SauvegardeBddJoueursService.lire_nom_joueur()
 		bonus_niveau_sans_detour = SauvegardeBddJoueursService.lire_score_niveau()
-		SauvegardeBddJoueursService.modifier_score_niveau_sans_detour(bonus_niveau_sans_detour)
+		SauvegardeBddJoueursService.enregistrement_modifier_score_niveau_sans_detour(bonus_niveau_sans_detour)
 		SauvegardeTableauDesScoresService.incrementer_score_joueur(nom_joueur, bonus_niveau_sans_detour)
 		return {'type':'niveau_sans_detour', 'bonus': 'x2', 'points': bonus_niveau_sans_detour}
 	return{}
@@ -112,7 +112,7 @@ func mettre_a_jour_score_niveau_sans_detour() -> Dictionary:
 func mettre_a_jour_score_campagne() -> Dictionary:
 	"Calculer le score suite à la campagne achevée"
 	var bonus_campagne = 0
-	if SauvegardeBddJoueursService.la_campagne_est_terminee():
+	if SauvegardeBddJoueursService.campagne_la_campagne_est_terminee():
 		var nom_joueur = SauvegardeBddJoueursService.lire_nom_joueur()
 		bonus_campagne = 2_000_000
 		SauvegardeTableauDesScoresService.incrementer_score_joueur(nom_joueur, bonus_campagne)

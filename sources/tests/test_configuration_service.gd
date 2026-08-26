@@ -17,7 +17,7 @@ func _lire_configuration_fichier():
 
 func _configuration_par_defaut() -> Dictionary:
 	return {
-		"version": "V0.5.0",
+		"version": "V0.5.2",
 		"date_debut_campagne": "2026-05-08 18:24:14",
 		"musiques": true,
 		"effets sonores": true,
@@ -100,7 +100,7 @@ func test_ready_convertit_une_ancienne_version_et_reinitialise_campagne_et_score
 	FichiersJsonService.write_json_file("configuration_du_jeu.json", ancienne_configuration)
 	service = add_child_autofree(load("res://Singletons/Sauvegarde/configuration_service.gd").new())
 
-	assert_eq(service.lire_la_version(), "V0.5.0")
+	assert_eq(service.lire_la_version(), "V0.5.2")
 	assert_false(service.musiques_sont_actives())
 	assert_false(service.effets_sonores_sont_actifs())
 	assert_false(service.vibrations_sont_actives())

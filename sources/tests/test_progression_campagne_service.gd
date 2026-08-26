@@ -105,7 +105,7 @@ func test_initialiser_le_nouveau_joueur_pour_la_campagne_cree_le_compte():
 
 func test_niveau_en_cours_et_la_campagne_est_terminee_sont_coherents():
 	service.choisir_le_joueur_pour_la_campagne("Alpha")
-	assert_true(SauvegardeBddJoueursService.niveau_en_cours())
+	assert_true(SauvegardeBddJoueursService.enregistrement_niveau_en_cours())
 	assert_true(service.niveau_en_cours())
 	assert_false(service.la_campagne_est_terminee())
 
@@ -117,7 +117,7 @@ func test_commencer_un_plateau_demarre_le_niveau_si_absent_et_abandonne_le_prece
 	var plateau_avant = SauvegardeBddJoueursService.lire_dernier_plateau()
 	assert_true(plateau_avant.has("nom"))
 	service.commencer_un_plateau(0.5)
-	assert_true(SauvegardeBddJoueursService.plateau_en_cours())
+	assert_true(SauvegardeBddJoueursService.enregistrement_plateau_en_cours())
 	assert_true(SauvegardeBddJoueursService.lire_dernier_plateau().has("nom"))
 
 func test_gagner_un_plateau_emet_les_signaux_et_maj_score():
@@ -138,7 +138,7 @@ func test_abandonner_un_plateau_ne_detruit_pas_la_campaign():
 func test_initialiser_un_nouveau_niveau_demarre_un_niveau():
 	service.choisir_le_joueur_pour_la_campagne("Alpha")
 	service.initialiser_un_nouveau_niveau(0.25)
-	assert_true(SauvegardeBddJoueursService.niveau_en_cours())
+	assert_true(SauvegardeBddJoueursService.enregistrement_niveau_en_cours())
 
 func test_afficher_niveau_plateau_parties_ne_crashe_pas():
 	service.choisir_le_joueur_pour_la_campagne("Alpha")

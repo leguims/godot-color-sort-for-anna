@@ -115,7 +115,7 @@ func _positionner_une_pile(nb_piles_plateau: int, indice_pile: int) -> Vector2:
 
 func on_pile_clique_gauche(indice_pile : int) -> void:
 	# LogService.log_debug("clique sur la pile : ", indice_pile)
-	if not SauvegardeBddJoueursService.plateau_en_cours():
+	if not SauvegardeBddJoueursService.enregistrement_plateau_en_cours():
 		# Ignorer les cliques sur les jetons quand il n'y a pas de partie ne cours
 		return
 	var pile_cible = liste_piles[indice_pile]

@@ -11,7 +11,7 @@ signal fin_niveau
 func la_campagne_est_terminee_pour_joueur(nom_joueur : String) -> bool:
 	var succes: bool = _choisir_et_corriger_le_joueur(nom_joueur)
 	if succes:
-		return SauvegardeBddJoueursService.la_campagne_est_terminee()
+		return SauvegardeBddJoueursService.campagne_la_campagne_est_terminee()
 	return false
 
 func choisir_le_joueur_pour_la_campagne(nom_joueur : String) -> bool:
@@ -55,23 +55,23 @@ func initialiser_le_nouveau_joueur_pour_la_campagne(nom_nouveau_joueur : String)
 ##############################
 
 func niveau_en_cours() -> bool:
-	return SauvegardeBddJoueursService.niveau_en_cours()
+	return SauvegardeBddJoueursService.enregistrement_niveau_en_cours()
 
 func la_campagne_est_terminee() -> bool:
-	return SauvegardeBddJoueursService.la_campagne_est_terminee()
+	return SauvegardeBddJoueursService.campagne_la_campagne_est_terminee()
 
 func commencer_un_plateau(pourcentage_longueur : float) -> void:
 	# TODO : supprimer les notions de pourcentage pour le demarrage du plateau
 	# TODO : gerer le choix du niveau de campagne
-	if not SauvegardeBddJoueursService.niveau_en_cours():
+	if not SauvegardeBddJoueursService.enregistrement_niveau_en_cours():
 		initialiser_un_nouveau_niveau(pourcentage_longueur)
-	if SauvegardeBddJoueursService.plateau_en_cours():
+	if SauvegardeBddJoueursService.enregistrement_plateau_en_cours():
 		# Si un plateau était en cours, mais pas terminé, le considérer abandonné
 		abandonner_un_plateau()
 
-	# Ajouter le nouveau plateau et incrémenter le compteur de parties du niveau courant
+	# Ajouter le nouveau plateau et incrémenter le compteur de parties de la difficulté courante
 	SauvegardeBddJoueursService.commencer_un_plateau()
-	LogService.log_debug("Nombre de parties = ", SauvegardeBddJoueursService.lire_nombre_de_parties_joueur_pour_difficulte_courante())
+	LogService.log_debug("Nombre de parties = ", SauvegardeBddJoueursService.lire_nombre_de_parties_pour_difficulte_courante())
 
 func gagner_un_plateau() -> void:
 	# Valider le plateau courant (effacer de la liste des plateaux jouables)
@@ -94,7 +94,7 @@ func abandonner_un_plateau() -> void:
 func initialiser_un_nouveau_niveau(pourcentage_longueur : float):
 		# TODO : supprimer les notions de pourcentage pour le demarrage du niveau
 		# TODO : gerer le choix du niveau de campagne
-		SauvegardeBddJoueursService.initialiser_un_nouveau_niveau(pourcentage_longueur)
+		SauvegardeBddJoueursService.enregistrement_initialiser_un_nouveau_niveau(pourcentage_longueur)
 
 func afficher_niveau_plateau_parties():
 	LogService.log_debug("[Campagne] Niveau = ", str(SauvegardeBddJoueursService.lire_niveau_joueur()),
@@ -107,7 +107,7 @@ func afficher_niveau_plateau_parties():
 func retourner_le_niveau_le_plus_bas() -> int:
 	# Retourner le premier niveau non terminé
 	for niveau_le_plus_bas in range(1, 300):
-		if not SauvegardeBddJoueursService.le_niveau_est_termine(niveau_le_plus_bas):
+		if not SauvegardeBddJoueursService.campagne_le_niveau_est_termine(niveau_le_plus_bas):
 			return niveau_le_plus_bas
 	return 0
 
