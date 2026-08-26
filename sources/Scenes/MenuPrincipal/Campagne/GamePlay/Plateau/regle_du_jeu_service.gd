@@ -41,6 +41,6 @@ func realiser_le_tansfert_de_pile(liste_piles : Array, indice_pile_depart : int,
 			pile_depart.retirer_le_dernier_jeton()
 			pile_arrivee.ajouter_le_jeton_dans_le_vide(indice_jeton_depart)
 		# Enregistrer le coup
-		SauvegardeBddJoueursService.ajouter_un_nouveau_coup(indice_pile_depart, indice_pile_arrivee)
+		SauvegardeBddJoueursService.coups_joues_ajouter_un_nouveau_coup(indice_pile_depart, indice_pile_arrivee)
 		return true
 	return false

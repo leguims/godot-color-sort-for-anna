@@ -597,13 +597,13 @@ func enregistrement_initialiser_un_nouveau_plateau(nom : String,
 			'date_debut': Time.get_unix_time_from_system(), # Timestamp
 			'date_fin': 0.,
 			'duree': 0,
-			'difficulte': difficulte,
+			'difficulte': roundi(difficulte),
 			'statut': 'en cours', # 'en cours', 'abandonné', 'reussi'
 			'score': {},
 			'coups joués': []
 			}
 		var niveau_courant = enregistrement_lire_dernier_niveau()
-		var liste_plateaux = niveau_courant.get('liste_plateaux')
+		var liste_plateaux = niveau_courant.get('plateaux')
 		liste_plateaux.append(nouveau_plateau)
 		_enregistrer_sauvegarde_joueur()
 		return true
@@ -763,12 +763,12 @@ func enregistrement_lire_score_ratio_reussite_plateau() -> int: # TODO : INUTILI
 func coups_joues() -> Array:
 	"Retourne la liste des coups"
 	if coups_joues_existe():
-		return enregistrement_lire_dernier_plateau().get('coups joués', [])
+		return enregistrement_lire_dernier_plateau().get('coups joués')
 	return []
 
 func coups_joues_existe() -> bool:
 	"Indique si un coups_joues existe"
-	return enregistrement_plateau_existe() and not enregistrement_lire_dernier_plateau().get('coups joués', []).is_empty()
+	return enregistrement_plateau_existe() and 'coups joués' in enregistrement_lire_dernier_plateau()
 
 func coups_joues_en_cours() -> bool: # TODO : INUTILISE !
 	"Indique si un coups_joues est en cours de réalisation"

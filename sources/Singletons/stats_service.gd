@@ -123,13 +123,13 @@ func duree_totale_plateaux_tous_les_niveaux_en_s() -> Dictionary:
 			if niveau.get("plateaux", null):
 				for plateau_joue in niveau.get("plateaux"):
 					if plateau_joue.get("date_debut") > date_debut_campagne:
-						var duree_en_ms = plateau_joue.get("duree")
-						if duree_en_ms:
+						var duree_en_s = plateau_joue.get("duree")
+						if duree_en_s:
 							# Comptabiliser TOUS les niveaux
-							duree_totale_plateaux_tous_les_niveaux += duree_en_ms / 1000.
+							duree_totale_plateaux_tous_les_niveaux += duree_en_s
 							if niveau.get("date_fin"):
 								# Comptabiliser les niveaux TERMINEES
-								duree_totale_plateaux_tous_les_niveaux_termines += duree_en_ms / 1000.
+								duree_totale_plateaux_tous_les_niveaux_termines += duree_en_s
 	LogService.log_debug("joueur:",joueur,
 						' duree_totale_plateaux_tous_les_niveaux=', duree_totale_plateaux_tous_les_niveaux,
 						' duree_totale_plateaux_tous_les_niveaux_termines=', duree_totale_plateaux_tous_les_niveaux_termines)
@@ -276,7 +276,7 @@ func plateau_le_temps_moyen_en_s() -> float:
 	var joueur = SauvegardeBddJoueursService.lire_nom_joueur()
 	var date_debut_campagne = SauvegardeConfigurationService.lire_la_date_debut_campagne_timestamp()
 	# Plateau termine le plus vite et sa difficulté
-	var temps_total_en_ms: float = 0.
+	var temps_total_en_s: float = 0.
 	var nb_plateaux: int = 0
 	var temps_moyen_en_s: float = 0.
 	# Parcourir la liste des enregistrements de la campagne
@@ -286,12 +286,12 @@ func plateau_le_temps_moyen_en_s() -> float:
 			if niveau.get("plateaux", null) \
 				and niveau.get("date_debut") > date_debut_campagne:
 				for plateau_joue in niveau.get("plateaux"):
-					var duree_en_ms = plateau_joue.get("duree", 0)
-					if duree_en_ms:
-						temps_total_en_ms += duree_en_ms
+					var duree_en_s = plateau_joue.get("duree", 0)
+					if duree_en_s:
+						temps_total_en_s += duree_en_s
 						nb_plateaux += 1
 	if nb_plateaux:
-		temps_moyen_en_s = temps_total_en_ms / nb_plateaux / 1000.
+		temps_moyen_en_s = temps_total_en_s / nb_plateaux
 	LogService.log_debug("joueur:",joueur,
 						' temps_moyen=', temps_moyen_en_s)
 	return temps_moyen_en_s
@@ -309,19 +309,19 @@ func plateau_le_plus_rapide_les_infos() -> Dictionary:
 			if niveau.get("plateaux", null) \
 				and niveau.get("date_debut") > date_debut_campagne:
 				for plateau_joue in niveau.get("plateaux"):
-					var duree_en_ms = plateau_joue.get("duree", 0)
-					if duree_en_ms:
+					var duree_en_s = plateau_joue.get("duree", 0)
+					if duree_en_s:
 						var difficulte = roundi(plateau_joue.get("difficulte", 0))
-						if duree_en_ms <= plus_rapide_temps or plus_rapide_temps == 0.:
-							if duree_en_ms == plus_rapide_temps and difficulte > plus_rapide_difficulte:
+						if duree_en_s <= plus_rapide_temps or plus_rapide_temps == 0.:
+							if duree_en_s == plus_rapide_temps and difficulte > plus_rapide_difficulte:
 								plus_rapide_difficulte = difficulte
 							else:
-								plus_rapide_temps = duree_en_ms
+								plus_rapide_temps = duree_en_s
 								plus_rapide_difficulte = difficulte
 	LogService.log_debug("joueur:",joueur,
-						' plus_rapide_temps=', plus_rapide_temps / 1000.,
+						' plus_rapide_temps=', plus_rapide_temps,
 						' plus_rapide_difficulte=', plus_rapide_difficulte)
-	return {'temps_en_s': plus_rapide_temps / 1000., 'difficulte': plus_rapide_difficulte}
+	return {'temps_en_s': plus_rapide_temps, 'difficulte': plus_rapide_difficulte}
 
 func plateau_le_plus_lent_les_infos() -> Dictionary:
 	var joueur = SauvegardeBddJoueursService.lire_nom_joueur()
@@ -336,19 +336,19 @@ func plateau_le_plus_lent_les_infos() -> Dictionary:
 			if niveau.get("plateaux", null) \
 				and niveau.get("date_debut") > date_debut_campagne:
 				for plateau_joue in niveau.get("plateaux"):
-					var duree_en_ms = plateau_joue.get("duree", 0)
-					if duree_en_ms:
+					var duree_en_s = plateau_joue.get("duree", 0)
+					if duree_en_s:
 						var difficulte = roundi(plateau_joue.get("difficulte", 0))
-						if duree_en_ms >= plus_lent_temps or plus_lent_temps == 0.:
-							if duree_en_ms == plus_lent_temps and difficulte > plus_lent_difficulte:
+						if duree_en_s >= plus_lent_temps or plus_lent_temps == 0.:
+							if duree_en_s == plus_lent_temps and difficulte > plus_lent_difficulte:
 								plus_lent_difficulte = difficulte
 							else:
-								plus_lent_temps = duree_en_ms
+								plus_lent_temps = duree_en_s
 								plus_lent_difficulte = difficulte
 	LogService.log_debug("joueur:",joueur,
-						' plus_lent_temps=', plus_lent_temps / 1000.,
+						' plus_lent_temps=', plus_lent_temps,
 						' plus_lent_difficulte=', plus_lent_difficulte)
-	return {'temps_en_s': plus_lent_temps / 1000., 'difficulte': plus_lent_difficulte}
+	return {'temps_en_s': plus_lent_temps, 'difficulte': plus_lent_difficulte}
 
 func plateau_le_plus_galere_les_infos() -> Dictionary:
 	var joueur = SauvegardeBddJoueursService.lire_nom_joueur()
