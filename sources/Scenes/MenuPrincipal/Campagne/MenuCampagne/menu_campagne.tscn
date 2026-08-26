@@ -17,9 +17,6 @@ bg_color = Color(0, 0, 0, 1)
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_1gckf"]
 bg_color = Color(0, 0, 0, 1)
 
-[sub_resource type="LabelSettings" id="LabelSettings_3y2ap"]
-font_size = 30
-
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_apfrx"]
 bg_color = Color(0.13, 0.13, 0.13, 0.843137)
 
@@ -99,45 +96,6 @@ theme_override_styles/normal = SubResource("StyleBoxFlat_j78cs")
 theme_override_styles/hover = SubResource("StyleBoxFlat_1gckf")
 text = "Commencer"
 
-[node name="LongueurNiveau" type="MarginContainer" parent="." unique_id=270862965]
-offset_top = 269.0
-offset_right = 480.0
-offset_bottom = 309.0
-theme_override_constants/margin_left = 40
-theme_override_constants/margin_right = 40
-
-[node name="ColorRect" type="ColorRect" parent="LongueurNiveau" unique_id=764635341]
-layout_mode = 2
-color = Color(0.13, 0.13, 0.13, 1)
-
-[node name="VBox" type="VBoxContainer" parent="LongueurNiveau" unique_id=1061081107]
-layout_mode = 2
-size_flags_horizontal = 3
-
-[node name="Description" type="Label" parent="LongueurNiveau/VBox" unique_id=1348859050]
-layout_mode = 2
-text = "Nouveau niveau
-Définissez sa longueur :"
-label_settings = SubResource("LabelSettings_3y2ap")
-horizontal_alignment = 1
-
-[node name="Curseur" type="HSlider" parent="LongueurNiveau/VBox" unique_id=1952519625]
-layout_mode = 2
-min_value = 1.0
-value = 100.0
-
-[node name="Pourcentage" type="ProgressBar" parent="LongueurNiveau/VBox" unique_id=1568223738]
-layout_mode = 2
-min_value = 1.0
-step = 1.0
-value = 100.0
-
-[node name="NombreDePlateaux" type="Label" parent="LongueurNiveau/VBox" unique_id=1947652494]
-layout_mode = 2
-text = "1 plateau"
-label_settings = SubResource("LabelSettings_3y2ap")
-horizontal_alignment = 1
-
 [node name="MessageRiche" type="RichTextLabel" parent="." unique_id=630852021]
 anchors_preset = 14
 anchor_top = 0.5
@@ -173,7 +131,4 @@ scroll_active = false
 [connection signal="pressed" from="BoutonMenuPrincipal" to="." method="_on_bouton_menu_principal_pressed"]
 [connection signal="pressed" from="BoutonStatistiques" to="." method="_on_bouton_statistiques_pressed"]
 [connection signal="pressed" from="BoutonCommencer" to="." method="_on_bouton_commencer_pressed"]
-[connection signal="value_changed" from="LongueurNiveau/VBox/Curseur" to="." method="_on_h_slider_value_changed"]
 [connection signal="gui_input" from="MessageRiche" to="." method="_on_message_riche_gui_input"]
-
-

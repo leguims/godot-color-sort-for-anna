@@ -36,7 +36,8 @@ func _ready() -> void:
 		$MenuCampagne.afficher_accueil_nouveau_niveau()
 
 func _on_menu_commencer_plateau() -> void:
-	ProgressionCampagneService.commencer_un_plateau($MenuCampagne/LongueurNiveau/VBox/Pourcentage.value)
+	# TODO : supprimer "pourcentage" (-1) pour commencer campagne
+	ProgressionCampagneService.commencer_un_plateau(-1)
 	_lancer_plateau_de_campagne(SauvegardeBddJoueursService.enregistrement_lire_nom_plateau())
 
 func _lancer_plateau_de_campagne(plateau : String) -> void:

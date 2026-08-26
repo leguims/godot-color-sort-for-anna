@@ -42,15 +42,11 @@ func cacher_accueil():
 	$InfosDuJoueur.hide()
 	$Message.hide()
 	$BoutonCommencer.hide()
-	$LongueurNiveau.hide()
 	$MessageRiche.hide()
 
 func afficher_accueil_nouveau_niveau():
 	$BoutonMenuPrincipal.show()
 	$BoutonStatistiques.show()
-	# Reset le max de la jauge de plateaux
-	reset_jauge_LongueurNiveau()
-	$LongueurNiveau.show()
 	
 	_afficher_message("")
 	$BoutonCommencer.show()
@@ -169,35 +165,16 @@ func afficher_fin_campagne():
 	$InfosDuJoueur.show()
 
 
+# TODO : à effacer ???
 # LongueurNiveau
 ###################
 
+# TODO : à effacer ???
 var longueur_max_niveau : int = 0
 
+# TODO : à effacer ???
 func enregistrer_longueur_max_niveau(max : int) -> void:
 	longueur_max_niveau = max
-
-func reset_jauge_LongueurNiveau():
-	var pourcentage_min = 100. / longueur_max_niveau
-	# Incrément par plateau
-	$LongueurNiveau/VBox/Curseur.step = pourcentage_min
-	# 1 plateau minimum
-	$LongueurNiveau/VBox/Curseur.min_value = pourcentage_min
-	
-	# Initialisé à 100% par défaut
-	$LongueurNiveau/VBox/Curseur.value = 100
-	$LongueurNiveau/VBox/Pourcentage.value = 100
-	_on_h_slider_value_changed(100.)
-
-func _on_h_slider_value_changed(value: float) -> void:
-	# Repercuter sur la valeur
-	$LongueurNiveau/VBox/Pourcentage.value = value
-	# Repercuter sur le nombre de plateaux
-	var nb_plateaux = roundi(value / 100. * longueur_max_niveau)
-	if nb_plateaux > 1:
-		$LongueurNiveau/VBox/NombreDePlateaux.text = str(nb_plateaux) +" plateaux"
-	else:
-		$LongueurNiveau/VBox/NombreDePlateaux.text = str(nb_plateaux) +" plateau"
 
 func _on_progression_campagne_service_detail_score_plateau(detail_score: Dictionary):
 	afficher_detail_score(detail_score)
