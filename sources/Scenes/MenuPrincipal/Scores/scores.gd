@@ -21,6 +21,7 @@ func generer_bbcode_scores(classement: Array) -> String:
 	var world_icon = String.chr(0x1F30D)
 	var liste_score_bbcode : String = ''
 	liste_score_bbcode += liste_format_scores.get('entete')
+	var texte_bbcode
 	for i in range(TOP_N): # TOP 5
 		if classement:
 			var joueur: Dictionary = classement.pop_front()
@@ -32,12 +33,10 @@ func generer_bbcode_scores(classement: Array) -> String:
 				if 1 <= rang_joueur and rang_joueur <= 3:
 					score_texte = SauvegardeTableauDesScoresService.lire_le_trophee_du_rang(rang_joueur) + score_texte
 				# int(rang_joueur) car 'rang_joueur' est vu comme un float !
-				var texte_bbcode = liste_format_scores.get(int(rang_joueur))
-				texte_bbcode = texte_bbcode.replace('score', score_texte)
+				texte_bbcode = liste_format_scores.get(int(rang_joueur)).replace('score', score_texte)
 				liste_score_bbcode += texte_bbcode
 				continue
-		var texte_bbcode = liste_format_scores.get(TOP_N)
-		texte_bbcode = texte_bbcode.replace('score', '-')
+		texte_bbcode = liste_format_scores.get(TOP_N).replace('score', '-')
 		liste_score_bbcode += texte_bbcode
 	liste_score_bbcode += liste_format_scores.get('pied_de_page')
 	return liste_score_bbcode
