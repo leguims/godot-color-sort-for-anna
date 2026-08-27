@@ -5,17 +5,20 @@ class_name FormatterMenuCampagne
 ###############
 var nom : String = ""
 var trophee : String = ""
+var niveau_courant : int = 0
 var pourcentage_niveau_realise : int = 0
 var pourcentage_campagne_realise : int = 0
 var score_texte : String = "0"
 
 func enregistrer_infos_joueur(	_nom : String = "",
 								_trophee : String = "",
+								_niveau_courant : int = 0,
 								_pourcentage_niveau_realise : int = 0,
 								_pourcentage_campagne_realise : int = 0,
 								_score_texte : String = "0") -> void:
 	nom = _nom
 	trophee = _trophee
+	niveau_courant = _niveau_courant
 	pourcentage_niveau_realise = _pourcentage_niveau_realise
 	pourcentage_campagne_realise = _pourcentage_campagne_realise
 	score_texte = _score_texte
@@ -23,7 +26,7 @@ func enregistrer_infos_joueur(	_nom : String = "",
 func formater_infos_joueur() -> String:
 	var texte = "[center][font_size=30]"
 	texte += nom + " " + trophee + " " + score_texte + "\n"
-	texte += "[font_size=20]Niveau : " + String.num_int64(pourcentage_niveau_realise) + "%"
+	texte += "[font_size=20]Niveau " + String.num_int64(niveau_courant) + " : " + String.num_int64(pourcentage_niveau_realise) + "%"
 	texte += " - "
 	texte += "Campagne : " + String.num_int64(pourcentage_campagne_realise) + "%[/font_size]"
 	texte += "[/font_size][/center]"
@@ -37,10 +40,12 @@ func formater_detail_score(detail_score : Dictionary) -> Dictionary:
 	# Afficher le détail du score.
 	var bbcode_complet = ''
 	var score_total = 0
-	var size_y = 300
+	var position_y = 100
+	var size_y = 350
 
 	# Entete
-	bbcode_complet += """[color=#efefef][font_size=30][center][b]Score[/b][/center][/font_size]"""
+	bbcode_complet += """[color=#efefef][font_size=20][center][b]Bravo ![/b][/center][/font_size]"""
+	bbcode_complet += """[font_size=30][center][b]Score[/b][/center][/font_size]"""
 
 	# 'duree'
 	var bbcode_duree = """[left][font_size=20][b]Temps[/b] :
@@ -105,4 +110,18 @@ func formater_detail_score(detail_score : Dictionary) -> Dictionary:
 	bbcode_complet += bbcode_total
 
 	# Afficher le score
-	return {'bbcode':bbcode_complet, 'size_y':size_y}
+	return {'bbcode':bbcode_complet, 'position_y':position_y, 'size_y':size_y}
+
+func formater_message_simple(message : String) -> Dictionary:
+	# Afficher le détail du score.
+	var bbcode_complet = ''
+	var position_y = 300
+	# 90 = marge haut+bas
+	# 13 = nb caractees par ligne
+	var size_y = 90 + 40 * roundi(len(message)/13.)
+
+	var bbcode_header = """[color=#efefef][font_size=30][center][b]"""
+	var bbcode_tail = """[/b][/center][/font_size][/color]"""
+
+	bbcode_complet += bbcode_header + message + bbcode_tail
+	return {'bbcode':bbcode_complet, 'position_y':position_y, 'size_y':size_y}

@@ -55,7 +55,8 @@ func initialiser_le_nouveau_joueur_pour_la_campagne(nom_nouveau_joueur : String)
 ##############################
 
 func niveau_en_cours() -> bool:
-	return SauvegardeBddJoueursService.enregistrement_niveau_en_cours()
+	return SauvegardeBddJoueursService.enregistrement_niveau_en_cours() \
+		and SauvegardeBddJoueursService.campagne_lire_prochain_plateau_pour_niveau_courant()
 
 func la_campagne_est_terminee() -> bool:
 	return SauvegardeBddJoueursService.campagne_la_campagne_est_terminee()
@@ -63,6 +64,16 @@ func la_campagne_est_terminee() -> bool:
 func commencer_un_plateau(pourcentage_longueur : float) -> void:
 	# TODO : supprimer les notions de pourcentage pour le demarrage du plateau
 	# TODO : gerer le choix du niveau de campagne
+	if not SauvegardeBddJoueursService.campagne_lire_prochain_plateau_pour_niveau_courant():
+		# Cas exceptionnel d'un niveau achevé, mais non traité lors de la progression normale
+		LogService.log_erreur("Niveau achevé mais non traité lors de la progression normale.")
+		LogService.log_erreur("RESET ULTRA VIOLENT")
+		fin_niveau.emit()
+		# Attente rikiki d'une frame pour permettre la gestion du signal fin_niveau
+		await get_tree().process_frame
+		# ULTRA VIOLENT : Reset la scene de campagne
+		# C'est pas joli, ca fait une partie "bizarre", mais ca ne se repete pas apres.
+		get_tree().change_scene_to_file("res://Scenes/MenuPrincipal/Campagne/campagne.tscn")
 	if not SauvegardeBddJoueursService.enregistrement_niveau_en_cours():
 		initialiser_un_nouveau_niveau(pourcentage_longueur)
 	if SauvegardeBddJoueursService.enregistrement_plateau_en_cours():
@@ -71,11 +82,16 @@ func commencer_un_plateau(pourcentage_longueur : float) -> void:
 
 	# Ajouter le nouveau plateau et incrémenter le compteur de parties de la difficulté courante
 	SauvegardeBddJoueursService.commencer_un_plateau()
-	LogService.log_debug("Nombre de parties = ", SauvegardeBddJoueursService.lire_nombre_de_parties_pour_difficulte_courante())
+	LogService.log_debug("Nombre de parties = ", SauvegardeBddJoueursService.enregistrement_lire_nombre_plateaux_acheves())
 
 func gagner_un_plateau() -> void:
 	# Valider le plateau courant (effacer de la liste des plateaux jouables)
 	SauvegardeBddJoueursService.gagner_un_plateau()
+
+	# Déterminer si l'ascension est achevée (pas de plateau suivant)
+	if not SauvegardeBddJoueursService.campagne_lire_prochain_plateau_pour_niveau_courant():
+		# BDD joueur + Préparer la jauge pour la prochaine ascension
+		fin_niveau.emit()
 
 	# Calculer le score du plateau et l'enregistrer dans l'historique du niveau
 	var detail_score = ScoreService.mettre_a_jour_score_pour_victoire()

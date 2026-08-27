@@ -336,13 +336,15 @@ func nombre_de_parties_incrementer_pour_difficulte_courante() -> void:
 		var difficulte_str = str(difficulte_int)
 		if not nombre_de_parties_difficulte_existe(difficulte_int):
 			nombre_de_parties()[difficulte_str] = 0
-		nombre_de_parties()[difficulte_str] += 1
+		nombre_de_parties()[difficulte_str] = roundi(nombre_de_parties()[difficulte_str] + 1)
 		_enregistrer_sauvegarde_joueur()
 
 func lire_nombre_de_parties_pour_difficulte_courante() -> int:
 	if le_joueur_existe():
-		var difficulte_int : int = roundi(campagne_lire_prochain_plateau_pour_niveau_courant().get('difficulte'))
-		return lire_nombre_de_parties_joueur_pour_difficulte(difficulte_int)
+		var prochain_plateau = campagne_lire_prochain_plateau_pour_niveau_courant()
+		if prochain_plateau:
+			var difficulte_int : int = roundi(prochain_plateau.get('difficulte'))
+			return lire_nombre_de_parties_joueur_pour_difficulte(difficulte_int)
 	return 0
 
 func lire_nombre_de_parties_joueur_pour_difficulte(difficulte : int) -> int: # TODO : INUTILISE !
@@ -444,7 +446,7 @@ func lire_prochain_niveau_de_campagne() -> int:
 		return 0
 
 	if not enregistrement_niveau_existe() or not enregistrement_niveau_en_cours():
-		# Prendre le premier niveau de campagne
+		# Prendre le prochain niveau de campagne
 		return campagne_lire_prochain_niveau()
 
 	LogService.log_erreur('\t', "Prochain niveau inconnu")
@@ -779,7 +781,7 @@ func coups_joues_ajouter_un_nouveau_coup(depart : int,
 							arrivee : int) -> bool:
 	"Ajouter un nouveau coup à coups_joues"
 	if enregistrement_plateau_en_cours():
-		var nouveau_coup = {'depart': depart, 'arrivee': arrivee}
+		var nouveau_coup = {'depart': roundi(depart), 'arrivee': roundi(arrivee)}
 		coups_joues().append(nouveau_coup)
 		_enregistrer_sauvegarde_joueur()
 		return true
