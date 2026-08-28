@@ -44,7 +44,7 @@ func formater_detail_score(detail_score : Dictionary) -> Dictionary:
 	var size_y = 350
 
 	# Entete
-	bbcode_complet += """[color=#efefef][font_size=20][center][b]Bravo ![/b][/center][/font_size]"""
+	bbcode_complet += """[color=#ff98fd][font_size=20][center][b]Bravo ![/b][/center][/font_size]"""
 	bbcode_complet += """[font_size=30][center][b]Score[/b][/center][/font_size]"""
 
 	# 'duree'
@@ -120,7 +120,7 @@ func formater_message_simple(message : String) -> Dictionary:
 	# 13 = nb caractees par ligne
 	var size_y = 90 + 40 * roundi(len(message)/13.)
 
-	var bbcode_header = """[color=#efefef][font_size=30][center][b]"""
+	var bbcode_header = """[color=#ff98fd][font_size=30][center][b]"""
 	var bbcode_tail = """[/b][/center][/font_size][/color]"""
 
 	bbcode_complet += bbcode_header + message + bbcode_tail

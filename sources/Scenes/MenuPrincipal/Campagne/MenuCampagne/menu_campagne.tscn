@@ -18,7 +18,11 @@ bg_color = Color(0, 0, 0, 1)
 bg_color = Color(0, 0, 0, 1)
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_apfrx"]
+content_margin_left = 10.0
+content_margin_right = 10.0
 bg_color = Color(0.13, 0.13, 0.13, 0.843137)
+corner_radius_top_left = 40
+corner_radius_bottom_right = 40
 
 [node name="MenuCampagne" type="CanvasLayer" unique_id=162026973]
 script = ExtResource("1_v46tq")
@@ -109,7 +113,7 @@ grow_horizontal = 2
 grow_vertical = 2
 theme_override_styles/normal = SubResource("StyleBoxFlat_apfrx")
 bbcode_enabled = true
-text = "[color=#efefef][font_size=30][center][b]Score[/b][/center][/font_size]
+text = "[color=#ff98fd][font_size=30][center][b]Score[/b][/center][/font_size]
 [left][font_size=20][b]Temps[/b] :
 [ul] Référence = XXs[/ul]
 [ul] Réalisé = YYs[/ul]
@@ -127,6 +131,7 @@ text = "[color=#efefef][font_size=30][center][b]Score[/b][/center][/font_size]
 [ul] YY.XXX points[/ul]
 [/font_size][/left][font_size=30][center][b]Total : ZZ.YYY.XXX[/b][/center][/font_size][/color]"
 scroll_active = false
+language = "fr"
 
 [connection signal="pressed" from="BoutonMenuPrincipal" to="." method="_on_bouton_menu_principal_pressed"]
 [connection signal="pressed" from="BoutonStatistiques" to="." method="_on_bouton_statistiques_pressed"]
