@@ -14,7 +14,7 @@ Listes des évolutions votées par les testeurs:
 
 Depuis la phase de tests internes de la version V0.3.0, les fonctionnalités sont votées par les testeurs. L'attribution des fonctionnalités par versions ci-dessous devrait devenir obsolète pour préférer un classement global des testeurs. Cependant, les deux vont vivre pendant une phase de transition.
 
-## V0.5.0 : Travaux pour la prochaine version
+## V1.0.0 : Travaux pour la prochaine version
 
 ### Bugs
 
@@ -23,6 +23,9 @@ Depuis la phase de tests internes de la version V0.3.0, les fonctionnalités son
 
 #### Bug V0.4.0 :
 - Définir une combinaison secrete pour declencher l'export des fichiers JSON.
+
+#### Bug V0.5.0 :
+- Au lancement d'une partie, le plateau apparait, mais n'est pas cliquable.
 
 ### Jeu
 
@@ -163,6 +166,138 @@ Depuis la phase de tests internes de la version V0.3.0, les fonctionnalités son
 
 ## V1.0 : Pour une version long terme
 
+### Campagne
+
+- 1 campagne = Plusieurs niveaux
+- 1 niveau = Plusieurs plateaux de difficulté et gameplay différents
+- Les niveaux sont prédéfinis dans la campagne (pas d'ajustement selon le niveau des joueurs).
+- La campagne est un ensemble de plateaux séquencés et non aléatoires. Tout se déroule dans le même ordre et permet la comparaison des score d'un joueur à l'autre : __Jeu Compétitif__.
+- Un plateau non résolu est bloquant, le joueur doit le résoudre pour passer au suivant
+- Un __Plateau Rare__ est un plateau exceptionnel qui offre un défi unique et des récompenses spéciales:
+  - Il apparait en dernier plateau de la campagne.
+  - Son gameplay est unique.
+  - Son gain est affiché avant de commencer le plateau.
+  - S'il est gagné:
+    -  Il rapporte un gros bonus (1.000.000 points)
+    -  Il est reversé dans le jeu libre
+  - S'il est perdu:
+    -  La campagne passe au plateau suivant
+    -  Le plateau n'est pas reversé dans le jeu libre.
+  - Proposition : __Programmation Genius__
+
+### Jeu libre
+
+- Sont jouables tous les plateaux résolus de la campagne.
+- Selon le gameplay du plateau de la campagne, les modes accessibles seront:
+  - Groupe __Classique__:  
+    - Classique
+    - Tout En Tête
+    - Programmation
+    - Qui Perd Gagne
+    - Pile Ou Face
+  - Groupe __Nombre De Coups__:
+    - Au Plus Près
+    - Pile Poil
+  - Groupe __Poids Jeton__:
+    - Poids Plume
+  - Groupe __Mot__:
+    - Mot Caché
+  - Groupe __Plateau RARE__:
+    - Programmation Genius
+- Tous les plateaux d'un groupe seront jouable dans tous les gameplay de ce groupe.
+
+### Nouveaux styles de jeux:
+
+#### Noms
+
+  - Classique
+  - Au Plus Près
+  - Pile Poil
+  - Tout En Tête
+  - Programmation
+  - Programmation Genius
+  - Qui Perd Gagne
+  - Poids Plume
+  - Pile Ou Face
+  - Mot Caché
+
+#### Descriptions
+
+- Classique :
+  - Regle du jeu actuelle.
+- Au Plus Près :
+  - Pour les plateaux avec plusieurs longueur de solutions
+  - Indiquer la longueur de la solution la plus courte
+  - Un bonus est donné selon la logueur de la solution trouvée.
+  - Difficulté : faible
+- Pile Poil :
+  - Pour les plateaux avec plusieurs longueur de solutions
+  - Indiquer la longueur de la solution la plus courte
+  - La partie est perdue si la solution la plus courte n'est pas trouvée
+  - Afficher le compteur de coups actuel à coté de la cible
+  - Difficulté : élevée
+- Tout En Tête :
+  - Commencer le chrono quand le premier coup est joué.
+  - ??? Définir quel type de plateau conviendrait.
+  - Difficulté : faible
+- Programmation :
+  - Prévoir tous les coups jusqu'à la fin.
+  - Tout s'anime quand c'est fini. 
+  - ??? Définir quel type de plateau conviendrait.
+  - Difficulté : élevée
+- __Plateau RARE__ Programmation Genius :
+  - Prévoir tous les coups jusqu'à la fin.
+  - À chaque coup, les piles bougent sur l'interface.
+  - Le joueur doit mémoriser l'état courant du plateau après le mouvement.
+  - Tout s'anime quand c'est fini. 
+  - Difficulté : Ultra élevée
+- Qui Perd Gagne:
+  - Regle du jeu actuel inversée.
+  - Il faut trouver une position de plateau bloquée et non résolue
+- Poids Plume :
+  - Commencer le chrono quand le premier coup est joué.
+  - Résoudre le plateau avec le moins de déplacement de jeton
+  - Chaque jeton qui bouge augmente un "malus"
+  - 2 jetons qui bougent coutent plus de malus qu'1 seul jeton
+  - Afficher le malus en direct
+- Pile Ou Face :
+  - Présenter le plateau dans les 2 modes CLASSIQUE et QUI PERD GAGNE en simultané.
+  - Le joueur gagne en résolvant l'un des deux.
+  - À lui de choisir le plus avantageux.
+  - Adapté pour les plateaux avec peu de jetons (hauteur et largeur)
+- Mot Caché:
+  - la résolution du plateau forme un mot (ANNA, LOVE, SEXE ...).
+
+#### Interface Graphique
+
+- Classique :
+    - Afficher le chrono en haut à droite.
+- Au Plus Près :
+    - Afficher le nombre de coups courant à coté de la cible.
+- Pile Poil :
+    - Afficher le nombre de coups courant à coté de la cible.
+- Tout En Tête :
+    - Afficher le chrono en haut à droite figé avant le 1er coup.
+- Programmation :
+    - Afficher les coups avant leur déroulement
+    - Afficher un bouton "Dérouler"
+- Qui Perd Gagne:
+    - Afficher le chrono en haut à droite.
+- Poids Plume :
+    - Afficher le nombre de jetons déplacés.
+    - Afficher le chrono en haut à droite.
+- Pile Ou Face :
+    - Afficher le chrono.
+    - Afficher un panneau "Gagné" ou "Perdu" selon le mode.
+    - Le panneau s'illumine en cas de victoire.
+- Mot Caché:
+    - Afficher le mot à chercher
+- [GFX] STATS : faire apparaître le type de game play pour chaque min et max.
+- [GFX] CHRONO : le chrono est tout le temps visible sur l'écran.
+- [GFX] COUPS : le nombre de coups courant est tout le temps visible sur l'écran.
+
+## V2.0 : Pour une version long terme
+
 ### Divers
 - faire une animation du bloc qui se déplace
 - enregistrer dans les données immédiatement les déplacements, mais l'animation décide quand afficher/masquer les jetons selon son avancement. (idée, plusieurs coups sont enchaînés et joués même si l'animation n'est pas terminée. Le résultat donne une séquence d'animation magique)
@@ -177,90 +312,7 @@ Depuis la phase de tests internes de la version V0.3.0, les fonctionnalités son
 - Idee de nouveau gameplay, chaque colonne est en mouvement, comme si les jetons étaient sur un tapis roulant. Le joueurs doit donner l'ordre d'échange au bon moment !
 - (Anna) Réaliser une version portugaise.
 
-### Nouveaux styles de jeux:
-
-#### Noms
-
-  - CLASSIQUE :
-  - DÉFI DU GOSSE => Au Plus Près
-  - DÉFI DU BOSS => Pile Poil
-  - MÉMOIRE => Tout En Tête
-  - Programmation
-  - QUI PERD GAGNE => Qui Perd Gagne
-  - FLEMMARD / ECOLOGIE => Poids Plume
-  - DOUBLE FACE => Pile Ou Face
-  - DICO => Mot Caché
-
-#### Descriptions
-
-  - Classique :
-    - Regle du jeu actuelle.
-  - Au Plus Près :
-    - Pour les plateaux avec plusieurs longueur de solutions
-    - Indiquer la longueur de la solution la plus courte
-    - Un bonus est donné selon la logueur de la solution trouvée.
-    - Difficulté : faible
-  - Pile Poil :
-    - Pour les plateaux avec plusieurs longueur de solutions
-    - Indiquer la longueur de la solution la plus courte
-    - La partie est perdue si la solution la plus courte n'est pas trouvée
-    - Afficher le compteur de coups actuel à coté de la cible
-    - Difficulté : élevée
-  - Tout En Tête :
-    - Commencer le chrono quand le premier coup est joué.
-    - ??? Définir quel type de plateau conviendrait.
-    - Difficulté : faible
-  - Programmation :
-    - Prévoir tous les coups jusqu'à la fin.
-    - Tout s'anime quand c'est fini. 
-    - ??? Définir quel type de plateau conviendrait.
-    - Difficulté : élevée
-  - Qui Perd Gagne:
-    - Regle du jeu actuel inversée.
-    - Il faut trouver une position de plateau bloquée et non résolue
-  - Poids Plume :
-    - Commencer le chrono quand le premier coup est joué.
-    - Résoudre le plateau avec le moins de déplacement de jeton
-    - Chaque jeton qui bouge augmente un "malus"
-    - 2 jetons qui bougent coutent plus de malus qu'1 seul jeton
-    - Afficher le malus en direct
-  - Pile Ou Face :
-    - Présenter le plateau dans les 2 modes CLASSIQUE et QUI PERD GAGNE en simultané.
-    - Le joueur gagne en résolvant l'un des deux.
-    - À lui de choisir le plus avantageux.
-    - Adapté pour les plateaux avec peu de jetons (hauteur et largeur)
-  - Mot Caché:
-    - la résolution du plateau forme un mot (ANNA, LOVE, SEXE ...).
-
-#### Interface Graphique
-
-  - Classique :
-      - Afficher le chrono en haut à droite.
-  - Au Plus Près :
-      - Afficher le nombre de coups courant à coté de la cible.
-  - Pile Poil :
-      - Afficher le nombre de coups courant à coté de la cible.
-  - Tout En Tête :
-      - Afficher le chrono en haut à droite figé avant le 1er coup.
-  - Programmation :
-      - Afficher les coups avant leur déroulement
-      - Afficher un bouton "Dérouler"
-  - Qui Perd Gagne:
-      - Afficher le chrono en haut à droite.
-  - Poids Plume :
-      - Afficher le nombre de jetons déplacés.
-      - Afficher le chrono en haut à droite.
-  - Pile Ou Face :
-      - Afficher le chrono.
-      - Afficher un panneau "Gagné" ou "Perdu" selon le mode.
-      - Le panneau s'illumine en cas de victoire.
-  - Mot Caché:
-      - Afficher le mot à chercher
-  - [GFX] STATS : faire apparaître le type de game play pour chaque min et max.
-  - [GFX] CHRONO : le chrono est tout le temps visible sur l'écran.
-  - [GFX] COUPS : le nombre de coups courant est tout le temps visible sur l'écran.
-
-## V2.0 : Idées du futur:
+## V3.0 : Idées du futur:
 - jeu en réseau : course de joueurs sur un même plateau avec chrono
 - chrono enregistré sur les plateaux. Plateau masqué avant le départ.
 - fond de plateaux dynamiques :
@@ -268,7 +320,7 @@ Depuis la phase de tests internes de la version V0.3.0, les fonctionnalités son
 	- des oiseaux qui passent
 	- des feuilles d'automne qui passent
 
-## V3.0 : Ascension émotionnelle plutot qu'une montagne
+## V4.0 : Ascension émotionnelle plutot qu'une montagne
 
 ### Campagne
 
