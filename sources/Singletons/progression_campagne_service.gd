@@ -61,9 +61,7 @@ func niveau_en_cours() -> bool:
 func la_campagne_est_terminee() -> bool:
 	return SauvegardeBddJoueursService.campagne_la_campagne_est_terminee()
 
-func commencer_un_plateau(pourcentage_longueur : float) -> void:
-	# TODO : supprimer les notions de pourcentage pour le demarrage du plateau
-	# TODO : gerer le choix du niveau de campagne
+func commencer_un_plateau() -> void:
 	if not SauvegardeBddJoueursService.campagne_lire_prochain_plateau_pour_niveau_courant():
 		# Cas exceptionnel d'un niveau achevé, mais non traité lors de la progression normale
 		LogService.log_erreur("Niveau achevé mais non traité lors de la progression normale.")
@@ -75,7 +73,7 @@ func commencer_un_plateau(pourcentage_longueur : float) -> void:
 		# C'est pas joli, ca fait une partie "bizarre", mais ca ne se repete pas apres.
 		get_tree().change_scene_to_file("res://Scenes/MenuPrincipal/Campagne/campagne.tscn")
 	if not SauvegardeBddJoueursService.enregistrement_niveau_en_cours():
-		initialiser_un_nouveau_niveau(pourcentage_longueur)
+		SauvegardeBddJoueursService.enregistrement_initialiser_un_nouveau_niveau()
 	if SauvegardeBddJoueursService.enregistrement_plateau_en_cours():
 		# Si un plateau était en cours, mais pas terminé, le considérer abandonné
 		abandonner_un_plateau()
@@ -106,11 +104,6 @@ func abandonner_un_plateau() -> void:
 	SauvegardeBddJoueursService.abandonner_un_plateau()
 	# On reste sur le même plateau
 	# La campagne et le niveaux sont inchangés
-
-func initialiser_un_nouveau_niveau(pourcentage_longueur : float):
-		# TODO : supprimer les notions de pourcentage pour le demarrage du niveau
-		# TODO : gerer le choix du niveau de campagne
-		SauvegardeBddJoueursService.enregistrement_initialiser_un_nouveau_niveau(pourcentage_longueur)
 
 func afficher_niveau_plateau_parties():
 	LogService.log_debug("[Campagne] Niveau = ", str(SauvegardeBddJoueursService.enregistrement_lire_valeur_niveau_joueur()),

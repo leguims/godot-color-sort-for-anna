@@ -29,6 +29,9 @@ func commencer_un_nouveau_plateau(plateau_texte : String) -> void:
 	else:
 		plateau_invalide.emit()
 
+func hide():
+	_effacer_le_plateau()
+
 func _effacer_le_plateau() -> void:
 	for pile in liste_piles:
 		pile.effacer_la_pile()

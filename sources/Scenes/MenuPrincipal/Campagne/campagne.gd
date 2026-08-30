@@ -6,17 +6,71 @@ extends Node
 
 class_name Campagne
 
+# var liste_gameplay : Dictionary[Gameplay, Node] = {}
+
 # TODO : à depalcer dans "Scenes\MenuPrincipal\Campagne\GamePlay"
 enum Gameplay {
 	CLASSIQUE,
-	MEMOIRE,
-	DEFI_DU_GOSSE,
-	DEFI_DU_BOSS,
+	AU_PLUS_PRES,
+	PILE_POIL,
+	TOUT_EN_TETE,
+	PROGRAMMATION,
+	PROGRAMMATION_GENIUS,
 	QUI_PERD_GAGNE,
-	FLEMMARD,
-	DOUBLE_FACE,
-	DICO
+	POIDS_PLUME,
+	PILE_OU_FACE,
+	MOT_CACHE
 }
+
+func gameplay_to_enum(gameplay : String) -> Gameplay:
+	match gameplay:
+		"CLASSIQUE":
+			return Gameplay.CLASSIQUE
+		"AU_PLUS_PRES":
+			return Gameplay.AU_PLUS_PRES
+		"PILE_POIL":
+			return Gameplay.PILE_POIL
+		"TOUT_EN_TETE":
+			return Gameplay.TOUT_EN_TETE
+		"PROGRAMMATION":
+			return Gameplay.PROGRAMMATION
+		"PROGRAMMATION_GENIUS":
+			return Gameplay.PROGRAMMATION_GENIUS
+		"QUI_PERD_GAGNE":
+			return Gameplay.QUI_PERD_GAGNE
+		"POIDS_PLUME":
+			return Gameplay.POIDS_PLUME
+		"PILE_OU_FACE":
+			return Gameplay.PILE_OU_FACE
+		"MOT_CACHE":
+			return Gameplay.MOT_CACHE
+		_:
+			LogService.log_erreur("Gameplay inconnu : ", gameplay)
+			return Gameplay.CLASSIQUE
+
+func gameplay_to_ui(gameplay : Gameplay) -> Node:
+	match gameplay:
+		Gameplay.CLASSIQUE:
+			return $Classique
+		Gameplay.AU_PLUS_PRES:
+			return $AuPlusPres
+		Gameplay.PILE_POIL:
+			return $PilePoil
+		Gameplay.TOUT_EN_TETE:
+			return $ToutEnTete
+		Gameplay.PROGRAMMATION:
+			return $Programmation
+		Gameplay.QUI_PERD_GAGNE:
+			return $QuiPerdGagne
+		Gameplay.POIDS_PLUME:
+			return $PoidsPlume
+		Gameplay.PILE_OU_FACE:
+			return $PileOuFace
+		Gameplay.MOT_CACHE:
+			return $MotCache
+		_:
+			LogService.log_erreur("Gameplay inconnu : ", str(gameplay))
+			return $Classique
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
@@ -37,20 +91,19 @@ func _ready() -> void:
 		$MenuCampagne.afficher_accueil_nouveau_niveau()
 
 func _on_menu_commencer_plateau() -> void:
-	# TODO : supprimer "pourcentage" (-1) pour commencer campagne
-	ProgressionCampagneService.commencer_un_plateau(-1)
-	_lancer_plateau_de_campagne(SauvegardeBddJoueursService.enregistrement_lire_nom_plateau())
+	ProgressionCampagneService.commencer_un_plateau()
+	_lancer_plateau_de_campagne()
 
-func _lancer_plateau_de_campagne(plateau : String) -> void:
-	# TODO : Définir le type de plateau à lancer => Ajouter un parametre 'gameplay'
-	var gameplay : Gameplay = Gameplay.CLASSIQUE
-	# var gameplay : Gameplay = Gameplay.QUI_PERD_GAGNE
+func _lancer_plateau_de_campagne() -> void:
+	var plateau : String = SauvegardeBddJoueursService.enregistrement_lire_nom_plateau()
+	var gameplay_str : String = SauvegardeBddJoueursService.enregistrement_lire_gameplay_plateau()
+	var gameplay : Gameplay = gameplay_to_enum(gameplay_str)
+	var ui_gameplay : Node = gameplay_to_ui(gameplay)
 
-	var i_gameplay : Node = instance_gameplay(gameplay)
-	if i_gameplay.est_valide(plateau):
+	if ui_gameplay.est_valide(plateau):
 		$MenuCampagne.cacher_accueil()
 		montrer_le_gameplay(gameplay)
-		i_gameplay.commencer_un_nouveau_plateau(plateau)
+		ui_gameplay.commencer_un_nouveau_plateau(plateau)
 		AudioService.son_commencer_un_plateau()
 		AudioService.jouer_la_musique()
 	else:
@@ -106,8 +159,10 @@ func cacher_les_gameplays() -> void:
 func montrer_le_gameplay(gameplay : Gameplay) -> void:
 	if gameplay == Gameplay.CLASSIQUE:
 		$QuiPerdGagne.hide()
+		$Classique.show()
 	if gameplay == Gameplay.QUI_PERD_GAGNE:
 		$Classique.hide()
+		$QuiPerdGagne.show()
 
 func instance_gameplay(gameplay : Gameplay) -> Node:
 	if gameplay == Gameplay.CLASSIQUE:

@@ -72,24 +72,12 @@ Depuis la phase de tests internes de la version V0.3.0, les fonctionnalités son
 - Ajouter un menu pour exporter les sauvegardes (avec chiffrage secret)
 - Ajouter un menu pour importer les sauvegardes chiffrées
 
-#### Ascensions
-- Gérer la difficulté relative des différentes 'ascensions':
-- Si un (ensemble de) niveau(x) elevé(s) est(sont) pauvres, les attribuer lors des dernieres ascensions
-- Qualifier les félicitations en fonction de la hauteur de l'ascension (pic du midi, ... mont blanc ... Everest).
-- Classement des ascensions :
-	- https://spherama.com/classements/montagnes/ascension/classement-des-montagnes-par-difficulte-ascension-monde.php
-	- https://climbfinder.com/fr/classement?l=415%3Fs%3Dhighest&s=cotacol
-- Prévoir un algo pour programmer l'ascension et la mémoriser.
-- Le nombre de coups minimum d'une solution est connu, il est possible de l'inclure dans le calcul du score.
+#### Niveaux
 - Prevoir une musique spéciale pour la réussite de la derniere ascension possible et le message de félicitations.
-- Calculer les populations restantes de chaque difficulté et attribuer un nombre de plateau par niveaux à réaliser par ascension au minimum. Le chemin se rallonge en cas d'echecs.
-- est ce qu'il faut limiter les ascensions (logo montagne) à une ascension maximum ?
 - Il faudrait prevoir un jeu libre avec choix de difficulté et choix de longueur d'ascension + La campagne qui orchestre les longueurs d'ascensions à faire (10 puis 20 ...)
 - TRICHE ANATOLE :
     - Quand anatole comme 'nom' on peux mettre n'importe quelle couleur sur n'importe quelle couleur et ça marche mais pas beaucoup de point
     - Il y aura un bouton gagner Ou quand tout les Block seront dans une case remplie
-- Campagne progressive qui impose les ascensions
-- Jeu libre avec les plateaux résolus en campagne (statistiques protégées de l'entrainement)
 
 #### Statistiques
 - Outils visuels:

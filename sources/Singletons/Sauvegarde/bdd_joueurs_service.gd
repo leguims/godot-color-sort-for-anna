@@ -402,11 +402,9 @@ func enregistrement_niveau_en_cours() -> bool:
 		return not niveau_courant.get('date_fin')
 	return false
 	
-func enregistrement_initialiser_un_nouveau_niveau(niveau : int) -> bool:
+func enregistrement_initialiser_un_nouveau_niveau() -> bool:
 	"Crée et initialise un nouveau niveau"
-	# TODO : Mettre en place un mécanisme pour choisir le niveau à joueur.
-	# TODO : Le parametre 'niveau' doit etre utilisé à la place de 'prochain_niveau'
-	var prochain_niveau = lire_prochain_niveau_de_campagne() # TODO : remplacer par 'niveau' !!!
+	var prochain_niveau = lire_prochain_niveau_de_campagne()
 	if prochain_niveau:
 		var nom_du_niveau = nom_niveau(prochain_niveau)
 		if not enregistrement_niveau_en_cours():
@@ -632,6 +630,7 @@ func enregistrement_lire_nombre_plateaux_acheves() -> int:
 
 ###############################################
 # Niveaux / Plateaux / Nom
+# Niveaux / Plateaux / Gameplay
 # Niveaux / Plateaux / Date debut
 # Niveaux / Plateaux / Date fin
 # Niveaux / Plateaux / duree
@@ -649,6 +648,12 @@ func enregistrement_lire_nom_plateau() -> String:
 	var plateau = enregistrement_lire_dernier_plateau()
 	if plateau:
 		return plateau.get('nom')
+	return ""
+
+func enregistrement_lire_gameplay_plateau() -> String:
+	var plateau = enregistrement_lire_dernier_plateau()
+	if plateau:
+		return plateau.get('gameplay')
 	return ""
 
 func enregistrement_lire_date_debut_plateau() -> float: # TODO : INUTILISE !

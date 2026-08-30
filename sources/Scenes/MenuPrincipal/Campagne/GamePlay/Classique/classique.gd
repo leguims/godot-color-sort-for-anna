@@ -32,6 +32,7 @@ func show():
 
 func hide():
 	$MenuPlateau.hide()
+	$Plateau.hide()
 
 func cacher_accueil():
 	$MenuPlateau.cacher_accueil()
