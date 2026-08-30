@@ -154,15 +154,14 @@ func afficher_fin_niveau():
 	$MessageRiche.hide()
 
 	var message : Array[String] = [ "Bravo !",
-					"C'était Le Dernier Plateau !",
-					"Vous êtes au Sommet...",
-					"... de l'Everest !"]
+					"C'était Le Dernier Plateau.",
+					"Vous êtes au TOP !"]
 	afficher_des_messages_simples(message, 3.0)
 	# Attendre l'affichage des messages
 	for attente in message.size():
 		await fin_message_riche
 
-	afficher_plateau_suivant("Niveau Suivant !")
+	afficher_plateau_suivant("Découvrez Le Niveau Suivant !")
 
 func afficher_fin_campagne():
 	# TODO : Voir si l'affiche doit toujours être lancé d'ailleurs
@@ -177,8 +176,8 @@ func afficher_fin_campagne():
 	var message : Array[String] = [ "Félicitation !",
 					"C'était le dernier plateau...",
 					"...du dernier niveau.",
-					"Vous êtes au sommet...",
-					"Savourez l'instant."]
+					"Vous êtes incroyable !",
+					"Rien ne vous arrête."]
 	afficher_des_messages_simples(message, 5.0)
 	# Attendre l'affichage des messages
 	for attente in message.size():

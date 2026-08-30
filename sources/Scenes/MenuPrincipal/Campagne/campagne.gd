@@ -91,6 +91,8 @@ func _ready() -> void:
 		$MenuCampagne.afficher_accueil_nouveau_niveau()
 
 func _on_menu_commencer_plateau() -> void:
+	# TODO : Drole de comportement pour commencer un niveau.
+	# TODO : Corriger ce comportement.
 	ProgressionCampagneService.commencer_un_plateau()
 	_lancer_plateau_de_campagne()
 
