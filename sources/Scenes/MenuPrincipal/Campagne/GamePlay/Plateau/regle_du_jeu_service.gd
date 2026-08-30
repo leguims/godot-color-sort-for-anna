@@ -1,6 +1,18 @@
 extends RefCounted
 class_name PlateauReglesDuJeuService
 
+func est_bloque(liste_piles : Array) -> bool:
+	# Pour chaque pile, vérifier si un mouvement est possible
+	for pile_depart in liste_piles:
+		if not pile_de_depart_de_tansfert_valide(pile_depart):
+			continue
+		for pile_arrivee in liste_piles:
+			var indice_pile_depart = pile_depart.obtenir_reference()
+			var indice_pile_arrivee = pile_arrivee.obtenir_reference()
+			if est_valide_le_tansfert_de_pile(liste_piles, indice_pile_depart, indice_pile_arrivee):
+				return false
+	return true
+
 func pile_de_depart_de_tansfert_valide(pile_depart : Pile) -> bool:
 	if pile_depart.est_vide():
 		#LogService.log_debug("Pile de départ vide")

@@ -18,9 +18,11 @@ var couleur_de_deplacement_valide = Color("d800d8")
 func _ready() -> void:
 	pass
 
-
 func choisir_reference(reference : int) -> void:
 	reference_parent = reference
+
+func obtenir_reference() -> int:
+	return reference_parent
 
 func ajouter_les_jetons(jetons : Array) -> bool:
 	# Vérifier la validité de la pile

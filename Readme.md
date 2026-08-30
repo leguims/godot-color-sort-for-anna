@@ -24,9 +24,6 @@ Depuis la phase de tests internes de la version V0.3.0, les fonctionnalités son
 #### Bug V0.4.0 :
 - Définir une combinaison secrete pour declencher l'export des fichiers JSON.
 
-#### Bug V0.5.0 :
-- Au lancement d'une partie, le plateau apparait, mais n'est pas cliquable.
-
 ### Jeu
 
 #### Changement d'architecture pour accueillir plusieurs gameplay
@@ -34,32 +31,30 @@ Depuis la phase de tests internes de la version V0.3.0, les fonctionnalités son
 - ~~Séparer les regles de vies des plateaux : creation plateau, deplacement de jetons~~
 - ~~Séparer les regles du plateau et les regles du jeu : condition de victoire appartient au gameplay~~
 - ~~Séparer la campagne des plateaux et interfacer le gameplay entre eux.~~
-- La campagne adresse un gameplay (avec sa presentation et ses regles) qui adresse un plateau (avec des regles universelles)
-- La campagne devient une séquence de plateaux imposés avec des gameplay imposés
 - ~~Structurer le fichier 'Solutions_classees.json' pour incorporer le déroulé de la campagne (sequence plateaux et gameplay)~~
   - ~~Le contenu devra être identique à la section "Campagne" du fichier vierge de sauvegarde d'un joueur.~~
 - ~~Structurer la sauvegarde 'sauvegarde_joueur_XX.json' pour incorporer la campagne~~
-  - "ascensions" devient "enregistrement_campagne" pour les statistiques
-  - Un plateau terminé en campagne devient accessible pour le jeu libre
-  - La liste des plateaux de la campagne contient le gameplay de chacun + spécificités facultatives (coups_min, dico)
+  - ~~"ascensions" devient "enregistrement_campagne" pour les statistiques~~
+  - ~~Un plateau terminé en campagne devient accessible pour le jeu libre~~
+  - ~~La liste des plateaux de la campagne contient le gameplay de chacun + spécificités facultatives (coups_min, dico)~~
 - Associer les statistiques à la campagne
 - ~~Ajuster les decodages de fichiers plateaux : bdd_plateaux_service~~
 - Ajuster les decodages de fichiers de progression campagne : progression_campagne_service
-- Effacer tous les outils d'initialisation libre de la campagne (jauge + nombre de plateau)
-- Les enregistrements de campagne permettent de conserver plusieurs niveaux en cours. (exemple : Niveau_1 et Niveau_10)
-- Comme tous les niveaux sont enregistrés dans la campagne, on pourrait commencer plusieurs niveaux sans avoir fini le précédent.
-- On pourrait dire qu'un niveau passé à moitié ouvre l'accès au niveau suivant.
-- Changement de vocable:
-  - Notions globales:
-    - Campagne = Campagne
-      - Ascension => Niveau
-        - Plateau => Plateau
-          - Niveau => Difficulté
-          - 0 => Gameplay
-  - fichier de sauvegarde:
-    - ascension => enregistrement_campagne
-    - plateaux => campagne
-    - plateaux => plateaux_libres (peuplé par les plateaux de campagne terminés)
+- ~~Effacer tous les outils d'initialisation libre de la campagne (jauge + nombre de plateau)~~
+- ~~Les enregistrements de campagne permettent de conserver plusieurs niveaux en cours. (exemple : Niveau_1 et Niveau_10)~~ ABANDON
+- ~~Comme tous les niveaux sont enregistrés dans la campagne, on pourrait commencer plusieurs niveaux sans avoir fini le précédent.~~ ABANDON
+- ~~On pourrait dire qu'un niveau passé à moitié ouvre l'accès au niveau suivant..~~ ABANDON
+- ~~Changement de vocable:~~
+  - ~~Notions globales:~~
+    - ~~Campagne = Campagne~~
+      - ~~Ascension => Niveau~~
+        - ~~Plateau => Plateau~~
+          - ~~Niveau => Difficulté~~
+          - ~~0 => Gameplay~~
+  - ~~fichier de sauvegarde:~~
+    - ~~ascension => enregistrement_campagne~~
+    - ~~plateaux => campagne~~
+    - ~~plateaux => plateaux_libres (peuplé par les plateaux de campagne terminés)~~
 
 #### Suggestions générales
 - (Faro) Aligner les piles sur la même ligne pour que ca soit plus facile à jouer (-1 Totol)
