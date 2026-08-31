@@ -7,16 +7,18 @@ var clonage_prefixe: String = "RLC_"
 func json_file_exists(chemin : String) -> Variant:
 	return FileAccess.file_exists(chemin)
 
-func remove_json_file(chemin : String) -> void:
+func remove_json_file(chemin : String) -> bool:
 	if FileAccess.file_exists(chemin):
 		var erreur = DirAccess.remove_absolute(chemin)
 		if erreur != OK:
 			LogService.log_erreur("Erreur : Effacement du fichier : ", chemin,
 					 " avec l'erreur : ", erreur)
+			return false
 		if OS.get_name() == "Android" and clonage:
 			var nom_fichier = clonage_prefixe + chemin.remove_chars("user://")
 			if FileAccess.file_exists(clonage_app_dir + nom_fichier):
 				DirAccess.remove_absolute(clonage_app_dir + nom_fichier)
+	return true
 
 func read_json_file(chemin : String) -> Variant:
 	var fichier = null
@@ -47,33 +49,41 @@ func read_json_file(chemin : String) -> Variant:
 					fichier = FileAccess.open(clonage_app_dir + nom_fichier, FileAccess.WRITE)
 					if not fichier:
 						LogService.log_erreur("write_json_file : ERREUR sur le chemin : ", clonage_app_dir + nom_fichier)
-					fichier.store_string(contenu_texte)
-					fichier.close()
+					else:
+						fichier.store_string(contenu_texte)
+						fichier.close()
 			return json.get_data()
 		LogService.log_erreur("read_json_file : ERREUR sur le décodage JSON: ", json.get_error_message(), " in ", chemin, " at line ", json.get_error_line())
 	else:
 		LogService.log_erreur("read_json_file : ERREUR, le fichier *", chemin, "* n'existe pas ")
 	return null
 
-func write_json_file(chemin : String, contenu) -> void:
+func write_json_file(chemin : String, contenu) -> bool:
 	var fichier = null
 	
 	# Ouverture du fichier
 	fichier = FileAccess.open(chemin, FileAccess.WRITE)
 	if not fichier:
 		LogService.log_erreur("write_json_file : ERREUR sur le chemin : ", chemin)
-		return
+		return false
 	# Encodage JSON
 	var json_string = JSON.stringify(contenu)
 	# LogService.log_debug("json_string = ", json_string)
 	# Ecriture du fichier
 	fichier.store_string(json_string)
+	var erreur_ecriture = fichier.get_error()
 	fichier.close()
+	if erreur_ecriture != OK:
+		LogService.log_erreur("write_json_file : ERREUR d'écriture sur le chemin : ", chemin,
+				 " avec l'erreur : ", erreur_ecriture)
+		return false
 
 	if OS.get_name() == "Android" and clonage:
 		var nom_fichier = clonage_prefixe + chemin.remove_chars("user://")
 		fichier = FileAccess.open(clonage_app_dir + nom_fichier, FileAccess.WRITE)
 		if not fichier:
 			LogService.log_erreur("write_json_file : ERREUR sur le chemin : ", clonage_app_dir + nom_fichier)
-		fichier.store_string(json_string)
-		fichier.close()
+		else:
+			fichier.store_string(json_string)
+			fichier.close()
+	return true

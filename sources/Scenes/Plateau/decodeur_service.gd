@@ -3,10 +3,13 @@ class_name PlateauDecodeurService
 
 var string2int = {}
 
+func _init() -> void:
+	_initialiser_table_conversion()
+
 func est_valide(plateau_texte : String) -> bool:
 	# Vérifier si chaque pile est valide
 	for pile in decoder_plateau(plateau_texte):
-		if not Pile.est_valide(pile):
+		if pile.is_empty() or not Pile.est_valide(pile):
 			return false
 	# TODO : Vérifier la validité du plateau dans son ensemble (nombre de jetons, possibilité de réussir)
 	# Invalide : Plateau vide
@@ -19,7 +22,6 @@ func est_valide(plateau_texte : String) -> bool:
 	return true
 
 func decoder_plateau(plateau_texte : String) -> Array:
-	plateau_texte = plateau_texte.to_upper()
 	#LogService.log_debug("decoder_plateau : ", plateau_texte)
 	var plateau_liste = []
 	#plateau_texte = plateau_texte.replace(' ','')
@@ -31,11 +33,16 @@ func decoder_plateau(plateau_texte : String) -> Array:
 
 func decoder_pile(pile_texte : String) -> Array:
 	var pile_liste = []
-	if not string2int:
-		for i in range(26):
-			string2int[String.chr(65+i)] = i
-		string2int[String.chr(Plateau.ESPACE)] = Plateau.ESPACE # chr(ESPACE)=' '
-	for c in pile_texte:
+	for c in pile_texte.to_upper():
+		if not string2int.has(c):
+			return []
 		pile_liste.append(string2int[c])
 	#LogService.log_debug("  decoder_pile : ", pile_texte, " => ", pile_liste)
 	return pile_liste
+
+func _initialiser_table_conversion() -> void:
+	if string2int:
+		return
+	for i in range(26):
+		string2int[String.chr(65+i)] = i
+	string2int[' '] = 32

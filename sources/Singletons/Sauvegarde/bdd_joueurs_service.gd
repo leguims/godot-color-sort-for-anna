@@ -85,10 +85,13 @@ func _print_bdd_joueurs() -> void:
 	#if len(sauvegarde_joueur.get('ascensions')):
 	#	LogService.log_debug('\t', "derniere ascensions=", sauvegarde_joueur.get('ascensions').back())
 
-func _enregistrer_sauvegarde_joueur() -> void:
+func _enregistrer_sauvegarde_joueur() -> bool:
 	if fichier_sauvegarde:
-		FichiersJsonService.write_json_file("user://" + fichier_sauvegarde, sauvegarde_joueur.duplicate(true))
-		LogService.log_debug("Progression sauvegardée")
+		var succes = FichiersJsonService.write_json_file("user://" + fichier_sauvegarde, sauvegarde_joueur.duplicate(true))
+		if succes:
+			LogService.log_debug("Progression sauvegardée")
+		return succes
+	return false
 
 func le_joueur_existe() -> bool:
 	return fichier_sauvegarde != ""
@@ -99,12 +102,16 @@ func choisir_le_joueur(nom : String, fichier : String) -> bool:
 func liberer_le_joueur():
 	fichier_sauvegarde = ""
 
+func liberer_le_joueur_si_selectionne(nom : String, fichier : String) -> void:
+	if fichier_sauvegarde == fichier and lire_nom_joueur() == nom:
+		liberer_le_joueur()
+
 func ajouter_un_nouveau_joueur(nom_nouveau_joueur : String, nom_nouveau_fichier : String) -> bool:
 	"""Crée un nouveau joueur si le nom est libre"""
 	# Vérifie que le nom est libre
 	if not nom_nouveau_joueur:
 		return false
-	if not nom_nouveau_fichier or FichiersJsonService.json_file_exists(nom_nouveau_fichier):
+	if not nom_nouveau_fichier or FichiersJsonService.json_file_exists("user://" + nom_nouveau_fichier):
 		return false
 	# Crée le compte et l'enregistre
 	sauvegarde_joueur = {
@@ -117,8 +124,16 @@ func ajouter_un_nouveau_joueur(nom_nouveau_joueur : String, nom_nouveau_fichier 
 	sauvegarde_joueur['plateaux'] = SauvegardeBddPlateauxService.plateau_liste_difficulte_duplicate()
 	
 	fichier_sauvegarde = nom_nouveau_fichier
-	_enregistrer_sauvegarde_joueur()
-	return true
+	var succes = _enregistrer_sauvegarde_joueur()
+	if not succes:
+		FichiersJsonService.remove_json_file("user://" + nom_nouveau_fichier)
+	liberer_le_joueur()
+	return succes
+
+func annuler_creation_joueur(nom_fichier : String) -> bool:
+	"""Supprime le fichier individuel créé lors d'une initialisation incomplète."""
+	liberer_le_joueur()
+	return FichiersJsonService.remove_json_file("user://" + nom_fichier)
 
 func remplacer_campagne_des_joueur():
 	"""Parcourir tous les joueurs et remplacer les plateaux à jouer par ceux du fichier courant"""
@@ -170,12 +185,16 @@ func supprimer_plateau_courant() -> bool:
 	if le_joueur_existe() and lire_statut_plateau() == 'en cours':
 		var str_niveau = str(lire_niveau_joueur())
 		var nom_plateau = lire_nom_plateau()
-		sauvegarde_joueur.get('plateaux').get(str_niveau).erase(nom_plateau)
-		if sauvegarde_joueur.get('plateaux').get(str_niveau).is_empty():
+		var plateaux = sauvegarde_joueur.get('plateaux')
+		var plateaux_du_niveau = plateaux.get(str_niveau)
+		var plateaux_du_niveau_avant = plateaux_du_niveau.duplicate()
+		plateaux_du_niveau.erase(nom_plateau)
+		if plateaux_du_niveau.is_empty():
 			# Le niveau est terminé, effacer sa reference dans les plateaux restants.
-			sauvegarde_joueur.get('plateaux').erase(str_niveau)
-		_enregistrer_sauvegarde_joueur()
-		return true
+			plateaux.erase(str_niveau)
+		if _enregistrer_sauvegarde_joueur():
+			return true
+		plateaux[str_niveau] = plateaux_du_niveau_avant
 	return false
 
 func lire_nombre_de_plateaux_realisables_pour_niveau_courant() -> int:
@@ -290,8 +309,9 @@ func initialiser_une_nouvelle_ascension(nb_niveau : int,
 			'plateaux': []
 			}
 		sauvegarde_joueur['ascensions'].append(ascension)
-		_enregistrer_sauvegarde_joueur()
-		return true
+		if _enregistrer_sauvegarde_joueur():
+			return true
+		sauvegarde_joueur['ascensions'].pop_back()
 	return false
 
 func terminer_ascension() -> void:
@@ -502,8 +522,9 @@ func initialiser_un_nouveau_plateau(nom : String,
 		var ascension = sauvegarde_joueur.get('ascensions').back()
 		var plateaux = ascension.get('plateaux')
 		plateaux.append(nouveau_plateau)
-		_enregistrer_sauvegarde_joueur()
-		return true
+		if _enregistrer_sauvegarde_joueur():
+			return true
+		plateaux.pop_back()
 	return false
 
 func terminer_plateau() -> void:
@@ -689,8 +710,9 @@ func ajouter_un_nouveau_coup(depart : int,
 		var plateau = ascension.get('plateaux').back()
 		var coups = plateau.get('coups joués')
 		coups.append(nouveau_coup)
-		_enregistrer_sauvegarde_joueur()
-		return true
+		if _enregistrer_sauvegarde_joueur():
+			return true
+		coups.pop_back()
 	return false
 
 func terminer_coups() -> void:

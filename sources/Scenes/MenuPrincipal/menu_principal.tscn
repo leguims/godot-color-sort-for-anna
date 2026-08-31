@@ -1,165 +1,23 @@
-[gd_scene format=3 uid="uid://due674pwfguqp"]
+[gd_scene load_steps=4 format=3 uid="uid://due674pwfguqp"]
 
-[ext_resource type="Script" uid="uid://cab0yaq8331s4" path="res://Scenes/MenuPrincipal/menu_principal.gd" id="1_64slw"]
-[ext_resource type="Texture2D" uid="uid://pq65gq7bt1p" path="res://Art/Images/fond_cubes_480x720.png" id="2_wsrww"]
-[ext_resource type="PackedScene" uid="uid://knrlkm4pili5" path="res://Scenes/MenuPrincipal/Clavier/clavier.tscn" id="3_y3ggv"]
+[ext_resource type="Script" path="res://Scenes/MenuPrincipal/menu_principal.gd" id="1"]
+[ext_resource type="PackedScene" path="res://Scenes/POCUI/poc_jouer_validated.tscn" id="2"]
+[ext_resource type="PackedScene" path="res://Scenes/MenuPrincipal/Clavier/clavier.tscn" id="3"]
 
-[sub_resource type="SystemFont" id="SystemFont_jisel"]
-font_names = PackedStringArray("Impact")
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ruejn"]
-bg_color = Color(0, 0, 0, 1)
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_mef5e"]
-bg_color = Color(0.87451, 0, 0.87451, 1)
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_so4s0"]
-bg_color = Color(0.537255, 0, 0.537255, 1)
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_urgqo"]
-bg_color = Color(0.873002, 0.000607988, 0.872996, 1)
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_0rh52"]
-bg_color = Color(0.537255, 0, 0.537255, 1)
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_p4mar"]
-bg_color = Color(0.87451, 0, 0.87451, 1)
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_dfj4a"]
-bg_color = Color(0.537255, 0, 0.537255, 1)
-
-[node name="Menu_principal" type="Control" unique_id=313760940]
+[node name="Menu_principal" type="Control"]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-script = ExtResource("1_64slw")
+script = ExtResource("1")
 
-[node name="Fond" type="TextureRect" parent="." unique_id=1990272667]
-self_modulate = Color(0.589096, 0.589096, 0.589096, 1)
+[node name="Habillage" parent="." instance=ExtResource("2")]
 layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-texture = ExtResource("2_wsrww")
 
-[node name="Marge" type="MarginContainer" parent="." unique_id=354410368]
+[node name="Clavier" parent="." instance=ExtResource("3")]
 layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-theme_override_constants/margin_left = 20
-theme_override_constants/margin_top = 20
-theme_override_constants/margin_right = 20
-theme_override_constants/margin_bottom = 20
 
-[node name="HBoxContainer" type="HBoxContainer" parent="Marge" unique_id=1462702040]
-layout_mode = 2
-alignment = 1
-
-[node name="VBoxContainer" type="VBoxContainer" parent="Marge/HBoxContainer" unique_id=291310967]
-layout_mode = 2
-size_flags_horizontal = 3
-theme_override_constants/separation = 30
-alignment = 1
-
-[node name="Titre du jeu" type="Label" parent="Marge/HBoxContainer/VBoxContainer" unique_id=1370740222]
-layout_mode = 2
-theme_override_colors/font_color = Color(0.87451, 0, 0.87451, 1)
-theme_override_fonts/font = SubResource("SystemFont_jisel")
-theme_override_font_sizes/font_size = 42
-theme_override_styles/normal = SubResource("StyleBoxFlat_ruejn")
-text = "Range les couleurs
-pour Anna d'Amour !"
-horizontal_alignment = 1
-vertical_alignment = 1
-
-[node name="Marge" type="MarginContainer" parent="Marge/HBoxContainer/VBoxContainer" unique_id=937286899]
-layout_mode = 2
-theme_override_constants/margin_left = 80
-theme_override_constants/margin_top = 20
-theme_override_constants/margin_right = 80
-theme_override_constants/margin_bottom = 20
-
-[node name="VBoxContainer" type="VBoxContainer" parent="Marge/HBoxContainer/VBoxContainer/Marge" unique_id=2099875903]
-layout_mode = 2
-theme_override_constants/separation = 30
-alignment = 1
-
-[node name="BoutonCampagne" type="Button" parent="Marge/HBoxContainer/VBoxContainer/Marge/VBoxContainer" unique_id=1367881778]
-layout_mode = 2
-theme_override_font_sizes/font_size = 21
-theme_override_styles/normal = SubResource("StyleBoxFlat_mef5e")
-theme_override_styles/hover = SubResource("StyleBoxFlat_so4s0")
-text = "Campagne"
-
-[node name="JoueursCampagne" type="GridContainer" parent="Marge/HBoxContainer/VBoxContainer/Marge/VBoxContainer" unique_id=574496295]
-visible = false
-layout_mode = 2
-
-[node name="BoutonScores" type="Button" parent="Marge/HBoxContainer/VBoxContainer/Marge/VBoxContainer" unique_id=1989412153]
-layout_mode = 2
-theme_override_font_sizes/font_size = 21
-theme_override_styles/normal = SubResource("StyleBoxFlat_urgqo")
-theme_override_styles/hover = SubResource("StyleBoxFlat_0rh52")
-text = "Scores"
-
-[node name="BoutonRéférences" type="Button" parent="Marge/HBoxContainer/VBoxContainer/Marge/VBoxContainer" unique_id=1453020531]
-layout_mode = 2
-theme_override_font_sizes/font_size = 21
-theme_override_styles/normal = SubResource("StyleBoxFlat_p4mar")
-theme_override_styles/hover = SubResource("StyleBoxFlat_dfj4a")
-text = "Références"
-
-[node name="VBoxContainer" type="VBoxContainer" parent="Marge/HBoxContainer/VBoxContainer/Marge/VBoxContainer" unique_id=1410496567]
-layout_mode = 2
-
-[node name="BoutonMusiques" type="CheckButton" parent="Marge/HBoxContainer/VBoxContainer/Marge/VBoxContainer/VBoxContainer" unique_id=1562500741]
-layout_mode = 2
-button_pressed = true
-action_mode = 0
-text = "Musiques"
-
-[node name="BoutonEffetsSonores" type="CheckButton" parent="Marge/HBoxContainer/VBoxContainer/Marge/VBoxContainer/VBoxContainer" unique_id=647157064]
-layout_mode = 2
-button_pressed = true
-action_mode = 0
-text = "Effets sonores"
-
-[node name="BoutonVibrations" type="CheckButton" parent="Marge/HBoxContainer/VBoxContainer/Marge/VBoxContainer/VBoxContainer" unique_id=2062815306]
-layout_mode = 2
-button_pressed = true
-action_mode = 0
-text = "Vibrations"
-
-[node name="Clavier" parent="." unique_id=1467586721 instance=ExtResource("3_y3ggv")]
-
-[node name="Version" type="Label" parent="." unique_id=1924438185]
-layout_mode = 1
-anchors_preset = 3
-anchor_left = 1.0
-anchor_top = 1.0
-anchor_right = 1.0
-anchor_bottom = 1.0
-offset_left = -47.0
-offset_top = -23.0
-grow_horizontal = 0
-grow_vertical = 0
-text = "V0.3.1"
-horizontal_alignment = 2
-vertical_alignment = 2
-
-[connection signal="pressed" from="Marge/HBoxContainer/VBoxContainer/Marge/VBoxContainer/BoutonCampagne" to="." method="_on_bouton_campagne_pressed"]
-[connection signal="pressed" from="Marge/HBoxContainer/VBoxContainer/Marge/VBoxContainer/BoutonScores" to="." method="_on_bouton_scores_pressed"]
-[connection signal="pressed" from="Marge/HBoxContainer/VBoxContainer/Marge/VBoxContainer/BoutonRéférences" to="." method="_on_bouton_références_pressed"]
-[connection signal="toggled" from="Marge/HBoxContainer/VBoxContainer/Marge/VBoxContainer/VBoxContainer/BoutonMusiques" to="." method="_on_bouton_musiques_toggled"]
-[connection signal="toggled" from="Marge/HBoxContainer/VBoxContainer/Marge/VBoxContainer/VBoxContainer/BoutonEffetsSonores" to="." method="_on_bouton_effets_sonores_toggled"]
-[connection signal="toggled" from="Marge/HBoxContainer/VBoxContainer/Marge/VBoxContainer/VBoxContainer/BoutonVibrations" to="." method="_on_bouton_vibrations_toggled"]
 [connection signal="pseudo_annule" from="Clavier" to="." method="_on_clavier_pseudo_annule"]
 [connection signal="pseudo_valide" from="Clavier" to="." method="_on_clavier_pseudo_valide"]

@@ -1,43 +1,35 @@
-extends "res://Scenes/MenuPrincipal/References/retour_menu_principal.gd"
+extends Control
 
 const TOP_N := 5
-var liste_format_scores = {
-	'entete': "[outline_size=10][color=white][center]\n",
-	1: "[font_size=60][color=gold]score[/color][/font_size]\n",
-	2: "[font_size=50][color=silver]score[/color][/font_size]\n",
-	3: "[font_size=40][color=#CD7F32]score[/color][/font_size]\n",
-	4: "[font_size=30]score[/font_size]\n",
-	5: "[font_size=30]score[/font_size]\n",
-	'pied_de_page': "[/center][/color][/outline_size]\n",
-	}
 
 func _ready() -> void:
-	# Realiser le classement des joueurs
 	var classement: Array = SauvegardeTableauDesScoresService.retourner_classement()
-	$ListeScores.bbcode_text = generer_bbcode_scores(classement)
+	for rang in range(1, TOP_N + 1):
+		var nom := "-"
+		var score := "-"
+		if rang <= classement.size():
+			var joueur: Dictionary = classement[rang - 1]
+			nom = str(joueur.get("nom", "-"))
+			score = str(joueur.get("score_txt", "-"))
+		($Habillage.find_child("NomRang%d" % rang, true, false) as Label).text = nom
+		($Habillage.find_child("ScoreRang%d" % rang, true, false) as Label).text = score
+		if rang >= 3 and nom == "-" and score == "-":
+			$Habillage.find_child("MasqueNomRang%d" % rang, true, false).hide()
+			$Habillage.find_child("MasqueScoreRang%d" % rang, true, false).hide()
+			$Habillage.find_child("NomRang%d" % rang, true, false).hide()
+			$Habillage.find_child("ScoreRang%d" % rang, true, false).hide()
+	($Habillage.find_child("BoutonRetour", true, false) as Button).pressed.connect(_retour)
+	($Habillage.find_child("BoutonContinuer", true, false) as Button).pressed.connect(_retour)
+	_capturer_si_demande()
 
-func generer_bbcode_scores(classement: Array) -> String:
-	# Remplir chaque score dans la liste des scores
-	var world_icon = String.chr(0x1F30D)
-	var liste_score_bbcode : String = ''
-	liste_score_bbcode += liste_format_scores.get('entete')
-	for i in range(TOP_N): # TOP 5
-		if classement:
-			var joueur: Dictionary = classement.pop_front()
-			if joueur:
-				var rang_joueur = joueur.get('rang')
-				var score_texte = joueur.get('nom') + " " + joueur.get('score_txt')
-				if ProgressionCampagneService.la_campagne_est_terminee_pour_joueur(joueur.get('nom')):
-					score_texte = world_icon + score_texte
-				if 1 <= rang_joueur and rang_joueur <= 3:
-					score_texte = SauvegardeTableauDesScoresService.lire_le_trophee_du_rang(rang_joueur) + score_texte
-				# int(rang_joueur) car 'rang_joueur' est vu comme un float !
-				var texte_bbcode = liste_format_scores.get(int(rang_joueur))
-				texte_bbcode = texte_bbcode.replace('score', score_texte)
-				liste_score_bbcode += texte_bbcode
-				continue
-		var texte_bbcode = liste_format_scores.get(TOP_N)
-		texte_bbcode = texte_bbcode.replace('score', '-')
-		liste_score_bbcode += texte_bbcode
-	liste_score_bbcode += liste_format_scores.get('pied_de_page')
-	return liste_score_bbcode
+func _retour() -> void:
+	AudioService.son_menu_click()
+	get_tree().change_scene_to_file("res://Scenes/MenuPrincipal/menu_principal.tscn")
+
+func _capturer_si_demande() -> void:
+	for argument in OS.get_cmdline_user_args():
+		if argument.begins_with("--capture="):
+			await get_tree().process_frame
+			await get_tree().process_frame
+			get_viewport().get_texture().get_image().save_png(argument.trim_prefix("--capture="))
+			get_tree().quit()
