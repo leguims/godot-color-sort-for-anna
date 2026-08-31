@@ -120,7 +120,6 @@ func souder_les_jetons():
 func dessouder_les_jetons():
 	"Dessoude sans conditions"
 	if not est_vide():
-		var nb_jetons = len(liste_jetons)
 		for jeton in liste_jetons:
 			jeton.dessouder()
 
@@ -177,7 +176,7 @@ func selectionner_deplacement_valide() -> void:
 
 func bloquer() -> void:
 	if liste_jetons:
-		$Fond.color = liste_jetons[0].couleur().darkened(0.2)
+		$Fond.color = liste_jetons[0].couleur_selection()
 
 func largeur() -> int:
 	if liste_jetons:
