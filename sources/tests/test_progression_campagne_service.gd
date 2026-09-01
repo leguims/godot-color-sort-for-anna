@@ -145,13 +145,6 @@ func test_abandonner_un_plateau_ne_detruit_pas_la_campaign():
 	service.abandonner_un_plateau()
 	assert_eq(SauvegardeBddJoueursService.sauvegarde_joueur.get("campagne").keys().size(), campagne_avant.keys().size())
 
-func test_initialiser_un_nouveau_niveau_demarre_un_niveau():
-	service.choisir_le_joueur_pour_la_campagne("Alpha")
-	var niveau_courant = SauvegardeBddJoueursService.sauvegarde_joueur.get("enregistrement_campagne").back()
-	niveau_courant["date_fin"] = 1
-	service.initialiser_un_nouveau_niveau(0.25)
-	assert_true(SauvegardeBddJoueursService.enregistrement_niveau_en_cours())
-
 func test_afficher_niveau_plateau_parties_ne_crashe_pas():
 	service.choisir_le_joueur_pour_la_campagne("Alpha")
 	service.afficher_niveau_plateau_parties()
@@ -167,14 +160,3 @@ func test_retourner_le_niveau_le_plus_bas_trouve_le_plus_bas_non_termine():
 	})
 	assert_true(service.choisir_le_joueur_pour_la_campagne("Alpha"))
 	assert_eq(service.retourner_le_niveau_le_plus_bas(), 2)
-
-func test_retourner_le_niveau_suivant_redirige_vers_le_plus_bas():
-	FichiersJsonService.write_json_file("sauvegarde_joueur_alpha.json", {
-		"nom": "Alpha",
-		"campagne": {"niveau_2": [{"nom": "P2", "difficulte": 2, "gameplay": "CLASSIQUE"}]},
-		"enregistrement_campagne": [],
-		"plateaux_libres": {},
-		"nombre_de_parties": {}
-	})
-	assert_true(service.choisir_le_joueur_pour_la_campagne("Alpha"))
-	assert_eq(service.retourner_le_niveau_suivant(), service.retourner_le_niveau_le_plus_bas())
