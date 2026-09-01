@@ -6,67 +6,27 @@ extends Node
 
 class_name Campagne
 
-# var liste_gameplay : Dictionary[Gameplay, Node] = {}
-
-# TODO : à depalcer dans "Scenes\MenuPrincipal\Campagne\GamePlay"
-enum Gameplay {
-	CLASSIQUE,
-	AU_PLUS_PRES,
-	PILE_POIL,
-	TOUT_EN_TETE,
-	PROGRAMMATION,
-	PROGRAMMATION_GENIUS,
-	QUI_PERD_GAGNE,
-	POIDS_PLUME,
-	PILE_OU_FACE,
-	MOT_CACHE
-}
-
-func gameplay_to_enum(gameplay : String) -> Gameplay:
+func gameplay_to_ui(gameplay : GameplayTypes.Gameplay) -> Node:
 	match gameplay:
-		"CLASSIQUE":
-			return Gameplay.CLASSIQUE
-		"AU_PLUS_PRES":
-			return Gameplay.AU_PLUS_PRES
-		"PILE_POIL":
-			return Gameplay.PILE_POIL
-		"TOUT_EN_TETE":
-			return Gameplay.TOUT_EN_TETE
-		"PROGRAMMATION":
-			return Gameplay.PROGRAMMATION
-		"PROGRAMMATION_GENIUS":
-			return Gameplay.PROGRAMMATION_GENIUS
-		"QUI_PERD_GAGNE":
-			return Gameplay.QUI_PERD_GAGNE
-		"POIDS_PLUME":
-			return Gameplay.POIDS_PLUME
-		"PILE_OU_FACE":
-			return Gameplay.PILE_OU_FACE
-		"MOT_CACHE":
-			return Gameplay.MOT_CACHE
-		_:
-			LogService.log_erreur("Gameplay inconnu : ", gameplay)
-			return Gameplay.CLASSIQUE
-
-func gameplay_to_ui(gameplay : Gameplay) -> Node:
-	match gameplay:
-		Gameplay.CLASSIQUE:
+		GameplayTypes.Gameplay.CLASSIQUE:
 			return $Classique
-		Gameplay.AU_PLUS_PRES:
+		GameplayTypes.Gameplay.AU_PLUS_PRES:
 			return $AuPlusPres
-		Gameplay.PILE_POIL:
+		GameplayTypes.Gameplay.PILE_POIL:
 			return $PilePoil
-		Gameplay.TOUT_EN_TETE:
+		GameplayTypes.Gameplay.TOUT_EN_TETE:
 			return $ToutEnTete
-		Gameplay.PROGRAMMATION:
+		GameplayTypes.Gameplay.PROGRAMMATION:
 			return $Programmation
-		Gameplay.QUI_PERD_GAGNE:
+		GameplayTypes.Gameplay.PROGRAMMATION_GENIUS:
+			return $ProgrammationGenius
+		GameplayTypes.Gameplay.QUI_PERD_GAGNE:
 			return $QuiPerdGagne
-		Gameplay.POIDS_PLUME:
+		GameplayTypes.Gameplay.POIDS_PLUME:
 			return $PoidsPlume
-		Gameplay.PILE_OU_FACE:
+		GameplayTypes.Gameplay.PILE_OU_FACE:
 			return $PileOuFace
-		Gameplay.MOT_CACHE:
+		GameplayTypes.Gameplay.MOT_CACHE:
 			return $MotCache
 		_:
 			LogService.log_erreur("Gameplay inconnu : ", str(gameplay))
@@ -90,7 +50,7 @@ func _on_menu_commencer_plateau() -> void:
 func _lancer_plateau_de_campagne() -> void:
 	var plateau : String = SauvegardeBddJoueursService.enregistrement_lire_nom_plateau()
 	var gameplay_str : String = SauvegardeBddJoueursService.enregistrement_lire_gameplay_plateau()
-	var gameplay : Gameplay = gameplay_to_enum(gameplay_str)
+	var gameplay : GameplayTypes.Gameplay = GameplayTypes.gameplay_to_enum(gameplay_str)
 	var ui_gameplay : Node = gameplay_to_ui(gameplay)
 
 	if ui_gameplay.est_valide(plateau):
@@ -135,25 +95,24 @@ func _on_qui_perd_gagne_victoire() -> void:
 	_on_classique_victoire()
 
 func _on_qui_perd_gagne_abandon() -> void:
-	# TODO : ce cas peut etre détécté automatiquement. à reflechir
 	_on_classique_abandon()
 
 func cacher_les_gameplays() -> void:
 	$Classique.cacher_accueil()
 	$QuiPerdGagne.cacher_accueil()
 
-func montrer_le_gameplay(gameplay : Gameplay) -> void:
-	if gameplay == Gameplay.CLASSIQUE:
+func montrer_le_gameplay(gameplay : GameplayTypes.Gameplay) -> void:
+	if gameplay == GameplayTypes.Gameplay.CLASSIQUE:
 		$QuiPerdGagne.hide()
 		$Classique.show()
-	if gameplay == Gameplay.QUI_PERD_GAGNE:
+	if gameplay == GameplayTypes.Gameplay.QUI_PERD_GAGNE:
 		$Classique.hide()
 		$QuiPerdGagne.show()
 
-func instance_gameplay(gameplay : Gameplay) -> Node:
-	if gameplay == Gameplay.CLASSIQUE:
+func instance_gameplay(gameplay : GameplayTypes.Gameplay) -> Node:
+	if gameplay == GameplayTypes.Gameplay.CLASSIQUE:
 		return $Classique
-	if gameplay == Gameplay.QUI_PERD_GAGNE:
+	if gameplay == GameplayTypes.Gameplay.QUI_PERD_GAGNE:
 		return $QuiPerdGagne
 	LogService.log_erreur("Gameplay inconnu : ", gameplay)
 	return null
