@@ -127,15 +127,17 @@ func on_pile_clique_gauche(indice_pile : int) -> void:
 				VibrationService.vibration_de_jeton()
 				AudioService.son_jeton_deplacer_succes()
 		else:
+			# Echec !
 			AudioService.son_jeton_deplacer_echec()
-		_on_selection_pile_timeout()
+		_deselectionner_toutes_les_piles()
+
 	# Vérifier si la partie est achevée (auprès du gameplay)
 	if not gameplay_est_termine.is_valid():
 		LogService.log_erreur("gameplay_est_termine() n'est pas enregistré !")
 	elif gameplay_est_termine.call(liste_piles):
 		VibrationService.vibration_fin_de_plateau()
 
-func _on_selection_pile_timeout() -> void:
+func _deselectionner_toutes_les_piles() -> void:
 	# Deselecitonner toutes les piles
 	for pile in liste_piles:
 			pile.deselectionner()
@@ -145,3 +147,8 @@ func _on_selection_pile_timeout() -> void:
 
 func _on_menu_plateau_deselection_pile() -> void:
 	_on_selection_pile_timeout()
+
+func _on_selection_pile_timeout() -> void:
+	VibrationService.vibration_echec()
+	AudioService.son_jeton_deplacer_echec()
+	_deselectionner_toutes_les_piles()

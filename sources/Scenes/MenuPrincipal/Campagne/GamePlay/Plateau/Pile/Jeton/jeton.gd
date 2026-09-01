@@ -36,8 +36,8 @@ var _jetons = {
 }
 
 @export var indice_jeton = Plateau.ESPACE
-var _couleur
-var nom
+var _couleur : Color
+var nom : String
 var position_initiale_carre : Vector2 #(0,0)
 var position_initiale_nom : Vector2 #(0,-16)
 var reference_parent # Reference pour que le parent identifie le jeton.
@@ -56,10 +56,7 @@ func choisir_jeton(indice : int, redimensionner : bool = false) -> void:
 		indice_jeton = indice
 		nom = _jetons[indice_jeton][0]
 		_couleur = _jetons[indice_jeton][1]
-		$Selection.color = _couleur.lightened(0.2)
-		$SoudureHaute.color = _couleur.darkened(0.2)
-		$Carre.color = _couleur
-		$SoudureBasse.color = _couleur.darkened(0.2)
+		self._choisir_les_couleurs()
 		$Nom.text = nom
 		if redimensionner:
 			if nom == 'J':
@@ -71,6 +68,17 @@ func choisir_jeton(indice : int, redimensionner : bool = false) -> void:
 				## L'EMOJI sort de son carré
 				#var font_size = $Nom.get_theme_font_size("font_size")
 				#$Nom.add_theme_font_size_override("font_size", font_size - 8)
+
+func _choisir_les_couleurs() -> void:
+	if _couleur.get_luminance() > 0.5:
+		# Couleur claire => assombrir la sélection
+		$Selection.color = _couleur.darkened(0.3)
+	else:
+		# Couleur foncée => éclaircir la sélection
+		$Selection.color = _couleur.lightened(0.3)
+	$SoudureHaute.color = _couleur.darkened(0.3)
+	$SoudureBasse.color = _couleur.darkened(0.3)
+	$Carre.color = _couleur
 
 func choisir_position(nouvelle_position : Vector2) -> void:
 	$Selection.set_position(position_initiale_carre + Vector2(-4, -4) + nouvelle_position)
@@ -90,6 +98,9 @@ func largeur() -> int:
 
 func couleur() -> Color:
 	return _couleur
+
+func couleur_selection() -> Color:
+	return $Selection.color
 
 func position() -> Vector2:
 	return $Carre.position

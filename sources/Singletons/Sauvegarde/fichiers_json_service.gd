@@ -84,8 +84,9 @@ func read_json_file(chemin : String) -> Variant:
 					fichier = FileAccess.open(clonage_app_dir + nom_fichier, FileAccess.WRITE)
 					if not fichier:
 						LogService.log_erreur("write_json_file : ERREUR sur le chemin : ", clonage_app_dir + nom_fichier)
-					fichier.store_string(contenu_texte)
-					fichier.close()
+					else:
+						fichier.store_string(contenu_texte)
+						fichier.close()
 			return json.get_data()
 		LogService.log_erreur("read_json_file : ERREUR sur le décodage JSON: ", json.get_error_message(), " in ", chemin_norm, " at line ", json.get_error_line())
 	else:

@@ -178,7 +178,7 @@ func selectionner_deplacement_valide() -> void:
 
 func bloquer() -> void:
 	if liste_jetons:
-		$Fond.color = liste_jetons[0].couleur().darkened(0.2)
+		$Fond.color = liste_jetons[0].couleur_selection()
 
 func largeur() -> int:
 	if liste_jetons:

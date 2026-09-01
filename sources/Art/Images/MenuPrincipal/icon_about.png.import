@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://pq65gq7bt1p"
-path="res://.godot/imported/fond_cubes_480x720.png-05bd05fc24c0d7393ea9070f50809ef1.ctex"
+uid="uid://dh2xrgkv61e8l"
+path="res://.godot/imported/icon_about.png-296927bc7a4d588dc53540ae846744f4.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Art/Images/fond_cubes_480x720.png"
-dest_files=["res://.godot/imported/fond_cubes_480x720.png-05bd05fc24c0d7393ea9070f50809ef1.ctex"]
+source_file="res://Art/Images/MenuPrincipal/icon_about.png"
+dest_files=["res://.godot/imported/icon_about.png-296927bc7a4d588dc53540ae846744f4.ctex"]
 
 [params]
 

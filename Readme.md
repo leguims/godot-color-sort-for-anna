@@ -295,7 +295,94 @@ Depuis la phase de tests internes de la version V0.3.0, les fonctionnalités son
 - Idee de nouveau gameplay, chaque colonne est en mouvement, comme si les jetons étaient sur un tapis roulant. Le joueurs doit donner l'ordre d'échange au bon moment !
 - (Anna) Réaliser une version portugaise.
 
+### Nouveaux styles de jeux:
+
+#### Noms
+
+  - CLASSIQUE :
+  - DÉFI DU GOSSE => Au Plus Près
+  - DÉFI DU BOSS => Pile Poil
+  - MÉMOIRE => Tout En Tête
+  - Programmation
+  - QUI PERD GAGNE => Qui Perd Gagne
+  - FLEMMARD / ECOLOGIE => Poids Plume
+  - DOUBLE FACE => Pile Ou Face
+  - DICO => Mot Caché
+
+#### Descriptions
+
+  - Classique :
+    - Regle du jeu actuelle.
+  - Au Plus Près :
+    - Pour les plateaux avec plusieurs longueur de solutions
+    - Indiquer la longueur de la solution la plus courte
+    - Un bonus est donné selon la logueur de la solution trouvée.
+    - Difficulté : faible
+  - Pile Poil :
+    - Pour les plateaux avec plusieurs longueur de solutions
+    - Indiquer la longueur de la solution la plus courte
+    - La partie est perdue si la solution la plus courte n'est pas trouvée
+    - Afficher le compteur de coups actuel à coté de la cible
+    - Difficulté : élevée
+  - Tout En Tête :
+    - Commencer le chrono quand le premier coup est joué.
+    - ??? Définir quel type de plateau conviendrait.
+    - Difficulté : faible
+  - Programmation :
+    - Prévoir tous les coups jusqu'à la fin.
+    - Tout s'anime quand c'est fini. 
+    - ??? Définir quel type de plateau conviendrait.
+    - Difficulté : élevée
+  - Qui Perd Gagne:
+    - Regle du jeu actuel inversée.
+    - Il faut trouver une position de plateau bloquée et non résolue
+  - Poids Plume :
+    - Commencer le chrono quand le premier coup est joué.
+    - Résoudre le plateau avec le moins de déplacement de jeton
+    - Chaque jeton qui bouge augmente un "malus"
+    - 2 jetons qui bougent coutent plus de malus qu'1 seul jeton
+    - Afficher le malus en direct
+  - Pile Ou Face :
+    - Présenter le plateau dans les 2 modes CLASSIQUE et QUI PERD GAGNE en simultané.
+    - Le joueur gagne en résolvant l'un des deux.
+    - À lui de choisir le plus avantageux.
+    - Adapté pour les plateaux avec peu de jetons (hauteur et largeur)
+  - Mot Caché:
+    - la résolution du plateau forme un mot (ANNA, LOVE, SEXE ...).
+
+#### Interface Graphique
+
+  - Classique :
+      - Afficher le chrono en haut à droite.
+  - Au Plus Près :
+      - Afficher le nombre de coups courant à coté de la cible.
+  - Pile Poil :
+      - Afficher le nombre de coups courant à coté de la cible.
+  - Tout En Tête :
+      - Afficher le chrono en haut à droite figé avant le 1er coup.
+  - Programmation :
+      - Afficher les coups avant leur déroulement
+      - Afficher un bouton "Dérouler"
+  - Qui Perd Gagne:
+      - Afficher le chrono en haut à droite.
+  - Poids Plume :
+      - Afficher le nombre de jetons déplacés.
+      - Afficher le chrono en haut à droite.
+  - Pile Ou Face :
+      - Afficher le chrono.
+      - Afficher un panneau "Gagné" ou "Perdu" selon le mode.
+      - Le panneau s'illumine en cas de victoire.
+  - Mot Caché:
+      - Afficher le mot à chercher
+  - [GFX] STATS : faire apparaître le type de game play pour chaque min et max.
+  - [GFX] CHRONO : le chrono est tout le temps visible sur l'écran.
+  - [GFX] COUPS : le nombre de coups courant est tout le temps visible sur l'écran.
+
 ## V3.0 : Idées du futur:
+- Game play "Message" :
+	- Réaliser des tableaux dont la solution est un message (Anna.Loves.Sex).
+	- Réorganiser Jeton et construction de plateau pour arriver à ce résultat.
+	- (Aleksandar): +1 sur le mode avec des mots.
 - jeu en réseau : course de joueurs sur un même plateau avec chrono
 - chrono enregistré sur les plateaux. Plateau masqué avant le départ.
 - fond de plateaux dynamiques :

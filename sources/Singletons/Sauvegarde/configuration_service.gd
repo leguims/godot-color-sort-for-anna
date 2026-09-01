@@ -1,5 +1,5 @@
 ####################################
-# Gestion de la confiruation du jeu
+# Gestion de la configuration du jeu
 ####################################
 
 extends Node
@@ -34,8 +34,14 @@ func _initialiser_la_configuration() -> void:
 	
 	var version_courante_disque = fichier_configuration.get('version')
 	
-	# Copier les niveaux lus
+	# Conserver les réglages utilisateur avant d'enregistrer la nouvelle version.
 	if fichier_configuration:
+		if 'musiques' in fichier_configuration:
+			configuration_du_jeu['musiques'] = fichier_configuration.get('musiques')
+		if 'effets sonores' in fichier_configuration:
+			configuration_du_jeu['effets sonores'] = fichier_configuration.get('effets sonores')
+		if 'vibrations' in fichier_configuration:
+			configuration_du_jeu['vibrations'] = fichier_configuration.get('vibrations')
 		if version_courante_disque != lire_la_version():
 			# Reset campagne Totale
 			if 'V0.' in version_courante_disque:
@@ -46,13 +52,6 @@ func _initialiser_la_configuration() -> void:
 			# 	SauvegardeBddJoueursService.remplacer_campagne_des_joueurs()
 			# 	SauvegardeTableauDesScoresService.remise_a_zero()
 			_enregistrer_la_configuration()
-			pass
-		if 'musiques' in fichier_configuration:
-			configuration_du_jeu['musiques'] = fichier_configuration.get('musiques')
-		if 'effets sonores' in fichier_configuration:
-			configuration_du_jeu['effets sonores'] = fichier_configuration.get('effets sonores')
-		if 'vibrations' in fichier_configuration:
-			configuration_du_jeu['vibrations'] = fichier_configuration.get('vibrations')
 	else:
 		# Création du fichier initial
 		_enregistrer_la_configuration()

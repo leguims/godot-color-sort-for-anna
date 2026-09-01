@@ -15,7 +15,6 @@ class menu_principal.tscn {
     BoutonCampagne
     GridContainer.JoueursCampagne
     BoutonScore
-    BoutonEditerLePlateau
     BoutonRéférences
     -_ready()
     -_on_bouton_joueur_pressed()
@@ -26,7 +25,6 @@ class menu_principal.tscn {
     -_on_joueurs_campagne_pressed(String nom_joueur)
     -_effacer_boutons_joueurs_campagne()
     -_on_bouton_scores_pressed()
-    -_on_bouton_editer_plateau_pressed()
     -_on_bouton_références_pressed()
 }
 
@@ -34,7 +32,6 @@ menu_principal.tscn --> GestionScore
 menu_principal.tscn --> references.tscn : change_scene_to_file()
 menu_principal.tscn --> scores.tscn : change_scene_to_file()
 menu_principal.tscn --> campagne.tscn : change_scene_to_file()
-menu_principal.tscn --> editer_un_plateau.tscn : change_scene_to_file()
 
 class GestionScore {
     initialiser_les_plateaux()
@@ -43,6 +40,4 @@ class GestionScore {
     lire_la_liste_des_joueurs()
     choisir_le_joueur()
 }
-
-link editer_un_plateau.tscn "EditerUnPlateau.md"
 ```
