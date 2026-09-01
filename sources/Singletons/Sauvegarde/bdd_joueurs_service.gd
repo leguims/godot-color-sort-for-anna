@@ -41,7 +41,7 @@ var sauvegarde_joueur = {
 # 			'plateaux': [
 # 				{
 # 					'nom': "AA .BB .AB ",
-#					TODO : 'gameplay': 'CLASSIQUE', # 'CLASSIQUE', 'MEMOIRE', 'DEFI_DU_GOSSE', 'DEFI_DU_BOSS', 'QUI_PERD_GAGNE', 'FLEMMARD', 'DOUBLE_FACE', 'DICO'
+#					'gameplay': 'CLASSIQUE', # 'CLASSIQUE', 'MEMOIRE', 'DEFI_DU_GOSSE', 'DEFI_DU_BOSS', 'QUI_PERD_GAGNE', 'FLEMMARD', 'DOUBLE_FACE', 'DICO'
 # 					'date_debut': 1748785865.997,
 # 					'date_fin': 1748785855.0,
 # 					'difficulte': 18,
@@ -166,8 +166,6 @@ func commencer_un_plateau() -> void:
 		nombre_de_parties_incrementer_pour_difficulte_courante()
 	else:
 		LogService.log_erreur("Pas de prochain plateau pour le niveau courant")
-		# TODO : Gros bug : Un plateau est affiché, mais on ne peut pas y jouer.
-		# TODO : Le dernier niveau enregistré n'a plus de plateau et a disparu de la campagne..
 # >>> API externe
 
 
@@ -264,24 +262,10 @@ func lire_campagne_liste_plateaux_du_niveau(niveau : int) -> Array:
 func campagne_nombre_plateaux_pour_le_niveau(niveau : int) -> int:
 	return len(lire_campagne_liste_plateaux_du_niveau(niveau))
 
-func campagne_plateau_existe(niveau : int, indice : int) -> bool: # TODO : INUTILISE !
-	return indice < campagne_nombre_plateaux_pour_le_niveau(niveau)
-
-func campagne_lire_plateau(niveau : int, indice : int) -> Dictionary: # TODO : INUTILISE !
-	if campagne_plateau_existe(niveau, indice):
-		return lire_campagne_liste_plateaux_du_niveau(niveau).get(indice)
-	return {} # Plateau vide
-
 func campagne_lire_premier_plateau(niveau : int) -> Dictionary:
 	if campagne_niveau_existe(niveau):
 		return lire_campagne_liste_plateaux_du_niveau(niveau).front()
 	return {} # Plateau vide
-
-func campagne_lire_nom_plateau(niveau : int, indice : int) -> String: # TODO : INUTILISE !
-	return campagne_lire_plateau(niveau, indice).get("nom", "")
-
-func campagne_lire_nom_premier_plateau(niveau : int) -> String: # TODO : INUTILISE !
-	return campagne_lire_premier_plateau(niveau).get("nom", "")
 
 # Methodes haut niveau
 func campagne_lire_prochain_plateau_pour_niveau_courant() -> Dictionary:
@@ -304,8 +288,6 @@ func campagne_supprimer_plateau_courant() -> bool:
 		if lire_campagne_liste_plateaux_du_niveau(niveau).is_empty():
 			# Le niveau est terminé, effacer sa reference dans les plateaux restants.
 			campagne().erase(nom_niveau(niveau))
-		# TODO : Enregistrer la date de fin du niveau
-		# c'est réalisé dans 'enregistrement_terminer_niveau()' qui doit etre appelé avant d'effacer "niveau_xx" de la campagne
 		_enregistrer_sauvegarde_joueur()
 		return true
 	return false
@@ -360,11 +342,8 @@ func lire_nombre_de_parties_pour_difficulte_courante() -> int:
 		var prochain_plateau = campagne_lire_prochain_plateau_pour_niveau_courant()
 		if prochain_plateau:
 			var difficulte_int : int = roundi(prochain_plateau.get('difficulte'))
-			return lire_nombre_de_parties_joueur_pour_difficulte(difficulte_int)
+			return lire_nombre_de_parties_difficulte(difficulte_int)
 	return 0
-
-func lire_nombre_de_parties_joueur_pour_difficulte(difficulte : int) -> int: # TODO : INUTILISE !
-	return lire_nombre_de_parties_difficulte(difficulte)
 
 
 
@@ -445,12 +424,6 @@ func enregistrement_terminer_niveau() -> void:
 		niveau_courant['date_fin'] = Time.get_unix_time_from_system() # Timestamp
 		_enregistrer_sauvegarde_joueur()
 
-func enregistrement_lire_nombre_niveaux_acheves() -> int: # TODO : INUTILISE !
-	"Retourne le nombre de niveaux achevés"
-	if enregistrement_niveau_en_cours():
-		return len(enregistrement()) - 1
-	return len(enregistrement())
-
 # Haut niveau
 func lire_prochain_niveau_de_campagne() -> int:
 	"Retourne le prochain niveau de la campagne à jouer (vide si aucun niveau restant)"
@@ -511,17 +484,6 @@ func lire_pourcentage_niveau_realise() -> int:
 # Niveaux / Date fin
 ###############################################
 
-func enregistrment_lire_date_debut_niveau() -> float: # TODO : INUTILISE !
-	var niveau_courant = enregistrement_lire_dernier_niveau()
-	if niveau_courant:
-		return niveau_courant.get('date_debut')
-	return 0
-
-func enregistrment_lire_date_fin_niveau() -> float: # TODO : INUTILISE !
-	var niveau_courant = enregistrement_lire_dernier_niveau()
-	if niveau_courant:
-		return niveau_courant.get('date_fin')
-	return 0
 
 ###############################################
 # Niveaux / Longueur detour
@@ -556,18 +518,11 @@ func enregistrement_modifier_score_niveau_sans_detour(score : int) -> void:
 		niveau_courant['score']['niveau_sans_detour'] = score
 		_enregistrer_sauvegarde_joueur()
 
-func enregistrement_lire_score_niveau() -> int: # TODO : INUTILISE !
+func enregistrement_lire_score_niveau() -> int:
 	var niveau_courant = enregistrement_lire_dernier_niveau()
 	if niveau_courant:
 		if niveau_courant.get('score') and niveau_courant.get('score').get('niveau'):
 			return niveau_courant.get('score').get('niveau')
-	return 0
-
-func enregistrement_lire_score_niveau_sans_detour() -> int: # TODO : INUTILISE !
-	var niveau_courant = enregistrement_lire_dernier_niveau()
-	if niveau_courant:
-		if niveau_courant.get('score') and niveau_courant.get('score').get('niveau_sans_detour'):
-			return niveau_courant.get('score').get('niveau_sans_detour')
 	return 0
 
 
@@ -672,19 +627,7 @@ func enregistrement_lire_gameplay_plateau() -> String:
 		return plateau.get('gameplay')
 	return ""
 
-func enregistrement_lire_date_debut_plateau() -> float: # TODO : INUTILISE !
-	var plateau = enregistrement_lire_dernier_plateau()
-	if plateau:
-		return plateau.get('date_debut')
-	return 0.
-
-func enregistrement_lire_date_fin_plateau() -> float: # TODO : INUTILISE !
-	var plateau = enregistrement_lire_dernier_plateau()
-	if plateau:
-		return plateau.get('date_fin')
-	return 0.
-
-func enregistrement_lire_duree_plateau() -> float: # TODO : INUTILISE !
+func enregistrement_lire_duree_plateau() -> float:
 	var plateau = enregistrement_lire_dernier_plateau()
 	if plateau:
 		return plateau.get('duree')
@@ -761,20 +704,6 @@ func enregistrement_modifier_score_ratio_reussite_plateau(score : int) -> void:
 		plateau['score']['ratio_reussite'] = score
 		_enregistrer_sauvegarde_joueur()
 
-func enregistrement_lire_score_duree_plateau() -> int: # TODO : INUTILISE !
-	var plateau = enregistrement_lire_dernier_plateau()
-	if plateau:
-		if plateau.get('score') and plateau.get('score').get('duree'):
-			return plateau.get('score').get('duree')
-	return 0
-
-func enregistrement_lire_score_ratio_reussite_plateau() -> int: # TODO : INUTILISE !
-	var plateau = enregistrement_lire_dernier_plateau()
-	if plateau:
-		if plateau.get('score') and plateau.get('score').get('ratio_reussite'):
-			return plateau.get('score').get('ratio_reussite')
-	return 0
-
 ###############################################
 # Niveaux / Plateaux / Coups joués
 # 	'coups joués': [
@@ -793,11 +722,6 @@ func coups_joues_existe() -> bool:
 	"Indique si un coups_joues existe"
 	return enregistrement_plateau_existe() and 'coups joués' in enregistrement_lire_dernier_plateau()
 
-func coups_joues_en_cours() -> bool: # TODO : INUTILISE !
-	"Indique si un coups_joues est en cours de réalisation"
-	# Le cycle de vie du plateau est celui des coups joués
-	return enregistrement_plateau_en_cours()
-
 func coups_joues_ajouter_un_nouveau_coup(depart : int,
 							arrivee : int) -> bool:
 	"Ajouter un nouveau coup à coups_joues"
@@ -808,7 +732,7 @@ func coups_joues_ajouter_un_nouveau_coup(depart : int,
 		return true
 	return false
 
-func lire_nombre_coups() -> int: # TODO : INUTILISE !
+func lire_nombre_coups() -> int:
 	"Retourne le nombre de coups joués"
 	if coups_joues_existe():
 		return len(coups_joues())
