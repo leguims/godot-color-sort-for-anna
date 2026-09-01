@@ -120,16 +120,22 @@ func on_pile_clique_gauche(indice_pile : int) -> void:
 				VibrationService.vibration_de_jeton()
 				AudioService.son_jeton_deplacer_succes()
 		else:
-			AudioService.son_jeton_deplacer_echec()
-		_on_selection_pile_timeout()
+			# Echec !
+			_on_selection_pile_timeout()
+		_deselectionner_toutes_les_piles()
 
-func _on_selection_pile_timeout() -> void:
+func _deselectionner_toutes_les_piles() -> void:
 	# Deselecitonner toutes les piles
 	for pile in liste_piles:
 			pile.deselectionner()
 	# Annulation du coup en cours
 	sauvegarde_indice_pile_depart = -1
 	# LogService.log_debug("Annulation du coup en cours")
+
+func _on_selection_pile_timeout() -> void:
+	VibrationService.vibration_echec()
+	AudioService.son_jeton_deplacer_echec()
+	_deselectionner_toutes_les_piles()
 
 func _on_bouton_abandon_pressed() -> void:
 	$BoutonAbandon.hide()
