@@ -70,12 +70,6 @@ func afficher_plateau_suivant(texte : String = ""):
 		# Attendre l'affichage du texte à 50%
 		await fin_message_riche
 
-# TODO : Effacer si msg riche partout !
-# TODO : Effacer aussi $Message de la scene
-# Méthodes d'ajustement de la scene
-func modifier_message_vertical_align(alignement : VerticalAlignment) -> void:
-	$Message.vertical_alignment = alignement
-
 
 func cacher_accueil():
 	$BoutonMenuPrincipal.hide()
@@ -175,11 +169,6 @@ func afficher_fin_campagne():
 
 	afficher_plateau_suivant()
 	$BoutonCommencer.hide()
-
-
-# TODO : à effacer ???
-# LongueurNiveau
-###################
 
 func _on_progression_campagne_service_detail_score_plateau(detail_score: Dictionary):
 	afficher_detail_score(detail_score)

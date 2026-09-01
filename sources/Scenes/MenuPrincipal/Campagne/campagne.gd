@@ -76,7 +76,6 @@ func gameplay_to_ui(gameplay : Gameplay) -> Node:
 func _ready() -> void:
 	# Connecter les signaux attendus
 
-	# $MenuCampagne.modifier_message_vertical_align(VERTICAL_ALIGNMENT_CENTER)
 	cacher_les_gameplays()
 	$MenuCampagne.cacher_accueil()
 	$MenuCampagne.show()

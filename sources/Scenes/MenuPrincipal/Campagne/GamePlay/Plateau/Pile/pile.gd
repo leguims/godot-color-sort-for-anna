@@ -122,7 +122,6 @@ func souder_les_jetons():
 func dessouder_les_jetons():
 	"Dessoude sans conditions"
 	if not est_vide():
-		var nb_jetons = len(liste_jetons)
 		for jeton in liste_jetons:
 			jeton.dessouder()
 

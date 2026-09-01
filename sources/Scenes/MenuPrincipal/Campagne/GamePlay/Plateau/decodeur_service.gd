@@ -10,12 +10,23 @@ func est_valide(plateau_texte : String) -> bool:
 	if plateau_texte.replacen(' ','').replacen('.','').is_empty():
 		return false
 	# Vérifier si chaque pile est valide
+	var taille_pile = 0
 	for pile in decoder_plateau(plateau_texte):
+		taille_pile = max(taille_pile, len(pile))
 		if not Pile.est_valide(pile):
 			return false
-	# TODO : Vérifier la validité du plateau dans son ensemble (nombre de jetons, possibilité de réussir)
-	# TODO : Invalide : Nombre de jetons inégaux
-	# TODO : Invalide : Nombre de jetons != taille pile
+
+	var nb_jetons = plateau_texte.count(plateau_texte[0])
+	# Invalide : Nombre de jetons != taille pile
+	if nb_jetons != taille_pile:
+		return false
+	# Invalide : Nombre de jetons inégaux
+	for lettre in plateau_texte:
+		if lettre == '.':
+			continue
+		if plateau_texte.count(lettre) != nb_jetons:
+			return false
+
 	return true
 
 func decoder_plateau(plateau_texte : String) -> Array:

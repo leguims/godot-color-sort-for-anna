@@ -8,7 +8,11 @@ signal deselection_pile
 var chronometre : int = 0
 
 func _process(_delta: float) -> void:
-	enregistrer_coups(str(SauvegardeBddJoueursService.lire_nombre_coups()) + " Coups")
+	var pluriel = "s"
+	var nb_coups = SauvegardeBddJoueursService.lire_nombre_coups()
+	if nb_coups < 2:
+		pluriel = ""
+	enregistrer_coups(str(nb_coups) + " Coup" + pluriel)
 
 # #############
 # API Gameplay

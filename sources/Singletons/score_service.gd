@@ -81,6 +81,8 @@ func mettre_a_jour_score_ratio_reussite() -> Dictionary:
 	SauvegardeTableauDesScoresService.incrementer_score_joueur(nom_joueur, bonus_ratio_reussite)
 	return {'type':'ratio_reussite', 'ratio': int_ratio_reussite, 'points': bonus_ratio_reussite}
 
+# TODO : Ceci est l'ancien score d'ascension, est-il encore utile ?
+# TODO : S'il est identique pour tous, il ne présente pas d'interet.
 func mettre_a_jour_score_niveau() -> Dictionary:
 	"Calculer le score suite à un niveau achevé"
 	var bonus_niveau = 0
