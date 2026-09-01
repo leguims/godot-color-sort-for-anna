@@ -181,13 +181,6 @@ func afficher_fin_campagne():
 # LongueurNiveau
 ###################
 
-# TODO : à effacer ???
-var longueur_max_niveau : int = 0
-
-# TODO : à effacer ???
-func enregistrer_longueur_max_niveau(lg_max : int) -> void:
-	longueur_max_niveau = lg_max
-
 func _on_progression_campagne_service_detail_score_plateau(detail_score: Dictionary):
 	afficher_detail_score(detail_score)
 

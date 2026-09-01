@@ -75,18 +75,12 @@ func gameplay_to_ui(gameplay : Gameplay) -> Node:
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
 	# Connecter les signaux attendus
-	ProgressionCampagneService.fin_niveau.connect(_on_progression_campagne_service_fin_niveau)
 
 	# $MenuCampagne.modifier_message_vertical_align(VERTICAL_ALIGNMENT_CENTER)
 	cacher_les_gameplays()
 	$MenuCampagne.cacher_accueil()
 	$MenuCampagne.show()
-	 # TODO : plus de IF ? 1 seul traitement ?
-	if ProgressionCampagneService.niveau_en_cours():
-		$MenuCampagne.afficher_accueil_niveau_en_cours()
-	else:
-		enregistrer_longueur_max_plateaux_pour_menu() # TODO : à effacer ?
-		$MenuCampagne.afficher_accueil_nouveau_niveau()
+	$MenuCampagne.afficher_accueil_niveau_en_cours()
 
 func _on_menu_commencer_plateau() -> void:
 	# TODO : Drole de comportement pour commencer un niveau.
@@ -119,7 +113,6 @@ func _on_classique_victoire() -> void:
 	if ProgressionCampagneService.la_campagne_est_terminee():
 		$MenuCampagne.afficher_fin_campagne()
 	elif not ProgressionCampagneService.niveau_en_cours():
-		enregistrer_longueur_max_plateaux_pour_menu()
 		$MenuCampagne.afficher_fin_niveau()
 	else:
 		$MenuCampagne.afficher_gagner_un_plateau()
@@ -146,9 +139,6 @@ func _on_qui_perd_gagne_abandon() -> void:
 	# TODO : ce cas peut etre détécté automatiquement. à reflechir
 	_on_classique_abandon()
 
-func _on_progression_campagne_service_fin_niveau():
-	enregistrer_longueur_max_plateaux_pour_menu()
-
 func cacher_les_gameplays() -> void:
 	$Classique.cacher_accueil()
 	$QuiPerdGagne.cacher_accueil()
@@ -168,10 +158,3 @@ func instance_gameplay(gameplay : Gameplay) -> Node:
 		return $QuiPerdGagne
 	LogService.log_erreur("Gameplay inconnu : ", gameplay)
 	return null
-
-# TODO : Déplacer le code. Le menu doit demande au SERVICE les infos necessaires.
-# TODO : Est-ce encore utile sans le choix de la longueur de l'ascension ?
-func enregistrer_longueur_max_plateaux_pour_menu():
-	# Transmet la longueur max de plateau d'Un niveau
-	var longueur_max_niveau = SauvegardeBddJoueursService.campagne_lire_nombre_de_niveaux_realisables()
-	$MenuCampagne.enregistrer_longueur_max_niveau(longueur_max_niveau)
