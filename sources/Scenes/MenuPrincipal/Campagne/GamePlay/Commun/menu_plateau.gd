@@ -7,6 +7,9 @@ signal deselection_pile
 
 var chronometre : int = 0
 
+func _process(_delta: float) -> void:
+	enregistrer_coups(str(SauvegardeBddJoueursService.lire_nombre_coups()) + " Coups")
+
 # #############
 # API Gameplay
 func enregistrer_gameplay(gameplay : String):
@@ -58,4 +61,4 @@ func _on_chronometre_timeout() -> void:
 	# Incrémente le compteur
 	chronometre += 1
 	# MàJ affichage
-	enregistrer_chrono(str(chronometre)+'s')
+	enregistrer_chrono(str(floori(chronometre/60.)).pad_zeros(2)+':'+str(chronometre%60).pad_zeros(2))

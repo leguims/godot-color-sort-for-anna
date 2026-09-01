@@ -12,11 +12,11 @@ func _ready() -> void:
 
 	# Initialiser le menu
 	$MenuPlateau.enregistrer_gameplay("Qui Perd\nGagne")
-	$MenuPlateau.enregistrer_chrono("03:51")
+	$MenuPlateau.enregistrer_chrono("00:00")
 	$MenuPlateau.enregistrer_coups("0 Coups")
 
 	# Transmettre les infos de l'UI à Plateau
-	$Plateau.enregistrer_bouton_abandonner_size_y($MenuPlateau/Top/BoutonAbandonner.size.y)
+	$Plateau.enregistrer_bouton_abandonner_size_y($MenuPlateau/Top.size.y)
 
 # API pour "Campagne"
 func est_valide(plateau_texte : String) -> bool:
