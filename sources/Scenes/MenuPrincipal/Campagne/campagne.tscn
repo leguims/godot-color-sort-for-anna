@@ -24,19 +24,19 @@ script = ExtResource("1_4bhsb")
 
 [node name="AuPlusPres" parent="." unique_id=1075643544 instance=ExtResource("5_31qgg")]
 
-[node name="MotCache" parent="." unique_id=556800384 instance=ExtResource("6_s21pl")]
-
 [node name="PilePoil" parent="." unique_id=537780160 instance=ExtResource("7_pda3a")]
-
-[node name="PoidsPlume" parent="." unique_id=1994353463 instance=ExtResource("8_ykod6")]
-
-[node name="PileOuFace" parent="." unique_id=982366941 instance=ExtResource("9_qojul")]
 
 [node name="ToutEnTete" parent="." unique_id=1399180182 instance=ExtResource("10_c7mno")]
 
 [node name="Programmation" parent="." unique_id=1340927029 instance=ExtResource("11_8dw77")]
 
 [node name="ProgrammationGenius" parent="." unique_id=1627498691 instance=ExtResource("12_tgjmk")]
+
+[node name="PoidsPlume" parent="." unique_id=1994353463 instance=ExtResource("8_ykod6")]
+
+[node name="PileOuFace" parent="." unique_id=982366941 instance=ExtResource("9_qojul")]
+
+[node name="MotCache" parent="." unique_id=556800384 instance=ExtResource("6_s21pl")]
 
 [connection signal="commencer_plateau" from="MenuCampagne" to="." method="_on_menu_commencer_plateau"]
 [connection signal="abandon" from="Classique" to="." method="_on_classique_abandon"]
