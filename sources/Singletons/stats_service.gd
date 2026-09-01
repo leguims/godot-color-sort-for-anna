@@ -1,7 +1,7 @@
 ﻿extends Node
 
 #func _ready() -> void:
-	## TODO : Utile pour les tests de la page.
+	## Utile pour les tests de la page.
 	##ProgressionCampagneService.choisir_le_joueur_pour_la_campagne("Alain Konu")
 	#ProgressionCampagneService.choisir_le_joueur_pour_la_campagne("toto")
 	##ProgressionCampagneService.choisir_le_joueur_pour_la_campagne("Anna")

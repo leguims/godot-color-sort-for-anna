@@ -119,8 +119,3 @@ func retourner_le_niveau_le_plus_bas() -> int:
 		if not SauvegardeBddJoueursService.campagne_le_niveau_est_termine(niveau_le_plus_bas):
 			return niveau_le_plus_bas
 	return 0
-
-# TODO : Voir s'il faut arbitrer enter les 2 methodes : retourner_le_niveau_suivant() et lire_prochain_niveau_de_campagne()
-func retourner_le_niveau_suivant() -> int:
-	# Parcourir le niveau supérieur
-	return retourner_le_niveau_le_plus_bas()

@@ -16,16 +16,6 @@ func _ready() -> void:
 	var pcs = get_node("/root/ProgressionCampagneService")
 	pcs.detail_score_plateau.connect(_on_progression_campagne_service_detail_score_plateau)
 
-# TODO : Voir à simplifier le code pour eviter l'enregistrement.
-# TODO : Consulter les infos en direct
-func enregistrer_infos_joueur(	_nom : String = "",
-								_trophee : String = "",
-								_niveau_courant : int = 0,
-								_pourcentage_niveau_realise : int = 0,
-								_pourcentage_campagne_realise : int = 0,
-								_score_texte : String = "0") -> void:
-	formatter.enregistrer_infos_joueur(_nom, _trophee, _niveau_courant, _pourcentage_niveau_realise, _pourcentage_campagne_realise, _score_texte)
-
 func mettre_a_jour_infos_joueur() -> void:
 	$InfosDuJoueur/TexteInfosDuJoueur.bbcode_text = formatter.formater_infos_joueur()
 

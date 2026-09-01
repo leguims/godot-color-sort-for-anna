@@ -3,27 +3,20 @@ class_name FormatterMenuCampagne
 
 # Infos joueur
 ###############
-var nom : String = ""
-var trophee : String = ""
-var niveau_courant : int = 0
-var pourcentage_niveau_realise : int = 0
-var pourcentage_campagne_realise : int = 0
-var score_texte : String = "0"
-
-func enregistrer_infos_joueur(	_nom : String = "",
-								_trophee : String = "",
-								_niveau_courant : int = 0,
-								_pourcentage_niveau_realise : int = 0,
-								_pourcentage_campagne_realise : int = 0,
-								_score_texte : String = "0") -> void:
-	nom = _nom
-	trophee = _trophee
-	niveau_courant = _niveau_courant
-	pourcentage_niveau_realise = _pourcentage_niveau_realise
-	pourcentage_campagne_realise = _pourcentage_campagne_realise
-	score_texte = _score_texte
-
 func formater_infos_joueur() -> String:
+	var nom = SauvegardeBddJoueursService.lire_nom_joueur()
+	var trophee = SauvegardeTableauDesScoresService.lire_le_trophee_du_joueur(nom)
+
+	var niveau_courant : int = 0
+	if SauvegardeBddJoueursService.enregistrement_niveau_existe():
+		niveau_courant = SauvegardeBddJoueursService.enregistrement_lire_valeur_niveau_joueur()
+	else:
+		niveau_courant = SauvegardeBddJoueursService.lire_prochain_niveau_de_campagne()
+
+	var pourcentage_niveau_realise = StatsService.niveau_taux_completion() * 100.
+	var pourcentage_campagne_realise = StatsService.campagne_taux_completion() * 100.
+	var score_texte = SauvegardeTableauDesScoresService.lire_score_txt_joueur(nom)
+	
 	var texte = "[center][font_size=30]"
 	texte += nom + " " + trophee + " " + score_texte + "\n"
 	texte += "[font_size=20]Niveau " + String.num_int64(niveau_courant) + " : " + String.num_int64(pourcentage_niveau_realise) + "%"
