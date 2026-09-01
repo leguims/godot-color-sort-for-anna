@@ -22,8 +22,6 @@ script = ExtResource("1_4bhsb")
 
 [node name="QuiPerdGagne" parent="." unique_id=812583295 instance=ExtResource("4_vo5oq")]
 
-[node name="QuiPerdGagne" parent="QuiPerdGagne" unique_id=37721991 instance=ExtResource("4_vo5oq")]
-
 [node name="AuPlusPres" parent="." unique_id=1075643544 instance=ExtResource("5_31qgg")]
 
 [node name="MotCache" parent="." unique_id=556800384 instance=ExtResource("6_s21pl")]
