@@ -13,6 +13,7 @@ func _sauvegarde_joueur_de_test() -> Dictionary:
 			"date_debut": 110,
 			"date_fin": 0,
 			"duree": 0,
+			"gameplay": "CLASSIQUE",
 			"difficulte": 1,
 			"statut": "en cours",
 			"score": {},
@@ -25,6 +26,7 @@ func _sauvegarde_joueur_de_test() -> Dictionary:
 			"date_debut": 210,
 			"date_fin": 220,
 			"duree": 10,
+			"gameplay": "CLASSIQUE",
 			"difficulte": 2,
 			"statut": "reussi",
 			"score": {},
@@ -35,6 +37,7 @@ func _sauvegarde_joueur_de_test() -> Dictionary:
 			"date_debut": 230,
 			"date_fin": 0,
 			"duree": 0,
+			"gameplay": "DEFI_DU_GOSSE",
 			"difficulte": 2,
 			"statut": "en cours",
 			"score": {},
@@ -59,11 +62,10 @@ func _sauvegarde_joueur_de_test() -> Dictionary:
 				"date_fin": 0,
 				"score": {},
 				"plateaux": plateaux_niveau_1,
-				"liste_plateaux": plateaux_niveau_1
 			}
 		],
 		"plateaux_libres": {
-			"1": [{"nom": "libre1", "difficulte": 1}]
+			"1": [{"nom": "libre1", "gameplay": "QUI_PERD_GAGNE", "difficulte": 1}]
 		},
 		"nombre_de_parties": {
 			"1": 2
@@ -165,9 +167,6 @@ func test_campagne_plateau_courant_et_suppression_couvrent_les_branches():
 			"score": {},
 			"plateaux": [
 				{"nom": "A1", "date_debut": 110, "date_fin": 0, "duree": 0, "difficulte": 1, "statut": "reussi", "score": {}, "coups joués": []}
-			],
-			"liste_plateaux": [
-				{"nom": "A1", "date_debut": 110, "date_fin": 0, "duree": 0, "difficulte": 1, "statut": "reussi", "score": {}, "coups joués": []}
 			]
 		}
 	]
@@ -209,9 +208,6 @@ func test_enregistrement_niveau_et_scores_couvrent_les_branches():
 				"score": {},
 				"plateaux": [
 					{"nom": "A1", "date_debut": 110, "date_fin": 120, "duree": 10, "difficulte": 1, "statut": "reussi", "score": {}, "coups joués": []}
-				],
-				"liste_plateaux": [
-					{"nom": "A1", "date_debut": 110, "date_fin": 120, "duree": 10, "difficulte": 1, "statut": "reussi", "score": {}, "coups joués": []}
 				]
 			},
 			{
@@ -222,15 +218,11 @@ func test_enregistrement_niveau_et_scores_couvrent_les_branches():
 				"plateaux": [
 					{"nom": "B1", "date_debut": 210, "date_fin": 220, "duree": 10, "difficulte": 2, "statut": "reussi", "score": {}, "coups joués": []},
 					{"nom": "B2", "date_debut": 230, "date_fin": 0, "duree": 0, "difficulte": 2, "statut": "en cours", "score": {}, "coups joués": []}
-				],
-				"liste_plateaux": [
-					{"nom": "B1", "date_debut": 210, "date_fin": 220, "duree": 10, "difficulte": 2, "statut": "reussi", "score": {}, "coups joués": []},
-					{"nom": "B2", "date_debut": 230, "date_fin": 0, "duree": 0, "difficulte": 2, "statut": "en cours", "score": {}, "coups joués": []}
 				]
 			}
 		],
 		"plateaux_libres": {
-			"1": [{"nom": "libre1", "difficulte": 1}]
+			"1": [{"nom": "libre1", "gameplay": "QUI_PERD_GAGNE", "difficulte": 1}]
 		},
 		"nombre_de_parties": {
 			"1": 2
@@ -277,9 +269,6 @@ func test_longueur_et_pourcentage_du_niveau_courant_sont_calcules():
 				"score": {},
 				"plateaux": [
 					{"nom": "A1", "date_debut": 110, "date_fin": 120, "duree": 10, "difficulte": 1, "statut": "reussi", "score": {}, "coups joués": []}
-				],
-				"liste_plateaux": [
-					{"nom": "A1", "date_debut": 110, "date_fin": 120, "duree": 10, "difficulte": 1, "statut": "reussi", "score": {}, "coups joués": []}
 				]
 			},
 			{
@@ -290,15 +279,11 @@ func test_longueur_et_pourcentage_du_niveau_courant_sont_calcules():
 				"plateaux": [
 					{"nom": "B1", "date_debut": 210, "date_fin": 220, "duree": 10, "difficulte": 2, "statut": "reussi", "score": {}, "coups joués": []},
 					{"nom": "B2", "date_debut": 230, "date_fin": 0, "duree": 0, "difficulte": 2, "statut": "en cours", "score": {}, "coups joués": []}
-				],
-				"liste_plateaux": [
-					{"nom": "B1", "date_debut": 210, "date_fin": 220, "duree": 10, "difficulte": 2, "statut": "reussi", "score": {}, "coups joués": []},
-					{"nom": "B2", "date_debut": 230, "date_fin": 0, "duree": 0, "difficulte": 2, "statut": "en cours", "score": {}, "coups joués": []}
 				]
 			}
 		],
 		"plateaux_libres": {
-			"1": [{"nom": "libre1", "difficulte": 1}]
+			"1": [{"nom": "libre1", "gameplay": "QUI_PERD_GAGNE", "difficulte": 1}]
 		},
 		"nombre_de_parties": {
 			"1": 2
@@ -315,9 +300,6 @@ func test_coups_joues_et_plateau_courant_couvrent_les_branches():
 	sauvegarde["enregistrement_campagne"][0]["plateaux"][0]["coups joués"] = [
 		{"depart": 0, "arrivee": 1}
 	]
-	sauvegarde["enregistrement_campagne"][0]["liste_plateaux"][0]["coups joués"] = [
-		{"depart": 0, "arrivee": 1}
-	]
 	_charger_joueur_test("joueur_test.json", sauvegarde)
 
 	assert_true(singleton.coups_joues_existe())
@@ -328,5 +310,4 @@ func test_coups_joues_et_plateau_courant_couvrent_les_branches():
 
 	var niveau_courant = singleton.enregistrement_lire_dernier_niveau()
 	niveau_courant["plateaux"].back()["date_fin"] = 10
-	niveau_courant["liste_plateaux"].back()["date_fin"] = 10
 	assert_false(singleton.coups_joues_ajouter_un_nouveau_coup(3, 4))
