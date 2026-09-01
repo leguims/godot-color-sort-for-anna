@@ -37,17 +37,14 @@ func _initialiser_la_configuration() -> void:
 	# Copier les niveaux lus
 	if fichier_configuration:
 		if version_courante_disque != lire_la_version():
-			# Reset campagne
-			if version_courante_disque in ['V0.3.3', 'V0.3.4', 'V0.3.5', 'V0.3.6',
-											'V0.4.0.beta1', 'V0.4.0.beta2', 'V0.4.0.beta3',
-											'V0.4.0.beta4', 'V0.4.0.beta5', 'V0.4.0.beta6',
-											'V0.4.0.beta7']:
-				SauvegardeBddJoueursService.remplacer_campagne_des_joueurs()
+			# Reset campagne Totale
+			if 'V0.' in version_courante_disque:
+				SauvegardeBddJoueursService.reset_sauvegarde_des_joueurs()
 				SauvegardeTableauDesScoresService.remise_a_zero()
-			# CONVERSION [V0.3.2 -> V0.3.3]
-			# TODO : conversion vers V0.3.3
-			# TODO : Nouvelle campagne => reset des sauvegardes
-			# Ecrire la nouvelle version après conversion
+			# Acheve les partie en cours + copie nouvelle campagne
+			# if 'V0.' in version_courante_disque:
+			# 	SauvegardeBddJoueursService.remplacer_campagne_des_joueurs()
+			# 	SauvegardeTableauDesScoresService.remise_a_zero()
 			_enregistrer_la_configuration()
 			pass
 		if 'musiques' in fichier_configuration:

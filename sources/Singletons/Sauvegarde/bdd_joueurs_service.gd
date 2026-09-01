@@ -83,19 +83,22 @@ func ajouter_un_nouveau_joueur(nom_nouveau_joueur : String, nom_nouveau_fichier 
 	if not nom_nouveau_fichier or FichiersJsonService.json_file_exists(nom_nouveau_fichier):
 		return false
 	# Crée le compte et l'enregistre
-	sauvegarde_joueur = {
-		'nom': nom_nouveau_joueur,
-		'campagne': {  },
-		'nombre_de_parties': {  },
-		'enregistrement_campagne': [ ],
-		'plateaux_libres': {  }
-	}
+	sauvegarde_joueur = sauvegarde_vierge(nom_nouveau_joueur)
 	# Initialiser les plateaux avec 'BDD Plateaux'
 	sauvegarde_joueur['campagne'] = SauvegardeBddPlateauxService.plateau_liste_niveaux_duplicate()
 	
 	fichier_sauvegarde = nom_nouveau_fichier
 	_enregistrer_sauvegarde_joueur()
 	return true
+
+func sauvegarde_vierge(nom_nouveau_joueur : String) -> Dictionary:
+	return {
+		'nom': nom_nouveau_joueur,
+		'campagne': {  },
+		'nombre_de_parties': {  },
+		'enregistrement_campagne': [ ],
+		'plateaux_libres': {  }
+	}
 
 func choisir_le_joueur(nom : String, fichier : String) -> bool:
 	return  _lire_sauvegarde_joueur(fichier) and nom == lire_nom_joueur()
@@ -105,6 +108,19 @@ func liberer_le_joueur():
 
 func le_joueur_existe() -> bool:
 	return fichier_sauvegarde != ""
+
+func reset_sauvegarde_des_joueurs() -> void:
+	"""Parcourir tous les joueurs et reset leur sauvegarde"""
+	# Parcourir chaque joueurs
+	for nom_joueur in SauvegardeListeJoueursService.retourner_la_liste_des_joueurs():
+		fichier_sauvegarde = SauvegardeListeJoueursService.retourner_le_fichier_de_sauvegarde(nom_joueur)
+		# Crée le compte et l'enregistre
+		sauvegarde_joueur = sauvegarde_vierge(nom_joueur)
+		# Initialiser les plateaux avec 'BDD Plateaux'
+		sauvegarde_joueur['campagne'] = SauvegardeBddPlateauxService.plateau_liste_niveaux_duplicate()
+		_enregistrer_sauvegarde_joueur()
+		liberer_le_joueur()
+		LogService.log_debug("Reset de la campagne pour le joueur :", nom_joueur)
 
 func remplacer_campagne_des_joueurs():
 	"""Parcourir tous les joueurs et remplacer les plateaux à jouer par ceux du fichier courant"""
