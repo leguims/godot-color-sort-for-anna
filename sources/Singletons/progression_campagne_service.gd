@@ -62,21 +62,17 @@ func la_campagne_est_terminee() -> bool:
 	return SauvegardeBddJoueursService.campagne_la_campagne_est_terminee()
 
 func commencer_un_plateau() -> void:
-	if not SauvegardeBddJoueursService.campagne_lire_prochain_plateau_pour_niveau_courant():
-		# Cas exceptionnel d'un niveau achevé, mais non traité lors de la progression normale
-		LogService.log_erreur("Niveau achevé mais non traité lors de la progression normale.")
-		LogService.log_erreur("RESET ULTRA VIOLENT")
-		fin_niveau.emit()
-		# Attente rikiki d'une frame pour permettre la gestion du signal fin_niveau
-		await get_tree().process_frame
-		# ULTRA VIOLENT : Reset la scene de campagne
-		# C'est pas joli, ca fait une partie "bizarre", mais ca ne se repete pas apres.
-		get_tree().change_scene_to_file("res://Scenes/MenuPrincipal/Campagne/campagne.tscn")
+	# Si un plateau était en cours, l'abandonner.
+	if SauvegardeBddJoueursService.enregistrement_plateau_en_cours():
+		abandonner_un_plateau()
+
+	# Premier niveau sans enregistrement => Initialiser un nouveau niveau
+	if not SauvegardeBddJoueursService.enregistrement_niveau_existe():
+		SauvegardeBddJoueursService.enregistrement_initialiser_un_nouveau_niveau()
+
+	# Le niveau en cours est achevé => Initialiser un nouveau niveau
 	if not SauvegardeBddJoueursService.enregistrement_niveau_en_cours():
 		SauvegardeBddJoueursService.enregistrement_initialiser_un_nouveau_niveau()
-	if SauvegardeBddJoueursService.enregistrement_plateau_en_cours():
-		# Si un plateau était en cours, mais pas terminé, le considérer abandonné
-		abandonner_un_plateau()
 
 	# Ajouter le nouveau plateau et incrémenter le compteur de parties de la difficulté courante
 	SauvegardeBddJoueursService.commencer_un_plateau()
