@@ -49,14 +49,21 @@ func test_reinitialiser_racine_utilisateur_revient_a_user():
 	FichiersJsonService.reinitialiser_racine_utilisateur()
 	assert_eq(FichiersJsonService.racine_utilisateur, "user://")
 
-func test_normaliser_chemin_garde_res_et_user_et_prefixe_les_chemins_relatifs():
+func test_normaliser_chemin_garde_res_et_prefixe_les_chemins_relatifs_et_user():
 	FichiersJsonService.definir_racine_utilisateur(RACINE_TEST)
 
 	assert_eq(FichiersJsonService._normaliser_chemin(""), "")
 	assert_eq(FichiersJsonService._normaliser_chemin("res://tests/fixture.json"), "res://tests/fixture.json")
-	assert_eq(FichiersJsonService._normaliser_chemin("user://manuel.json"), "user://manuel.json")
+	# Un chemin "user://" explicite doit tout de même être redirigé vers la
+	# racine de test en vigueur, pour garder les tests isolés du profil réel.
+	assert_eq(FichiersJsonService._normaliser_chemin("user://manuel.json"), "user://tests/test_fichiers_json_service/manuel.json")
 	assert_eq(FichiersJsonService._normaliser_chemin("fichier.json"), "user://tests/test_fichiers_json_service/fichier.json")
 	assert_eq(FichiersJsonService._normaliser_chemin("/fichier.json"), "user://tests/test_fichiers_json_service/fichier.json")
+
+func test_normaliser_chemin_garde_user_intact_quand_aucune_racine_de_test_nest_definie():
+	FichiersJsonService.reinitialiser_racine_utilisateur()
+
+	assert_eq(FichiersJsonService._normaliser_chemin("user://manuel.json"), "user://manuel.json")
 
 func test_write_read_et_json_file_exists_fonctionnent_avec_un_fichier_relatif():
 	var contenu = {

@@ -88,6 +88,10 @@ func before_all():
 func before_each():
 	_nettoyer_fichiers_utilisateur()
 	singleton = add_child_autofree(load("res://Singletons/Sauvegarde/bdd_joueurs_service.gd").new())
+	# "_ready()" est appelé en différé par Godot (frame suivante) : on attend
+	# qu'il se termine avant de lancer les assertions, sinon le fichier
+	# "sauvegarde_joueur_00.json" créé par "_ready()" n'existe pas encore.
+	await get_tree().process_frame
 
 func after_each():
 	_nettoyer_fichiers_utilisateur()

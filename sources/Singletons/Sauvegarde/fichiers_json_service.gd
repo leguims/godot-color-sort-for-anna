@@ -32,6 +32,13 @@ func _normaliser_chemin(chemin: String) -> String:
 	"Tests Unitaires : Permet de normaliser un chemin de fichier par rapport au répertoire de sauvegarde des tests unitaires"
 	if not chemin:
 		return chemin
+	if chemin.begins_with("user://"):
+		# Un préfixe de test (définir_racine_utilisateur) doit s'imposer même si
+		# l'appelant a explicitement préfixé "user://" (ex: code de production
+		# volontairement robuste), pour garder les tests isolés du profil réel.
+		if racine_utilisateur != "user://":
+			return racine_utilisateur + chemin.trim_prefix("user://")
+		return chemin
 	if "://" in chemin:
 		return chemin
 	if chemin.begins_with("/"):
