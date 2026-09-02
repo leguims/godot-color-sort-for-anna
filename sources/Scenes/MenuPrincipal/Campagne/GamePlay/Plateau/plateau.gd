@@ -149,6 +149,8 @@ func _on_menu_plateau_deselection_pile() -> void:
 	_on_selection_pile_timeout()
 
 func _on_selection_pile_timeout() -> void:
-	VibrationService.vibration_echec()
-	AudioService.son_jeton_deplacer_echec()
-	_deselectionner_toutes_les_piles()
+	if liste_piles:
+		# Pour vérifier qu'une partie est bien en cours.
+		VibrationService.vibration_echec()
+		AudioService.son_jeton_deplacer_echec()
+		_deselectionner_toutes_les_piles()

@@ -87,7 +87,19 @@ func afficher_accueil_niveau_en_cours():
 
 func _on_bouton_commencer_pressed() -> void:
 	AudioService.son_menu_click()
-	commencer_plateau.emit()
+	var date_debut_campagne = SauvegardeConfigurationService.lire_la_date_debut_campagne_timestamp()
+	if Time.get_unix_time_from_system() < date_debut_campagne:
+		var datetime_debut_campagne = Time.get_datetime_dict_from_unix_time( date_debut_campagne )
+		var annee = datetime_debut_campagne.get('year')
+		var mois = datetime_debut_campagne.get('month')
+		var jour = datetime_debut_campagne.get('day')
+		# var heure = datetime_debut_campagne.get('hour')
+		# var minute = datetime_debut_campagne.get('minute')
+		var message = "Soyez patient, la campagne commence le " \
+			+ str(jour).pad_zeros(2) +"/"+str(mois).pad_zeros(2)+"/"+str(annee)+"."
+		afficher_message_simple(message, 5.)
+	else:
+		commencer_plateau.emit()
 
 func _on_bouton_menu_principal_pressed() -> void:
 	AudioService.son_menu_click()
