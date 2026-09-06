@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://dhlsq1dkh3whe"
-path="res://.godot/imported/fond_480x720.png-98aa44eef22255a668db200170d9f130.ctex"
+uid="uid://bk7m1d510ojpi"
+path="res://.godot/imported/icon_campaign.png-0dd274d549cd217e30e2f485cb426cf5.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Art/Images/MenuPrincipal/fond_480x720.png"
-dest_files=["res://.godot/imported/fond_480x720.png-98aa44eef22255a668db200170d9f130.ctex"]
+source_file="res://Art/UI/MenuPrincipal/icon_campaign.png"
+dest_files=["res://.godot/imported/icon_campaign.png-0dd274d549cd217e30e2f485cb426cf5.ctex"]
 
 [params]
 

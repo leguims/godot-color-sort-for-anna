@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://bk7m1d510ojpi"
-path="res://.godot/imported/icon_campaign.png-1d757b3dafb3a60faa7e0430c3ac8645.ctex"
+uid="uid://7u4nv3ge2nep"
+path="res://.godot/imported/icon_records.png-26ce456fa80fbabccf577382c16a3592.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Art/Images/MenuPrincipal/icon_campaign.png"
-dest_files=["res://.godot/imported/icon_campaign.png-1d757b3dafb3a60faa7e0430c3ac8645.ctex"]
+source_file="res://Art/UI/MenuPrincipal/icon_records.png"
+dest_files=["res://.godot/imported/icon_records.png-26ce456fa80fbabccf577382c16a3592.ctex"]
 
 [params]
 

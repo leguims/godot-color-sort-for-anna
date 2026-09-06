@@ -1,15 +1,15 @@
 [gd_scene format=3 uid="uid://due674pwfguqp"]
 
 [ext_resource type="Script" uid="uid://cab0yaq8331s4" path="res://Scenes/MenuPrincipal/menu_principal.gd" id="1_64slw"]
-[ext_resource type="Texture2D" uid="uid://dhlsq1dkh3whe" path="res://Art/Images/MenuPrincipal/fond_480x720.png" id="2_bg"]
+[ext_resource type="Texture2D" uid="uid://dhlsq1dkh3whe" path="res://Art/UI/MenuPrincipal/fond_480x720.png" id="2_bg"]
 [ext_resource type="PackedScene" uid="uid://knrlkm4pili5" path="res://Scenes/MenuPrincipal/Clavier/clavier.tscn" id="3_y3ggv"]
-[ext_resource type="Texture2D" uid="uid://brg15xnmts0q" path="res://Art/Images/MenuPrincipal/title_menu_principal.png" id="4_title"]
-[ext_resource type="Texture2D" uid="uid://bk7m1d510ojpi" path="res://Art/Images/MenuPrincipal/icon_campaign.png" id="5_campaign"]
-[ext_resource type="Texture2D" uid="uid://7u4nv3ge2nep" path="res://Art/Images/MenuPrincipal/icon_records.png" id="6_records"]
-[ext_resource type="Texture2D" uid="uid://dh2xrgkv61e8l" path="res://Art/Images/MenuPrincipal/icon_about.png" id="7_about"]
-[ext_resource type="Texture2D" uid="uid://611lvaxc5ls2" path="res://Art/Images/MenuPrincipal/icon_music.png" id="8_music"]
-[ext_resource type="Texture2D" uid="uid://c0cef42lhoml" path="res://Art/Images/MenuPrincipal/icon_sound.png" id="9_sound"]
-[ext_resource type="Texture2D" uid="uid://bewj1qnepdoi8" path="res://Art/Images/MenuPrincipal/icon_vibration.png" id="9_whlyn"]
+[ext_resource type="Texture2D" uid="uid://brg15xnmts0q" path="res://Art/UI/MenuPrincipal/title_menu_principal.png" id="4_title"]
+[ext_resource type="Texture2D" uid="uid://bk7m1d510ojpi" path="res://Art/UI/MenuPrincipal/icon_campaign.png" id="5_campaign"]
+[ext_resource type="Texture2D" uid="uid://7u4nv3ge2nep" path="res://Art/UI/MenuPrincipal/icon_records.png" id="6_records"]
+[ext_resource type="Texture2D" uid="uid://dh2xrgkv61e8l" path="res://Art/UI/MenuPrincipal/icon_about.png" id="7_about"]
+[ext_resource type="Texture2D" uid="uid://611lvaxc5ls2" path="res://Art/UI/MenuPrincipal/icon_music.png" id="8_music"]
+[ext_resource type="Texture2D" uid="uid://c0cef42lhoml" path="res://Art/UI/MenuPrincipal/icon_sound.png" id="9_sound"]
+[ext_resource type="Texture2D" uid="uid://bewj1qnepdoi8" path="res://Art/UI/MenuPrincipal/icon_vibration.png" id="9_whlyn"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_panel"]
 content_margin_left = 16.0
