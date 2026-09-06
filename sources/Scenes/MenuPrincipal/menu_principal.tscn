@@ -208,7 +208,7 @@ text = "Records"
 icon = ExtResource("6_records")
 expand_icon = true
 
-[node name="BoutonRéférences" type="Button" parent="Marge/HBoxContainer/VBoxContainer/Marge/VBoxContainer" unique_id=1453020531]
+[node name="BoutonApropos" type="Button" parent="Marge/HBoxContainer/VBoxContainer/Marge/VBoxContainer" unique_id=1453020531]
 custom_minimum_size = Vector2(0, 56)
 layout_mode = 2
 theme_override_colors/font_color = Color(0.117647, 0.2, 0.286275, 1)
@@ -291,7 +291,7 @@ vertical_alignment = 2
 
 [connection signal="pressed" from="Marge/HBoxContainer/VBoxContainer/Marge/VBoxContainer/BoutonCampagne" to="." method="_on_bouton_campagne_pressed"]
 [connection signal="pressed" from="Marge/HBoxContainer/VBoxContainer/Marge/VBoxContainer/BoutonScores" to="." method="_on_bouton_scores_pressed"]
-[connection signal="pressed" from="Marge/HBoxContainer/VBoxContainer/Marge/VBoxContainer/BoutonRéférences" to="." method="_on_bouton_références_pressed"]
+[connection signal="pressed" from="Marge/HBoxContainer/VBoxContainer/Marge/VBoxContainer/BoutonApropos" to="." method="_on_bouton_apropos_pressed"]
 [connection signal="toggled" from="Marge/HBoxContainer/VBoxContainer/Marge/VBoxContainer/VBoxContainer/BoutonMusiques" to="." method="_on_bouton_musiques_toggled"]
 [connection signal="toggled" from="Marge/HBoxContainer/VBoxContainer/Marge/VBoxContainer/VBoxContainer/BoutonEffetsSonores" to="." method="_on_bouton_effets_sonores_toggled"]
 [connection signal="toggled" from="Marge/HBoxContainer/VBoxContainer/Marge/VBoxContainer/VBoxContainer/BoutonVibrations" to="." method="_on_bouton_vibrations_toggled"]

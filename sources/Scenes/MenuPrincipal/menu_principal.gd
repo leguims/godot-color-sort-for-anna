@@ -12,8 +12,8 @@ func _ready() -> void:
 		# [WEB] masquer le bouton de vibration
 		$Marge/HBoxContainer/VBoxContainer/Marge/VBoxContainer/VBoxContainer/BoutonVibrations.hide()
 
-func _on_bouton_références_pressed() -> void:
-	get_tree().change_scene_to_file("res://Scenes/MenuPrincipal/References/references.tscn")
+func _on_bouton_apropos_pressed() -> void:
+	get_tree().change_scene_to_file("res://Scenes/MenuPrincipal/APropos/a_propos.tscn")
 	AudioService.son_menu_click()
 
 func _on_bouton_scores_pressed() -> void:
