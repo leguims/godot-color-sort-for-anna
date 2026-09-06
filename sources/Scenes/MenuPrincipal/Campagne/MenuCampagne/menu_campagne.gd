@@ -75,7 +75,6 @@ func cacher_accueil():
 	$BoutonMenuPrincipal.hide()
 	$BoutonStatistiques.hide()
 	$InfosDuJoueur.hide()
-	$Message.hide()
 	$BoutonCommencer.hide()
 	$MessageRiche.hide()
 
