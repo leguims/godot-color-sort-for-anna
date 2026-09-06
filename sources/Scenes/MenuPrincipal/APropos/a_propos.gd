@@ -16,7 +16,6 @@ const TUTORIAL_URL := "https://www.youtube.com/@BabaDesBois"
 
 func _ready() -> void:
 	_build_content_panel()
-	_build_back_hitbox()
 
 func _build_content_panel() -> void:
 	_add_label($PanneauCredits, Rect2(45, 8, 266, 55), "À propos", 41, NAVY, HORIZONTAL_ALIGNMENT_CENTER, true, 1.006)
@@ -124,26 +123,8 @@ func _font_variant(base_font: Font, width_scale: float) -> FontVariation:
 	variation.variation_transform = Transform2D(Vector2(width_scale, 0), Vector2(0, 1), Vector2.ZERO)
 	return variation
 
-func _build_back_hitbox() -> void:
-	var back := Button.new()
-	back.name = "Retour"
-	back.position = Vector2(18, 12)
-	back.size = Vector2(72, 64)
-	back.flat = true
-	back.focus_mode = Control.FOCUS_NONE
-	back.mouse_default_cursor_shape = Control.CURSOR_POINTING_HAND
-	var empty_style := StyleBoxEmpty.new()
-	for state in ["normal", "hover", "pressed", "focus", "disabled"]:
-		back.add_theme_stylebox_override(state, empty_style)
-	back.pressed.connect(_return_to_home)
-	add_child(back)
-
 func _on_link_clicked(meta: Variant) -> void:
 	OS.shell_open(str(meta))
-
-func _return_to_home() -> void:
-	AudioService.son_menu_click()
-	get_tree().change_scene_to_file("res://Scenes/MenuPrincipal/menu_principal.tscn")
 
 func _style(color: Color, radius: int, border: Color, border_width: int) -> StyleBoxFlat:
 	var style := StyleBoxFlat.new()
@@ -158,3 +139,10 @@ func _style(color: Color, radius: int, border: Color, border_width: int) -> Styl
 	style.border_width_right = border_width
 	style.border_width_bottom = border_width
 	return style
+
+func _return_to_home() -> void:
+	AudioService.son_menu_click()
+	get_tree().change_scene_to_file("res://Scenes/MenuPrincipal/menu_principal.tscn")
+
+func _on_retour_pressed() -> void:
+	_return_to_home()
