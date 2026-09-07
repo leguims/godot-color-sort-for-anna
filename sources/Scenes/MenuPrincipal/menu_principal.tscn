@@ -204,7 +204,7 @@ theme_override_font_sizes/font_size = 25
 theme_override_styles/normal = SubResource("StyleBoxFlat_secondary_normal")
 theme_override_styles/pressed = SubResource("StyleBoxFlat_secondary_pressed")
 theme_override_styles/hover = SubResource("StyleBoxFlat_secondary_hover")
-text = "Records"
+text = "Scores"
 icon = ExtResource("6_records")
 expand_icon = true
 
