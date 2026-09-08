@@ -1,6 +1,7 @@
 extends Control
 
 const ASSET_DIR := "res://Art/UI/APropos/"
+const COMMON_ICONS_DIR := "res://Art/UI/icons/"
 const NAVY := Color("0a274d")
 const CORAL := Color("f04d3c")
 const PANEL_COLOR := Color("fff8e8")
@@ -24,7 +25,7 @@ func _build_content_panel() -> void:
 
 	_add_card($PanneauCredits, Rect2(23, 118, 310, 85), "Moteur", ASSET_DIR + "godot_icon_official.png", Vector2(16, 11), Vector2(64, 63),
 		"Godot Engine", GODOT_URL, "godotengine.org", 13)
-	_add_card($PanneauCredits, Rect2(23, 213, 310, 150), "Musiques", ASSET_DIR + "icon_music.png", Vector2(20, 54), Vector2(48, 42),
+	_add_card($PanneauCredits, Rect2(23, 213, 310, 150), "Musiques", COMMON_ICONS_DIR + "icon_music.png", Vector2(20, 54), Vector2(48, 42),
 		"• Dreaming – Su Turno\n• The Three Princesses of\n   Lilac Meadow\n• Solve The Puzzle\n• Humble Match\n• Great Little Challenge", MUSIC_URL, "patrickdearteaga.com", 13)
 	_add_card($PanneauCredits, Rect2(23, 373, 310, 150), "Effets sonores", ASSET_DIR + "icon_sound.png", Vector2(12, 50), Vector2(62, 48),
 		"• freesound.community\n• floraphonic\n• virtual_vibes\n• SoundReality\n• Dragon-Studio", SOUND_URL, "pixabay.com", 13)
