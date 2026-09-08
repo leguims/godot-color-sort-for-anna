@@ -38,16 +38,13 @@ theme_override_colors/font_color = Color(1, 0.5686275, 0.99607843, 1)
 theme_override_font_sizes/font_size = 35
 text = "7 Coups"
 
-[node name="BoutonAbandonner" type="Button" parent="Top" unique_id=2057181850]
+[node name="BoutonRecommencer" type="Button" parent="Top" unique_id=2057181850]
 custom_minimum_size = Vector2(480, 0)
 layout_mode = 2
 theme_override_colors/font_color = Color(0.675529, 0.00038495, 0.685483, 1)
 theme_override_colors/font_hover_color = Color(0.994947, 0.331387, 1, 1)
 theme_override_font_sizes/font_size = 60
-text = "Abandonner"
-
-[node name="Chronometre" type="Timer" parent="." unique_id=144994944]
+text = "Recommencer"
 
 [connection signal="gui_input" from="Fond" to="." method="_on_fond_gui_input"]
-[connection signal="pressed" from="Top/BoutonAbandonner" to="." method="_on_bouton_abandonner_pressed"]
-[connection signal="timeout" from="Chronometre" to="." method="_on_chronometre_timeout"]
+[connection signal="pressed" from="Top/BoutonRecommencer" to="." method="_on_bouton_recommencer_pressed"]

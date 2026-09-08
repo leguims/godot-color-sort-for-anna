@@ -28,12 +28,12 @@ func enregistrer_coups(coups : String):
 func show():
 	$Fond.show()
 	$Top.show()
-	$Top/BoutonAbandonner.show()
+	$Top/BoutonRecommencer.show()
 
 func hide():
 	$Fond.hide()
 	$Top.hide()
-	$Top/BoutonAbandonner.hide()
+	$Top/BoutonRecommencer.hide()
 
 func cacher_accueil():
 	hide()
@@ -48,8 +48,8 @@ func arreter_chronometre():
 
 # ########
 # Usine >>
-func _on_bouton_abandonner_pressed() -> void:
-	$Top/BoutonAbandonner.hide()
+func _on_bouton_recommencer_pressed() -> void:
+	$Top/BoutonRecommencer.hide()
 	abandon.emit()
 
 func _on_fond_gui_input(event: InputEvent) -> void:
