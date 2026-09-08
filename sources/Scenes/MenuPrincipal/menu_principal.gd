@@ -11,7 +11,7 @@ const CREAM_BORDER := Color("edc9a5")
 var expanded := false
 var player_buttons: Dictionary = {}
 
-var delay_ms: int = 200
+var delay_ms: int = 100
 var last_click_time: int = 0
 
 func _ready() -> void:
@@ -169,17 +169,16 @@ func _on_nouveau_joueur_text_submitted(nom_nouveau_joueur: String):
 		_reload_players()
 	$LowerFlow/PlayerSection/PlayerRow/Add.text = ''
 
-func _mettre_a_jour_configuration():
-	var config_buttons : Array[Dictionary]= [
-		{"nom": "Musique", "status": SauvegardeConfigurationService.musiques_sont_actives()},
-		{"nom": "EffetsSonores", "status": SauvegardeConfigurationService.effets_sonores_sont_actifs()},
-		{"nom": "Vibration", "status": SauvegardeConfigurationService.vibrations_sont_actives()}
-	]
+func _mettre_a_jour_configuration(conf_node_name : String):
+	var state_buttons : Dictionary= {
+		"Musique": SauvegardeConfigurationService.musiques_sont_actives(),
+		"EffetsSonores": SauvegardeConfigurationService.effets_sonores_sont_actifs(),
+		"Vibration": SauvegardeConfigurationService.vibrations_sont_actives()
+		}
+
 	var configuration = $LowerFlow/CenterConfiguration/Configuration/Lignes
-	for config in config_buttons:
-		var nom = config.get("nom")
-		var status = config.get("status")
-		var button = configuration.get_node(nom).get_node("Button")
+	var status = state_buttons.get(conf_node_name, true)
+	var button = configuration.get_node(conf_node_name).get_node("Button")
 		button.button_pressed = status
 
 func filtrer_click() -> bool:
@@ -194,7 +193,8 @@ func filtrer_click() -> bool:
 
 func _on_bouton_musiques_toggled(on: bool):
 	if filtrer_click():
-		_mettre_a_jour_configuration() # Corriger le changement parasite
+		 # Corriger le changement parasite
+		_mettre_a_jour_configuration("Musique")
 		return
 	if on: SauvegardeConfigurationService.activer_musiques()
 	else: SauvegardeConfigurationService.desactiver_musiques()
@@ -202,7 +202,8 @@ func _on_bouton_musiques_toggled(on: bool):
 
 func _on_bouton_effets_sonores_toggled(on: bool):
 	if filtrer_click():
-		_mettre_a_jour_configuration() # Corriger le changement parasite
+		 # Corriger le changement parasite
+		_mettre_a_jour_configuration("EffetsSonores")
 		return
 	if on: SauvegardeConfigurationService.activer_effets_sonores()
 	else: SauvegardeConfigurationService.desactiver_effets_sonores()
@@ -210,7 +211,8 @@ func _on_bouton_effets_sonores_toggled(on: bool):
 
 func _on_bouton_vibrations_toggled(on: bool):
 	if filtrer_click():
-		_mettre_a_jour_configuration() # Corriger le changement parasite
+		 # Corriger le changement parasite
+		_mettre_a_jour_configuration("Vibration")
 		return
 	if on: SauvegardeConfigurationService.activer_vibrations()
 	else: SauvegardeConfigurationService.desactiver_vibrations()
