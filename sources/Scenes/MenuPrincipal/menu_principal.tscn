@@ -116,6 +116,10 @@ corner_radius_top_right = 9
 corner_radius_bottom_right = 9
 corner_radius_bottom_left = 9
 
+[sub_resource type="StyleBoxLine" id="StyleBoxLine_vrk5l"]
+content_margin_right = 10.0
+color = Color(0.039215688, 0.15294118, 0.3019608, 1)
+
 [node name="Menu_principal" type="Control" unique_id=113025718]
 layout_mode = 3
 anchors_preset = 15
@@ -596,6 +600,16 @@ theme_override_styles/hover = SubResource("StyleBoxEmpty_l2uwd")
 toggle_mode = true
 button_pressed = true
 flat = true
+
+[node name="Version" type="Label" parent="LowerFlow/CenterConfiguration/Configuration/Lignes" unique_id=261308164]
+custom_minimum_size = Vector2(270, 21)
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 0.972549, 0.92941177, 1)
+theme_override_colors/font_shadow_color = Color(0.039215688, 0.15294118, 0.3019608, 1)
+theme_override_font_sizes/font_size = 15
+theme_override_styles/normal = SubResource("StyleBoxLine_vrk5l")
+horizontal_alignment = 2
+vertical_alignment = 1
 
 [connection signal="pressed" from="CampaignButton" to="." method="_on_campaign_button_pressed"]
 [connection signal="text_submitted" from="LowerFlow/PlayerSection/PlayerRow/Add" to="." method="_on_nouveau_joueur_text_submitted"]

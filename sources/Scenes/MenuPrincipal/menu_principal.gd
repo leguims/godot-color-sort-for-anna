@@ -30,6 +30,7 @@ func _build_ui() -> void:
 				 _on_bouton_vibrations_toggled)
 	if OS.has_feature("web"):
 		vibration.hide()
+	configuration.get_node("Version").text = SauvegardeConfigurationService.lire_la_version()
 	_show_campaign_players(false)
 
 func _on_campaign_button_pressed() -> void:
@@ -40,7 +41,7 @@ func _show_campaign_players(value: bool) -> void:
 	"Affiche les joueurs"
 	expanded = value
 	if not expanded:
-		var size = Vector2(425-55, 720-72-110)
+		var size = Vector2(425-55, 720-72-110+18)
 		$Panneau.set_size(size)
 		# Expand est géré dans '_reload_players()'
 
@@ -179,7 +180,7 @@ func _mettre_a_jour_configuration(conf_node_name : String):
 	var configuration = $LowerFlow/CenterConfiguration/Configuration/Lignes
 	var status = state_buttons.get(conf_node_name, true)
 	var button = configuration.get_node(conf_node_name).get_node("Button")
-		button.button_pressed = status
+	button.button_pressed = status
 
 func filtrer_click() -> bool:
 	var current_time = Time.get_ticks_msec()
