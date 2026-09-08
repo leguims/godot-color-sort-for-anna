@@ -25,18 +25,23 @@ theme_override_colors/font_color = Color(0.99999994, 0.5674157, 0.9962366, 1)
 theme_override_font_sizes/font_size = 35
 text = "Classique"
 horizontal_alignment = 1
+vertical_alignment = 1
 
-[node name="Chrono" type="Label" parent="Top" unique_id=1493959023]
+[node name="Chrono" type="Label" parent="Top" unique_id=1265229291]
 layout_mode = 2
-theme_override_colors/font_color = Color(1, 0.5686275, 0.99607843, 1)
-theme_override_font_sizes/font_size = 50
-text = "3:02"
+theme_override_colors/font_color = Color(0.99999994, 0.5674157, 0.9962366, 1)
+theme_override_font_sizes/font_size = 35
+text = "00:00.0"
+horizontal_alignment = 1
+vertical_alignment = 1
 
 [node name="Coups" type="Label" parent="Top" unique_id=363019818]
 layout_mode = 2
 theme_override_colors/font_color = Color(1, 0.5686275, 0.99607843, 1)
 theme_override_font_sizes/font_size = 35
 text = "7 Coups"
+horizontal_alignment = 1
+vertical_alignment = 1
 
 [node name="BoutonRecommencer" type="Button" parent="Top" unique_id=2057181850]
 custom_minimum_size = Vector2(480, 0)

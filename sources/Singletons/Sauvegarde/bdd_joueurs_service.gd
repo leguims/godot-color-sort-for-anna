@@ -630,6 +630,10 @@ func enregistrement_lire_gameplay_plateau() -> String:
 func enregistrement_lire_duree_plateau() -> float:
 	var plateau = enregistrement_lire_dernier_plateau()
 	if plateau:
+		if not plateau.get('date_fin'):
+			# Plateau en cours
+			var now = Time.get_unix_time_from_system() # Timestamp
+			plateau['duree'] = now - plateau.get('date_debut')
 		return plateau.get('duree')
 	return 0.
 

@@ -5,22 +5,22 @@ class_name MenuPlateau
 signal abandon
 signal deselection_pile
 
-var chronometre : int = 0
-
 func _process(_delta: float) -> void:
-	var pluriel = "s"
-	var nb_coups = SauvegardeBddJoueursService.lire_nombre_coups()
-	if nb_coups < 2:
-		pluriel = ""
-	enregistrer_coups(str(nb_coups) + " Coup" + pluriel)
+	# Afficher le temps
+	_maj_chrono()
+	# Afficher le nombre de coups
+	_maj_coups()
 
 # #############
 # API Gameplay
 func enregistrer_gameplay(gameplay : String):
 	$Top/Gameplay.text = gameplay
 
-func enregistrer_chrono(chrono : String):
-	$Top/Chrono.text = chrono
+func enregistrer_chrono(minutes : String,
+						secondes : String,
+						decisecondes : String):
+	var text_chrono : String = minutes + ':' + secondes + '.' + decisecondes
+	$Top/Chrono.text = text_chrono
 
 func enregistrer_coups(coups : String):
 	$Top/Coups.text = coups
@@ -39,12 +39,29 @@ func cacher_accueil():
 	hide()
 	$Fond.show()
 
-func demarrer_chronometre():
-	chronometre = -1
-	_on_chronometre_timeout()
+# ########
+# Interne
+func _maj_chrono() -> void:
+	"Met à jour le temps du plateau en direct"
+	var temps_ecoule_en_s : float = SauvegardeBddJoueursService.enregistrement_lire_duree_plateau()
+	var minutes : int = floori(temps_ecoule_en_s / 60.)
+	var secondes : int = floori(temps_ecoule_en_s - 60 * minutes)
+	var decisecondes : int = roundi( (temps_ecoule_en_s - 60 * minutes - secondes) * 10.)
+	# Gerer l'arrondi des decisecondes
+	if decisecondes == 10:
+		decisecondes = 0; secondes += 1
+	if secondes == 60:
+		secondes = 0; minutes += 1
+	
+	enregistrer_chrono(	str(minutes).pad_zeros(2),
+						str(secondes).pad_zeros(2),
+						str(decisecondes))
 
-func arreter_chronometre():
-	$Chronometre.stop()
+func _maj_coups() -> void:
+	"Met à jour le nombre de coups du plateau en direct"
+	var nb_coups = SauvegardeBddJoueursService.lire_nombre_coups()
+	var pluriel = "" if nb_coups < 2 else "s"
+	enregistrer_coups(str(nb_coups) + " Coup" + pluriel)
 
 # ########
 # Usine >>
@@ -58,11 +75,3 @@ func _on_fond_gui_input(event: InputEvent) -> void:
 			# LogService.log_debug("Clique souris sur le fond du plateau")
 			# Parcourir les piles et déselectionner la pile (comme "timeout" sur la selection)
 			deselection_pile.emit()
-
-func _on_chronometre_timeout() -> void:
-	# Relance le chronometre
-	$Chronometre.start()
-	# Incrémente le compteur
-	chronometre += 1
-	# MàJ affichage
-	enregistrer_chrono(str(floori(chronometre/60.)).pad_zeros(2)+':'+str(chronometre%60).pad_zeros(2))
