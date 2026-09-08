@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://611lvaxc5ls2"
-path="res://.godot/imported/icon_music.png-359d9ab546bd250ae25af6a860d8f23f.ctex"
+uid="uid://dceu8xgu72xlf"
+path="res://.godot/imported/icon_chevron.png-84e999fda088a1b7f0fc40ff47f3d24f.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Art/UI/MenuPrincipal/icon_music.png"
-dest_files=["res://.godot/imported/icon_music.png-359d9ab546bd250ae25af6a860d8f23f.ctex"]
+source_file="res://Art/UI/icons/icon_chevron.png"
+dest_files=["res://.godot/imported/icon_chevron.png-84e999fda088a1b7f0fc40ff47f3d24f.ctex"]
 
 [params]
 

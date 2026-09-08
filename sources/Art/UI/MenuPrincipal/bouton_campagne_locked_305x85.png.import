@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://dh2xrgkv61e8l"
-path="res://.godot/imported/icon_about.png-49bb9ff8978a56c096043c025ddc1502.ctex"
+uid="uid://fywkpbkwglh8"
+path="res://.godot/imported/bouton_campagne_locked_305x85.png-02bd7d526ae0a5daaedf790869cc76b1.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Art/UI/MenuPrincipal/icon_about.png"
-dest_files=["res://.godot/imported/icon_about.png-49bb9ff8978a56c096043c025ddc1502.ctex"]
+source_file="res://Art/UI/MenuPrincipal/bouton_campagne_locked_305x85.png"
+dest_files=["res://.godot/imported/bouton_campagne_locked_305x85.png-02bd7d526ae0a5daaedf790869cc76b1.ctex"]
 
 [params]
 
