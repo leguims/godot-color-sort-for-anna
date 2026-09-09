@@ -24,6 +24,15 @@ Depuis la phase de tests internes de la version V0.3.0, les fonctionnalités son
 #### Bug V0.4.0 :
 - Définir une combinaison secrete pour declencher l'export des fichiers JSON.
 
+#### Remarques Arélien :
+- ~~bug sur les boutons du menu principal~~
+- élargir la zone de saisie autours des piles
+- ~~lisibilité des messages (bravo, perdu, continuer)~~
+- ~~message de score un peu serré~~
+- ~~crédit difficile à lire~~
+- ~~crédit : faire un vrai lien sur YouTube~~
+- ~~"ajouter joueur" est difficile à lire.~~
+
 ### Jeu
 
 #### Changement d'architecture pour accueillir plusieurs gameplay
