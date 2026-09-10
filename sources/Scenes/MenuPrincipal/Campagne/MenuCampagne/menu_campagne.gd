@@ -86,6 +86,7 @@ func afficher_accueil_niveau_en_cours():
 
 func _on_bouton_commencer_pressed() -> void:
 	AudioService.son_menu_click()
+	VibrationService.vibration_click()
 	var date_debut_campagne = SauvegardeConfigurationService.lire_la_date_debut_campagne_timestamp()
 	if Time.get_unix_time_from_system() < date_debut_campagne:
 		var datetime_debut_campagne = Time.get_datetime_dict_from_unix_time( date_debut_campagne )
@@ -102,10 +103,12 @@ func _on_bouton_commencer_pressed() -> void:
 
 func _on_bouton_menu_principal_pressed() -> void:
 	AudioService.son_menu_click()
+	VibrationService.vibration_click()
 	get_tree().change_scene_to_file("res://Scenes/MenuPrincipal/menu_principal.tscn")
 
 func _on_bouton_statistiques_pressed() -> void:
 	AudioService.son_menu_click()
+	VibrationService.vibration_click()
 	get_tree().change_scene_to_file("res://Scenes/MenuPrincipal/Campagne/MenuCampagne/Statistiques/statistiques.tscn")
 
 

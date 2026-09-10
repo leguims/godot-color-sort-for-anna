@@ -143,6 +143,7 @@ func _style(color: Color, radius: int, border: Color, border_width: int) -> Styl
 
 func _return_to_home() -> void:
 	AudioService.son_menu_click()
+	VibrationService.vibration_click()
 	get_tree().change_scene_to_file("res://Scenes/MenuPrincipal/menu_principal.tscn")
 
 func _on_retour_pressed() -> void:

@@ -27,7 +27,8 @@ func _ready():
 func _input(event):
 	if event is InputEventMouseButton and event.pressed:
 		AudioService.son_menu_click()
-		if SauvegardeBddJoueursService.campagne_la_campagne_est_terminee():
+		VibrationService.vibration_click()
+		if SauvegardeBddJoueursService.la_campagne_est_terminee():
 			# Retour au menu principal
 			get_tree().change_scene_to_file("res://Scenes/MenuPrincipal/menu_principal.tscn")
 		else:
