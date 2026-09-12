@@ -5,6 +5,7 @@ func _ready():
 	var nom_joueur = $Marge/HBoxContainer/VBoxContainer/Nom_Joueur
 	nom_joueur.text = StatsService.campagne_nom_joueur()
 	campagne()
+	score()
 	ascensions()
 	niveaux()
 	plateaux()
@@ -35,6 +36,56 @@ func _input(event):
 			# Retour au menu de campagne
 			get_tree().change_scene_to_file("res://Scenes/Campagne/campagne.tscn")
 
+
+func score():
+	# Identifier le joueur
+	# Consulter la BDD pour obtenir les indicateurs à afficher
+	var valeur
+	# TODO : score : diagrammes et courbes
+	
+	# Largeur du titre 'Campagne'
+	$"Marge/HBoxContainer/VBoxContainer/Titre Score".set_minimum_size(Vector2(430,25))
+
+	# KPI
+	var KPI_Rapidite = $Marge/HBoxContainer/VBoxContainer/KPI_Score/KPI_Rapidite
+	KPI_Rapidite.set_title("Rapidité")
+	valeur = StatsService.campagne_taux_completion()
+	valeur = str_arrondir_pourcentage(valeur)
+	KPI_Rapidite.set_value(valeur)
+	KPI_Rapidite.set_color(Color("ffe6f3ff"), Color('DARK_ORANGE'))
+	KPI_Rapidite.set_minimum_size(Vector2(83,50))
+
+	var KPI_Taux = $Marge/HBoxContainer/VBoxContainer/KPI_Score/KPI_Taux
+	KPI_Taux.set_title("Réussite")
+	valeur = StatsService.campagne_taux_completion()
+	valeur = str_arrondir_pourcentage(valeur)
+	KPI_Taux.set_value(valeur)
+	KPI_Taux.set_color(Color("ffe6f3ff"), Color('DARK_ORANGE'))
+	KPI_Taux.set_minimum_size(Vector2(83,50))
+
+	var KPI_Niveau = $Marge/HBoxContainer/VBoxContainer/KPI_Score/KPI_Niveau
+	KPI_Niveau.set_title("Niveau")
+	valeur = StatsService.campagne_taux_completion()
+	valeur = str_arrondir_pourcentage(valeur)
+	KPI_Niveau.set_value(valeur)
+	KPI_Niveau.set_color(Color("ffe6f3ff"), Color('DARK_ORANGE'))
+	KPI_Niveau.set_minimum_size(Vector2(83,50))
+
+	var KPI_NiveauParfait = $Marge/HBoxContainer/VBoxContainer/KPI_Score/KPI_Niveau_Parfait
+	KPI_NiveauParfait.set_title("Parfait")
+	valeur = StatsService.campagne_taux_completion()
+	valeur = str_arrondir_pourcentage(valeur)
+	KPI_NiveauParfait.set_value(valeur)
+	KPI_NiveauParfait.set_color(Color("ffe6f3ff"), Color('DARK_ORANGE'))
+	KPI_NiveauParfait.set_minimum_size(Vector2(83,50))
+
+	var KPI_Fin_Campagne = $Marge/HBoxContainer/VBoxContainer/KPI_Score/KPI_Fin_Campagne
+	KPI_Fin_Campagne.set_title("Campagne")
+	valeur = StatsService.campagne_taux_completion()
+	valeur = str_arrondir_pourcentage(valeur)
+	KPI_Fin_Campagne.set_value(valeur)
+	KPI_Fin_Campagne.set_color(Color("ffe6f3ff"), Color('DARK_ORANGE'))
+	KPI_Fin_Campagne.set_minimum_size(Vector2(83,50))
 
 func campagne():
 	# Identifier le joueur
