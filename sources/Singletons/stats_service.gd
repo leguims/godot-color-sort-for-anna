@@ -281,7 +281,7 @@ func taux_de_reussite_des_plateaux() -> float:
 	var passe = infos_plateaux.get('passes')
 	if (reussis + abandonne + passe) == 0:
 		return 0.
-	return 1. * reussis / (reussis + abandonne)
+	return 1. * reussis / (reussis + abandonne + passe)
 
 func longueur_max_ascension_terminee() -> int:
 	var joueur = SauvegardeBddJoueursService.lire_nom_joueur()
