@@ -5,6 +5,7 @@ class_name Plateau
 signal victoire
 signal plateau_invalide
 signal abandon
+signal passe
 
 var layout := PlateauLayoutService.new()
 var decodeur := PlateauDecodeurService.new()
@@ -28,7 +29,7 @@ func effacer_le_plateau() -> void:
 		pile.effacer_la_pile()
 		pile.queue_free()
 	liste_piles.clear()
-	$BoutonAbandon.show()
+	$Entete.show()
 
 func est_valide(plateau_texte : String) -> bool:
 	return decodeur.est_valide(plateau_texte)
@@ -77,7 +78,7 @@ func _initialiser_une_pile(pile: Pile, jetons_pile_texte) -> void:
 func _positionner_une_pile(nb_piles_plateau: int, indice_pile: int) -> Vector2:
 	# Definir la position de la pile sur le plateau
 	# Constantes pour layout
-	layout.taille_bouton_abandonner_originale = $BoutonAbandon.size.y
+	layout.taille_bouton_abandonner_originale = $Entete/BoutonAbandon.size.y
 	layout.taille_fenetre_jeu = get_viewport().get_visible_rect().size
 	layout.taille_pile_pixels = Vector2(liste_piles[0].largeur(), liste_piles[0].hauteur())
 	return layout.calculer_la_position_de_la_pile(nb_piles_plateau, indice_pile)
@@ -110,7 +111,7 @@ func on_pile_clique_gauche(indice_pile : int) -> void:
 				pile_cible.bloquer()
 				# Vérifier si la partie est achevée
 				if regles.est_termine(liste_piles):
-					$BoutonAbandon.hide()
+					$Entete.hide()
 					victoire.emit()
 					VibrationService.vibration_fin_de_plateau()
 				else:
@@ -137,8 +138,12 @@ func _on_selection_pile_timeout() -> void:
 	AudioService.son_jeton_deplacer_echec()
 	_deselectionner_toutes_les_piles()
 
+func _on_bouton_passer_pressed() -> void:
+	$Entete.hide()
+	passe.emit()
+
 func _on_bouton_abandon_pressed() -> void:
-	$BoutonAbandon.hide()
+	$Entete.hide()
 	abandon.emit()
 
 func _on_fond_gui_input(event: InputEvent) -> void:

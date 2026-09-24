@@ -25,7 +25,8 @@ func _ready():
 	#$Marge/HBoxContainer/VBoxContainer/MonthlyPlaytimeGauge.set_progress(120, 300)
 
 
-func _input(event):
+
+func _input(event: InputEvent):
 	if event is InputEventMouseButton and event.pressed:
 		AudioService.son_menu_click()
 		VibrationService.vibration_click()

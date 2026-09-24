@@ -127,6 +127,19 @@ func afficher_abandonner_un_plateau():
 	await get_tree().create_timer(3.0).timeout
 	$BoutonCommencer.show()
 
+func afficher_passer_un_plateau():
+	_afficher_des_messages(["Passé!",
+							"Fin de Partie",
+							"Plateau suivant!"])
+	$BoutonMenuPrincipal.show()
+	$BoutonStatistiques.show()
+	mettre_a_jour_infos_joueur()
+	$InfosDuJoueur.show()
+	
+	# Attendre l'affichage du texte
+	await get_tree().create_timer(3.0).timeout
+	$BoutonCommencer.show()
+
 func afficher_gagner_un_plateau(duree : int) -> void:
 	_afficher_message("Bravo!", 0.5)
 	# Attendre l'affichage du texte

@@ -68,6 +68,14 @@ func _on_plateau_de_jeu_abandon() -> void:
 	AudioService.son_abandonner_un_plateau()
 	AudioService.arreter_la_musique()
 
+func _on_plateau_de_jeu_passe() -> void:
+	# Mettre à jour les plateaux à jouer
+	ProgressionCampagneService.passer_un_plateau()
+	$MenuCampagne.show()
+	$MenuCampagne.afficher_passer_un_plateau()
+	AudioService.son_passer_un_plateau()
+	AudioService.arreter_la_musique()
+
 func _on_progression_campagne_service_progression_ascension():
 	enregistrer_infos_joueur_pour_menu()
 

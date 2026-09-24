@@ -12,6 +12,7 @@ script = ExtResource("1_4bhsb")
 [node name="MenuCampagne" parent="." unique_id=483873486 instance=ExtResource("2_7600w")]
 
 [connection signal="abandon" from="PlateauDeJeu" to="." method="_on_plateau_de_jeu_abandon"]
+[connection signal="passe" from="PlateauDeJeu" to="." method="_on_plateau_de_jeu_passe"]
 [connection signal="plateau_invalide" from="PlateauDeJeu" to="." method="_on_plateau_de_jeu_plateau_invalide"]
 [connection signal="victoire" from="PlateauDeJeu" to="." method="_on_plateau_de_jeu_victoire"]
 [connection signal="commencer_plateau" from="MenuCampagne" to="." method="_on_menu_commencer_plateau"]

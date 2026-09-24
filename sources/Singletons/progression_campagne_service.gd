@@ -105,6 +105,17 @@ func abandonner_un_plateau() -> void:
 	progression_ascension.emit() # Pour mise à jour des bandeaux d'infos
 	afficher_niveau_plateau_parties()
 
+func passer_un_plateau() -> void:
+	# En cas de passage, pas d'enrgistrement du temps.
+	SauvegardeBddJoueursService.passer_un_plateau()
+
+	# Diminuer le niveau courant (si c'est possible)
+	var niveau_inferieur = retourner_le_niveau_inferieur()
+	if niveau_inferieur < SauvegardeBddJoueursService.lire_niveau_joueur():
+		SauvegardeBddJoueursService.modifier_niveau_joueur(niveau_inferieur)
+	progression_ascension.emit() # Pour mise à jour des bandeaux d'infos
+	afficher_niveau_plateau_parties()
+
 func initialiser_une_nouvelle_ascension(pourcentage_longueur : float):
 		var nb_niveaux = roundi(pourcentage_longueur / 100. * SauvegardeBddJoueursService.lire_nombre_de_niveaux_realisables())
 		var niveau_min = retourner_le_niveau_le_plus_bas()

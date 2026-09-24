@@ -36,7 +36,7 @@ var sauvegarde_joueur = {
 # 					'date_debut': 1748785865.997,
 # 					'date_fin': 1748785855.0,
 # 					'niveau': 18,
-# 					'statut': 'reussi', # 'en cours', 'abandonné', 'reussi'
+# 					'statut': 'reussi', # 'en cours', 'abandonné', 'passé', 'reussi'
 # 					'duree': 0,
 # 					'score': { 'duree': 4000, 'ratio_reussite': 2000 },
 # 					'coups joués': [
@@ -249,7 +249,7 @@ func lire_nombre_de_parties_joueur_pour_niveau(niveau : int) -> int:
 # 					'date_debut': 1748785865.997,
 # 					'date_fin': 1748785855.0,
 # 					'niveau': 18,
-# 					'statut': 'reussi', # 'en cours', 'abandonné', 'reussi'
+# 					'statut': 'reussi', # 'en cours', 'abandonné', 'passé', 'reussi'
 # 					'duree': 0,
 # 					'score': { 'duree': 4000, 'ratio_reussite': 2000 },
 # 					'coups joués': [
@@ -358,8 +358,8 @@ func lire_niveau_ascension_longueur_realisee() -> int:
 					and plateau.get('statut') == 'reussi':
 					 # Ajouter le niveau réussi
 					liste_niveaux.append(niveau)
-				elif plateau.get('statut') == 'abandonné':
-					 # Supprimer le precedent niveau quand le niveau courant est abandonné
+				elif plateau.get('statut') == 'abandonné' or plateau.get('statut') == 'passé':
+					 # Supprimer le precedent niveau quand le niveau courant est abandonné ou passé
 					liste_niveaux.pop_back()
 		return len(liste_niveaux)
 	return 0
@@ -462,7 +462,7 @@ func lire_score_ascension_sans_detour() -> int:
 # 			'date_debut': 1748785865.997,
 # 			'date_fin': 1748785855.0,
 # 			'niveau': 18,
-# 			'statut': 'reussi', # 'en cours', 'abandonné', 'reussi'
+# 			'statut': 'reussi', # 'en cours', 'abandonné', 'passé', 'reussi'
 # 			'duree': 0,
 # 			'score': { 'duree': 4000, 'ratio_reussite': 2000 },
 # 			'coups joués': [
@@ -494,7 +494,7 @@ func initialiser_un_nouveau_plateau(nom : String,
 			'date_debut': Time.get_unix_time_from_system(), # Timestamp
 			'date_fin': 0.,
 			'niveau': niveau,
-			'statut': 'en cours', # 'en cours', 'abandonné', 'reussi'
+			'statut': 'en cours', # 'en cours', 'abandonné', 'passé', 'reussi'
 			'duree': 0,
 			'score': {},
 			'coups joués': []
@@ -561,7 +561,7 @@ func lire_niveau_plateau() -> float:
 
 ###############################################
 # Ascensions / Plateaux / Statut
-# 'statut': 'en cours', # 'en cours', 'abandonné', 'reussi'
+# 'statut': 'en cours', # 'en cours', 'abandonné', 'passé', 'reussi'
 ###############################################
 
 func modifier_statut_plateau(statut : String) -> void:
@@ -721,6 +721,15 @@ func abandonner_un_plateau() -> void:
 	# En cas d'abandon, pas d'enrgistrement du temps.
 	incrementer_longueur_detour_ascension()
 	modifier_statut_plateau('abandonné')
+	terminer_plateau()
+
+func passer_un_plateau() -> void:
+	# Effacer de la liste des plateaux jouables
+	supprimer_plateau_courant()
+
+	# En cas de passage, pas d'enrgistrement du temps.
+	incrementer_longueur_detour_ascension()
+	modifier_statut_plateau('passé')
 	terminer_plateau()
 
 func commencer_un_plateau() -> void:

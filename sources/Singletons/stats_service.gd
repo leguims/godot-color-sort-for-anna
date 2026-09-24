@@ -246,13 +246,15 @@ func duree_moyenne_ascensions_terminees_en_s() -> float:
 	var duree_ascensions = duree_totale_plateaux_toutes_les_ascensions_en_s()
 	return duree_ascensions.get('terminees') / nombre_ascensions_terminees()
 
-func nombre_de_plateau_reussis_abandonnes() -> Dictionary:
+func nombre_de_plateau_reussis_abandonnes_passe() -> Dictionary:
 	var joueur = SauvegardeBddJoueursService.lire_nom_joueur()
 	var date_debut_campagne = SauvegardeConfigurationService.lire_la_date_debut_campagne_timestamp()
 	# Nombre de plateau reussis
 	var nb_plateaux_reussis: int = 0
 	# Nombre de plateau reussis
 	var nb_plateaux_abandonnes: int = 0
+	# Nombre de plateau passé
+	var nb_plateaux_passes: int = 0
 	# Parcourir la liste des ascensions
 	if SauvegardeBddJoueursService.sauvegarde_joueur.get("ascensions", null):
 		for ascension in SauvegardeBddJoueursService.sauvegarde_joueur.get("ascensions"):
@@ -264,16 +266,20 @@ func nombre_de_plateau_reussis_abandonnes() -> Dictionary:
 							nb_plateaux_reussis += 1
 						if plateau_joue.get("statut") == "abandonné":
 							nb_plateaux_abandonnes += 1
+						if plateau_joue.get("statut") == "passé":
+							nb_plateaux_passes += 1
 	LogService.log_debug("joueur:",joueur,
 						' nb_plateaux_reussis=', nb_plateaux_reussis,
-						' nb_plateaux_abandonnes=', nb_plateaux_abandonnes)
-	return {'reussis': nb_plateaux_reussis, 'abandonnes': nb_plateaux_abandonnes}
+						' nb_plateaux_abandonnes=', nb_plateaux_abandonnes,
+						' nb_plateaux_passes=', nb_plateaux_passes)
+	return {'reussis': nb_plateaux_reussis, 'abandonnes': nb_plateaux_abandonnes, 'passes': nb_plateaux_passes}
 
 func taux_de_reussite_des_plateaux() -> float:
-	var infos_plateaux = nombre_de_plateau_reussis_abandonnes()
+	var infos_plateaux = nombre_de_plateau_reussis_abandonnes_passe()
 	var reussis = infos_plateaux.get('reussis')
 	var abandonne = infos_plateaux.get('abandonnes')
-	if (reussis + abandonne) == 0:
+	var passe = infos_plateaux.get('passes')
+	if (reussis + abandonne + passe) == 0:
 		return 0.
 	return 1. * reussis / (reussis + abandonne)
 
@@ -454,7 +460,7 @@ func serie_de_victoire_maximum() -> int:
 	var joueur = SauvegardeBddJoueursService.lire_nom_joueur()
 	var date_debut_campagne = SauvegardeConfigurationService.lire_la_date_debut_campagne_timestamp()
 	# Serie de victoire la plus grande.
-	var serie_de_victoire_maximum: int = 0
+	var serie_de_victoire_max: int = 0
 	var serie_de_victoire_courante: int = 0
 	# Parcourir la liste des ascensions
 	if SauvegardeBddJoueursService.sauvegarde_joueur.get("ascensions", null):
@@ -465,13 +471,14 @@ func serie_de_victoire_maximum() -> int:
 				for plateau_joue in ascension.get("plateaux"):
 					if plateau_joue.get("statut") == "reussi":
 						serie_de_victoire_courante += 1
-					if plateau_joue.get("statut") == "abandonné":
+					if plateau_joue.get("statut") == "abandonné" \
+						or plateau_joue.get("statut") == "passé":
 						# Defaite : Enregistrer le max et repartir à zéro.
-						if serie_de_victoire_courante > serie_de_victoire_maximum:
-							serie_de_victoire_maximum = serie_de_victoire_courante
+						if serie_de_victoire_courante > serie_de_victoire_max:
+							serie_de_victoire_max = serie_de_victoire_courante
 						serie_de_victoire_courante = 0
 		# Pour la derniere serie
-		if serie_de_victoire_courante > serie_de_victoire_maximum:
-			serie_de_victoire_maximum = serie_de_victoire_courante
-	LogService.log_debug("joueur:",joueur, ' serie_de_victoire_maximum=', serie_de_victoire_maximum)
-	return serie_de_victoire_maximum
+		if serie_de_victoire_courante > serie_de_victoire_max:
+			serie_de_victoire_max = serie_de_victoire_courante
+	LogService.log_debug("joueur:",joueur, ' serie_de_victoire_maximum=', serie_de_victoire_max)
+	return serie_de_victoire_max
