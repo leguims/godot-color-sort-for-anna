@@ -45,7 +45,7 @@ var sauvegarde_joueur = {
 # 					'date_debut': 1748785865.997,
 # 					'date_fin': 1748785855.0,
 # 					'difficulte': 18,
-# 					'statut': 'reussi', # 'en cours', 'abandonné', 'reussi'
+# 					'statut': 'reussi', # 'en cours', 'abandonné', 'passé', 'reussi'
 # 					'duree': 0,
 # 					'score': { 'duree': 4000, 'ratio_reussite': 2000 },
 # 					'coups joués': [
@@ -141,7 +141,7 @@ func remplacer_campagne_des_joueurs():
 
 func gagner_un_plateau() -> void:
 	# Valider le plateau courant (effacer de la liste des plateaux jouables)
-	campagne_supprimer_plateau_courant()
+	campagne_supprimer_et_memoriser_plateau_courant()
 
 	# Ajouter le temps de jeu dans le niveau courant
 	enregistrement_modifier_statut_plateau('reussi')
@@ -150,6 +150,14 @@ func gagner_un_plateau() -> void:
 func abandonner_un_plateau() -> void:
 	# En cas d'abandon, pas d'enrgistrement du temps.
 	enregistrement_modifier_statut_plateau('abandonné')
+	enregistrement_terminer_plateau()
+
+func passer_un_plateau() -> void:
+	# Effacer de la liste des plateaux jouables
+	campagne_supprimer_et_oublier_plateau_courant()
+
+	# En cas de passement, pas d'enrgistrement du temps.
+	enregistrement_modifier_statut_plateau('passé')
 	enregistrement_terminer_plateau()
 
 func commencer_un_plateau() -> void:
@@ -273,8 +281,8 @@ func campagne_lire_prochain_plateau_pour_niveau_courant() -> Dictionary:
 	var niveau = enregistrement_lire_valeur_niveau_joueur()
 	return campagne_lire_premier_plateau(niveau)
 
-func campagne_supprimer_plateau_courant() -> bool:
-	"Efface le plateau courant."
+func campagne_supprimer_et_memoriser_plateau_courant() -> bool:
+	"Efface le plateau courant et memorise dans le jeu libre."
 	if le_joueur_existe() and enregistrement_lire_statut_plateau() == 'en cours':
 		var niveau = enregistrement_lire_valeur_niveau_joueur()
 		var plateau_courant = lire_campagne_liste_plateaux_du_niveau(niveau).pop_front()
@@ -285,6 +293,18 @@ func campagne_supprimer_plateau_courant() -> bool:
 		if not plateaux_libres_difficulte_existe(difficulte_int):
 			plateaux_libres()[difficulte_str] = []
 		plateaux_libres_lire_liste_plateaux_de_difficulte(difficulte_int).append(plateau_courant)
+		if lire_campagne_liste_plateaux_du_niveau(niveau).is_empty():
+			# Le niveau est terminé, effacer sa reference dans les plateaux restants.
+			campagne().erase(nom_niveau(niveau))
+		_enregistrer_sauvegarde_joueur()
+		return true
+	return false
+
+func campagne_supprimer_et_oublier_plateau_courant() -> bool:
+	"Efface et oublie le plateau courant."
+	if le_joueur_existe() and enregistrement_lire_statut_plateau() == 'en cours':
+		var niveau = enregistrement_lire_valeur_niveau_joueur()
+		var plateau_courant = lire_campagne_liste_plateaux_du_niveau(niveau).pop_front()
 		if lire_campagne_liste_plateaux_du_niveau(niveau).is_empty():
 			# Le niveau est terminé, effacer sa reference dans les plateaux restants.
 			campagne().erase(nom_niveau(niveau))
@@ -361,7 +381,7 @@ func lire_nombre_de_parties_pour_difficulte_courante() -> int:
 # 					'date_debut': 1748785865.997,
 # 					'date_fin': 1748785855.0,
 # 					'difficulte': 18,
-# 					'statut': 'reussi', # 'en cours', 'abandonné', 'reussi'
+# 					'statut': 'reussi', # 'en cours', 'abandonné', 'passé', 'reussi'
 # 					'duree': 0,
 # 					'score': { 'duree': 4000, 'ratio_reussite': 2000 },
 # 					'coups joués': [
@@ -538,7 +558,7 @@ func enregistrement_lire_score_niveau() -> int:
 # 			'date_debut': 1748785865.997,
 # 			'date_fin': 1748785855.0,
 # 			'difficulte': 18,
-# 			'statut': 'reussi', # 'en cours', 'abandonné', 'reussi'
+# 			'statut': 'reussi', # 'en cours', 'abandonné', 'passé', 'reussi'
 # 			'duree': 0,
 # 			'score': { 'duree': 4000, 'ratio_reussite': 2000 },
 # 			'coups joués': [
@@ -573,7 +593,7 @@ func enregistrement_initialiser_un_nouveau_plateau(nom : String,
 			'date_fin': 0.,
 			'duree': 0,
 			'difficulte': roundi(difficulte),
-			'statut': 'en cours', # 'en cours', 'abandonné', 'reussi'
+			'statut': 'en cours', # 'en cours', 'abandonné', 'passé', 'reussi'
 			'score': {},
 			'coups joués': []
 			}
@@ -698,13 +718,13 @@ func enregistrement_lire_difficulte_plateau() -> int:
 
 ###############################################
 # Niveaux / Plateaux / Statut
-# 'statut': 'en cours', # 'en cours', 'abandonné', 'reussi'
+# 'statut': 'en cours', # 'en cours', 'abandonné', 'passé', 'reussi'
 ###############################################
 
 func enregistrement_modifier_statut_plateau(statut : String) -> void:
 	var plateau = enregistrement_lire_dernier_plateau()
 	if plateau:
-		plateau['statut'] = statut # 'en cours', 'abandonné', 'reussi'
+		plateau['statut'] = statut # 'en cours', 'abandonné', 'passé', 'reussi'
 		_enregistrer_sauvegarde_joueur()
 
 func enregistrement_lire_statut_plateau() -> String:

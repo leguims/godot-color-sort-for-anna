@@ -21,6 +21,14 @@ func mettre_a_jour_score_pour_victoire() -> Dictionary:
 	bonus_score_anna_damour(score_global)
 	return score_global
 
+func mettre_a_jour_score_pour_passer() -> void:
+	"Calculer et enregistrer le score nul suite au passage d'un plateau"
+	SauvegardeBddJoueursService.enregistrement_modifier_score_duree_plateau(0)
+	SauvegardeBddJoueursService.enregistrement_modifier_score_ratio_reussite_plateau(0)
+	if not SauvegardeBddJoueursService.enregistrement_niveau_en_cours():
+		SauvegardeBddJoueursService.enregistrement_modifier_score_niveau(0)
+		SauvegardeBddJoueursService.enregistrement_modifier_score_niveau_parfait(0)
+
 func mettre_a_jour_score_duree() -> Dictionary:
 	"Calculer le score relatif au temps"
 	var temps_reference_par_difficulte = {

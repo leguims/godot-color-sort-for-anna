@@ -14,10 +14,14 @@ func _ready() -> void:
 	# Connecter les signaux attendus
 	var pcs = get_node("/root/ProgressionCampagneService")
 	pcs.detail_score_plateau.connect(_on_progression_campagne_service_detail_score_plateau)
+	pcs.fin_campagne.connect(_on_progression_campagne_service_fin_campagne)
 
 # ###### SIGNAUX##########
 func _on_progression_campagne_service_detail_score_plateau(detail_score: Dictionary):
 	afficher_detail_score(detail_score)
+
+func _on_progression_campagne_service_fin_campagne() -> void:
+	_on_bouton_statistiques_pressed()
 
 func _on_bouton_menu_principal_pressed() -> void:
 	AudioService.son_menu_click()
@@ -106,6 +110,17 @@ func afficher_abandonner_un_plateau():
 	
 	$Centrer.show()
 	$Centrer/PanneauDefaite.show()
+
+func afficher_passer_un_plateau():
+	$BoutonMenuPrincipal.show()
+	$BoutonStatistiques.show()
+	mettre_a_jour_infos_joueur()
+	$InfosDuJoueur.show()
+
+	# TODO : Panneau pour le plateau passé
+	$BoutonCommencer.show()
+	# $Centrer.show()
+	# $Centrer/PanneauPasse.show()
 
 func afficher_gagner_un_plateau() -> void:
 	# TODO : Insérer ici un message positif pour le joueur apres le score

@@ -28,7 +28,7 @@ func _build_content_panel() -> void:
 	_add_card($PanneauCredits, Rect2(23, 213, 310, 150), "Musiques", COMMON_ICONS_DIR + "icon_music.png", Vector2(20, 54), Vector2(48, 42),
 		"• Dreaming – Su Turno\n• The Three Princesses of\n   Lilac Meadow\n• Solve The Puzzle\n• Humble Match\n• Great Little Challenge", MUSIC_URL, "patrickdearteaga.com", 13)
 	_add_card($PanneauCredits, Rect2(23, 373, 310, 150), "Effets sonores", ASSET_DIR + "icon_sound.png", Vector2(12, 50), Vector2(62, 48),
-		"• freesound.community\n• floraphonic\n• virtual_vibes\n• SoundReality\n• Dragon-Studio", SOUND_URL, "pixabay.com", 13)
+		"• freesound.community\n• floraphonic\n• virtual_vibes\n• SoundReality\n• Dragon-Studio\n• Yodguard: warp magic", SOUND_URL, "pixabay.com", 13)
 	_add_card($PanneauCredits, Rect2(23, 533, 310, 77), "Didacticiel", ASSET_DIR + "icon_youtube.png", Vector2(18, 18), Vector2(52, 40),
 		"Baba Des Bois – @BabaDesBois", TUTORIAL_URL, "youtube.com", 13)
 

@@ -3,7 +3,7 @@ extends Node
 # signal progression_niveau   # TODO : Le signal n'est lu par personne. Normal ?
 signal detail_score_plateau(detail_score : Dictionary)
 signal fin_niveau
-# TODO : signal fin_campagne
+signal fin_campagne
 
 ####################################
 # Gestion de données transverses Campagne
@@ -82,7 +82,7 @@ func gagner_un_plateau() -> void:
 	# Valider le plateau courant (effacer de la liste des plateaux jouables)
 	SauvegardeBddJoueursService.gagner_un_plateau()
 
-	# Déterminer si l'ascension est achevée (pas de plateau suivant)
+	# Déterminer si le niveau est achevé (pas de plateau suivant)
 	if not SauvegardeBddJoueursService.campagne_lire_prochain_plateau_pour_niveau_courant():
 		# BDD joueur + Préparer la jauge pour la prochaine ascension
 		fin_niveau.emit()
@@ -101,6 +101,26 @@ func abandonner_un_plateau() -> void:
 	SauvegardeBddJoueursService.abandonner_un_plateau()
 	# On reste sur le même plateau
 	# La campagne et le niveaux sont inchangés
+
+func passer_un_plateau() -> void:
+	# En cas de passage, pas d'enrgistrement du temps.
+	SauvegardeBddJoueursService.passer_un_plateau()
+
+	# Déterminer si le niveau est achevé (pas de plateau suivant)
+	if not SauvegardeBddJoueursService.campagne_lire_prochain_plateau_pour_niveau_courant():
+		# BDD joueur + Préparer la jauge pour la prochaine ascension
+		fin_niveau.emit()
+
+	# Calculer le score du plateau et l'enregistrer dans l'historique du niveau
+	ScoreService.mettre_a_jour_score_pour_passer()
+
+	if SauvegardeBddJoueursService.campagne_la_campagne_est_terminee():
+		fin_campagne.emit()
+
+	# Emmettre un signal de mise à jour du niveau
+	# TODO : Le signal n'est lu par personne. Normal ?
+	# progression_niveau.emit() # Pour mise à jour des bandeaux d'infos
+	afficher_niveau_plateau_parties()
 
 func afficher_niveau_plateau_parties():
 	LogService.log_debug("[Campagne] Niveau = ", str(SauvegardeBddJoueursService.enregistrement_lire_valeur_niveau_joueur()),
