@@ -29,5 +29,6 @@ func est_termine(liste_piles) -> bool:
 	if termine:
 		LogService.log_debug("QuiPerdGagne : victoire.emit()")
 		$MenuPlateau/Top/BoutonRecommencer.hide()
+		$MenuPlateau/Top/BoutonPasser.hide()
 		victoire.emit()
 	return termine
