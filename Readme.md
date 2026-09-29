@@ -166,6 +166,22 @@ Depuis la phase de tests internes de la version V0.3.0, les fonctionnalités son
 - Augmenter le contraste des cases vides
 - Augmenter le temps de deselection automatique
 
+#### Beta test : calibrer les temps
+_S'appuie sur le partage des score de la V2.0._
+- Réaliser une campagne triple plateaux pour calibrer les temps:
+  - Meilleur 1er temps de réussite = temps reference
+  - Meilleur temps de réussite = temps record (score augmenté)
+- À chaque fin de niveau:
+  - produire un QR code avec:
+    - Nom du joueurs
+    - Nom du niveau
+    - Liste des enregistrements du niveau (temps, nombre de coups ...)
+  - Produire un URL pour envoyer un message à "rangelescouleurs"
+  - Réaliser un panneau pour indiquer la consigne + url mail.
+- Plugin QR-Code creation/lecture : Godot QR Plugin
+- Plugin chiffrement : HMAC natif à GODOT
+- Plugin de partage (sms, whatsapp ...) : Share Plugin (par cengiz-pz)
+
 ## V1.0 : Pour une version long terme
 
 ### Campagne

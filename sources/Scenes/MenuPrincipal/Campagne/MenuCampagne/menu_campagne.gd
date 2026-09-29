@@ -9,6 +9,10 @@ var formatter := FormatterMenuCampagne.new()
 # Notifie la scene `Plateau` que le bouton est pressé
 signal commencer_plateau
 
+enum ActionApresPartage { AUCUNE, NIVEAU_SUIVANT, STATISTIQUES }
+
+var _action_apres_partage: ActionApresPartage = ActionApresPartage.AUCUNE
+
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
 	# Connecter les signaux attendus
@@ -67,16 +71,43 @@ func _on_panneau_victoire_plateau_continuer() -> void:
 	score_continuer.emit() #Redonner la main à "campagne" pour la suite
 
 func _on_panneau_victoire_niveau_continuer() -> void:
-	$Centrer.hide()
-	$Centrer/PanneauVictoireNiveau.hide()
-	$BoutonCommencer.show()
-	score_continuer.emit() #Redonner la main à "campagne" pour la suite
+	_action_apres_partage = ActionApresPartage.NIVEAU_SUIVANT
+	_afficher_partage_dernier_niveau()
 
 func _on_panneau_victoire_campagne_continuer() -> void:
+	_action_apres_partage = ActionApresPartage.STATISTIQUES
+	_afficher_partage_dernier_niveau()
+
+func _on_panneau_partage_performances_fermer() -> void:
+	$Centrer/PanneauPartagePerformances.hide()
 	$Centrer.hide()
+
+	var action := _action_apres_partage
+	_action_apres_partage = ActionApresPartage.AUCUNE
+	match action:
+		ActionApresPartage.NIVEAU_SUIVANT:
+			$BoutonCommencer.show()
+			score_continuer.emit()
+		ActionApresPartage.STATISTIQUES:
+			_on_bouton_statistiques_pressed()
+			score_continuer.emit()
+
+func _afficher_partage_dernier_niveau() -> void:
+	$Centrer.hide()
+	$Centrer/PanneauVictoireNiveau.hide()
 	$Centrer/PanneauVictoireCampagne.hide()
-	_on_bouton_statistiques_pressed()
-	score_continuer.emit() #Redonner la main à "campagne" pour la suite
+	$BoutonCommencer.hide()
+	$Centrer/PanneauPartagePerformances.afficher_dernier_niveau()
+	$Centrer.show()
+
+## Affiche le panneau de partage à partir des enregistrements du dernier niveau terminé.
+func afficher_partage_performances(enregistrements: Dictionary) -> void:
+	$Centrer/PanneauDefaite.hide()
+	$Centrer/PanneauVictoirePlateau.hide()
+	$Centrer/PanneauVictoireNiveau.hide()
+	$Centrer/PanneauVictoireCampagne.hide()
+	$Centrer/PanneauPartagePerformances.afficher(enregistrements)
+	$Centrer.show()
 
 
 
