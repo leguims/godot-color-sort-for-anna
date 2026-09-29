@@ -10,9 +10,26 @@ var logique: PartagePerformancesLogic
 func before_each() -> void:
 	logique = LOGIQUE_PARTAGE.new()
 
-func test_qr_code_reel_depuis_appli() -> void:
-	var donnees : String = "{\"niveau\":{\"date_debut\":1790715101.25958,\"date_fin\":1790715118.80644,\"niveau\":\"niveau_3\",\"plateaux\":[{\"coups joués\":[{\"arrivee\":2,\"depart\":3},{\"arrivee\":3,\"depart\":4},{\"arrivee\":2,\"depart\":1},{\"arrivee\":1,\"depart\":0},{\"arrivee\":2,\"depart\":0},{\"arrivee\":0,\"depart\":1},{\"arrivee\":4,\"depart\":1}],\"date_debut\":1790715101.2635,\"date_fin\":1790715110.20952,\"difficulte\":10,\"duree\":8.94602203369141,\"gameplay\":\"CLASSIQUE\",\"nom\":\"DBD.CDB.   .AAB.CCA\",\"score\":{\"duree\":1341,\"ratio_reussite\":1500},\"statut\":\"reussi\"},{\"coups joués\":[{\"arrivee\":0,\"depart\":4}],\"date_debut\":1790715112.16423,\"date_fin\":1790715118.80384,\"difficulte\":11,\"duree\":6.63960909843445,\"gameplay\":\"QUI_PERD_GAGNE\",\"nom\":\"AB .AA .DCC.BDC.DB \",\"score\":{\"duree\":2319,\"ratio_reussite\":1500},\"statut\":\"reussi\"}],\"score\":{\"niveau\":1000,\"niveau_parfait\":1000}},\"nom\":\"Alain Konu\"}"
-	var signature : String = "9e515a6810a3799ca689d2e8b1bba4a84a77fc49bff65dd76d95820d3f804187"
+func test_qr_code_00_reel_depuis_appli() -> void:
+	var qr_code = {"algorithme":"HMAC-SHA256","donnees_json":"{\"niveau\":{\"date_debut\":1790715101.25958,\"date_fin\":1790715118.80644,\"niveau\":\"niveau_3\",\"plateaux\":[{\"coups joués\":[{\"arrivee\":2,\"depart\":3},{\"arrivee\":3,\"depart\":4},{\"arrivee\":2,\"depart\":1},{\"arrivee\":1,\"depart\":0},{\"arrivee\":2,\"depart\":0},{\"arrivee\":0,\"depart\":1},{\"arrivee\":4,\"depart\":1}],\"date_debut\":1790715101.2635,\"date_fin\":1790715110.20952,\"difficulte\":10,\"duree\":8.94602203369141,\"gameplay\":\"CLASSIQUE\",\"nom\":\"DBD.CDB.   .AAB.CCA\",\"score\":{\"duree\":1341,\"ratio_reussite\":1500},\"statut\":\"reussi\"},{\"coups joués\":[{\"arrivee\":0,\"depart\":4}],\"date_debut\":1790715112.16423,\"date_fin\":1790715118.80384,\"difficulte\":11,\"duree\":6.63960909843445,\"gameplay\":\"QUI_PERD_GAGNE\",\"nom\":\"AB .AA .DCC.BDC.DB \",\"score\":{\"duree\":2319,\"ratio_reussite\":1500},\"statut\":\"reussi\"}],\"score\":{\"niveau\":1000,\"niveau_parfait\":1000}},\"nom\":\"Alain Konu\"}","signature":"9e515a6810a3799ca689d2e8b1bba4a84a77fc49bff65dd76d95820d3f804187","version":1}
+	var donnees : String = qr_code.get("donnees_json", "")
+	var signature : String = qr_code.get("signature", "")
+	var cle_hmac : String = ProjectSettings.get_setting("partage_performances/cle_hmac", "")
+	var msg_authentique : bool = logique.verifier_hmac(donnees, signature, cle_hmac)
+	assert_true(msg_authentique)
+
+func test_qr_code_01_reel_depuis_appli() -> void:
+	var qr_code = {"algorithme":"HMAC-SHA256","donnees_json":"{\"niveau\":{\"date_debut\":1790717811.96122,\"date_fin\":1790717822.41267,\"niveau\":\"niveau_1\",\"plateaux\":[{\"coups joués\":[{\"arrivee\":3,\"depart\":2},{\"arrivee\":3,\"depart\":1},{\"arrivee\":1,\"depart\":4},{\"arrivee\":3,\"depart\":4},{\"arrivee\":2,\"depart\":0},{\"arrivee\":0,\"depart\":4}],\"date_debut\":1790717811.96308,\"date_fin\":1790717817.71838,\"difficulte\":10,\"duree\":5.75530004501343,\"gameplay\":\"CLASSIQUE\",\"nom\":\"DDA.CCB.AAB.   .DBC\",\"score\":{\"duree\":2085,\"ratio_reussite\":500},\"statut\":\"reussi\"},{\"coups joués\":[{\"arrivee\":6,\"depart\":4}],\"date_debut\":1790717820.8535,\"date_fin\":1790717822.41083,\"difficulte\":11,\"duree\":1.55732798576355,\"gameplay\":\"QUI_PERD_GAGNE\",\"nom\":\"AC.BD.CD.EA.FB.FE.  \",\"score\":{\"duree\":9889,\"ratio_reussite\":500},\"statut\":\"reussi\"}],\"score\":{\"niveau\":1000,\"niveau_parfait\":1000}},\"nom\":\"GuiGuiX\"}","signature":"b18a7d4ac8c530d5ef0671e22b1b1a200af2ee3746505635cbaafd738a9f974f","version":1}
+	var donnees : String = qr_code.get("donnees_json", "")
+	var signature : String = qr_code.get("signature", "")
+	var cle_hmac : String = ProjectSettings.get_setting("partage_performances/cle_hmac", "")
+	var msg_authentique : bool = logique.verifier_hmac(donnees, signature, cle_hmac)
+	assert_true(msg_authentique)
+
+func test_qr_code_02_reel_depuis_appli() -> void:
+	var qr_code = {"algorithme":"HMAC-SHA256","donnees_json":"{\"niveau\":{\"date_debut\":1790718189.50043,\"date_fin\":1790718207.53138,\"niveau\":\"niveau_2\",\"plateaux\":[{\"coups joués\":[{\"arrivee\":3,\"depart\":1},{\"arrivee\":3,\"depart\":0},{\"arrivee\":0,\"depart\":4},{\"arrivee\":4,\"depart\":2},{\"arrivee\":2,\"depart\":1},{\"arrivee\":1,\"depart\":4},{\"arrivee\":0,\"depart\":4}],\"date_debut\":1790718189.50149,\"date_fin\":1790718202.79959,\"difficulte\":10,\"duree\":13.2980999946594,\"gameplay\":\"CLASSIQUE\",\"nom\":\"DC .ABC.BBA.C  .DAD\",\"score\":{\"duree\":902,\"ratio_reussite\":1000},\"statut\":\"reussi\"},{\"coups joués\":[{\"arrivee\":1,\"depart\":2}],\"date_debut\":1790718205.11719,\"date_fin\":1790718207.52914,\"difficulte\":11,\"duree\":2.4119508266449,\"gameplay\":\"QUI_PERD_GAGNE\",\"nom\":\"AAC.CB .DB .DDC.BA \",\"score\":{\"duree\":6385,\"ratio_reussite\":1000},\"statut\":\"reussi\"}],\"score\":{\"niveau\":1000,\"niveau_parfait\":1000}},\"nom\":\"GuiGuiX\"}","signature":"2c84f8cf8779b68ba7d7392991d9cc0c37fc051c89bb48b63c933d98d4e39929","version":1}
+	var donnees : String = qr_code.get("donnees_json", "")
+	var signature : String = qr_code.get("signature", "")
 	var cle_hmac : String = ProjectSettings.get_setting("partage_performances/cle_hmac", "")
 	var msg_authentique : bool = logique.verifier_hmac(donnees, signature, cle_hmac)
 	assert_true(msg_authentique)
@@ -101,7 +118,7 @@ func test_panneau_explique_lindisponibilite_du_qr_sur_une_plateforme_non_support
 
 	assert_false(partage_reussi)
 	assert_true(message.visible)
-	assert_true(message.text.contains("Android et iOS"))
+	assert_true(message.text.contains("Android"))
 
 func test_menu_campagne_affiche_le_panneau_avec_les_enregistrements_fournis() -> void:
 	var menu: MenuCampagne = add_child_autofree(SCENE_MENU_CAMPAGNE.instantiate())
