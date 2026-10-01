@@ -6,6 +6,15 @@ Documentation de l'architecture et la conception du jeu:
 Outils de productions et de résolution des plateaux de jeux:
 - [Color sort for Anna TOOLS](https://github.com/leguims/color_sort_for_anna_tools)
 
+# Plugins GODOT
+Liste des plugins GODOT utilisés :
+| Addon | Usage | Version testée |
+|---|---|---|
+| [Godot QR Plugin](https://github.com/godot-mobile-plugins/godot-qr/releases/tag/v1.2) | Génération du QR sur Android/iOS | v1.2 |
+| [Godot Share Plugin](https://github.com/godot-mobile-plugins/godot-share/releases/tag/v6.0) | Partage natif de l’image sur Android | v6.0 |
+| GMPShared | Scripts partagés nécessaires aux plugins mobiles | fournis avec les addons |
+| [GUT](https://github.com/bitwes/Gut) | Exécution des tests GUT, développement uniquement | v9.7.1 |
+
 # Demandes d'évolutions
 Listes des évolutions votées par les testeurs:
 - [Evolutions](Evolutions.md)

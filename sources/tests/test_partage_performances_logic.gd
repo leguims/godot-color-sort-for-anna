@@ -82,14 +82,6 @@ func test_verifier_hmac_refuse_une_signature_modifiee_ou_mal_formee() -> void:
 	assert_false(logique.verifier_hmac("donnees", "abc", "cle"))
 	assert_false(logique.verifier_hmac("donnees", signature, ""))
 
-func test_url_courriel_contient_le_destinataire_et_un_corps_encode() -> void:
-	var url: String = logique.creer_url_courriel()
-
-	assert_true(url.begins_with("mailto:rangelescouleurspouranna@gmail.com?"))
-	assert_true(url.contains("subject="))
-	assert_true(url.contains("body="))
-	assert_true(url.contains("%0A"))
-
 func test_api_utilise_la_cle_configuree_dans_le_projet() -> void:
 	var api: PartagePerformancesAPI = add_child_autofree(API_PARTAGE.new())
 	var resultat: Dictionary = api.preparer_partage({"niveau": 4})
@@ -100,6 +92,28 @@ func test_api_utilise_la_cle_configuree_dans_le_projet() -> void:
 		resultat.get("signature", ""),
 		ProjectSettings.get_setting("partage_performances/cle_hmac", "")
 	))
+
+func test_api_expose_ladresse_courriel_a_copier() -> void:
+	var api: PartagePerformancesAPI = add_child_autofree(API_PARTAGE.new())
+
+	assert_eq(api.lire_adresse_courriel(), "rangelescouleurspouranna@gmail.com")
+
+func test_panneau_affiche_et_permet_de_copier_ladresse_courriel_sans_bouton_mail() -> void:
+	var panneau: PartagePerformancesUI = add_child_autofree(SCENE_PARTAGE.instantiate())
+
+	assert_eq(panneau.get_node("AdresseCourriel").text, "rangelescouleurspouranna@gmail.com")
+	assert_not_null(panneau.get_node_or_null("BoutonCopierCourriel"))
+	assert_null(panneau.get_node_or_null("BoutonCourriel"))
+
+func test_api_refuse_le_partage_natif_hors_android() -> void:
+	if OS.has_feature("android"):
+		return
+
+	var api: PartagePerformancesAPI = add_child_autofree(API_PARTAGE.new())
+	var share_node: Node = add_child_autofree(Node.new())
+	var texture := ImageTexture.create_from_image(Image.create(1, 1, false, Image.FORMAT_RGBA8))
+
+	assert_false(api.partager_qr_android(share_node, texture))
 
 func test_api_lit_le_nom_du_joueur_et_le_dernier_niveau() -> void:
 	var api: PartagePerformancesAPI = add_child_autofree(API_PARTAGE.new())
@@ -119,6 +133,8 @@ func test_panneau_explique_lindisponibilite_du_qr_sur_une_plateforme_non_support
 	assert_false(partage_reussi)
 	assert_true(message.visible)
 	assert_true(message.text.contains("Android"))
+	assert_eq(panneau.get_node("AdresseCourriel").text, "rangelescouleurspouranna@gmail.com")
+	assert_false(panneau.get_node("BoutonPartagerQR").visible)
 
 func test_menu_campagne_affiche_le_panneau_avec_les_enregistrements_fournis() -> void:
 	var menu: MenuCampagne = add_child_autofree(SCENE_MENU_CAMPAGNE.instantiate())

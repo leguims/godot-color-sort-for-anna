@@ -75,32 +75,56 @@ layout_mode = 0
 offset_left = 25.0
 offset_top = 320.0
 offset_right = 355.0
-offset_bottom = 450.0
+offset_bottom = 430.0
 theme_override_colors/font_color = Color(0.2, 0.15, 0.2, 1)
 theme_override_fonts/font = ExtResource("3_font")
 theme_override_font_sizes/font_size = 17
 text = "Scanne ce QR pour lire les données signées.
 
-Fais une capture d'écran de ce panneau, puis joins-la au courriel."
+Partage le QR sur Android, ou fais une capture d'écran pour l'envoyer par courriel."
 horizontal_alignment = 1
 vertical_alignment = 1
 autowrap_mode = 2
 
-[node name="BoutonCourriel" type="Button" parent="." unique_id=477754768]
+[node name="AdresseCourriel" type="Label" parent="."]
 layout_mode = 0
 offset_left = 30.0
-offset_top = 450.0
+offset_top = 435.0
 offset_right = 350.0
-offset_bottom = 510.0
+offset_bottom = 465.0
+theme_override_colors/font_color = Color(0.2, 0.15, 0.2, 1)
+theme_override_font_sizes/font_size = 14
+text = "rangelescouleurspouranna@gmail.com"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="BoutonCopierCourriel" type="Button" parent="."]
+layout_mode = 0
+offset_left = 30.0
+offset_top = 470.0
+offset_right = 350.0
+offset_bottom = 505.0
 theme_override_colors/font_color = Color(0.67451, 0, 0.686275, 1)
 theme_override_fonts/font = ExtResource("3_font")
-theme_override_font_sizes/font_size = 20
-text = "Ouvrir le courriel"
+theme_override_font_sizes/font_size = 17
+text = "Copier l'adresse courriel"
+
+[node name="BoutonPartagerQR" type="Button" parent="."]
+visible = false
+layout_mode = 0
+offset_left = 30.0
+offset_top = 520.0
+offset_right = 350.0
+offset_bottom = 565.0
+theme_override_colors/font_color = Color(0.67451, 0, 0.686275, 1)
+theme_override_fonts/font = ExtResource("3_font")
+theme_override_font_sizes/font_size = 17
+text = "Partager le QR code"
 
 [node name="BoutonFermer" type="Button" parent="." unique_id=1779941863]
 layout_mode = 0
 offset_left = 30.0
-offset_top = 570.0
+offset_top = 575.0
 offset_right = 350.0
 offset_bottom = 620.0
 theme_override_colors/font_color = Color(0.67451, 0, 0.686275, 1)
@@ -111,5 +135,6 @@ text = "Retour au score"
 [node name="PartagePerformancesAPI" type="Node" parent="." unique_id=1604442838]
 script = ExtResource("2_api")
 
-[connection signal="pressed" from="BoutonCourriel" to="." method="_on_bouton_courriel_pressed"]
+[connection signal="pressed" from="BoutonCopierCourriel" to="." method="_on_bouton_copier_courriel_pressed"]
+[connection signal="pressed" from="BoutonPartagerQR" to="." method="_on_bouton_partager_qr_pressed"]
 [connection signal="pressed" from="BoutonFermer" to="." method="_on_bouton_fermer_pressed"]

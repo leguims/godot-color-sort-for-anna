@@ -53,16 +53,6 @@ func verifier_hmac(donnees: String, signature: String, cle_hmac: String) -> bool
 		return false
 	return calculer_hmac(donnees, cle_hmac) == signature.to_lower()
 
-## Construit le lien mailto prérempli pour l'envoi de la capture.
-func creer_url_courriel() -> String:
-	var sujet := "Partage des performances - Range les couleurs pour Anna"
-	var corps := "Bonjour,\n\nVeuillez trouver en pièce jointe la capture d'écran de mes performances.\n\nMerci !"
-	return "mailto:%s?subject=%s&body=%s" % [
-		DESTINATAIRE_COURRIEL,
-		sujet.uri_encode(),
-		corps.uri_encode()
-	]
-
 ## Génère une image QR avec l'extension native chargée dans le projet.
 func generer_image_qr(contenu: String, parent: Node) -> Dictionary:
 	if not Engine.has_singleton("QRPlugin"):

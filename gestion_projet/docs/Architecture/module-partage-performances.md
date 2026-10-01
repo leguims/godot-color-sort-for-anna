@@ -1,6 +1,6 @@
 # Module de partage des performances
 
-Le module `PartagePerformances` fournit une API pour signer des enregistrements JSON, les présenter dans un QR et ouvrir le client de messagerie. Il ne collecte pas les enregistrements : le code appelant lui transmet le dictionnaire extrait du niveau terminé.
+Le module `PartagePerformances` fournit une API pour signer des enregistrements JSON et les présenter dans un QR. Il ne collecte pas les enregistrements : le code appelant lui transmet le dictionnaire extrait du niveau terminé.
 
 ## Intégration avec les enregistrements du niveau
 
@@ -19,7 +19,14 @@ Le dictionnaire doit être sérialisable en JSON. À la fin d'un niveau ou de la
 }
 ```
 
-Après fermeture du partage, le jeu reprend son parcours normal : niveau suivant ou statistiques de campagne. `MenuCampagne.afficher_partage_performances()` reste disponible pour afficher le panneau avec un dictionnaire fourni par un appelant. Le bouton de courriel ouvre un message adressé à `rangelescouleurspouranna@gmail.com`; l'utilisateur doit prendre la capture d'écran et l'ajouter lui-même en pièce jointe.
+Après fermeture du partage, le jeu reprend son parcours normal : niveau suivant ou statistiques de campagne. `MenuCampagne.afficher_partage_performances()` reste disponible pour afficher le panneau avec un dictionnaire fourni par un appelant.
+
+Le panneau conserve deux options :
+
+- Sur Android, « Partager le QR code » transmet l'image QR au dialogue natif de partage (`Share.share_texture`). Le joueur choisit ensuite l'application de destination.
+- L'adresse `rangelescouleurspouranna@gmail.com` reste affichée et peut être copiée. Pour l'envoyer manuellement par courriel, le joueur peut faire une capture d'écran du QR et la joindre à son message.
+
+Le projet n'envoie aucun courriel automatiquement.
 
 ## Format du QR
 
@@ -42,4 +49,4 @@ La clé est définie par `partage_performances/cle_hmac` dans `sources/project.g
 
 ## Plateformes
 
-Le plugin QR Godot Mobile v1.2 est inclus pour Android et iOS. La génération du QR n'est disponible que lorsque son extension native est chargée sur ces plateformes. Le panneau affiche un message d'erreur sur les exports Web et Windows; le lien de courriel reste utilisable.
+Le plugin QR Godot Mobile v1.2 est utilisé pour Android et iOS. Le partage natif Godot Share v6.0 est utilisé pour Android. Ces addons sont exclus du dépôt par le `.gitignore` racine et doivent être installés localement. La génération du QR n'est disponible que lorsque son extension native est chargée sur les plateformes compatibles; le partage natif est proposé uniquement sur Android. L'adresse du courriel reste copiable sur toutes les plateformes.
