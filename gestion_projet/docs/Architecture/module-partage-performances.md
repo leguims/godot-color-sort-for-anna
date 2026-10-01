@@ -28,6 +28,18 @@ Le panneau conserve deux options :
 
 Le projet n'envoie aucun courriel automatiquement.
 
+## Réception et validation d'un QR
+
+La scène expose `recevoir_image_qr(image: Image)`. Le décodage est asynchrone via Godot QR Plugin. Après validation de l'enveloppe et du HMAC avec la clé configurée, la scène émet `partage_qr_code(donnees_json: Dictionary)`. Aucune donnée n'est émise si le QR est mal formé, si la signature est invalide ou si le plugin n'est pas disponible.
+
+```gdscript
+$PanneauPartagePerformances.partage_qr_code.connect(_on_partage_qr_code)
+$PanneauPartagePerformances.recevoir_image_qr(image_qr)
+
+func _on_partage_qr_code(donnees_json: Dictionary) -> void:
+    print(donnees_json)
+```
+
 ## Format du QR
 
 Le QR contient un objet JSON de la forme :
@@ -50,3 +62,19 @@ La clé est définie par `partage_performances/cle_hmac` dans `sources/project.g
 ## Plateformes
 
 Le plugin QR Godot Mobile v1.2 est utilisé pour Android et iOS. Le partage natif Godot Share v6.0 est utilisé pour Android. Ces addons sont exclus du dépôt par le `.gitignore` racine et doivent être installés localement. La génération du QR n'est disponible que lorsque son extension native est chargée sur les plateformes compatibles; le partage natif est proposé uniquement sur Android. L'adresse du courriel reste copiable sur toutes les plateformes.
+
+## À développer
+
+### Import des performances
+
+- Ajouter un singleton en autoload, disponible dès le démarrage de l'application, pour recevoir les images QR partagées vers le jeu, y compris lorsque le panneau de partage n'est pas ouvert.
+- Implémenter le parcours d'import : recevoir l'image, la transmettre au décodeur QR, valider l'enveloppe et la signature HMAC, puis émettre le signal `partage_qr_code` avec le dictionnaire JSON validé. Le signal permet aux autres composants Godot de réagir aux données importées.
+- Les méthodes et le signal de base existent déjà dans le module : `recevoir_image_qr(image: Image)` lance le décodage et `partage_qr_code(donnees_json: Dictionary)` diffuse les données après validation. Il reste à connecter la réception système Android au singleton et à relier ce signal au parcours d'import du joueur.
+- Si le QR et sa signature sont valides, créer une sauvegarde distincte pour le joueur importé, sans modifier la sauvegarde du joueur courant. Cette sauvegarde ne doit proposer aucun plateau à jouer.
+- Éviter tout recouvrement avec les joueurs existants : ne jamais remplacer une sauvegarde en cas de collision de nom. Comparer les noms sans tenir compte de la casse et attribuer automatiquement un nom unique avec un suffixe (par exemple « (importé 2) »).
+- Une fois l'import réussi, afficher les statistiques reçues dans le jeu. Le singleton prendra en charge la transition vers la scène appropriée, sans retour à la scène d'où l'import a été lancé.
+
+### Évolution de l'export
+
+- À terme, remplacer le panneau dédié par un bouton « Partager » directement dans le panneau de score de fin de niveau ou de fin de campagne.
+- Le panneau de partage détaillé actuel est conservé uniquement pour la bêta-test et pourra être retiré lorsque l'export depuis les panneaux de score sera prêt.

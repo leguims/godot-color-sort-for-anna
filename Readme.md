@@ -177,19 +177,22 @@ Depuis la phase de tests internes de la version V0.3.0, les fonctionnalités son
 
 #### Beta test : calibrer les temps
 _S'appuie sur le partage des score de la V2.0._
-- Réaliser une campagne triple plateaux pour calibrer les temps:
-  - Meilleur 1er temps de réussite = temps reference
-  - Meilleur temps de réussite = temps record (score augmenté)
-- À chaque fin de niveau:
-  - produire un QR code avec:
-    - Nom du joueurs
-    - Nom du niveau
-    - Liste des enregistrements du niveau (temps, nombre de coups ...)
-  - Produire un URL pour envoyer un message à "rangelescouleurs"
-  - Réaliser un panneau pour indiquer la consigne + url mail.
-- Plugin QR-Code creation/lecture : Godot QR Plugin
-- Plugin chiffrement : HMAC natif à GODOT
-- Plugin de partage (sms, whatsapp ...) : Share Plugin (par cengiz-pz)
+Developpé par GitHub Copilot avec 'GPT-6 Luna'
+- [outil] Réaliser une campagne triple plateaux pour calibrer les temps:
+  - [outil] Meilleur 1er temps de réussite = temps reference
+  - [outil] Meilleur temps de réussite = temps record (score augmenté)
+- ~~À chaque fin de niveau:~~
+  - ~~produire un QR code avec:~~
+    - ~~Nom du joueur~~
+    - ~~Nom du niveau~~
+    - ~~Liste des enregistrements du niveau (temps, nombre de coups ...)~~
+  - ~~Citer le mail "rangelescouleurs"~~
+  - ~~Réaliser un panneau pour indiquer la consigne + bouton partage.~~
+- ~~Plugin QR-Code creation/lecture : Godot QR Plugin~~
+- ~~Plugin chiffrement : HMAC natif à GODOT~~
+- ~~Plugin de partage (sms, whatsapp ...) : Share Plugin (par cengiz-pz)~~
+- Supprimer le panneau 'Beta test' et introduire un bouton dans la page des scores de Niveau/Campagne.
+- Ajouter un bouton dans la page des statistiquesS
 
 ## V1.0 : Pour une version long terme
 
@@ -263,16 +266,14 @@ _S'appuie sur le partage des score de la V2.0._
 
 Prévoir un processus de partage des scores fiable ente les joueurs:
 - discussion GEMINI : https://gemini.google.com/app/bf9720baa3e191eb
-- Utiliser un ADDON pour signer les données.
+- ~~Utiliser un ADDON pour signer les données.~~
   - ~~Encryption Plugin : Permet de chiffrer et déchiffrer les données pour un partage sécurisé. Très peu documenté.~~
   - ~~Godot Secp256k1 : Permet de gérer les clés et signatures basées sur l'algorithme Secp256k1, souvent utilisé pour la cryptographie dans les blockchains.~~
-  - HMAC (Hash-based Message Authentication Code) : Permet de vérifier l'intégrité et l'authenticité des données partagées. Intégré dans GODOT.
-  - AES-GCM : Permet de chiffrer et déchiffrer les données avec un haut niveau de sécurité. Intégré dans GODOT.
-- Utiliser un ADDON pour produire et lire un QR-CODE:
-  - Godot QR Plugin : couplé avec la version ANDROID. Gère la lecture et génération de QR-Code
-  - QR Code Generator de Kenyoni Software : grosse popularité. Gère uniquement la génération de QR-Code.
-- Utiliser un ADDON pour partager le QR-Code:
-  - Share Plugin (par cengiz-pz) : Ouvre la fenêtre de partage native pour partager le QR-Code.
+  - ~~HMAC (Hash-based Message Authentication Code) : Permet de vérifier l'intégrité et l'authenticité des données partagées. Intégré dans GODOT.~~
+- ~~Utiliser un ADDON pour produire et lire un QR-CODE:~~
+  - ~~Godot QR Plugin : couplé avec la version ANDROID. Gère la lecture et génération de QR-Code~~
+- ~~Utiliser un ADDON pour partager le QR-Code:~~
+  - ~~Share Plugin (par cengiz-pz) : Ouvre la fenêtre de partage native pour partager le QR-Code.~~
 - RTC : Produit des données chiffrées de la page de statistiques avec la version du jeu.
 - RTC : Partage le QR-Code sur les media sociaux.
 - RTC : Lit un QR-Code contenant les données chiffrées de la page de statistiques avec la version du jeu.
