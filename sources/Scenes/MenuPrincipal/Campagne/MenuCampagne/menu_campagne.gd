@@ -5,6 +5,7 @@ class_name MenuCampagne
 signal score_continuer
 
 var formatter := FormatterMenuCampagne.new()
+var beta_test: bool = true
 
 # Notifie la scene `Plateau` que le bouton est pressé
 signal commencer_plateau
@@ -97,8 +98,11 @@ func _afficher_partage_dernier_niveau() -> void:
 	$Centrer/PanneauVictoireNiveau.hide()
 	$Centrer/PanneauVictoireCampagne.hide()
 	$BoutonCommencer.hide()
-	$Centrer/PanneauPartagePerformances.afficher_dernier_niveau()
-	$Centrer.show()
+	if beta_test:
+		$Centrer/PanneauPartagePerformances.afficher_dernier_niveau()
+		$Centrer.show()
+	else:
+		_on_panneau_partage_performances_fermer()
 
 ## Affiche le panneau de partage à partir des enregistrements du dernier niveau terminé.
 func afficher_partage_performances(enregistrements: Dictionary) -> void:
