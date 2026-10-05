@@ -47,6 +47,35 @@ func initialiser_le_nouveau_joueur_pour_la_campagne(nom_nouveau_joueur : String)
 				return SauvegardeTableauDesScoresService.ajouter_un_nouveau_joueur(nom_nouveau_joueur)
 	return false
 
+func importer_statistiques_nouveau_joueur_externe(nom_nouveau_joueur : String, niveau : Dictionary) -> bool:
+	if autoriser_le_nouveau_joueur_pour_la_campagne(nom_nouveau_joueur):
+		# Ajouter le joueur dans la liste des joueurs
+		if SauvegardeListeJoueursService.ajouter_un_nouveau_joueur(nom_nouveau_joueur):
+			var nom_fichier = SauvegardeListeJoueursService.retourner_le_fichier_de_sauvegarde(nom_nouveau_joueur)
+			# Ajouter la sauvegarde personnelle du joueur
+			if SauvegardeBddJoueursService.ajouter_un_nouveau_joueur(nom_nouveau_joueur, nom_fichier):
+				# Effacer sa campagne par defaut
+				SauvegardeBddJoueursService.campagne_supprimer_les_plateaux()
+				# Ajouter le joueur dans le tableau des scores
+				if SauvegardeTableauDesScoresService.ajouter_un_nouveau_joueur(nom_nouveau_joueur):
+					# importer ses statistiques de jeu
+					if SauvegardeBddJoueursService.enregistrement_niveau_importer(niveau):
+						# mettre à jour le tableau des scores
+						return ScoreService.mettre_a_jour_score_pour_import(nom_nouveau_joueur, niveau)
+	return false
+
+func importer_statistiques_joueur_externe(nom_joueur : String, niveau : Dictionary) -> bool:
+	if SauvegardeListeJoueursService.le_joueur_existe(nom_joueur):
+		var nom_fichier = SauvegardeListeJoueursService.retourner_le_fichier_de_sauvegarde(nom_joueur)
+		if SauvegardeBddJoueursService.choisir_le_joueur(nom_joueur, nom_fichier):
+			# Verifier qu'il s'agit bien d'un joueur importé (campagne effacée)
+			if SauvegardeBddJoueursService.campagne_la_campagne_est_terminee():
+				# importer ses statistiques de jeu
+				if SauvegardeBddJoueursService.enregistrement_niveau_importer(niveau):
+					# mettre à jour le tableau des scores
+					return ScoreService.mettre_a_jour_score_pour_import(nom_joueur, niveau)
+	return false
+
 ####################################
 # Gestion des mécaniques de jeu
 ####################################

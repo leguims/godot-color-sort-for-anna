@@ -90,11 +90,17 @@ Depuis la phase de tests internes de la version V0.3.0, les fonctionnalités son
 - Effacer automatiquement un joueur sans fichier de statistiques.
 - Ajouter un menu pour effacer un joueur (avec resolution d'un plateau pour confirmer)
 - (Anatole) Gagner des pieces sur des reussite majeur et les utiliser pour passer un plateau.
-- (Dorian/Anatole) Ajouter un bouton pour passer un plateau.
-  - Le plateau n'est pas ajouté dans les plateaux "jeu libre"
-  - Le plateau est effacé de la campagne actuelle
-  - Le plateau a un status "passé" qui sera comptabilisé avec les plateaux "abandonné"
-  - Le plateau ne rapporte aucun point => Prévoir une variante du panneau "Abandon".
+- ~~(Dorian/Anatole) Ajouter un bouton pour passer un plateau.~~
+  - ~~Le plateau n'est pas ajouté dans les plateaux "jeu libre"~~
+  - ~~Le plateau est effacé de la campagne actuelle~~
+  - ~~Le plateau a un status "passé" qui sera comptabilisé avec les plateaux "abandonné"~~
+  - ~~Le plateau ne rapporte aucun point => Prévoir une variante du panneau "Abandon".~~
+- Gerer les homonymes:
+  - Ajouter un UUID avec chaque joueur dans la liste des joueurs
+  - Utiliser l'UUID pour identifier le joueur dans toutes les transactions internes : score, campagne, statistiques.
+  - Ajouter l'UUID dans le QR code
+  - étudier si l'uuid devrait etre dans le nom du fichier de sauvegarde à la place de l'indice.
+- Au Démarrage, la configuration pourrait resserer les indexes de fichiers des joueurs.
 
 #### Web
 - Ajouter un menu pour exporter les sauvegardes (avec chiffrage secret)

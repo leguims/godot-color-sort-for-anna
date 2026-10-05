@@ -21,6 +21,21 @@ func mettre_a_jour_score_pour_victoire() -> Dictionary:
 	bonus_score_anna_damour(score_global)
 	return score_global
 
+func mettre_a_jour_score_pour_import(nom_joueur : String, niveau : Dictionary) -> void:
+	"Calculer le score suite à un import de QR"
+	# Parcourir tous les niveaux
+	for niveau in SauvegardeBddJoueursService.enregistrement():
+		# TODO : Ajouter le score de campagne
+		var score_niveau = SauvegardeBddJoueursService.enregistrement_lire_score_niveau(niveau)
+		var score_niveau_parfait = SauvegardeBddJoueursService.enregistrement_lire_score_niveau_parfait(niveau)
+		SauvegardeTableauDesScoresService.incrementer_score_joueur(nom_joueur, score_niveau + score_niveau_parfait)
+		# Parcourir tous les plateaux
+		for plateau in niveau['plateaux']:
+			var score_duree_plateau = SauvegardeBddJoueursService.enregistrement_lire_score_duree_plateau(plateau)
+			var score_ratio_reussite_plateau = SauvegardeBddJoueursService.enregistrement_lire_score_ratio_reussite_plateau(plateau)
+			SauvegardeTableauDesScoresService.incrementer_score_joueur(nom_joueur,
+											score_duree_plateau + score_ratio_reussite_plateau)
+
 func mettre_a_jour_score_pour_passer() -> void:
 	"Calculer et enregistrer le score nul suite au passage d'un plateau"
 	SauvegardeBddJoueursService.enregistrement_modifier_score_duree_plateau(0)
@@ -124,7 +139,7 @@ func mettre_a_jour_score_niveau_parfait() -> Dictionary:
 	if not SauvegardeBddJoueursService.enregistrement_niveau_en_cours() \
 		and SauvegardeBddJoueursService.enregistrement_lire_ratio_reussite_niveau() == 100:
 		var nom_joueur = SauvegardeBddJoueursService.lire_nom_joueur()
-		bonus_niveau_parfait = SauvegardeBddJoueursService.enregistrement_lire_score_niveau()
+		bonus_niveau_parfait = SauvegardeBddJoueursService.enregistrement_lire_score_dernier_niveau()
 		SauvegardeBddJoueursService.enregistrement_modifier_score_niveau_parfait(bonus_niveau_parfait)
 		SauvegardeTableauDesScoresService.incrementer_score_joueur(nom_joueur, bonus_niveau_parfait)
 		return {'type':'niveau_parfait',

@@ -312,6 +312,12 @@ func campagne_supprimer_et_oublier_plateau_courant() -> bool:
 		return true
 	return false
 
+func campagne_supprimer_les_plateaux() -> void:
+	"Efface toute la campagne."
+	if le_joueur_existe():
+		campagne().clear()
+		_enregistrer_sauvegarde_joueur()
+
 func campagne_lire_nombre_de_plateaux_realisables_pour_niveau_courant() -> int:
 	if le_joueur_existe():
 		var niveau = enregistrement_lire_valeur_niveau_joueur()
@@ -459,6 +465,20 @@ func lire_prochain_niveau_de_campagne() -> int:
 	LogService.log_erreur('\t', "Prochain niveau inconnu")
 	return 0
 
+func enregistrement_niveau_importer(niveau : Dictionary) -> bool:
+	"Importe un niveau dans l'enregistrement du joueur"
+	var nom_niveau = niveau.get('niveau', '')
+	if nom_niveau:
+		for niveau_enregistrement in enregistrement():
+			if niveau_enregistrement.get('niveau', '') == nom_niveau:
+				# Le niveau est déjà importé
+				return false
+		
+		sauvegarde_joueur['enregistrement_campagne'].append(niveau)
+		_enregistrer_sauvegarde_joueur()
+		return true
+	return false
+
 ###############################################
 # Niveaux / Niveau
 ###############################################
@@ -542,11 +562,23 @@ func enregistrement_modifier_score_niveau_parfait(score : int) -> void:
 		niveau_courant['score']['niveau_parfait'] = score
 		_enregistrer_sauvegarde_joueur()
 
-func enregistrement_lire_score_niveau() -> int:
+func enregistrement_lire_score_dernier_niveau() -> int:
 	var niveau_courant = enregistrement_lire_dernier_niveau()
 	if niveau_courant:
 		if niveau_courant.get('score') and niveau_courant.get('score').get('niveau'):
 			return niveau_courant.get('score').get('niveau')
+	return 0
+
+func enregistrement_lire_score_niveau(niveau  : Dictionary) -> int:
+	if niveau:
+		if niveau.get('score') and niveau.get('score').get('niveau'):
+			return niveau.get('score').get('niveau')
+	return 0
+
+func enregistrement_lire_score_niveau_parfait(niveau  : Dictionary) -> int:
+	if niveau:
+		if niveau.get('score') and niveau.get('score').get('niveau_parfait'):
+			return niveau.get('score').get('niveau_parfait')
 	return 0
 
 
@@ -753,6 +785,18 @@ func enregistrement_modifier_score_ratio_reussite_plateau(score : int) -> void:
 			plateau['score'] = {}
 		plateau['score']['ratio_reussite'] = score
 		_enregistrer_sauvegarde_joueur()
+
+func enregistrement_lire_score_duree_plateau(plateau : Dictionary) -> int:
+	if plateau:
+		if plateau.get('score') and plateau.get('score').get('duree'):
+			return plateau.get('score').get('duree')
+	return 0
+
+func enregistrement_lire_score_ratio_reussite_plateau(plateau : Dictionary) -> int:
+	if plateau:
+		if plateau.get('score') and plateau.get('score').get('ratio_reussite'):
+			return plateau.get('score').get('ratio_reussite')
+	return 0
 
 ###############################################
 # Niveaux / Plateaux / Coups joués
