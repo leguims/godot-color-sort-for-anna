@@ -2,11 +2,14 @@ extends Control
 
 class_name PartagePerformancesUI
 
+signal partage_qr_code(donnees_json: Dictionary)
 signal fermer
 
 const SHARE_SCRIPT_PATH := "res://addons/SharePlugin/Share.gd"
 
 func _ready() -> void:
+	$PartagePerformancesAPI.partage_qr_code.connect(_on_api_partage_qr_code)
+	$PartagePerformancesAPI.erreur_decodage_qr.connect(_on_api_erreur_decodage_qr)
 	$AdresseCourriel.text = $PartagePerformancesAPI.lire_adresse_courriel()
 	$BoutonPartagerQR.visible = OS.has_feature("android")
 
@@ -29,6 +32,10 @@ func _ready() -> void:
 		share_node.name = "Share"
 		share_node.connect("share_failed", _on_partage_qr_echoue)
 		add_child(share_node)
+
+## Reçoit une image de QR et demande son décodage et sa vérification.
+func recevoir_image_qr(image: Image) -> bool:
+	return $PartagePerformancesAPI.recevoir_image_qr(image)
 
 ## Lit les enregistrements du dernier niveau via l'API et affiche leur QR.
 func afficher_dernier_niveau() -> bool:
@@ -75,6 +82,12 @@ func _on_bouton_partager_qr_pressed() -> void:
 
 func _on_partage_qr_echoue(message: String) -> void:
 	_afficher_erreur("Le partage du QR a échoué : %s" % message)
+
+func _on_api_partage_qr_code(donnees_json: Dictionary) -> void:
+	partage_qr_code.emit(donnees_json)
+
+func _on_api_erreur_decodage_qr(message: String) -> void:
+	_afficher_erreur(message)
 
 func _on_bouton_fermer_pressed() -> void:
 	fermer.emit()

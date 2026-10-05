@@ -53,6 +53,35 @@ func verifier_hmac(donnees: String, signature: String, cle_hmac: String) -> bool
 		return false
 	return calculer_hmac(donnees, cle_hmac) == signature.to_lower()
 
+## Décode une enveloppe QR et retourne les données uniquement si le HMAC est valide.
+func decoder_et_verifier_qr(contenu_qr: String, cle_hmac: String) -> Dictionary:
+	var parseur_enveloppe := JSON.new()
+	if parseur_enveloppe.parse(contenu_qr) != OK:
+		return _erreur("Le contenu du QR n'est pas une enveloppe JSON valide.")
+	var enveloppe: Variant = parseur_enveloppe.data
+	if not enveloppe is Dictionary:
+		return _erreur("Le contenu du QR n'est pas une enveloppe JSON valide.")
+	if enveloppe.get("version") != 1:
+		return _erreur("La version du QR n'est pas prise en charge.")
+	if enveloppe.get("algorithme") != "HMAC-SHA256":
+		return _erreur("L'algorithme de signature du QR n'est pas pris en charge.")
+
+	var donnees_json: Variant = enveloppe.get("donnees_json")
+	var signature: Variant = enveloppe.get("signature")
+	if not donnees_json is String or not signature is String:
+		return _erreur("L'enveloppe QR ne contient pas de données ou de signature valides.")
+	if not verifier_hmac(donnees_json, signature, cle_hmac):
+		return _erreur("La signature HMAC du QR est invalide.")
+
+	var parseur_donnees := JSON.new()
+	if parseur_donnees.parse(donnees_json) != OK:
+		return _erreur("Les données signées du QR ne sont pas un objet JSON valide.")
+	var donnees: Variant = parseur_donnees.data
+	if not donnees is Dictionary:
+		return _erreur("Les données signées du QR ne sont pas un objet JSON valide.")
+
+	return {"succes": true, "donnees": donnees}
+
 ## Génère une image QR avec l'extension native chargée dans le projet.
 func generer_image_qr(contenu: String, parent: Node) -> Dictionary:
 	if not Engine.has_singleton("QRPlugin"):

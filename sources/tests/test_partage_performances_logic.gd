@@ -82,6 +82,43 @@ func test_verifier_hmac_refuse_une_signature_modifiee_ou_mal_formee() -> void:
 	assert_false(logique.verifier_hmac("donnees", "abc", "cle"))
 	assert_false(logique.verifier_hmac("donnees", signature, ""))
 
+func test_decoder_qr_retourne_les_donnees_apres_verification_hmac() -> void:
+	var donnees := {"nom": "Joueuse", "niveau": {"niveau": "niveau_2"}}
+	var enveloppe: Dictionary = logique.preparer_enveloppe(donnees, "cle-test")
+	var resultat: Dictionary = logique.decoder_et_verifier_qr(enveloppe.get("contenu_qr", ""), "cle-test")
+
+	assert_true(resultat.get("succes", false))
+	assert_eq(resultat.get("donnees"), donnees)
+
+func test_decoder_qr_refuse_un_hmac_invalide() -> void:
+	var enveloppe: Dictionary = logique.preparer_enveloppe({"nom": "Joueuse"}, "cle-test")
+	var qr: Dictionary = JSON.parse_string(enveloppe.get("contenu_qr", ""))
+	qr["donnees_json"] = "{\"nom\":\"Autre joueuse\"}"
+	var resultat: Dictionary = logique.decoder_et_verifier_qr(JSON.stringify(qr), "cle-test")
+
+	assert_false(resultat.get("succes", true))
+	assert_true(resultat.get("erreur", "").contains("signature HMAC"))
+
+func test_decoder_qr_refuse_les_enveloppes_mal_formees_ou_incompatibles() -> void:
+	var resultat_json_invalide: Dictionary = logique.decoder_et_verifier_qr("{invalide", "cle")
+	var resultat_version_inconnue: Dictionary = logique.decoder_et_verifier_qr(
+		JSON.stringify({"version": 2, "algorithme": "HMAC-SHA256"}),
+		"cle"
+	)
+	var resultat_donnees_non_objet: Dictionary = logique.decoder_et_verifier_qr(
+		JSON.stringify({
+			"version": 1,
+			"algorithme": "HMAC-SHA256",
+			"donnees_json": "[]",
+			"signature": logique.calculer_hmac("[]", "cle")
+		}),
+		"cle"
+	)
+
+	assert_false(resultat_json_invalide.get("succes", true))
+	assert_false(resultat_version_inconnue.get("succes", true))
+	assert_false(resultat_donnees_non_objet.get("succes", true))
+
 func test_api_utilise_la_cle_configuree_dans_le_projet() -> void:
 	var api: PartagePerformancesAPI = add_child_autofree(API_PARTAGE.new())
 	var resultat: Dictionary = api.preparer_partage({"niveau": 4})
@@ -114,6 +151,46 @@ func test_api_refuse_le_partage_natif_hors_android() -> void:
 	var texture := ImageTexture.create_from_image(Image.create(1, 1, false, Image.FORMAT_RGBA8))
 
 	assert_false(api.partager_qr_android(share_node, texture))
+
+func test_api_emet_partage_qr_code_apres_decodage_et_verification() -> void:
+	var api: PartagePerformancesAPI = add_child_autofree(API_PARTAGE.new())
+	var donnees_attendues := {"nom": "Joueuse", "niveau": {"niveau": "niveau_2"}}
+	var cle_hmac: String = ProjectSettings.get_setting("partage_performances/cle_hmac", "")
+	var enveloppe: Dictionary = logique.preparer_enveloppe(donnees_attendues, cle_hmac)
+	var qr_valide: Array[Dictionary] = []
+	api.partage_qr_code.connect(func(donnees: Dictionary) -> void: qr_valide.append(donnees))
+
+	api._on_qr_detected(enveloppe.get("contenu_qr", ""))
+
+	assert_eq(qr_valide.size(), 1)
+	assert_eq(qr_valide[0], donnees_attendues)
+
+func test_api_signale_quand_le_decodage_nest_pas_disponible() -> void:
+	if Engine.has_singleton("QRPlugin"):
+		return
+
+	var api: PartagePerformancesAPI = add_child_autofree(API_PARTAGE.new())
+	var erreurs: Array[String] = []
+	api.erreur_decodage_qr.connect(func(message: String) -> void: erreurs.append(message))
+	var image := Image.create(2, 2, false, Image.FORMAT_RGBA8)
+
+	assert_false(api.recevoir_image_qr(image))
+	assert_eq(erreurs.size(), 1)
+	assert_true(erreurs[0].contains("plateforme"))
+
+func test_scene_recoit_une_image_et_expose_le_signal_partage_qr_code() -> void:
+	var panneau: PartagePerformancesUI = add_child_autofree(SCENE_PARTAGE.instantiate())
+	var api: PartagePerformancesAPI = panneau.get_node("PartagePerformancesAPI")
+	var donnees_attendues := {"nom": "Joueuse"}
+	var cle_hmac: String = ProjectSettings.get_setting("partage_performances/cle_hmac", "")
+	var enveloppe: Dictionary = logique.preparer_enveloppe(donnees_attendues, cle_hmac)
+	var qr_valide: Array[Dictionary] = []
+	panneau.partage_qr_code.connect(func(donnees: Dictionary) -> void: qr_valide.append(donnees))
+
+	api._on_qr_detected(enveloppe.get("contenu_qr", ""))
+
+	assert_true(panneau.has_method("recevoir_image_qr"))
+	assert_eq(qr_valide, [donnees_attendues])
 
 func test_api_lit_le_nom_du_joueur_et_le_dernier_niveau() -> void:
 	var api: PartagePerformancesAPI = add_child_autofree(API_PARTAGE.new())
