@@ -100,6 +100,11 @@ Depuis la phase de tests internes de la version V0.3.0, les fonctionnalités son
   - Utiliser l'UUID pour identifier le joueur dans toutes les transactions internes : score, campagne, statistiques.
   - Ajouter l'UUID dans le QR code
   - étudier si l'uuid devrait etre dans le nom du fichier de sauvegarde à la place de l'indice.
+  - compte local :
+    - uuid = uuid du joueur local
+  - compte remote :
+    - remote_uuid = uuid initial du joueur distant
+    - uuid = uuid local sur le phone receveur (si l'original uuid existe deja)
 - Au Démarrage, la configuration pourrait resserer les indexes de fichiers des joueurs.
 
 #### Web
