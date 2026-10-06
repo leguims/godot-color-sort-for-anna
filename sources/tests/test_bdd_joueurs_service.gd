@@ -238,11 +238,11 @@ func test_enregistrement_niveau_et_scores_couvrent_les_branches():
 	assert_eq(singleton.enregistrement_lire_dernier_niveau().get("niveau"), "niveau_2")
 	assert_true(singleton.enregistrement_niveau_en_cours())
 	assert_eq(singleton.enregistrement_lire_valeur_niveau_joueur(), 2)
-	assert_eq(singleton.enregistrement_lire_score_niveau(), 0)
+	assert_eq(singleton.enregistrement_lire_score_dernier_niveau(), 0)
 
 	singleton.enregistrement_modifier_score_niveau(123)
 	singleton.enregistrement_modifier_score_niveau_parfait(456)
-	assert_eq(singleton.enregistrement_lire_score_niveau(), 123)
+	assert_eq(singleton.enregistrement_lire_score_dernier_niveau(), 123)
 
 	var niveau_courant = singleton.enregistrement_lire_dernier_niveau()
 	niveau_courant["date_fin"] = 12

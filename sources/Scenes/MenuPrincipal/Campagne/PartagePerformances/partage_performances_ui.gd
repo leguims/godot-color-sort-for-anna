@@ -5,8 +5,6 @@ class_name PartagePerformancesUI
 signal partage_qr_code(donnees_json: Dictionary)
 signal fermer
 
-const SHARE_SCRIPT_PATH := "res://addons/SharePlugin/Share.gd"
-
 func _ready() -> void:
 	$PartagePerformancesAPI.partage_qr_code.connect(_on_api_partage_qr_code)
 	$PartagePerformancesAPI.erreur_decodage_qr.connect(_on_api_erreur_decodage_qr)
@@ -14,24 +12,11 @@ func _ready() -> void:
 	$BoutonPartagerQR.visible = OS.has_feature("android")
 
 	if OS.has_feature("android"):
-		var share_script := load(SHARE_SCRIPT_PATH) as Script
-		if share_script == null:
-			_afficher_erreur("Le plugin de partage Android est introuvable.")
-			$BoutonPartagerQR.disabled = true
-			return
-		var share_node := share_script.new() as Node
-		if share_node == null:
-			_afficher_erreur("Impossible d'initialiser le partage Android.")
-			$BoutonPartagerQR.disabled = true
-			return
-		if not share_node.has_signal("share_failed"):
-			_afficher_erreur("Le plugin de partage Android ne fournit pas son signal d'erreur.")
-			$BoutonPartagerQR.disabled = true
-			share_node.free()
-			return
-		share_node.name = "Share"
-		share_node.connect("share_failed", _on_partage_qr_echoue)
-		add_child(share_node)
+		$BoutonPartagerQR.disabled = not ShareService.is_available()
+		if not ShareService.share_failed.is_connected(_on_partage_qr_echoue):
+			ShareService.share_failed.connect(_on_partage_qr_echoue)
+		if $BoutonPartagerQR.disabled:
+			_afficher_erreur("Le partage natif Android n'est pas disponible.")
 
 ## Reçoit une image de QR et demande son décodage et sa vérification.
 func recevoir_image_qr(image: Image) -> bool:
@@ -71,13 +56,12 @@ func _on_bouton_copier_courriel_pressed() -> void:
 	$Message.visible = true
 
 func _on_bouton_partager_qr_pressed() -> void:
-	var share_node := get_node_or_null("Share")
-	if share_node == null:
+	if not ShareService.is_available():
 		_afficher_erreur("Le partage natif Android n'est pas disponible.")
 		return
 
 	var texture_qr: Texture2D = $ImageQR.texture
-	if not $PartagePerformancesAPI.partager_qr_android(share_node, texture_qr):
+	if not $PartagePerformancesAPI.partager_qr_android(ShareService, texture_qr):
 		_afficher_erreur("Impossible de partager le QR code sur cet appareil.")
 
 func _on_partage_qr_echoue(message: String) -> void:

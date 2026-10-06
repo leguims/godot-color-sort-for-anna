@@ -22,19 +22,23 @@ func mettre_a_jour_score_pour_victoire() -> Dictionary:
 	return score_global
 
 func mettre_a_jour_score_pour_import(nom_joueur : String, niveau : Dictionary) -> void:
-	"Calculer le score suite à un import de QR"
-	# Parcourir tous les niveaux
-	for niveau in SauvegardeBddJoueursService.enregistrement():
-		# TODO : Ajouter le score de campagne
-		var score_niveau = SauvegardeBddJoueursService.enregistrement_lire_score_niveau(niveau)
-		var score_niveau_parfait = SauvegardeBddJoueursService.enregistrement_lire_score_niveau_parfait(niveau)
-		SauvegardeTableauDesScoresService.incrementer_score_joueur(nom_joueur, score_niveau + score_niveau_parfait)
-		# Parcourir tous les plateaux
-		for plateau in niveau['plateaux']:
-			var score_duree_plateau = SauvegardeBddJoueursService.enregistrement_lire_score_duree_plateau(plateau)
-			var score_ratio_reussite_plateau = SauvegardeBddJoueursService.enregistrement_lire_score_ratio_reussite_plateau(plateau)
-			SauvegardeTableauDesScoresService.incrementer_score_joueur(nom_joueur,
-											score_duree_plateau + score_ratio_reussite_plateau)
+	"Calculer le score du niveau importé via QR"
+	var score_niveau = SauvegardeBddJoueursService.enregistrement_lire_score_niveau(niveau)
+	SauvegardeTableauDesScoresService.incrementer_score_joueur(nom_joueur, score_niveau)
+	var score_niveau_parfait = SauvegardeBddJoueursService.enregistrement_lire_score_niveau_parfait(niveau)
+	SauvegardeTableauDesScoresService.incrementer_score_joueur(nom_joueur, score_niveau_parfait)
+
+	# Vérifier le type de 'plateaux'
+	if not niveau.get('plateaux') or not niveau.get('plateaux') is Array:
+		return
+	# Parcourir tous les plateaux
+	for plateau in niveau.get('plateaux', []):
+		if not plateau is Dictionary:
+			continue
+		var score_duree_plateau = SauvegardeBddJoueursService.enregistrement_lire_score_duree_plateau(plateau)
+		SauvegardeTableauDesScoresService.incrementer_score_joueur(nom_joueur, score_duree_plateau)
+		var score_ratio_reussite_plateau = SauvegardeBddJoueursService.enregistrement_lire_score_ratio_reussite_plateau(plateau)
+		SauvegardeTableauDesScoresService.incrementer_score_joueur(nom_joueur, score_ratio_reussite_plateau)
 
 func mettre_a_jour_score_pour_passer() -> void:
 	"Calculer et enregistrer le score nul suite au passage d'un plateau"

@@ -86,7 +86,7 @@ horizontal_alignment = 1
 vertical_alignment = 1
 autowrap_mode = 2
 
-[node name="AdresseCourriel" type="Label" parent="."]
+[node name="AdresseCourriel" type="Label" parent="." unique_id=946470087]
 layout_mode = 0
 offset_left = 30.0
 offset_top = 435.0
@@ -98,7 +98,7 @@ text = "rangelescouleurspouranna@gmail.com"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="BoutonCopierCourriel" type="Button" parent="."]
+[node name="BoutonCopierCourriel" type="Button" parent="." unique_id=1403581164]
 layout_mode = 0
 offset_left = 30.0
 offset_top = 470.0
@@ -109,7 +109,7 @@ theme_override_fonts/font = ExtResource("3_font")
 theme_override_font_sizes/font_size = 17
 text = "Copier l'adresse courriel"
 
-[node name="BoutonPartagerQR" type="Button" parent="."]
+[node name="BoutonPartagerQR" type="Button" parent="." unique_id=997482125]
 visible = false
 layout_mode = 0
 offset_left = 30.0
