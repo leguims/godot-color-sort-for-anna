@@ -25,9 +25,11 @@ func mettre_a_jour_score_pour_import(nom_joueur : String, niveau : Dictionary) -
 	"Calculer le score du niveau importé via QR"
 	var score_niveau = SauvegardeBddJoueursService.enregistrement_lire_score_niveau(niveau)
 	SauvegardeTableauDesScoresService.incrementer_score_joueur(nom_joueur, score_niveau)
+	# LogService.log_debug("Score : +", score_niveau," points pour le niveau.")
 	var score_niveau_parfait = SauvegardeBddJoueursService.enregistrement_lire_score_niveau_parfait(niveau)
 	SauvegardeTableauDesScoresService.incrementer_score_joueur(nom_joueur, score_niveau_parfait)
-
+	# LogService.log_debug("Score : +", score_niveau_parfait," points pour le niveau parfait.")
+	
 	# Vérifier le type de 'plateaux'
 	if not niveau.get('plateaux') or not niveau.get('plateaux') is Array:
 		return
@@ -37,8 +39,10 @@ func mettre_a_jour_score_pour_import(nom_joueur : String, niveau : Dictionary) -
 			continue
 		var score_duree_plateau = SauvegardeBddJoueursService.enregistrement_lire_score_duree_plateau(plateau)
 		SauvegardeTableauDesScoresService.incrementer_score_joueur(nom_joueur, score_duree_plateau)
+		# LogService.log_debug("Score '", plateau.get('nom', ''),"' : +", score_duree_plateau," points pour la duree.")
 		var score_ratio_reussite_plateau = SauvegardeBddJoueursService.enregistrement_lire_score_ratio_reussite_plateau(plateau)
 		SauvegardeTableauDesScoresService.incrementer_score_joueur(nom_joueur, score_ratio_reussite_plateau)
+		# LogService.log_debug("Score '", plateau.get('nom', ''),"' : +", score_ratio_reussite_plateau," points pour le ratio.")
 
 func mettre_a_jour_score_pour_passer() -> void:
 	"Calculer et enregistrer le score nul suite au passage d'un plateau"

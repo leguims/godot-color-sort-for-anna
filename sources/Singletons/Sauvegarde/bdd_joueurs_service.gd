@@ -465,6 +465,26 @@ func lire_prochain_niveau_de_campagne() -> int:
 	LogService.log_erreur('\t', "Prochain niveau inconnu")
 	return 0
 
+func enregistrement_niveau_inserer(niveau : Dictionary) -> bool:
+	"Insere un niveau dans le respect de sa chronologie"
+	var nom_niveau = niveau.get('niveau', '')
+	if nom_niveau:
+		var date_debut_niveau = niveau.get('date_debut', 0.)
+		# Parcourir les niveaux dans l'ordre croissant de date
+		for index in range(enregistrement().size()):
+			var enregistrement_courant = enregistrement()[index]
+			if enregistrement_courant.get('date_debut', 0.) > date_debut_niveau:
+				# Le niveau à inserer est antérieur, prendre la place du niveau courant
+				enregistrement().insert(index, niveau)
+				_enregistrer_sauvegarde_joueur()
+				return true
+		# Le niveau à inserer est le dernier
+		enregistrement().append(niveau)
+		_enregistrer_sauvegarde_joueur()
+		return true
+	LogService.log_erreur("Bdd joueurs : Aucune insertion enregistrement du niveau ", nom_niveau)
+	return false
+
 func enregistrement_niveau_importer(niveau : Dictionary) -> bool:
 	"Importe un niveau dans l'enregistrement du joueur"
 	var nom_niveau = niveau.get('niveau', '')
@@ -473,10 +493,8 @@ func enregistrement_niveau_importer(niveau : Dictionary) -> bool:
 			if niveau_enregistrement.get('niveau', '') == nom_niveau:
 				# Le niveau est déjà importé
 				return false
-		
-		sauvegarde_joueur['enregistrement_campagne'].append(niveau)
-		_enregistrer_sauvegarde_joueur()
-		return true
+		return enregistrement_niveau_inserer(niveau)
+	LogService.log_erreur("Bdd joueurs : Aucun enregistrement du niveau ", nom_niveau)
 	return false
 
 ###############################################
