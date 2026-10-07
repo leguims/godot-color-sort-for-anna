@@ -2,6 +2,12 @@
 
 [ext_resource type="Script" uid="uid://cmgsljgwmgwhn" path="res://Scenes/MenuPrincipal/APropos/a_propos.gd" id="1_about"]
 [ext_resource type="Texture2D" uid="uid://dyqudplf18flw" path="res://Art/UI/APropos/a_propos_underlay_480x720.png" id="2_77vjn"]
+[ext_resource type="PackedScene" uid="uid://ck64s8725qrbo" path="res://Scenes/MenuPrincipal/APropos/ornement.tscn" id="3_b4dqm"]
+[ext_resource type="PackedScene" uid="uid://bv2flmd21pfgj" path="res://Scenes/MenuPrincipal/APropos/carte_moteur.tscn" id="3_fmmw8"]
+[ext_resource type="PackedScene" uid="uid://i1gx4sivadsl" path="res://Scenes/MenuPrincipal/APropos/carte_musiques.tscn" id="4_vt736"]
+[ext_resource type="FontFile" uid="uid://8pcourumhksh" path="res://Art/UI/Fonts/TeXGyreAdventor/texgyreadventor-regular.otf" id="4_yeckh"]
+[ext_resource type="PackedScene" uid="uid://10fbtiv33i8v" path="res://Scenes/MenuPrincipal/APropos/carte_effets_sonores.tscn" id="5_m17g7"]
+[ext_resource type="PackedScene" uid="uid://bt47a3sxl235a" path="res://Scenes/MenuPrincipal/APropos/carte_didacticiel.tscn" id="6_b4dqm"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_c01oa"]
 bg_color = Color(1, 0.972549, 0.9098039, 1)
@@ -58,6 +64,68 @@ offset_right = 102.0
 offset_bottom = 115.0
 mouse_filter = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_c01oa")
+
+[node name="HBoxContainer" type="HBoxContainer" parent="PanneauCredits" unique_id=745848759]
+layout_mode = 0
+offset_right = 356.0
+offset_bottom = 164.0
+alignment = 1
+
+[node name="VBox" type="VBoxContainer" parent="PanneauCredits/HBoxContainer" unique_id=1446413749]
+layout_mode = 2
+
+[node name="VBoxEntete" type="VBoxContainer" parent="PanneauCredits/HBoxContainer/VBox" unique_id=129061687]
+layout_mode = 2
+alignment = 1
+
+[node name="MargeHaute" type="Label" parent="PanneauCredits/HBoxContainer/VBox/VBoxEntete" unique_id=209249235]
+custom_minimum_size = Vector2(0, 5)
+layout_mode = 2
+theme_override_colors/font_color = Color(0.039215688, 0.15294118, 0.3019608, 1)
+theme_override_font_sizes/font_size = 1
+horizontal_alignment = 1
+
+[node name="Titre" type="Label" parent="PanneauCredits/HBoxContainer/VBox/VBoxEntete" unique_id=1784722280]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.039215688, 0.15294118, 0.3019608, 1)
+theme_override_font_sizes/font_size = 41
+text = "À propos"
+horizontal_alignment = 1
+
+[node name="Orenement" parent="PanneauCredits/HBoxContainer/VBox/VBoxEntete" unique_id=198575893 instance=ExtResource("3_b4dqm")]
+layout_mode = 2
+
+[node name="SousTitre" type="Label" parent="PanneauCredits/HBoxContainer/VBox/VBoxEntete" unique_id=1263578414]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.9411765, 0.3019608, 0.23529412, 1)
+theme_override_fonts/font = ExtResource("4_yeckh")
+theme_override_font_sizes/font_size = 18
+text = "Crédits et ressources"
+horizontal_alignment = 1
+
+[node name="MargeBasse" type="Label" parent="PanneauCredits/HBoxContainer/VBox/VBoxEntete" unique_id=1698979331]
+custom_minimum_size = Vector2(0, 5)
+layout_mode = 2
+theme_override_colors/font_color = Color(0.039215688, 0.15294118, 0.3019608, 1)
+theme_override_font_sizes/font_size = 1
+horizontal_alignment = 1
+
+[node name="VBoxCorps" type="VBoxContainer" parent="PanneauCredits/HBoxContainer/VBox" unique_id=664819482]
+layout_mode = 2
+theme_override_constants/separation = 10
+alignment = 1
+
+[node name="CarteMoteur" parent="PanneauCredits/HBoxContainer/VBox/VBoxCorps" unique_id=1742898521 instance=ExtResource("3_fmmw8")]
+layout_mode = 2
+
+[node name="CarteMusique" parent="PanneauCredits/HBoxContainer/VBox/VBoxCorps" unique_id=1091082428 instance=ExtResource("4_vt736")]
+layout_mode = 2
+
+[node name="CarteEffetsSonores" parent="PanneauCredits/HBoxContainer/VBox/VBoxCorps" unique_id=378650684 instance=ExtResource("5_m17g7")]
+layout_mode = 2
+
+[node name="CarteDidacticiel" parent="PanneauCredits/HBoxContainer/VBox/VBoxCorps" unique_id=810420654 instance=ExtResource("6_b4dqm")]
+layout_mode = 2
 
 [node name="Retour" type="Button" parent="." unique_id=169920233]
 layout_mode = 0
