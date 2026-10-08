@@ -34,25 +34,30 @@ grow_vertical = 2
 mouse_filter = 2
 theme_override_styles/panel = SubResource("inner")
 
-[node name="Logo" type="TextureRect" parent="." unique_id=794046364]
-layout_mode = 0
-offset_left = 16.0
-offset_top = 11.0
-offset_right = 80.0
-offset_bottom = 74.0
+[node name="Colonne1" type="VBoxContainer" parent="." unique_id=1185419517]
+layout_mode = 1
+anchors_preset = 9
+anchor_bottom = 1.0
+offset_right = 90.0
+grow_vertical = 2
+alignment = 1
+
+[node name="Logo" type="TextureRect" parent="Colonne1" unique_id=794046364]
+custom_minimum_size = Vector2(32, 32)
+layout_mode = 2
 mouse_filter = 2
 texture = ExtResource("1_vb13s")
 expand_mode = 1
 stretch_mode = 5
 
-[node name="VBoxContainer" type="VBoxContainer" parent="." unique_id=1910800019]
+[node name="Colonne2" type="VBoxContainer" parent="." unique_id=1910800019]
 layout_mode = 0
 offset_left = 90.0
 offset_right = 310.0
 offset_bottom = 85.0
 alignment = 1
 
-[node name="Titre" type="Label" parent="VBoxContainer" unique_id=1586345295]
+[node name="Titre" type="Label" parent="Colonne2" unique_id=1586345295]
 layout_mode = 2
 theme_override_colors/font_color = Color(0.039215688, 0.15294118, 0.3019608, 1)
 theme_override_fonts/font = ExtResource("2_cxjln")
@@ -60,7 +65,7 @@ theme_override_font_sizes/font_size = 19
 text = "Moteur"
 vertical_alignment = 1
 
-[node name="Item1" type="Label" parent="VBoxContainer" unique_id=1334713980]
+[node name="Item1" type="Label" parent="Colonne2" unique_id=1334713980]
 layout_mode = 2
 theme_override_colors/font_color = Color(0.039215688, 0.15294118, 0.3019608, 1)
 theme_override_fonts/font = ExtResource("3_cxjln")
@@ -68,7 +73,7 @@ theme_override_font_sizes/font_size = 13
 text = "Godot Engine"
 vertical_alignment = 1
 
-[node name="Item2" type="Label" parent="VBoxContainer" unique_id=232644238]
+[node name="Item2" type="Label" parent="Colonne2" unique_id=232644238]
 layout_mode = 2
 theme_override_colors/font_color = Color(0.039215688, 0.15294118, 0.3019608, 1)
 theme_override_fonts/font = ExtResource("3_cxjln")
@@ -76,7 +81,7 @@ theme_override_font_sizes/font_size = 13
 text = "Plugins: GUT, QRPlugin, SharePlugin"
 vertical_alignment = 1
 
-[node name="Lien" type="RichTextLabel" parent="VBoxContainer" unique_id=572726507]
+[node name="Lien" type="RichTextLabel" parent="Colonne2" unique_id=572726507]
 layout_mode = 2
 mouse_default_cursor_shape = 2
 theme_override_colors/default_color = Color(0.9411765, 0.3019608, 0.23529412, 1)
@@ -90,6 +95,6 @@ scroll_active = false
 vertical_alignment = 1
 meta_underlined = false
 
-[connection signal="meta_clicked" from="VBoxContainer/Lien" to="." method="_on_lien_meta_clicked"]
-[connection signal="meta_hover_ended" from="VBoxContainer/Lien" to="." method="_on_lien_meta_hover_ended"]
-[connection signal="meta_hover_started" from="VBoxContainer/Lien" to="." method="_on_lien_meta_hover_started"]
+[connection signal="meta_clicked" from="Colonne2/Lien" to="." method="_on_lien_meta_clicked"]
+[connection signal="meta_hover_ended" from="Colonne2/Lien" to="." method="_on_lien_meta_hover_ended"]
+[connection signal="meta_hover_started" from="Colonne2/Lien" to="." method="_on_lien_meta_hover_started"]
