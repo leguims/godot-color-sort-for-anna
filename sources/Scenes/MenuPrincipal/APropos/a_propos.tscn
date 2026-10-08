@@ -76,10 +76,11 @@ layout_mode = 2
 
 [node name="VBoxEntete" type="VBoxContainer" parent="PanneauCredits/HBoxContainer/VBox" unique_id=129061687]
 layout_mode = 2
+theme_override_constants/separation = 0
 alignment = 1
 
 [node name="MargeHaute" type="Label" parent="PanneauCredits/HBoxContainer/VBox/VBoxEntete" unique_id=209249235]
-custom_minimum_size = Vector2(0, 5)
+custom_minimum_size = Vector2(0, 10)
 layout_mode = 2
 theme_override_colors/font_color = Color(0.039215688, 0.15294118, 0.3019608, 1)
 theme_override_font_sizes/font_size = 1
@@ -104,7 +105,7 @@ text = "Crédits et ressources"
 horizontal_alignment = 1
 
 [node name="MargeBasse" type="Label" parent="PanneauCredits/HBoxContainer/VBox/VBoxEntete" unique_id=1698979331]
-custom_minimum_size = Vector2(0, 5)
+custom_minimum_size = Vector2(0, 10)
 layout_mode = 2
 theme_override_colors/font_color = Color(0.039215688, 0.15294118, 0.3019608, 1)
 theme_override_font_sizes/font_size = 1

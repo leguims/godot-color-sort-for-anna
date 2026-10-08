@@ -1,6 +1,6 @@
 [gd_scene format=3 uid="uid://bv2flmd21pfgj"]
 
-[ext_resource type="Script" uid="uid://d8xg4adqqnuv" path="res://Scenes/MenuPrincipal/APropos/carte_moteur.gd" id="1_f06lb"]
+[ext_resource type="Script" uid="uid://d8xg4adqqnuv" path="res://Scenes/MenuPrincipal/APropos/carte.gd" id="1_f06lb"]
 [ext_resource type="Texture2D" uid="uid://dcalkygldstcy" path="res://Art/UI/APropos/godot_icon_official.png" id="1_vb13s"]
 [ext_resource type="FontFile" uid="uid://dbs77if6q2gtc" path="res://Art/UI/Fonts/TeXGyreAdventor/texgyreadventor-bold.otf" id="2_cxjln"]
 [ext_resource type="FontFile" uid="uid://8pcourumhksh" path="res://Art/UI/Fonts/TeXGyreAdventor/texgyreadventor-regular.otf" id="3_cxjln"]
@@ -89,3 +89,7 @@ fit_content = true
 scroll_active = false
 vertical_alignment = 1
 meta_underlined = false
+
+[connection signal="meta_clicked" from="VBoxContainer/Lien" to="." method="_on_lien_meta_clicked"]
+[connection signal="meta_hover_ended" from="VBoxContainer/Lien" to="." method="_on_lien_meta_hover_ended"]
+[connection signal="meta_hover_started" from="VBoxContainer/Lien" to="." method="_on_lien_meta_hover_started"]
