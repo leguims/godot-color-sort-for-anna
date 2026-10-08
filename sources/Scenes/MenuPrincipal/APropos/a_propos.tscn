@@ -1,7 +1,7 @@
 [gd_scene format=3 uid="uid://crh6v0vpu06u8"]
 
 [ext_resource type="Script" uid="uid://cmgsljgwmgwhn" path="res://Scenes/MenuPrincipal/APropos/a_propos.gd" id="1_about"]
-[ext_resource type="Texture2D" uid="uid://8h4pjc4i781g" path="res://Art/UI/APropos/a_propos_underlay_480x720.png" id="2_77vjn"]
+[ext_resource type="Texture2D" uid="uid://cag2gtuwofgb3" path="res://Art/UI/APropos/background.png" id="2_68h0i"]
 [ext_resource type="PackedScene" uid="uid://ck64s8725qrbo" path="res://Scenes/MenuPrincipal/APropos/ornement.tscn" id="3_b4dqm"]
 [ext_resource type="PackedScene" uid="uid://bv2flmd21pfgj" path="res://Scenes/MenuPrincipal/APropos/carte_moteur.tscn" id="3_fmmw8"]
 [ext_resource type="PackedScene" uid="uid://i1gx4sivadsl" path="res://Scenes/MenuPrincipal/APropos/carte_musiques.tscn" id="4_vt736"]
@@ -53,7 +53,7 @@ layout_mode = 0
 offset_right = 480.0
 offset_bottom = 720.0
 mouse_filter = 2
-texture = ExtResource("2_77vjn")
+texture = ExtResource("2_68h0i")
 expand_mode = 1
 stretch_mode = 2
 
