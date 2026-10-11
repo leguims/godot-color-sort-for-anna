@@ -22,4 +22,8 @@ func _update_display() -> void:
 		progress_arc.material.set_shader_parameter("progress", percentage / 100.0)
 	
 	# Mettre à jour le texte central
+	if roundi(percentage) == 100:
+		$PercentText.add_theme_font_size_override("font_size", 21)
+	else:
+		$PercentText.add_theme_font_size_override("font_size", 25)
 	percent_text.text = str(roundi(percentage)) + "%"

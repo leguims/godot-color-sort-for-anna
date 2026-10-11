@@ -8,7 +8,7 @@
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_kynm4"]
 shader = ExtResource("2_ooss0")
-shader_parameter/progress = 0.38
+shader_parameter/progress = 0.35
 
 [node name="ArcProgressBar" type="Node2D" unique_id=577004827]
 script = ExtResource("1_rheuj")
@@ -29,9 +29,9 @@ texture = ExtResource("4_dkpnq")
 custom_minimum_size = Vector2(72, 72)
 offset_right = 40.0
 offset_bottom = 23.0
-theme_override_colors/font_color = Color(0.0627451, 0.16862746, 0.3137255, 1)
+theme_override_colors/font_color = Color(0.9529412, 0.15294118, 0.08235294, 1)
 theme_override_fonts/font = ExtResource("3_dkpnq")
-theme_override_font_sizes/font_size = 22
-text = "100%"
+theme_override_font_sizes/font_size = 21
+text = "88%"
 horizontal_alignment = 1
 vertical_alignment = 1
