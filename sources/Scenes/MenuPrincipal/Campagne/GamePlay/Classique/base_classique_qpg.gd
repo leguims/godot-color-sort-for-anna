@@ -1,6 +1,6 @@
 extends Node
 
-class_name BaseGameplay
+class_name BaseClassiqueQuiPerdGagne
 
 signal plateau_invalide
 signal abandon
@@ -17,7 +17,7 @@ func _ready() -> void:
 	$MenuPlateau.enregistrer_coups("0 Coup")
 
 	# Transmettre les infos de l'UI à Plateau
-	$Plateau.enregistrer_bouton_recommencer_size_y($MenuPlateau/Top.size.y)
+	$Plateau.enregistrer_bouton_recommencer_size_y($MenuPlateau/Bandeau.size.y)
 
 # API pour "Campagne"
 func est_valide(plateau_texte : String) -> bool:

@@ -1,4 +1,4 @@
-extends BaseGameplay
+extends BaseClassiqueQuiPerdGagne
 
 class_name QuiPerdGagne
 

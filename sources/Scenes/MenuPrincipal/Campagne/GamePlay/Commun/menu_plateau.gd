@@ -14,37 +14,48 @@ func _process(_delta: float) -> void:
 
 # #############
 # API Gameplay
-func enregistrer_gameplay(gameplay : String, font_size : int = 35):
-	$Top/Gameplay.text = gameplay
-	$Top/Gameplay.add_theme_font_size_override("font_size", font_size)
+func enregistrer_gameplay(gameplay : String, font_size : int = 30):
+	$Bandeau/Gameplay.text = gameplay
+	$Bandeau/Gameplay.add_theme_font_size_override("font_size", font_size)
+
+func enregistrer_sous_titre_gameplay(sous_titre_gameplay : String, font_size : int = 18):
+	$Bandeau/SousTitreGameplay.text = sous_titre_gameplay
+	$Bandeau/SousTitreGameplay.add_theme_font_size_override("font_size", font_size)
 
 func enregistrer_chrono(minutes : String,
 						secondes : String,
 						decisecondes : String):
 	var text_chrono : String = minutes + ':' + secondes + '.' + decisecondes
-	$Top/Chrono.text = text_chrono
+	$Bandeau/Chrono.text = text_chrono
 
 func enregistrer_coups(coups : String):
-	$Top/Coups.text = coups
+	$Bandeau/Coups.text = coups
 
 func show():
 	$Fond.show()
-	$FondEntete.show()
-	$Top.show()
-	$Top/BoutonRecommencer.show()
-	$Top/BoutonPasser.show()
+	$Bandeau.show()
+	$Bandeau/Fond.show()
+	$Bandeau/Gameplay.show()
+	$Bandeau/SousTitreGameplay.show()
+	$Bandeau/Chrono.show()
+	# $Bandeau/Coups.show()
+	$Bandeau/BoutonRecommencer.show()
+	$Bandeau/BoutonPasser.show()
 
 func hide():
 	$Fond.hide()
-	$FondEntete.hide()
-	$Top.hide()
-	$Top/BoutonRecommencer.hide()
-	$Top/BoutonPasser.hide()
+	$Bandeau.hide()
+	$Bandeau/Fond.hide()
+	$Bandeau/Gameplay.hide()
+	$Bandeau/SousTitreGameplay.hide()
+	$Bandeau/Chrono.hide()
+	# $Bandeau/Coups.hide()
+	$Bandeau/BoutonRecommencer.hide()
+	$Bandeau/BoutonPasser.hide()
 
 func cacher_accueil():
 	hide()
 	$Fond.show()
-	$FondEntete.hide()
 
 # ########
 # Interne
@@ -73,13 +84,13 @@ func _maj_coups() -> void:
 # ########
 # Usine >>
 func _on_bouton_recommencer_pressed() -> void:
-	$Top/BoutonRecommencer.hide()
-	$Top/BoutonPasser.hide()
+	$Bandeau/BoutonRecommencer.hide()
+	$Bandeau/BoutonPasser.hide()
 	abandon.emit()
 
 func _on_bouton_passer_pressed() -> void:
-	$Top/BoutonRecommencer.hide()
-	$Top/BoutonPasser.hide()
+	$Bandeau/BoutonRecommencer.hide()
+	$Bandeau/BoutonPasser.hide()
 	passe.emit()
 
 func _on_fond_gui_input(event: InputEvent) -> void:

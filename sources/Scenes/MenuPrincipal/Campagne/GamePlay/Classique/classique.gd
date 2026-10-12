@@ -1,4 +1,4 @@
-extends BaseGameplay
+extends BaseClassiqueQuiPerdGagne
 
 class_name Classique
 
@@ -6,7 +6,8 @@ func _ready() -> void:
 	super._ready()
 
 	# Initialiser le menu
-	$MenuPlateau.enregistrer_gameplay("Classique")
+	$MenuPlateau.enregistrer_gameplay("CLASSIQUE")
+	$MenuPlateau.enregistrer_sous_titre_gameplay("Range tes couleurs")
 
 # Callback pour "Plateau"
 func est_termine(liste_piles) -> bool:
@@ -19,7 +20,7 @@ func est_termine(liste_piles) -> bool:
 			break
 	if termine:
 		LogService.log_debug("Classique : victoire.emit()")
-		$MenuPlateau/Top/BoutonRecommencer.hide()
-		$MenuPlateau/Top/BoutonPasser.hide()
+		$MenuPlateau/Bandeau/BoutonRecommencer.hide()
+		$MenuPlateau/Bandeau/BoutonPasser.hide()
 		victoire.emit()
 	return termine

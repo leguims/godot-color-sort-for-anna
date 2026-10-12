@@ -1,0 +1,110 @@
+[gd_scene format=3 uid="uid://bam876b5yqom6"]
+
+[ext_resource type="Script" uid="uid://bvobgf0gavp5h" path="res://Scenes/MenuPrincipal/Campagne/GamePlay/Commun/menu_plateau.gd" id="1_cfw72"]
+[ext_resource type="Texture2D" uid="uid://46u7o24484rr" path="res://Art/UI/Gameplay/Classique/background.png" id="2_y18de"]
+[ext_resource type="Texture2D" uid="uid://c1q3i2mxcc4yo" path="res://Art/UI/Gameplay/Classique/base_active.svg" id="3_w50lc"]
+[ext_resource type="Texture2D" uid="uid://bqtrqd0baxmcq" path="res://Art/UI/Gameplay/Classique/button_restart.png" id="3_yobhf"]
+[ext_resource type="Texture2D" uid="uid://pp36u1brjjyd" path="res://Art/UI/Gameplay/Classique/button_pass.svg" id="4_w50lc"]
+
+[node name="MenuPlateauClassique" type="Node" unique_id=561806520]
+script = ExtResource("1_cfw72")
+
+[node name="Fond" type="TextureRect" parent="." unique_id=882050815]
+offset_right = 480.0
+offset_bottom = 720.0
+texture = ExtResource("2_y18de")
+
+[node name="Bandeau" type="Control" parent="." unique_id=69923787]
+custom_minimum_size = Vector2(480, 80)
+layout_mode = 3
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="Fond" type="TextureRect" parent="Bandeau" unique_id=286692750]
+custom_minimum_size = Vector2(480, 130)
+layout_mode = 1
+anchors_preset = 14
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("3_w50lc")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="Gameplay" type="Label" parent="Bandeau" unique_id=317937162]
+layout_mode = 0
+offset_left = 27.0
+offset_top = 17.0
+offset_right = 187.0
+offset_bottom = 66.0
+theme_override_colors/font_color = Color(0.024, 0.247, 0.471, 1)
+theme_override_font_sizes/font_size = 30
+text = "CLASSIQUE"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="SousTitreGameplay" type="Label" parent="Bandeau" unique_id=732923019]
+layout_mode = 0
+offset_left = 27.0
+offset_top = 39.0
+offset_right = 192.0
+offset_bottom = 88.0
+theme_override_colors/font_color = Color(0.067, 0.498, 0.502, 1)
+theme_override_font_sizes/font_size = 18
+text = "Range tes couleurs"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Chrono" type="Label" parent="Bandeau" unique_id=1265229291]
+layout_mode = 0
+offset_left = 292.0
+offset_top = 32.0
+offset_right = 392.0
+offset_bottom = 69.0
+theme_override_colors/font_color = Color(0.023529412, 0.24705882, 0.47058824, 1)
+theme_override_font_sizes/font_size = 27
+text = "00:00.0"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Coups" type="Label" parent="Bandeau" unique_id=363019818]
+visible = false
+layout_mode = 0
+offset_left = 273.0
+offset_top = 47.0
+offset_right = 407.0
+offset_bottom = 96.0
+theme_override_colors/font_color = Color(0.023529412, 0.24705882, 0.47058824, 1)
+theme_override_font_sizes/font_size = 27
+text = "7 Coups"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="BoutonRecommencer" type="TextureButton" parent="Bandeau" unique_id=700081221]
+custom_minimum_size = Vector2(10, 10)
+layout_mode = 0
+offset_left = 202.0
+offset_top = 24.0
+offset_right = 257.0
+offset_bottom = 79.0
+texture_normal = ExtResource("3_yobhf")
+ignore_texture_size = true
+stretch_mode = 5
+
+[node name="BoutonPasser" type="TextureButton" parent="Bandeau" unique_id=82343750]
+custom_minimum_size = Vector2(40, 40)
+layout_mode = 0
+offset_left = 404.0
+offset_top = 26.0
+offset_right = 457.0
+offset_bottom = 79.0
+texture_normal = ExtResource("4_w50lc")
+ignore_texture_size = true
+stretch_mode = 5
+
+[connection signal="gui_input" from="Fond" to="." method="_on_fond_gui_input"]
+[connection signal="pressed" from="Bandeau/BoutonRecommencer" to="." method="_on_bouton_recommencer_pressed"]
+[connection signal="pressed" from="Bandeau/BoutonPasser" to="." method="_on_bouton_passer_pressed"]
