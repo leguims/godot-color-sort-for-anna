@@ -1,0 +1,110 @@
+[gd_scene format=3 uid="uid://p2n6k3kftwqv"]
+
+[ext_resource type="Script" uid="uid://bvobgf0gavp5h" path="res://Scenes/MenuPrincipal/Campagne/GamePlay/Commun/menu_plateau.gd" id="1_aq6n0"]
+[ext_resource type="Texture2D" uid="uid://cwd5vnm5n1uoo" path="res://Art/UI/Gameplay/QuiPerdGagne/background.png" id="2_yu0n7"]
+[ext_resource type="Texture2D" uid="uid://by2ed3g0i7utl" path="res://Art/UI/Gameplay/QuiPerdGagne/base_active.svg" id="3_yu0n7"]
+[ext_resource type="Texture2D" uid="uid://3edjppndwue" path="res://Art/UI/Gameplay/QuiPerdGagne/button_restart.svg" id="4_yi034"]
+[ext_resource type="Texture2D" uid="uid://caedkte1ie6aq" path="res://Art/UI/Gameplay/QuiPerdGagne/button_pass.svg" id="5_ke1tj"]
+
+[node name="MenuPlateauQuiPerdGagne" type="Node" unique_id=561806520]
+script = ExtResource("1_aq6n0")
+
+[node name="Fond" type="TextureRect" parent="." unique_id=882050815]
+offset_right = 480.0
+offset_bottom = 720.0
+texture = ExtResource("2_yu0n7")
+
+[node name="Bandeau" type="Control" parent="." unique_id=69923787]
+custom_minimum_size = Vector2(480, 80)
+layout_mode = 3
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="Fond" type="TextureRect" parent="Bandeau" unique_id=286692750]
+custom_minimum_size = Vector2(480, 130)
+layout_mode = 1
+anchors_preset = 14
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("3_yu0n7")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="Gameplay" type="Label" parent="Bandeau" unique_id=317937162]
+layout_mode = 0
+offset_left = 27.0
+offset_top = 17.0
+offset_right = 187.0
+offset_bottom = 66.0
+theme_override_colors/font_color = Color(0.024, 0.247, 0.471, 1)
+theme_override_font_sizes/font_size = 30
+text = "CLASSIQUE"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="SousTitreGameplay" type="Label" parent="Bandeau" unique_id=732923019]
+layout_mode = 0
+offset_left = 27.0
+offset_top = 39.0
+offset_right = 192.0
+offset_bottom = 88.0
+theme_override_colors/font_color = Color(0.067, 0.498, 0.502, 1)
+theme_override_font_sizes/font_size = 18
+text = "Range tes couleurs"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Chrono" type="Label" parent="Bandeau" unique_id=1265229291]
+layout_mode = 0
+offset_left = 292.0
+offset_top = 32.0
+offset_right = 392.0
+offset_bottom = 69.0
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_font_sizes/font_size = 27
+text = "00:00.0"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Coups" type="Label" parent="Bandeau" unique_id=363019818]
+visible = false
+layout_mode = 0
+offset_left = 273.0
+offset_top = 47.0
+offset_right = 407.0
+offset_bottom = 96.0
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_font_sizes/font_size = 27
+text = "7 Coups"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="BoutonRecommencer" type="TextureButton" parent="Bandeau" unique_id=700081221]
+custom_minimum_size = Vector2(10, 10)
+layout_mode = 0
+offset_left = 189.0
+offset_top = 14.0
+offset_right = 266.0
+offset_bottom = 91.0
+texture_normal = ExtResource("4_yi034")
+ignore_texture_size = true
+stretch_mode = 5
+
+[node name="BoutonPasser" type="TextureButton" parent="Bandeau" unique_id=82343750]
+custom_minimum_size = Vector2(40, 40)
+layout_mode = 0
+offset_left = 393.0
+offset_top = 15.0
+offset_right = 468.0
+offset_bottom = 90.0
+texture_normal = ExtResource("5_ke1tj")
+ignore_texture_size = true
+stretch_mode = 5
+
+[connection signal="gui_input" from="Fond" to="." method="_on_fond_gui_input"]
+[connection signal="pressed" from="Bandeau/BoutonRecommencer" to="." method="_on_bouton_recommencer_pressed"]
+[connection signal="pressed" from="Bandeau/BoutonPasser" to="." method="_on_bouton_passer_pressed"]

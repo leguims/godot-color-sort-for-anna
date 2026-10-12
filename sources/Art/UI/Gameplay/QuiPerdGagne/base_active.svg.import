@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://rpaayndal3sg"
-path="res://.godot/imported/panneau_haut.png-fb0ef098b96972beeab6e6184ee4eff5.ctex"
+uid="uid://by2ed3g0i7utl"
+path="res://.godot/imported/base_active.svg-77e18e846169838f002cb7692a3970c6.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Art/UI/Gameplay/QuiPerdGagne/panneau_haut.png"
-dest_files=["res://.godot/imported/panneau_haut.png-fb0ef098b96972beeab6e6184ee4eff5.ctex"]
+source_file="res://Art/UI/Gameplay/QuiPerdGagne/base_active.svg"
+dest_files=["res://.godot/imported/base_active.svg-77e18e846169838f002cb7692a3970c6.ctex"]
 
 [params]
 
@@ -38,3 +38,6 @@ process/hdr_as_srgb=false
 process/hdr_clamp_exposure=false
 process/size_limit=0
 detect_3d/compress_to=1
+svg/scale=1.0
+editor/scale_with_editor_scale=false
+editor/convert_colors_with_editor_theme=false

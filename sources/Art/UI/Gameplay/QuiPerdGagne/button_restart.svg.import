@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://bcyq27m8bu86m"
-path="res://.godot/imported/bouton_statistiques.png-0f4229f747e04483a5bbfa255ab17976.ctex"
+uid="uid://3edjppndwue"
+path="res://.godot/imported/button_restart.svg-aa82902bcb04b52f54dff7882fd71eb0.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Art/UI/Gameplay/QuiPerdGagne/bouton_statistiques.png"
-dest_files=["res://.godot/imported/bouton_statistiques.png-0f4229f747e04483a5bbfa255ab17976.ctex"]
+source_file="res://Art/UI/Gameplay/QuiPerdGagne/button_restart.svg"
+dest_files=["res://.godot/imported/button_restart.svg-aa82902bcb04b52f54dff7882fd71eb0.ctex"]
 
 [params]
 
@@ -38,3 +38,6 @@ process/hdr_as_srgb=false
 process/hdr_clamp_exposure=false
 process/size_limit=0
 detect_3d/compress_to=1
+svg/scale=1.0
+editor/scale_with_editor_scale=false
+editor/convert_colors_with_editor_theme=false

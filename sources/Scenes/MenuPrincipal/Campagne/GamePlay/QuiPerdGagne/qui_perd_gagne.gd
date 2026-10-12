@@ -6,7 +6,11 @@ func _ready() -> void:
 	super._ready()
 
 	# Initialiser le menu
-	$MenuPlateau.enregistrer_gameplay("Qui Perd Gagne", 22)
+	# TODO : On garde les textes de l'image du bandeau
+	# $MenuPlateau.enregistrer_gameplay("Qui Perd Gagne")
+	# $MenuPlateau.enregistrer_sous_titre_gameplay("Bloque le jeu")
+	$MenuPlateau.enregistrer_gameplay("")
+	$MenuPlateau.enregistrer_sous_titre_gameplay("")
 
 # Callback pour "Plateau"
 func est_termine(liste_piles) -> bool:
@@ -28,7 +32,7 @@ func est_termine(liste_piles) -> bool:
 	var termine = plateau_bloque and une_pile_en_desordre
 	if termine:
 		LogService.log_debug("QuiPerdGagne : victoire.emit()")
-		$MenuPlateau/Top/BoutonRecommencer.hide()
-		$MenuPlateau/Top/BoutonPasser.hide()
+		$MenuPlateau/Bandeau/BoutonRecommencer.hide()
+		$MenuPlateau/Bandeau/BoutonPasser.hide()
 		victoire.emit()
 	return termine
