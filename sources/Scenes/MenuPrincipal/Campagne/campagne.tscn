@@ -18,10 +18,6 @@ script = ExtResource("1_4bhsb")
 
 [node name="MenuCampagne" parent="." unique_id=483873486 instance=ExtResource("2_7600w")]
 
-[node name="Classique" parent="." unique_id=1128983127 instance=ExtResource("4_g2d8q")]
-
-[node name="QuiPerdGagne" parent="." unique_id=812583295 instance=ExtResource("4_vo5oq")]
-
 [node name="AuPlusPres" parent="." unique_id=1075643544 instance=ExtResource("5_31qgg")]
 
 [node name="PilePoil" parent="." unique_id=537780160 instance=ExtResource("7_pda3a")]
@@ -38,13 +34,17 @@ script = ExtResource("1_4bhsb")
 
 [node name="MotCache" parent="." unique_id=556800384 instance=ExtResource("6_s21pl")]
 
+[node name="QuiPerdGagne" parent="." unique_id=812583295 instance=ExtResource("4_vo5oq")]
+
+[node name="Classique" parent="." unique_id=1128983127 instance=ExtResource("4_g2d8q")]
+
 [connection signal="commencer_plateau" from="MenuCampagne" to="." method="_on_menu_commencer_plateau"]
 [connection signal="score_continuer" from="MenuCampagne" to="." method="_on_menu_campagne_score_continuer"]
-[connection signal="abandon" from="Classique" to="." method="_on_classique_abandon"]
-[connection signal="passe" from="Classique" to="." method="_on_classique_passe"]
-[connection signal="plateau_invalide" from="Classique" to="." method="_on_classique_plateau_invalide"]
-[connection signal="victoire" from="Classique" to="." method="_on_classique_victoire"]
 [connection signal="abandon" from="QuiPerdGagne" to="." method="_on_qui_perd_gagne_abandon"]
 [connection signal="passe" from="QuiPerdGagne" to="." method="_on_qui_perd_gagne_passe"]
 [connection signal="plateau_invalide" from="QuiPerdGagne" to="." method="_on_qui_perd_gagne_plateau_invalide"]
 [connection signal="victoire" from="QuiPerdGagne" to="." method="_on_qui_perd_gagne_victoire"]
+[connection signal="abandon" from="Classique" to="." method="_on_classique_abandon"]
+[connection signal="passe" from="Classique" to="." method="_on_classique_passe"]
+[connection signal="plateau_invalide" from="Classique" to="." method="_on_classique_plateau_invalide"]
+[connection signal="victoire" from="Classique" to="." method="_on_classique_victoire"]

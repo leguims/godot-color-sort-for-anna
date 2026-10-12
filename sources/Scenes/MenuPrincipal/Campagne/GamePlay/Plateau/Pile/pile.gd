@@ -11,8 +11,8 @@ var reference_parent
 var position = Vector2(0, 720)
 var marge = 4
 
-var couleur_de_deselection = Color("580058")
-var couleur_de_deplacement_valide = Color("d800d8")
+var couleur_de_deselection = Color("580058", 0.25) # 75% de transparence
+var couleur_de_deplacement_valide = Color("d800d8", 0.25) # 75% de transparence
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
@@ -63,6 +63,7 @@ func ajouter_les_jetons(jetons : Array) -> bool:
 	# Definir la taille du fond de pile
 	var size = Vector2(largeur(), hauteur() )
 	$Fond.set_size(size)
+	$Fond.color = couleur_de_deselection
 	
 	# Definir la position du fond de pile
 	_ajuster_position_fond()
