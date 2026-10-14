@@ -1,6 +1,6 @@
 [gd_scene format=3 uid="uid://c0niprepyb4wv"]
 
-[ext_resource type="Script" uid="uid://b10dbj3evodsi" path="res://Scenes/MenuPrincipal/Campagne/MenuCampagne/Statistiques/carte_mode.gd" id="1_1wc8w"]
+[ext_resource type="Script" uid="uid://b10dbj3evodsi" path="res://Scenes/MenuPrincipal/Campagne/Statistiques/carte_mode.gd" id="1_1wc8w"]
 [ext_resource type="FontFile" uid="uid://dbs77if6q2gtc" path="res://Art/UI/Fonts/TeXGyreAdventor/texgyreadventor-bold.otf" id="bold"]
 [ext_resource type="FontFile" uid="uid://8pcourumhksh" path="res://Art/UI/Fonts/TeXGyreAdventor/texgyreadventor-regular.otf" id="regular"]
 

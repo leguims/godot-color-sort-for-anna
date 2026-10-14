@@ -183,7 +183,7 @@ func _on_joueurs_campagne_pressed(nom_joueur: String) -> void:
 	else:
 		AudioService.son_menu_click()
 		VibrationService.vibration_click()
-		get_tree().change_scene_to_file("res://Scenes/MenuPrincipal/Campagne/MenuCampagne/Statistiques/statistiques.tscn")
+		get_tree().change_scene_to_file("res://Scenes/MenuPrincipal/Campagne/Statistiques/statistiques.tscn")
 
 func _on_nouveau_joueur_text_submitted(nom_nouveau_joueur: String):
 	if ScoreService.nouveau_joueur_est_nom_anna_triche(nom_nouveau_joueur):

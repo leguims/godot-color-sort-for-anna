@@ -1,7 +1,7 @@
 [gd_scene format=3 uid="uid://ocjm8ifi8b5e"]
 
 [ext_resource type="Script" uid="uid://lr4yw7152woc" path="res://Scenes/MenuPrincipal/Campagne/campagne.gd" id="1_4bhsb"]
-[ext_resource type="PackedScene" uid="uid://xsrt777ms37l" path="res://Scenes/MenuPrincipal/Campagne/MenuCampagne/menu_campagne.tscn" id="2_7600w"]
+[ext_resource type="PackedScene" uid="uid://xsrt777ms37l" path="res://Scenes/MenuPrincipal/Campagne/MessagesCampagne/messages_campagne.tscn" id="2_7600w"]
 [ext_resource type="PackedScene" uid="uid://dpvlgfl5dhgt2" path="res://Scenes/MenuPrincipal/Campagne/GamePlay/Classique/classique.tscn" id="4_g2d8q"]
 [ext_resource type="PackedScene" uid="uid://chc4x5hks4sxg" path="res://Scenes/MenuPrincipal/Campagne/GamePlay/QuiPerdGagne/qui_perd_gagne.tscn" id="4_vo5oq"]
 [ext_resource type="PackedScene" uid="uid://dy35pqwie4tjq" path="res://Scenes/MenuPrincipal/Campagne/GamePlay/AuPlusPres/au_plus_pres.tscn" id="5_31qgg"]
@@ -16,7 +16,11 @@
 [node name="Campagne" type="Node" unique_id=1325573828]
 script = ExtResource("1_4bhsb")
 
-[node name="MenuCampagne" parent="." unique_id=483873486 instance=ExtResource("2_7600w")]
+[node name="MessagesCampagne" parent="." unique_id=483873486 instance=ExtResource("2_7600w")]
+
+[node name="Classique" parent="." unique_id=1128983127 instance=ExtResource("4_g2d8q")]
+
+[node name="QuiPerdGagne" parent="." unique_id=812583295 instance=ExtResource("4_vo5oq")]
 
 [node name="AuPlusPres" parent="." unique_id=1075643544 instance=ExtResource("5_31qgg")]
 
@@ -34,17 +38,14 @@ script = ExtResource("1_4bhsb")
 
 [node name="MotCache" parent="." unique_id=556800384 instance=ExtResource("6_s21pl")]
 
-[node name="QuiPerdGagne" parent="." unique_id=812583295 instance=ExtResource("4_vo5oq")]
-
-[node name="Classique" parent="." unique_id=1128983127 instance=ExtResource("4_g2d8q")]
-
-[connection signal="commencer_plateau" from="MenuCampagne" to="." method="_on_menu_commencer_plateau"]
-[connection signal="score_continuer" from="MenuCampagne" to="." method="_on_menu_campagne_score_continuer"]
-[connection signal="abandon" from="QuiPerdGagne" to="." method="_on_qui_perd_gagne_abandon"]
-[connection signal="passe" from="QuiPerdGagne" to="." method="_on_qui_perd_gagne_passe"]
-[connection signal="plateau_invalide" from="QuiPerdGagne" to="." method="_on_qui_perd_gagne_plateau_invalide"]
-[connection signal="victoire" from="QuiPerdGagne" to="." method="_on_qui_perd_gagne_victoire"]
+[connection signal="score_continuer" from="MessagesCampagne" to="." method="_on_messages_campagne_score_continuer"]
 [connection signal="abandon" from="Classique" to="." method="_on_classique_abandon"]
+[connection signal="commencer_plateau" from="Classique" to="." method="_on_menu_commencer_plateau"]
 [connection signal="passe" from="Classique" to="." method="_on_classique_passe"]
 [connection signal="plateau_invalide" from="Classique" to="." method="_on_classique_plateau_invalide"]
 [connection signal="victoire" from="Classique" to="." method="_on_classique_victoire"]
+[connection signal="abandon" from="QuiPerdGagne" to="." method="_on_qui_perd_gagne_abandon"]
+[connection signal="commencer_plateau" from="QuiPerdGagne" to="." method="_on_menu_commencer_plateau"]
+[connection signal="passe" from="QuiPerdGagne" to="." method="_on_qui_perd_gagne_passe"]
+[connection signal="plateau_invalide" from="QuiPerdGagne" to="." method="_on_qui_perd_gagne_plateau_invalide"]
+[connection signal="victoire" from="QuiPerdGagne" to="." method="_on_qui_perd_gagne_victoire"]

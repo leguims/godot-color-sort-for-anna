@@ -136,7 +136,7 @@ func gagner_un_plateau() -> void:
 
 	# Emmettre un signal de mise à jour du niveau
 	# TODO : Le signal n'est lu par personne. Normal ?
-	# progression_niveau.emit() # Pour mise à jour des bandeaux d'infos
+	# progression_niveau.emit() # Pour mise à jour des BandeauEnJeux d'infos
 	afficher_niveau_plateau_parties()
 
 func abandonner_un_plateau() -> void:
@@ -162,7 +162,7 @@ func passer_un_plateau() -> void:
 
 	# Emmettre un signal de mise à jour du niveau
 	# TODO : Le signal n'est lu par personne. Normal ?
-	# progression_niveau.emit() # Pour mise à jour des bandeaux d'infos
+	# progression_niveau.emit() # Pour mise à jour des BandeauEnJeux d'infos
 	afficher_niveau_plateau_parties()
 
 func afficher_niveau_plateau_parties():

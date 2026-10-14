@@ -6,6 +6,7 @@ signal plateau_invalide
 signal abandon
 signal passe
 signal victoire
+signal commencer_plateau
 
 func _ready() -> void:
 	# Connecter la callback de gameplay au "Plateau"
@@ -17,25 +18,25 @@ func _ready() -> void:
 	$MenuPlateau.enregistrer_coups("0 Coup")
 
 	# Transmettre les infos de l'UI à Plateau
-	$Plateau.enregistrer_bouton_recommencer_size_y($MenuPlateau/Bandeau.size.y)
+	$Plateau.enregistrer_bouton_recommencer_size_y($MenuPlateau/BandeauEnJeu.size.y)
 
 # API pour "Campagne"
 func est_valide(plateau_texte : String) -> bool:
 	return $Plateau.est_valide(plateau_texte)
 
+func commencer_un_nouveau_gameplay() -> void:
+	$MenuPlateau.show_menu()
+
 func commencer_un_nouveau_plateau(plateau_texte : String) -> void:
 	$Plateau.commencer_un_nouveau_plateau(plateau_texte)
-	show()
-
-func show():
-	$MenuPlateau.show()
+	$MenuPlateau.show_jeu()
 
 func hide():
 	$MenuPlateau.hide()
 	$Plateau.hide()
 
-func cacher_accueil():
-	$MenuPlateau.cacher_accueil()
+func show_fond():
+	$MenuPlateau.show_fond()
 
 # Callback pour "Plateau"
 func est_termine(_liste_piles) -> bool:
@@ -50,3 +51,6 @@ func _on_menu_plateau_abandon() -> void:
 
 func _on_menu_plateau_passe() -> void:
 	passe.emit()
+
+func _on_menu_plateau_commencer_plateau() -> void:
+	commencer_plateau.emit()

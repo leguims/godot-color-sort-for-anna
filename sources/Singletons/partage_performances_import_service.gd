@@ -4,7 +4,7 @@ signal partage_qr_code(qr_data: Dictionary)
 
 const API_SCRIPT := preload("res://Scenes/MenuPrincipal/Campagne/PartagePerformances/partage_performances_api.gd")
 const MENU_PRINCIPAL_PATH := "res://Scenes/MenuPrincipal/menu_principal.tscn"
-const STATISTIQUES_PATH := "res://Scenes/MenuPrincipal/Campagne/MenuCampagne/Statistiques/statistiques.tscn"
+const STATISTIQUES_PATH := "res://Scenes/MenuPrincipal/Campagne/Statistiques/statistiques.tscn"
 const MESSAGE_ERREUR_IMPORT := "Erreur sur import QR, aucune action."
 
 var _api: Node

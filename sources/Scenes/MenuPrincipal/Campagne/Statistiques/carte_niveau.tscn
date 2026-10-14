@@ -1,6 +1,6 @@
 [gd_scene format=3 uid="uid://bd6cjm57d1tvg"]
 
-[ext_resource type="Script" uid="uid://bwccy28boj7ig" path="res://Scenes/MenuPrincipal/Campagne/MenuCampagne/Statistiques/carte_niveau.gd" id="1_g85l4"]
+[ext_resource type="Script" uid="uid://bwccy28boj7ig" path="res://Scenes/MenuPrincipal/Campagne/Statistiques/carte_niveau.gd" id="1_g85l4"]
 [ext_resource type="Texture2D" uid="uid://boq5lob466t4c" path="res://Art/UI/Statistiques/cube_niveau_34x34_normalized.png" id="1_gpfl3"]
 [ext_resource type="FontFile" uid="uid://dbs77if6q2gtc" path="res://Art/UI/Fonts/TeXGyreAdventor/texgyreadventor-bold.otf" id="1_q3spe"]
 [ext_resource type="FontFile" uid="uid://8pcourumhksh" path="res://Art/UI/Fonts/TeXGyreAdventor/texgyreadventor-regular.otf" id="2_gpfl3"]

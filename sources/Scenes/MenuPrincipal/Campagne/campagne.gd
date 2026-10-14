@@ -6,6 +6,8 @@ extends Node
 
 class_name Campagne
 
+var gameplay_courant : Node
+
 func gameplay_to_ui(gameplay : GameplayTypes.Gameplay) -> Node:
 	match gameplay:
 		GameplayTypes.Gameplay.CLASSIQUE:
@@ -36,10 +38,12 @@ func gameplay_to_ui(gameplay : GameplayTypes.Gameplay) -> Node:
 func _ready() -> void:
 	# Connecter les signaux attendus
 
-	cacher_les_gameplays()
-	$MenuCampagne.cacher_accueil()
-	$MenuCampagne.afficher_plateau_suivant()
-	$MenuCampagne.show()
+	var gameplay_str : String = SauvegardeBddJoueursService.campagne_lire_prochain_gameplay()
+	var gameplay : GameplayTypes.Gameplay = GameplayTypes.gameplay_to_enum(gameplay_str)
+	gameplay_courant = gameplay_to_ui(gameplay)
+	commencer_un_nouveau_gameplay(gameplay)
+
+	$MessagesCampagne.hide()
 
 func _on_menu_commencer_plateau() -> void:
 	ProgressionCampagneService.commencer_un_plateau()
@@ -49,12 +53,11 @@ func _lancer_plateau_de_campagne() -> void:
 	var plateau : String = SauvegardeBddJoueursService.enregistrement_lire_nom_plateau()
 	var gameplay_str : String = SauvegardeBddJoueursService.enregistrement_lire_gameplay_plateau()
 	var gameplay : GameplayTypes.Gameplay = GameplayTypes.gameplay_to_enum(gameplay_str)
-	var ui_gameplay : Node = gameplay_to_ui(gameplay)
+	gameplay_courant = gameplay_to_ui(gameplay)
 
-	if ui_gameplay.est_valide(plateau):
-		$MenuCampagne.cacher_accueil()
-		montrer_le_gameplay(gameplay)
-		ui_gameplay.commencer_un_nouveau_plateau(plateau)
+	if gameplay_courant.est_valide(plateau):
+		$MessagesCampagne.hide()
+		gameplay_courant.commencer_un_nouveau_plateau(plateau)
 		AudioService.son_commencer_un_plateau()
 		AudioService.jouer_la_musique()
 	else:
@@ -66,38 +69,46 @@ func _on_classique_plateau_invalide() -> void:
 
 func _on_classique_victoire() -> void:
 	ProgressionCampagneService.gagner_un_plateau()
-	$MenuCampagne.show()
+	$MessagesCampagne.show()
 	if ProgressionCampagneService.la_campagne_est_terminee():
-		$MenuCampagne.afficher_fin_campagne()
+		$MessagesCampagne.afficher_fin_campagne()
 	elif not ProgressionCampagneService.niveau_en_cours():
-		$MenuCampagne.afficher_fin_niveau()
+		$MessagesCampagne.afficher_fin_niveau()
 	else:
-		$MenuCampagne.afficher_gagner_un_plateau()
+		$MessagesCampagne.afficher_gagner_un_plateau()
 	AudioService.son_gagner_un_plateau()
 	AudioService.arreter_la_musique()
 
 func _on_classique_abandon() -> void:
 	# Mettre à jour les plateaux à jouer
 	ProgressionCampagneService.abandonner_un_plateau()
-	cacher_les_gameplays()
-	$MenuCampagne.show()
-	$MenuCampagne.afficher_abandonner_un_plateau()
+	gameplay_courant.show_fond()
+	$MessagesCampagne.show()
+	$MessagesCampagne.afficher_abandonner_un_plateau()
 	AudioService.son_abandonner_un_plateau()
 	AudioService.arreter_la_musique()
 
 func _on_classique_passe() -> void:
 	# Mettre à jour les plateaux à jouer
 	ProgressionCampagneService.passer_un_plateau()
-	cacher_les_gameplays()
-	$MenuCampagne.show()
-	$MenuCampagne.afficher_passer_un_plateau()
+	gameplay_courant.show_fond()
+	$MessagesCampagne.show()
+	$MessagesCampagne.afficher_passer_un_plateau()
 	AudioService.son_passer_un_plateau()
 	AudioService.arreter_la_musique()
 
-func _on_menu_campagne_score_continuer() -> void:
+func _on_messages_campagne_score_continuer() -> void:
 	# Fin d'affichage du score, réactiver le menu
+	pass
 	if not ProgressionCampagneService.la_campagne_est_terminee():
-		$MenuCampagne.afficher_plateau_suivant()
+		$MessagesCampagne.hide()
+
+		# Afficher le prochain gameplay
+		var gameplay_str : String = SauvegardeBddJoueursService.campagne_lire_prochain_gameplay()
+		var gameplay : GameplayTypes.Gameplay = GameplayTypes.gameplay_to_enum(gameplay_str)
+		gameplay_courant.hide()
+		gameplay_courant = gameplay_to_ui(gameplay)
+		gameplay_courant.commencer_un_nouveau_gameplay()
 
 
 func _on_qui_perd_gagne_plateau_invalide() -> void:
@@ -113,16 +124,16 @@ func _on_qui_perd_gagne_passe() -> void:
 	_on_classique_passe()
 
 func cacher_les_gameplays() -> void:
-	$Classique.cacher_accueil()
-	$QuiPerdGagne.cacher_accueil()
+	$Classique.hide()
+	$QuiPerdGagne.hide()
 
-func montrer_le_gameplay(gameplay : GameplayTypes.Gameplay) -> void:
+func commencer_un_nouveau_gameplay(gameplay : GameplayTypes.Gameplay) -> void:
 	if gameplay == GameplayTypes.Gameplay.CLASSIQUE:
 		$QuiPerdGagne.hide()
-		$Classique.show()
+		$Classique.commencer_un_nouveau_gameplay()
 	if gameplay == GameplayTypes.Gameplay.QUI_PERD_GAGNE:
 		$Classique.hide()
-		$QuiPerdGagne.show()
+		$QuiPerdGagne.commencer_un_nouveau_gameplay()
 
 func instance_gameplay(gameplay : GameplayTypes.Gameplay) -> Node:
 	if gameplay == GameplayTypes.Gameplay.CLASSIQUE:

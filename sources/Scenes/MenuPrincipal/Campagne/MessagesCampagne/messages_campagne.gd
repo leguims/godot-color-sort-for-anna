@@ -1,14 +1,10 @@
 extends CanvasLayer
 
-class_name MenuCampagne
+class_name MessagesCampagne
 
 signal score_continuer
 
-var formatter := FormatterMenuCampagne.new()
 var beta_test: bool = true
-
-# Notifie la scene `Plateau` que le bouton est pressé
-signal commencer_plateau
 
 enum ActionApresPartage { AUCUNE, NIVEAU_SUIVANT, STATISTIQUES }
 
@@ -20,55 +16,34 @@ func _ready() -> void:
 	var pcs = get_node("/root/ProgressionCampagneService")
 	pcs.detail_score_plateau.connect(_on_progression_campagne_service_detail_score_plateau)
 	pcs.fin_campagne.connect(_on_progression_campagne_service_fin_campagne)
+	
 
 # ###### SIGNAUX##########
 func _on_progression_campagne_service_detail_score_plateau(detail_score: Dictionary):
 	afficher_detail_score(detail_score)
 
 func _on_progression_campagne_service_fin_campagne() -> void:
-	_on_bouton_statistiques_pressed()
-
-func _on_bouton_menu_principal_pressed() -> void:
 	AudioService.son_menu_click()
 	VibrationService.vibration_click()
+	# Basculer sur les statistiques
 	get_tree().change_scene_to_file("res://Scenes/MenuPrincipal/menu_principal.tscn")
+
 
 func _on_bouton_statistiques_pressed() -> void:
 	AudioService.son_menu_click()
 	VibrationService.vibration_click()
-	get_tree().change_scene_to_file("res://Scenes/MenuPrincipal/Campagne/MenuCampagne/Statistiques/statistiques.tscn")
-
-func _on_bouton_commencer_pressed() -> void:
-	AudioService.son_menu_click()
-	VibrationService.vibration_click()
-	var date_debut_campagne = SauvegardeConfigurationService.lire_la_date_debut_campagne_timestamp()
-	if Time.get_unix_time_from_system() < date_debut_campagne:
-		var datetime_debut_campagne = Time.get_datetime_dict_from_unix_time( date_debut_campagne )
-		var annee = datetime_debut_campagne.get('year')
-		var mois = datetime_debut_campagne.get('month')
-		var jour = datetime_debut_campagne.get('day')
-		# var heure = datetime_debut_campagne.get('hour')
-		# var minute = datetime_debut_campagne.get('minute')
-
-		# TODO : Faire un message pour l'usager.
-		# var message = "Soyez patient, la campagne commence le " \
-		# 	+ str(jour).pad_zeros(2) +"/"+str(mois).pad_zeros(2)+"/"+str(annee)+"."
-		# afficher_message_simple(message, 5.)
-	else:
-		commencer_plateau.emit()
+	get_tree().change_scene_to_file("res://Scenes/MenuPrincipal/Campagne/Statistiques/statistiques.tscn")
 
 # ###### SIGNAUX##########
 # Panneau de détail du score
 func _on_panneau_defaite_continuer() -> void:
 	$Centrer.hide()
 	$Centrer/PanneauDefaite.hide()
-	$BoutonCommencer.show()
 	score_continuer.emit() #Redonner la main à "campagne" pour la suite
 
 func _on_panneau_victoire_plateau_continuer() -> void:
 	$Centrer.hide()
 	$Centrer/PanneauVictoirePlateau.hide()
-	$BoutonCommencer.show()
 	score_continuer.emit() #Redonner la main à "campagne" pour la suite
 
 func _on_panneau_victoire_niveau_continuer() -> void:
@@ -87,7 +62,6 @@ func _on_panneau_partage_performances_fermer() -> void:
 	_action_apres_partage = ActionApresPartage.AUCUNE
 	match action:
 		ActionApresPartage.NIVEAU_SUIVANT:
-			$BoutonCommencer.show()
 			score_continuer.emit()
 		ActionApresPartage.STATISTIQUES:
 			_on_bouton_statistiques_pressed()
@@ -97,7 +71,6 @@ func _afficher_partage_dernier_niveau() -> void:
 	$Centrer.hide()
 	$Centrer/PanneauVictoireNiveau.hide()
 	$Centrer/PanneauVictoireCampagne.hide()
-	$BoutonCommencer.hide()
 	if beta_test:
 		$Centrer/PanneauPartagePerformances.afficher_dernier_niveau()
 		$Centrer.show()
@@ -114,48 +87,19 @@ func afficher_partage_performances(enregistrements: Dictionary) -> void:
 	$Centrer.show()
 
 
-
-func mettre_a_jour_infos_joueur() -> void:
-	$InfosDuJoueur/TexteInfosDuJoueur.bbcode_text = formatter.formater_infos_joueur()
-
-func afficher_plateau_suivant():
-	$BoutonMenuPrincipal.show()
-	$BoutonStatistiques.show()
-	mettre_a_jour_infos_joueur()
-	$InfosDuJoueur.show()
-	$BoutonCommencer.show()
-
-func cacher_accueil():
-	$BoutonMenuPrincipal.hide()
-	$BoutonStatistiques.hide()
-	$InfosDuJoueur.hide()
-	$BoutonCommencer.hide()
-
-
-
 func afficher_plateau_invalide():
 	# Pas de plateau invalide en campagne
 	pass
 
 func afficher_abandonner_un_plateau():
-	$BoutonMenuPrincipal.show()
-	$BoutonStatistiques.show()
-	mettre_a_jour_infos_joueur()
-	$InfosDuJoueur.show()
-	
 	$Centrer.show()
 	$Centrer/PanneauDefaite.show()
 
 func afficher_passer_un_plateau():
-	$BoutonMenuPrincipal.show()
-	$BoutonStatistiques.show()
-	mettre_a_jour_infos_joueur()
-	$InfosDuJoueur.show()
-
 	# TODO : Panneau pour le plateau passé
-	$BoutonCommencer.show()
 	# $Centrer.show()
 	# $Centrer/PanneauPasse.show()
+	pass
 
 func afficher_gagner_un_plateau() -> void:
 	# TODO : Insérer ici un message positif pour le joueur apres le score
@@ -167,7 +111,7 @@ func afficher_fin_niveau():
 
 func afficher_fin_campagne():
 	# TODO : Insérer ici un message positif pour le joueur apres le score
-	$BoutonCommencer.hide()
+	pass
 
 
 

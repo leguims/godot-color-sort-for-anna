@@ -12,6 +12,7 @@ script = ExtResource("1_ho47t")
 [node name="Plateau" parent="." unique_id=1226306511 instance=ExtResource("2_sr5dy")]
 
 [connection signal="abandon" from="MenuPlateau" to="." method="_on_menu_plateau_abandon"]
+[connection signal="commencer_plateau" from="MenuPlateau" to="." method="_on_menu_plateau_commencer_plateau"]
 [connection signal="deselection_pile" from="MenuPlateau" to="Plateau" method="_on_menu_plateau_deselection_pile"]
 [connection signal="passe" from="MenuPlateau" to="." method="_on_menu_plateau_passe"]
 [connection signal="plateau_invalide" from="Plateau" to="." method="_on_plateau_plateau_invalide"]

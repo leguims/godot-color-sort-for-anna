@@ -1,6 +1,6 @@
 [gd_scene format=3 uid="uid://bwafrdrv423al"]
 
-[ext_resource type="Script" uid="uid://ckapifkomuray" path="res://Scenes/MenuPrincipal/Campagne/MenuCampagne/Statistiques/carte_score.gd" id="1_k881g"]
+[ext_resource type="Script" uid="uid://ckapifkomuray" path="res://Scenes/MenuPrincipal/Campagne/Statistiques/carte_score.gd" id="1_k881g"]
 [ext_resource type="FontFile" uid="uid://dbs77if6q2gtc" path="res://Art/UI/Fonts/TeXGyreAdventor/texgyreadventor-bold.otf" id="2_sriur"]
 [ext_resource type="Texture2D" uid="uid://bqd37gkoeur8e" path="res://Art/UI/icons/grades/medaille_bronze_48.png" id="4_qmopr"]
 [ext_resource type="Texture2D" uid="uid://b5wjqipcu265e" path="res://Art/UI/Statistiques/laurier_score_gauche.png" id="5_jq5f8"]

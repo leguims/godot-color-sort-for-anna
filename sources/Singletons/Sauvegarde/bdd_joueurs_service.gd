@@ -281,6 +281,12 @@ func campagne_lire_prochain_plateau_pour_niveau_courant() -> Dictionary:
 	var niveau = enregistrement_lire_valeur_niveau_joueur()
 	return campagne_lire_premier_plateau(niveau)
 
+func campagne_lire_prochain_gameplay() -> String:
+	"Désigne le prochain gameplay de campagne à jouer"
+	var niveau = campagne_lire_prochain_niveau()
+	var plateau = campagne_lire_premier_plateau(niveau)
+	return plateau.get("gameplay", 'aucun_gameplay')
+
 func campagne_supprimer_et_memoriser_plateau_courant() -> bool:
 	"Efface le plateau courant et memorise dans le jeu libre."
 	if le_joueur_existe() and enregistrement_lire_statut_plateau() == 'en cours':

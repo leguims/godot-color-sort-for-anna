@@ -5,6 +5,10 @@
 [ext_resource type="Texture2D" uid="uid://by2ed3g0i7utl" path="res://Art/UI/Gameplay/QuiPerdGagne/base_active.svg" id="3_yu0n7"]
 [ext_resource type="Texture2D" uid="uid://3edjppndwue" path="res://Art/UI/Gameplay/QuiPerdGagne/button_restart.svg" id="4_yi034"]
 [ext_resource type="Texture2D" uid="uid://caedkte1ie6aq" path="res://Art/UI/Gameplay/QuiPerdGagne/button_pass.svg" id="5_ke1tj"]
+[ext_resource type="Texture2D" uid="uid://bmephnpsiv1fb" path="res://Art/UI/Gameplay/QuiPerdGagne/base_before.svg" id="6_xu0gr"]
+[ext_resource type="Texture2D" uid="uid://cdofnpueweihn" path="res://Art/UI/Gameplay/QuiPerdGagne/button_home.svg" id="7_t8u56"]
+[ext_resource type="Texture2D" uid="uid://ct45vk1sy7j4j" path="res://Art/UI/Gameplay/QuiPerdGagne/button_play.svg" id="8_m5lak"]
+[ext_resource type="Texture2D" uid="uid://b6bel5tao173w" path="res://Art/UI/Gameplay/QuiPerdGagne/button_stats.svg" id="9_uo1c6"]
 
 [node name="MenuPlateauQuiPerdGagne" type="Node" unique_id=561806520]
 script = ExtResource("1_aq6n0")
@@ -14,14 +18,15 @@ offset_right = 480.0
 offset_bottom = 720.0
 texture = ExtResource("2_yu0n7")
 
-[node name="Bandeau" type="Control" parent="." unique_id=69923787]
+[node name="BandeauEnJeu" type="Control" parent="." unique_id=69923787]
+visible = false
 custom_minimum_size = Vector2(480, 80)
 layout_mode = 3
 anchors_preset = 0
 offset_right = 40.0
 offset_bottom = 40.0
 
-[node name="Fond" type="TextureRect" parent="Bandeau" unique_id=286692750]
+[node name="Fond" type="TextureRect" parent="BandeauEnJeu" unique_id=286692750]
 custom_minimum_size = Vector2(480, 130)
 layout_mode = 1
 anchors_preset = 14
@@ -34,7 +39,8 @@ texture = ExtResource("3_yu0n7")
 expand_mode = 1
 stretch_mode = 5
 
-[node name="Gameplay" type="Label" parent="Bandeau" unique_id=317937162]
+[node name="Gameplay" type="Label" parent="BandeauEnJeu" unique_id=317937162]
+visible = false
 layout_mode = 0
 offset_left = 27.0
 offset_top = 17.0
@@ -46,7 +52,8 @@ text = "CLASSIQUE"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="SousTitreGameplay" type="Label" parent="Bandeau" unique_id=732923019]
+[node name="SousTitreGameplay" type="Label" parent="BandeauEnJeu" unique_id=732923019]
+visible = false
 layout_mode = 0
 offset_left = 27.0
 offset_top = 39.0
@@ -58,19 +65,19 @@ text = "Range tes couleurs"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="Chrono" type="Label" parent="Bandeau" unique_id=1265229291]
+[node name="Chrono" type="Label" parent="BandeauEnJeu" unique_id=1265229291]
 layout_mode = 0
 offset_left = 292.0
 offset_top = 32.0
 offset_right = 392.0
 offset_bottom = 69.0
 theme_override_colors/font_color = Color(1, 1, 1, 1)
-theme_override_font_sizes/font_size = 27
+theme_override_font_sizes/font_size = 26
 text = "00:00.0"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="Coups" type="Label" parent="Bandeau" unique_id=363019818]
+[node name="Coups" type="Label" parent="BandeauEnJeu" unique_id=363019818]
 visible = false
 layout_mode = 0
 offset_left = 273.0
@@ -83,7 +90,7 @@ text = "7 Coups"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="BoutonRecommencer" type="TextureButton" parent="Bandeau" unique_id=700081221]
+[node name="BoutonRecommencer" type="TextureButton" parent="BandeauEnJeu" unique_id=700081221]
 custom_minimum_size = Vector2(10, 10)
 layout_mode = 0
 offset_left = 189.0
@@ -94,7 +101,7 @@ texture_normal = ExtResource("4_yi034")
 ignore_texture_size = true
 stretch_mode = 5
 
-[node name="BoutonPasser" type="TextureButton" parent="Bandeau" unique_id=82343750]
+[node name="BoutonPasser" type="TextureButton" parent="BandeauEnJeu" unique_id=82343750]
 custom_minimum_size = Vector2(40, 40)
 layout_mode = 0
 offset_left = 393.0
@@ -105,6 +112,99 @@ texture_normal = ExtResource("5_ke1tj")
 ignore_texture_size = true
 stretch_mode = 5
 
+[node name="BandeauMenu" type="Control" parent="." unique_id=1623177161]
+custom_minimum_size = Vector2(480, 80)
+layout_mode = 3
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="Fond" type="TextureRect" parent="BandeauMenu" unique_id=1523861819]
+custom_minimum_size = Vector2(480, 130)
+layout_mode = 1
+anchors_preset = 14
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("6_xu0gr")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="Joueur" type="Label" parent="BandeauMenu" unique_id=583524707]
+custom_minimum_size = Vector2(160, 40)
+layout_mode = 0
+offset_left = 138.0
+offset_top = 16.0
+offset_right = 298.0
+offset_bottom = 56.0
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_font_sizes/font_size = 21
+text = "Anna Damour"
+vertical_alignment = 1
+
+[node name="Niveau" type="Label" parent="BandeauMenu" unique_id=1983021139]
+custom_minimum_size = Vector2(25, 20)
+layout_mode = 0
+offset_left = 169.0
+offset_top = 58.0
+offset_right = 193.0
+offset_bottom = 78.0
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_font_sizes/font_size = 14
+text = "X"
+vertical_alignment = 1
+
+[node name="Pourcentage" type="Label" parent="BandeauMenu" unique_id=928664327]
+custom_minimum_size = Vector2(40, 20)
+layout_mode = 0
+offset_left = 259.0
+offset_top = 59.0
+offset_right = 299.0
+offset_bottom = 79.0
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_font_sizes/font_size = 14
+text = "100%"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="BoutonMenuPrincipal" type="TextureButton" parent="BandeauMenu" unique_id=738543853]
+custom_minimum_size = Vector2(10, 10)
+layout_mode = 0
+offset_left = -10.0
+offset_top = -1.0
+offset_right = 98.0
+offset_bottom = 107.0
+texture_normal = ExtResource("7_t8u56")
+ignore_texture_size = true
+stretch_mode = 5
+
+[node name="BoutonCommencer" type="TextureButton" parent="BandeauMenu" unique_id=2050059009]
+custom_minimum_size = Vector2(40, 40)
+layout_mode = 0
+offset_left = 300.0
+offset_top = 12.0
+offset_right = 381.0
+offset_bottom = 93.0
+texture_normal = ExtResource("8_m5lak")
+ignore_texture_size = true
+stretch_mode = 5
+
+[node name="BoutonStatistiques" type="TextureButton" parent="BandeauMenu" unique_id=234231829]
+custom_minimum_size = Vector2(40, 40)
+layout_mode = 0
+offset_left = 376.0
+offset_top = -1.0
+offset_right = 484.0
+offset_bottom = 107.0
+texture_normal = ExtResource("9_uo1c6")
+ignore_texture_size = true
+stretch_mode = 5
+
 [connection signal="gui_input" from="Fond" to="." method="_on_fond_gui_input"]
-[connection signal="pressed" from="Bandeau/BoutonRecommencer" to="." method="_on_bouton_recommencer_pressed"]
-[connection signal="pressed" from="Bandeau/BoutonPasser" to="." method="_on_bouton_passer_pressed"]
+[connection signal="pressed" from="BandeauEnJeu/BoutonRecommencer" to="." method="_on_bouton_recommencer_pressed"]
+[connection signal="pressed" from="BandeauEnJeu/BoutonPasser" to="." method="_on_bouton_passer_pressed"]
+[connection signal="pressed" from="BandeauMenu/BoutonMenuPrincipal" to="." method="_on_bouton_menu_principal_pressed"]
+[connection signal="pressed" from="BandeauMenu/BoutonCommencer" to="." method="_on_bouton_commencer_pressed"]
+[connection signal="pressed" from="BandeauMenu/BoutonStatistiques" to="." method="_on_bouton_statistiques_pressed"]

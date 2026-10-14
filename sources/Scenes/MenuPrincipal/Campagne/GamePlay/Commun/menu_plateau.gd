@@ -2,9 +2,14 @@ extends Node
 
 class_name MenuPlateau
 
+# Banbeau en jeu
 signal abandon
 signal passe
 signal deselection_pile
+
+# Bandeau du menu
+# Notifie la scene `campagne` que le bouton est pressé
+signal commencer_plateau
 
 func _process(_delta: float) -> void:
 	# Afficher le temps
@@ -14,48 +19,93 @@ func _process(_delta: float) -> void:
 
 # #############
 # API Gameplay
-func enregistrer_gameplay(gameplay : String, font_size : int = 30):
-	$Bandeau/Gameplay.text = gameplay
-	$Bandeau/Gameplay.add_theme_font_size_override("font_size", font_size)
+# Bandeau en jeu
+func enregistrer_gameplay(gameplay : String, font_size : int = 18):
+	$BandeauEnJeu/Gameplay.text = gameplay
+	$BandeauEnJeu/Gameplay.add_theme_font_size_override("font_size", font_size)
 
-func enregistrer_sous_titre_gameplay(sous_titre_gameplay : String, font_size : int = 18):
-	$Bandeau/SousTitreGameplay.text = sous_titre_gameplay
-	$Bandeau/SousTitreGameplay.add_theme_font_size_override("font_size", font_size)
+func enregistrer_sous_titre_gameplay(sous_titre_gameplay : String, font_size : int = 15):
+	$BandeauEnJeu/SousTitreGameplay.text = sous_titre_gameplay
+	$BandeauEnJeu/SousTitreGameplay.add_theme_font_size_override("font_size", font_size)
 
 func enregistrer_chrono(minutes : String,
 						secondes : String,
 						decisecondes : String):
 	var text_chrono : String = minutes + ':' + secondes + '.' + decisecondes
-	$Bandeau/Chrono.text = text_chrono
+	$BandeauEnJeu/Chrono.text = text_chrono
 
 func enregistrer_coups(coups : String):
-	$Bandeau/Coups.text = coups
+	$BandeauEnJeu/Coups.text = coups
 
-func show():
+# Bandeau de menu
+func enregistrer_joueur(joueur : String):
+	$BandeauMenu/Joueur.text = joueur
+
+func enregistrer_niveau(niveau : String):
+	$BandeauMenu/Niveau.text = niveau
+
+func enregistrer_pourcentage(pourcentage : String):
+	$BandeauMenu/Pourcentage.text = pourcentage
+
+
+func show_fond():
+	hide()
 	$Fond.show()
-	$Bandeau.show()
-	$Bandeau/Fond.show()
-	$Bandeau/Gameplay.show()
-	$Bandeau/SousTitreGameplay.show()
-	$Bandeau/Chrono.show()
-	# $Bandeau/Coups.show()
-	$Bandeau/BoutonRecommencer.show()
-	$Bandeau/BoutonPasser.show()
+
+func show_menu():
+	$Fond.show()
+	show_bandeau_menu()
+	hide_bandeau_en_jeu()
+
+func show_jeu():
+	$Fond.show()
+	show_bandeau_en_jeu()
+	hide_bandeau_menu()
+
+func show_bandeau_en_jeu():
+	$BandeauEnJeu.show()
+	$BandeauEnJeu/Fond.show()
+	$BandeauEnJeu/Gameplay.show()
+	$BandeauEnJeu/SousTitreGameplay.show()
+	$BandeauEnJeu/Chrono.show()
+	# $BandeauEnJeu/Coups.show()
+	$BandeauEnJeu/BoutonRecommencer.show()
+	$BandeauEnJeu/BoutonPasser.show()
+
+func show_bandeau_menu():
+	$BandeauMenu.show()
+	$BandeauMenu/Fond.show()
+	$BandeauMenu/Joueur.show()
+	$BandeauMenu/Niveau.show()
+	$BandeauMenu/Pourcentage.show()
+	$BandeauMenu/BoutonMenuPrincipal.show()
+	$BandeauMenu/BoutonCommencer.show()
+	$BandeauMenu/BoutonStatistiques.show()
 
 func hide():
 	$Fond.hide()
-	$Bandeau.hide()
-	$Bandeau/Fond.hide()
-	$Bandeau/Gameplay.hide()
-	$Bandeau/SousTitreGameplay.hide()
-	$Bandeau/Chrono.hide()
-	# $Bandeau/Coups.hide()
-	$Bandeau/BoutonRecommencer.hide()
-	$Bandeau/BoutonPasser.hide()
+	hide_bandeau_en_jeu()
+	hide_bandeau_menu()
 
-func cacher_accueil():
-	hide()
-	$Fond.show()
+func hide_bandeau_en_jeu():
+	$BandeauEnJeu.hide()
+	$BandeauEnJeu/Fond.hide()
+	$BandeauEnJeu/Gameplay.hide()
+	$BandeauEnJeu/SousTitreGameplay.hide()
+	$BandeauEnJeu/Chrono.hide()
+	# $BandeauEnJeu/Coups.hide()
+	$BandeauEnJeu/BoutonRecommencer.hide()
+	$BandeauEnJeu/BoutonPasser.hide()
+
+func hide_bandeau_menu():
+	$BandeauMenu.hide()
+	$BandeauMenu/Fond.hide()
+	$BandeauMenu/Joueur.hide()
+	$BandeauMenu/Niveau.hide()
+	$BandeauMenu/Pourcentage.hide()
+	$BandeauMenu/BoutonMenuPrincipal.hide()
+	$BandeauMenu/BoutonCommencer.hide()
+	$BandeauMenu/BoutonStatistiques.hide()
 
 # ########
 # Interne
@@ -83,19 +133,49 @@ func _maj_coups() -> void:
 
 # ########
 # Usine >>
+# Boutons du bandeau de jeu
 func _on_bouton_recommencer_pressed() -> void:
-	$Bandeau/BoutonRecommencer.hide()
-	$Bandeau/BoutonPasser.hide()
+	show_fond()
 	abandon.emit()
 
 func _on_bouton_passer_pressed() -> void:
-	$Bandeau/BoutonRecommencer.hide()
-	$Bandeau/BoutonPasser.hide()
+	show_fond()
 	passe.emit()
 
+# Boutons du bandeau de menu
 func _on_fond_gui_input(event: InputEvent) -> void:
 	if event is InputEventMouseButton:
 		if event.button_index == MOUSE_BUTTON_LEFT and event.pressed:
 			# LogService.log_debug("Clique souris sur le fond du plateau")
 			# Parcourir les piles et déselectionner la pile (comme "timeout" sur la selection)
 			deselection_pile.emit()
+
+func _on_bouton_menu_principal_pressed() -> void:
+	AudioService.son_menu_click()
+	VibrationService.vibration_click()
+	get_tree().change_scene_to_file("res://Scenes/MenuPrincipal/menu_principal.tscn")
+
+func _on_bouton_statistiques_pressed() -> void:
+	AudioService.son_menu_click()
+	VibrationService.vibration_click()
+	get_tree().change_scene_to_file("res://Scenes/MenuPrincipal/Campagne/Statistiques/statistiques.tscn")
+
+func _on_bouton_commencer_pressed() -> void:
+	AudioService.son_menu_click()
+	VibrationService.vibration_click()
+	var date_debut_campagne = SauvegardeConfigurationService.lire_la_date_debut_campagne_timestamp()
+	if Time.get_unix_time_from_system() < date_debut_campagne:
+		# var datetime_debut_campagne = Time.get_datetime_dict_from_unix_time( date_debut_campagne )
+		# var annee = datetime_debut_campagne.get('year')
+		# var mois = datetime_debut_campagne.get('month')
+		# var jour = datetime_debut_campagne.get('day')
+		# var heure = datetime_debut_campagne.get('hour')
+		# var minute = datetime_debut_campagne.get('minute')
+
+		# TODO : Faire un message pour l'usager.
+		# var message = "Soyez patient, la campagne commence le " \
+		# 	+ str(jour).pad_zeros(2) +"/"+str(mois).pad_zeros(2)+"/"+str(annee)+"."
+		# afficher_message_simple(message, 5.)
+		pass
+	else:
+		commencer_plateau.emit()

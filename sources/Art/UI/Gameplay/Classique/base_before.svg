@@ -1,0 +1,171 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   viewBox="0 0 1024 280"
+   width="1024"
+   height="280"
+   version="1.1"
+   id="svg54"
+   sodipodi:docname="base_before.svg"
+   inkscape:version="1.4.4 (dcaf3e7, 2026-05-05)"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <sodipodi:namedview
+     id="namedview1"
+     pagecolor="#ffffff"
+     bordercolor="#000000"
+     borderopacity="0.25"
+     inkscape:showpageshadow="2"
+     inkscape:pageopacity="0.0"
+     inkscape:pagecheckerboard="0"
+     inkscape:deskcolor="#d1d1d1"
+     inkscape:zoom="9.7613881"
+     inkscape:cx="495.11401"
+     inkscape:cy="98.705224"
+     inkscape:window-width="1920"
+     inkscape:window-height="991"
+     inkscape:window-x="-9"
+     inkscape:window-y="-9"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="player-identity" />
+  <defs
+     id="defs28">
+    <linearGradient
+       id="panelFill"
+       x1="0"
+       y1="0"
+       x2="0"
+       y2="1">
+      <stop
+         offset="0"
+         stop-color="#fffefa"
+         id="stop2" />
+      <stop
+         offset="0.48"
+         stop-color="#fff9f2"
+         id="stop4" />
+      <stop
+         offset="1"
+         stop-color="#f7e8db"
+         id="stop6" />
+    </linearGradient>
+    <linearGradient
+       id="panelStroke"
+       x1="0"
+       y1="0"
+       x2="1"
+       y2="0">
+      <stop
+         offset="0"
+         stop-color="#e7a17f"
+         id="stop9" />
+      <stop
+         offset="0.18"
+         stop-color="#f2bea4"
+         id="stop11" />
+      <stop
+         offset="0.5"
+         stop-color="#f7cbb5"
+         id="stop13" />
+      <stop
+         offset="0.82"
+         stop-color="#f2bea4"
+         id="stop15" />
+      <stop
+         offset="1"
+         stop-color="#e7a17f"
+         id="stop17" />
+    </linearGradient>
+    <linearGradient
+       id="panelGloss"
+       x1="36.028881"
+       y1="339.72745"
+       x2="36.028881"
+       y2="495.6024"
+       gradientTransform="matrix(3.6027059,0,0,0.23574167,42.594693,6.0389686)"
+       gradientUnits="userSpaceOnUse">
+      <stop
+         offset="0"
+         stop-color="#ffffff"
+         stop-opacity="0.74"
+         id="stop20" />
+      <stop
+         offset="1"
+         stop-color="#ffffff"
+         stop-opacity="0"
+         id="stop22" />
+    </linearGradient>
+    <clipPath
+       id="panelClip">
+      <rect
+         x="144"
+         y="85"
+         width="623"
+         height="160"
+         rx="33"
+         id="rect25" />
+    </clipPath>
+  </defs>
+  <g
+     id="g52">
+    <g
+       id="central-band"
+       transform="translate(45)">
+      <!-- Coque unique : un seul fond et un seul contour. -->
+      <path
+         id="rect30"
+         style="fill:url(#panelFill);stroke:url(#panelStroke);stroke-width:2.4"
+         d="m 177,85 h 557 c 18.282,0 33,14.718 33,33 v 94 c 0,18.282 -14.718,33 -33,33 H 177 c -18.282,0 -33,-14.718 -33,-33 v -94 c 0,-18.282 14.718,-33 33,-33 z" />
+      <!-- Brillance interne clipsée : remplissage uniquement, aucun second liseré. -->
+      <g
+         clip-path="url(#panelClip)"
+         id="g34" />
+      <!-- Identité joueur. -->
+      <g
+         id="player-identity">
+        <!-- R-LOCK HD : médaille Bronze officielle 1024 × 1024. -->
+        <g
+           transform="matrix(1.17,0,0,1.17,-29,-10)"
+           id="g36" />
+        <path
+           id="rect38"
+           style="fill:#d6a88b;fill-opacity:0.7"
+           d="m 242.9,106 c 0.4986,0 0.9,0.4014 0.9,0.9 v 57.2 c 0,0.4986 -0.4014,0.9 -0.9,0.9 -0.4986,0 -0.9,-0.4014 -0.9,-0.9 v -57.2 c 0,-0.4986 0.4014,-0.9 0.9,-0.9 z" />
+        <path
+           d="M 172.39615,86.126889 H 733.96774 V 122.87311 Q 628.50405,104.02889 504.11099,104.02889 H 294.98642 q -72.11192,0 -122.59027,18.84422 z"
+           fill="url(#panelGloss)"
+           id="path32"
+           style="fill:url(#panelGloss);stroke-width:0.921579" />
+      </g>
+      <!-- Progression joueur. -->
+      <path
+         d="M 173,175 H 585"
+         fill="none"
+         stroke="#d6a88b"
+         stroke-opacity="0.42"
+         stroke-width="1.4"
+         id="path41" />
+      <path
+         d="m 373,190 v 28"
+         fill="none"
+         stroke="#d6a88b"
+         stroke-opacity="0.48"
+         stroke-width="1.4"
+         id="path45" />
+      <path
+         id="rect47"
+         style="fill:#e7ded7"
+         d="m 396,198 h 100 c 3.324,0 6,2.676 6,6 0,3.324 -2.676,6 -6,6 H 396 c -3.324,0 -6,-2.676 -6,-6 0,-3.324 2.676,-6 6,-6 z" />
+      <!-- Séparation action. -->
+      <path
+         d="M 600,111 V 219"
+         fill="none"
+         stroke="#d6a88b"
+         stroke-opacity="0.44"
+         stroke-width="1.4"
+         id="path49" />
+      <!-- V-NATIVE : bouton Jouer, même composant et même taille que Statistiques. -->
+    </g>
+  </g>
+</svg>

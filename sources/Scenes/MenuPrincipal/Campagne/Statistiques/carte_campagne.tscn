@@ -1,7 +1,7 @@
 [gd_scene format=3 uid="uid://c5m7n5xqwj5kb"]
 
 [ext_resource type="Texture2D" uid="uid://1vg5xpx8sjqy" path="res://Art/UI/Statistiques/cube_campagne_34x34_normalized.png" id="1_brssj"]
-[ext_resource type="Script" uid="uid://b70tsv1obb7b5" path="res://Scenes/MenuPrincipal/Campagne/MenuCampagne/Statistiques/carte_campagne.gd" id="1_fc6g1"]
+[ext_resource type="Script" uid="uid://b70tsv1obb7b5" path="res://Scenes/MenuPrincipal/Campagne/Statistiques/carte_campagne.gd" id="1_fc6g1"]
 [ext_resource type="FontFile" uid="uid://dbs77if6q2gtc" path="res://Art/UI/Fonts/TeXGyreAdventor/texgyreadventor-bold.otf" id="2_fc6g1"]
 [ext_resource type="FontFile" uid="uid://8pcourumhksh" path="res://Art/UI/Fonts/TeXGyreAdventor/texgyreadventor-regular.otf" id="3_42cjv"]
 
