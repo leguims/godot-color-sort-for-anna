@@ -19,7 +19,7 @@ func _activer_joueur_test():
 func before_each():
 	FichiersJsonService.definir_racine_utilisateur(RACINE_TEST)
 	_nettoyer_fichiers_utilisateur()
-	service = load("res://Singletons/stats_service.gd").new()
+	service = add_child_autofree(load("res://Singletons/stats_service.gd").new())
 	sauvegarde_joueur_initiale = SauvegardeBddJoueursService.sauvegarde_joueur.duplicate(true)
 	fichier_sauvegarde_initial = SauvegardeBddJoueursService.fichier_sauvegarde
 	configuration_initiale = SauvegardeConfigurationService.configuration_du_jeu.duplicate(true)
@@ -232,6 +232,78 @@ func test_reussis_abandonnes_par_niveau_et_completion_niveau_couvrent_les_zeros(
 	]
 	assert_eq(service.nombre_de_plateau_reussis_abandonnes_passes_pour_niveau("niveau_99").get("reussis"), 0)
 	assert_true(abs(service.taux_completion_niveau()) < 0.0001)
+
+func test_plateaux_passes_sont_comptes_et_interrompent_les_series_de_victoires():
+	SauvegardeBddJoueursService.sauvegarde_joueur["enregistrement_campagne"] = [
+		{
+			"niveau": "niveau_2",
+			"date_debut": 1700002000,
+			"date_fin": 1700003000,
+			"plateaux": [
+				{"nom": "C", "date_debut": 1700002010, "duree": 10, "difficulte": 1, "statut": "reussi", "gameplay": "CLASSIQUE"},
+				{"nom": "D", "date_debut": 1700002020, "duree": 10, "difficulte": 1, "statut": "abandonné", "gameplay": "CLASSIQUE"},
+				{"nom": "E", "date_debut": 1700002030, "duree": 10, "difficulte": 1, "statut": "reussi", "gameplay": "CLASSIQUE"},
+				{"nom": "F", "date_debut": 1700002040, "duree": 10, "difficulte": 1, "statut": "reussi", "gameplay": "CLASSIQUE"}
+			]
+		},
+		{
+			"niveau": "niveau_1",
+			"date_debut": 1700000000,
+			"date_fin": 1700001000,
+			"plateaux": [
+				{"nom": "A", "date_debut": 1700000010, "duree": 10, "difficulte": 1, "statut": "reussi", "gameplay": "CLASSIQUE"},
+				{"nom": "B", "date_debut": 1700000020, "duree": 10, "difficulte": 1, "statut": "reussi", "gameplay": "CLASSIQUE"},
+				{"nom": "G", "date_debut": 1700000030, "duree": 10, "difficulte": 1, "statut": "passé", "gameplay": "CLASSIQUE"}
+			]
+		}
+	]
+
+	assert_eq(service.nombre_de_plateau_reussis_abandonnes_passes(), {
+		"reussis": 5,
+		"abandonnes": 1,
+		"passes": 1
+	})
+	assert_eq(service.nombre_de_plateau_joues(), 7)
+	assert_true(abs(service.taux_de_reussite_des_plateaux() - (5.0 / 7.0)) < 0.0001)
+	assert_eq(service.serie_de_victoire_maximum(), 2)
+
+func test_statistiques_excluent_les_donnees_a_la_date_de_debut_de_campagne():
+	var date_debut_campagne = SauvegardeConfigurationService.lire_la_date_debut_campagne_timestamp()
+	SauvegardeBddJoueursService.sauvegarde_joueur["enregistrement_campagne"].append({
+		"niveau": "niveau_0",
+		"date_debut": date_debut_campagne,
+		"date_fin": date_debut_campagne + 100,
+		"plateaux": [
+			{
+				"nom": "Ancien",
+				"date_debut": date_debut_campagne,
+				"date_fin": date_debut_campagne + 10,
+				"duree": 999,
+				"difficulte": 99,
+				"statut": "reussi",
+				"gameplay": "CLASSIQUE",
+				"score": {"duree": 999, "ratio_reussite": 999}
+			}
+		]
+	})
+
+	assert_eq(service.nombre_de_plateaux_totaux(), 8)
+	assert_true(abs(service.taux_completion_campagne() - (5.0 / 8.0)) < 0.0001)
+	assert_eq(service.plateau_nombre_de_plateaux_joues(), 6)
+	assert_true(abs(service.campagne_temps_total_en_s() - 68.0) < 0.0001)
+	assert_eq(service.campagne_serie_max_reussite(), 4)
+	assert_eq(service.detail_score_cumule().get("rapidite"), 135)
+	assert_eq(service.detail_score_cumule().get("reussite"), 430)
+
+func test_duree_moyenne_des_niveaux_termines_ne_compte_que_leurs_plateaux():
+	var durees = service.duree_totale_plateaux_tous_les_niveaux_en_s()
+	assert_eq(durees.get("toutes"), 68.0)
+	assert_eq(durees.get("terminees"), 45.0)
+	assert_eq(service.duree_moyenne_niveaux_terminees_en_s(), 45.0)
+
+	SauvegardeBddJoueursService.sauvegarde_joueur["enregistrement_campagne"][0]["plateaux"] = []
+	assert_eq(service.nombre_niveaux_termines(), 1)
+	assert_eq(service.duree_moyenne_niveaux_terminees_en_s(), 0.0)
 
 func test_gameplay_statistiques_classique():
 	assert_eq(service.classique_nombre_de_plateaux_joues(), 3)

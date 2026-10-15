@@ -21,7 +21,7 @@ func before_each():
 	fichier_sauvegarde_initial = SauvegardeBddJoueursService.fichier_sauvegarde
 	configuration_initiale = SauvegardeConfigurationService.configuration_du_jeu.duplicate(true)
 	tableau_scores_initial = SauvegardeTableauDesScoresService.liste_des_scores.duplicate(true)
-	service = load("res://Singletons/score_service.gd").new()
+	service = add_child_autofree(load("res://Singletons/score_service.gd").new())
 
 	SauvegardeConfigurationService.configuration_du_jeu["date_debut_campagne"] = "2020-01-01 00:00:00"
 	var nom_anna = service.lire_nom_anna_triche()
