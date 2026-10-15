@@ -20,12 +20,37 @@ func _ready() -> void:
 	# Transmettre les infos de l'UI à Plateau
 	$Plateau.enregistrer_bouton_recommencer_size_y($MenuPlateau/BandeauEnJeu.size.y)
 
+	# Initialisation du bandeau de menu
+	maj_bandeau_menu()
+
 # API pour "Campagne"
 func est_valide(plateau_texte : String) -> bool:
 	return $Plateau.est_valide(plateau_texte)
 
 func commencer_un_nouveau_gameplay() -> void:
+	maj_bandeau_menu()
 	$MenuPlateau.show_menu()
+
+func maj_bandeau_menu() -> void:
+	var nom : String = SauvegardeBddJoueursService.lire_nom_joueur()
+	$MenuPlateau.enregistrer_joueur(nom)
+
+	var niveau_int : int = 0
+	niveau_int = SauvegardeBddJoueursService.campagne_lire_prochain_niveau()
+	var niveau_str : String
+	if "NIVEAU " in $MenuPlateau.lire_niveau():
+		niveau_str = "NIVEAU "+String.num_int64(niveau_int)
+	else:
+		niveau_str = String.num_int64(niveau_int)
+	$MenuPlateau.enregistrer_niveau(niveau_str)
+
+	var pourcentage_niveau_realise
+	if SauvegardeBddJoueursService.enregistrement_lire_valeur_niveau_joueur() == niveau_int:
+		pourcentage_niveau_realise = StatsService.niveau_taux_completion() * 100.
+	else:
+		# Niveau courant achevé, On commence le suivant.
+		pourcentage_niveau_realise = 0.
+	$MenuPlateau.enregistrer_pourcentage(String.num_int64(pourcentage_niveau_realise)+'%')
 
 func commencer_un_nouveau_plateau(plateau_texte : String) -> void:
 	$Plateau.commencer_un_nouveau_plateau(plateau_texte)

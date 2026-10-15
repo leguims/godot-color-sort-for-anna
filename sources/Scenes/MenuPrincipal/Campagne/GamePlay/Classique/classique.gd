@@ -9,20 +9,6 @@ func _ready() -> void:
 	$MenuPlateau.enregistrer_gameplay("CLASSIQUE")
 	$MenuPlateau.enregistrer_sous_titre_gameplay("Range tes couleurs")
 
-	var nom = SauvegardeBddJoueursService.lire_nom_joueur()
-
-	var niveau_courant : int = 0
-	if SauvegardeBddJoueursService.enregistrement_niveau_existe():
-		niveau_courant = SauvegardeBddJoueursService.enregistrement_lire_valeur_niveau_joueur()
-	else:
-		niveau_courant = SauvegardeBddJoueursService.lire_prochain_niveau_de_campagne()
-
-	var pourcentage_niveau_realise = StatsService.niveau_taux_completion() * 100.
-
-	$MenuPlateau.enregistrer_joueur(nom)
-	$MenuPlateau.enregistrer_niveau("NIVEAU "+String.num_int64(niveau_courant))
-	$MenuPlateau.enregistrer_pourcentage(String.num_int64(pourcentage_niveau_realise)+'%')
-
 # Callback pour "Plateau"
 func est_termine(liste_piles) -> bool:
 	# Vérifier si la partie est achevée

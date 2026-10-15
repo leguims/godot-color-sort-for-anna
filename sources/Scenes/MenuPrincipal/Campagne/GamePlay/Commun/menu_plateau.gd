@@ -44,6 +44,9 @@ func enregistrer_joueur(joueur : String):
 func enregistrer_niveau(niveau : String):
 	$BandeauMenu/Niveau.text = niveau
 
+func lire_niveau() -> String:
+	return $BandeauMenu/Niveau.text
+
 func enregistrer_pourcentage(pourcentage : String):
 	$BandeauMenu/Pourcentage.text = pourcentage
 

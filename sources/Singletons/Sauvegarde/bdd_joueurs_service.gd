@@ -310,7 +310,8 @@ func campagne_supprimer_et_oublier_plateau_courant() -> bool:
 	"Efface et oublie le plateau courant."
 	if le_joueur_existe() and enregistrement_lire_statut_plateau() == 'en cours':
 		var niveau = enregistrement_lire_valeur_niveau_joueur()
-		var plateau_courant = lire_campagne_liste_plateaux_du_niveau(niveau).pop_front()
+		# Effacer le plateau courant de la campagne
+		lire_campagne_liste_plateaux_du_niveau(niveau).pop_front()
 		if lire_campagne_liste_plateaux_du_niveau(niveau).is_empty():
 			# Le niveau est terminé, effacer sa reference dans les plateaux restants.
 			campagne().erase(nom_niveau(niveau))

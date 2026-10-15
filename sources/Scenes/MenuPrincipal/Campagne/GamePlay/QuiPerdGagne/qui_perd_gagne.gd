@@ -21,20 +21,6 @@ func _ready() -> void:
 	$MenuPlateau.enregistrer_gameplay("")
 	$MenuPlateau.enregistrer_sous_titre_gameplay("")
 
-	var nom = SauvegardeBddJoueursService.lire_nom_joueur()
-
-	var niveau_courant : int = 0
-	if SauvegardeBddJoueursService.enregistrement_niveau_existe():
-		niveau_courant = SauvegardeBddJoueursService.enregistrement_lire_valeur_niveau_joueur()
-	else:
-		niveau_courant = SauvegardeBddJoueursService.lire_prochain_niveau_de_campagne()
-
-	var pourcentage_niveau_realise = StatsService.niveau_taux_completion() * 100.
-
-	$MenuPlateau.enregistrer_joueur(nom)
-	$MenuPlateau.enregistrer_niveau(String.num_int64(niveau_courant))
-	$MenuPlateau.enregistrer_pourcentage(String.num_int64(pourcentage_niveau_realise)+'%')
-
 func _physics_process(delta: float) -> void:
 	if diablotin_actif:
 		# Faire bouger le diablotin
@@ -47,6 +33,7 @@ func commencer_un_nouveau_plateau(plateau_texte : String) -> void:
 func show_fond() -> void:
 	super.show_fond()
 	$Diablotin.hide()
+
 
 func activer_diablotin() -> void:
 	# Reset du diablotin
