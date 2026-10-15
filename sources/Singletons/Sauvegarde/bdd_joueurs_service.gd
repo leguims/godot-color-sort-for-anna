@@ -508,13 +508,18 @@ func enregistrement_niveau_importer(niveau : Dictionary) -> bool:
 # Niveaux / Niveau
 ###############################################
 
-func enregistrement_lire_valeur_niveau_joueur() -> int:
+func enregistrement_lire_niveau_joueur() -> String:
 	"Retourne le niveau actuel du joueur"
 	var dict_niveau = enregistrement_lire_dernier_niveau()
 	if dict_niveau:
-		var nom_du_niveau = dict_niveau.get('niveau')
-		if nom_du_niveau:
-			return valeur_niveau(nom_du_niveau)
+		return dict_niveau.get('niveau','')
+	return ''
+
+func enregistrement_lire_valeur_niveau_joueur() -> int:
+	"Retourne le niveau actuel du joueur"
+	var nom_du_niveau = enregistrement_lire_niveau_joueur()
+	if nom_du_niveau:
+		return valeur_niveau(nom_du_niveau)
 	return 0
 
 func enregistrement_lire_niveau_longueur_realisee() -> int:

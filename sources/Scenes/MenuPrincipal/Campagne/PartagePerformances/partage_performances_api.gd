@@ -7,6 +7,7 @@ signal erreur_decodage_qr(message: String)
 
 const LOGIQUE := preload("res://Scenes/MenuPrincipal/Campagne/PartagePerformances/partage_performances_logic.gd")
 const QR_SCRIPT_PATH := "res://addons/QRPlugin/QR.gd"
+const POLICE_SOUS_TITRE := "res://Art/UI/Fonts/TeXGyreAdventor/texgyreadventor-bold.otf"
 var _logique: PartagePerformancesLogic = LOGIQUE.new()
 var _qr_scanner: Node
 
@@ -25,6 +26,107 @@ func preparer_partage(enregistrements: Dictionary) -> Dictionary:
 ## Génère l'image du QR avec le plugin natif sur Android ou iOS.
 func generer_image_qr(contenu: String) -> Dictionary:
 	return _logique.generer_image_qr(contenu, self)
+
+## Compose l'image QR avec les libellés destinés aux joueurs.
+func ajouter_sous_titre_qr(image_qr: Image) -> Dictionary:
+	if image_qr == null or image_qr.is_empty():
+		return {"succes": false, "erreur": "L'image du QR est vide."}
+	var texte_sous_titre := lire_sous_titre_qr()
+	if texte_sous_titre.is_empty():
+		return {"succes": false, "erreur": "Le nom du joueur ou son niveau est indisponible."}
+	var police := load(POLICE_SOUS_TITRE) as Font
+	if police == null:
+		return {"succes": false, "erreur": "La police du sous-titre QR est introuvable."}
+
+	var taille_police := 22
+	while taille_police > 12 and police.get_string_size(
+		texte_sous_titre,
+		HORIZONTAL_ALIGNMENT_LEFT,
+		-1,
+		taille_police
+	).x > image_qr.get_width() - 48:
+		taille_police -= 1
+	while police.get_string_size(
+		texte_sous_titre,
+		HORIZONTAL_ALIGNMENT_LEFT,
+		-1,
+		taille_police
+	).x > image_qr.get_width() - 48:
+		var candidat := texte_sous_titre.left(texte_sous_titre.length() - 1).strip_edges() + "..."
+		if police.get_string_size(
+			candidat,
+			HORIZONTAL_ALIGNMENT_LEFT,
+			-1,
+			taille_police
+		).x <= image_qr.get_width() - 48:
+			texte_sous_titre = candidat
+			break
+		texte_sous_titre = texte_sous_titre.left(texte_sous_titre.length() - 1).strip_edges()
+	if texte_sous_titre.is_empty():
+		return {"succes": false, "erreur": "Le sous-titre QR est trop long."}
+
+	var hauteur_sous_titre := 78
+	var viewport := SubViewport.new()
+	viewport.size = Vector2i(image_qr.get_width(), hauteur_sous_titre)
+	viewport.transparent_bg = false
+	viewport.render_target_update_mode = SubViewport.UPDATE_ONCE
+
+	var fond := ColorRect.new()
+	fond.color = Color.WHITE
+	fond.size = Vector2(viewport.size)
+	viewport.add_child(fond)
+
+	var separateur := ColorRect.new()
+	separateur.position = Vector2(40, 12)
+	separateur.size = Vector2(maxi(0, image_qr.get_width() - 80), 2)
+	separateur.color = Color("edc9a5")
+	viewport.add_child(separateur)
+
+	var etiquette := Label.new()
+	etiquette.position = Vector2(0, 24)
+	etiquette.size = Vector2(image_qr.get_width(), 40)
+	etiquette.text = texte_sous_titre
+	etiquette.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	etiquette.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
+	etiquette.add_theme_font_override("font", police)
+	etiquette.add_theme_font_size_override("font_size", taille_police)
+	etiquette.add_theme_color_override("font_color", Color("0a274d"))
+	viewport.add_child(etiquette)
+	add_child(viewport)
+
+	if DisplayServer.get_name() == "headless":
+		await get_tree().process_frame
+	else:
+		await RenderingServer.frame_post_draw
+	var image_sous_titre := viewport.get_texture().get_image()
+	viewport.queue_free()
+	if image_sous_titre == null or image_sous_titre.is_empty():
+		return {"succes": false, "erreur": "Impossible de dessiner le sous-titre du QR."}
+
+	var image_finale := Image.create(
+		image_qr.get_width(),
+		image_qr.get_height() + hauteur_sous_titre,
+		false,
+		Image.FORMAT_RGBA8
+	)
+	image_finale.fill(Color.WHITE)
+	image_finale.blit_rect(image_qr, Rect2i(Vector2i.ZERO, image_qr.get_size()), Vector2i.ZERO)
+	image_finale.blit_rect(
+		image_sous_titre,
+		Rect2i(Vector2i.ZERO, image_sous_titre.get_size()),
+		Vector2i(0, image_qr.get_height())
+	)
+	return {"succes": true, "image": image_finale}
+
+## Retourne le libellé affiché sous le QR au format « Nom - Niveau X ».
+func lire_sous_titre_qr() -> String:
+	var nom_joueur := SauvegardeBddJoueursService.lire_nom_joueur()
+	var nom_niveau := SauvegardeBddJoueursService.enregistrement_lire_niveau_joueur().replace("_", " ")
+	if nom_niveau.begins_with("niveau "):
+		nom_niveau = nom_niveau.trim_prefix("niveau ")
+	if nom_joueur.is_empty() or nom_niveau.is_empty():
+		return ""
+	return "%s - Niveau %s" % [nom_joueur, nom_niveau]
 
 ## Reçoit une image QR et lance son décodage asynchrone avec le plugin.
 func recevoir_image_qr(image: Image) -> bool:

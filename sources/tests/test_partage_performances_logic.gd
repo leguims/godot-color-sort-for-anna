@@ -3,7 +3,7 @@ extends GutTest
 const LOGIQUE_PARTAGE = preload("res://Scenes/MenuPrincipal/Campagne/PartagePerformances/partage_performances_logic.gd")
 const API_PARTAGE = preload("res://Scenes/MenuPrincipal/Campagne/PartagePerformances/partage_performances_api.gd")
 const SCENE_PARTAGE = preload("res://Scenes/MenuPrincipal/Campagne/PartagePerformances/partage_performances_ui.tscn")
-const SCENE_MENU_CAMPAGNE = preload("res://Scenes/MenuPrincipal/Campagne/MenuCampagne/menu_campagne.tscn")
+const SCENE_MESSAGES_CAMPAGNE = preload("res://Scenes/MenuPrincipal/Campagne/MessagesCampagne/messages_campagne.tscn")
 
 var logique: PartagePerformancesLogic
 
@@ -74,6 +74,43 @@ func test_preparer_enveloppe_refuse_les_donnees_vides_et_une_cle_absente() -> vo
 
 	assert_false(resultat_sans_donnees.get("succes", true))
 	assert_false(resultat_sans_cle.get("succes", true))
+
+func test_ajouter_sous_titre_qr_preserve_le_qr_et_inclut_le_texte_dans_image() -> void:
+	var api: PartagePerformancesAPI = add_child_autofree(API_PARTAGE.new())
+	var sauvegarde_initiale: Dictionary = SauvegardeBddJoueursService.sauvegarde_joueur.duplicate(true)
+	var fichier_initial: String = SauvegardeBddJoueursService.fichier_sauvegarde
+	SauvegardeBddJoueursService.sauvegarde_joueur = {
+		"nom": "Joueuse",
+		"enregistrement_campagne": [{"niveau": "niveau_2"}]
+	}
+	SauvegardeBddJoueursService.fichier_sauvegarde = "test"
+	assert_eq(api.lire_sous_titre_qr(), "Joueuse - Niveau 2")
+	if DisplayServer.get_name() == "headless":
+		SauvegardeBddJoueursService.sauvegarde_joueur = sauvegarde_initiale
+		SauvegardeBddJoueursService.fichier_sauvegarde = fichier_initial
+		return
+
+	var image_qr := Image.create(128, 128, false, Image.FORMAT_RGBA8)
+	image_qr.fill(Color.BLACK)
+	var resultat: Dictionary = await api.ajouter_sous_titre_qr(image_qr)
+	SauvegardeBddJoueursService.sauvegarde_joueur = sauvegarde_initiale
+	SauvegardeBddJoueursService.fichier_sauvegarde = fichier_initial
+	var image_finale: Image = resultat.get("image")
+
+	assert_true(resultat.get("succes", false))
+	assert_eq(image_finale.get_width(), 128)
+	assert_eq(image_finale.get_height(), 206)
+	assert_eq(image_finale.get_pixel(20, 20), Color.BLACK)
+
+	var texte_dessine := false
+	for y in range(150, image_finale.get_height()):
+		for x in range(image_finale.get_width()):
+			if image_finale.get_pixel(x, y) != Color.WHITE:
+				texte_dessine = true
+				break
+		if texte_dessine:
+			break
+	assert_true(texte_dessine)
 
 func test_verifier_hmac_refuse_une_signature_modifiee_ou_mal_formee() -> void:
 	var signature := logique.calculer_hmac("donnees", "cle")
@@ -204,7 +241,7 @@ func test_panneau_explique_lindisponibilite_du_qr_sur_une_plateforme_non_support
 		return
 
 	var panneau: PartagePerformancesUI = add_child_autofree(SCENE_PARTAGE.instantiate())
-	var partage_reussi: bool = panneau.afficher({"niveau": 4})
+	var partage_reussi: bool = await panneau.afficher({"niveau": 4})
 	var message: Label = panneau.get_node("Message")
 
 	assert_false(partage_reussi)
@@ -213,21 +250,21 @@ func test_panneau_explique_lindisponibilite_du_qr_sur_une_plateforme_non_support
 	assert_eq(panneau.get_node("AdresseCourriel").text, "rangelescouleurspouranna@gmail.com")
 	assert_false(panneau.get_node("BoutonPartagerQR").visible)
 
-func test_menu_campagne_affiche_le_panneau_avec_les_enregistrements_fournis() -> void:
-	var menu: MenuCampagne = add_child_autofree(SCENE_MENU_CAMPAGNE.instantiate())
+func test_messages_campagne_affiche_le_panneau_avec_les_enregistrements_fournis() -> void:
+	var menu: MessagesCampagne = add_child_autofree(SCENE_MESSAGES_CAMPAGNE.instantiate())
 
-	menu.afficher_partage_performances({"niveau": 4})
+	await menu.afficher_partage_performances({"niveau": 4})
 
 	assert_true(menu.get_node("Centrer").visible)
 	assert_true(menu.get_node("Centrer/PanneauPartagePerformances").visible)
 
 func test_fin_de_niveau_affiche_le_partage_apres_le_panneau_de_score() -> void:
-	var menu: MenuCampagne = add_child_autofree(SCENE_MENU_CAMPAGNE.instantiate())
+	var menu: MessagesCampagne = add_child_autofree(SCENE_MESSAGES_CAMPAGNE.instantiate())
 	var panneau_partage: Control = menu.get_node("Centrer/PanneauPartagePerformances")
 	var panneau_niveau: Control = menu.get_node("Centrer/PanneauVictoireNiveau")
 
 	panneau_niveau.show()
-	menu._on_panneau_victoire_niveau_continuer()
+	await menu._on_panneau_victoire_niveau_continuer()
 
 	assert_false(panneau_niveau.visible)
 	assert_true(panneau_partage.visible)
@@ -239,12 +276,12 @@ func test_fin_de_niveau_affiche_le_partage_apres_le_panneau_de_score() -> void:
 	assert_true(menu.get_node("BoutonCommencer").visible)
 
 func test_fin_de_campagne_affiche_le_partage_avant_les_statistiques() -> void:
-	var menu: MenuCampagne = add_child_autofree(SCENE_MENU_CAMPAGNE.instantiate())
+	var menu: MessagesCampagne = add_child_autofree(SCENE_MESSAGES_CAMPAGNE.instantiate())
 	var panneau_partage: Control = menu.get_node("Centrer/PanneauPartagePerformances")
 	var panneau_campagne: Control = menu.get_node("Centrer/PanneauVictoireCampagne")
 
 	panneau_campagne.show()
-	menu._on_panneau_victoire_campagne_continuer()
+	await menu._on_panneau_victoire_campagne_continuer()
 
 	assert_false(panneau_campagne.visible)
 	assert_true(panneau_partage.visible)

@@ -25,7 +25,7 @@ func recevoir_image_qr(image: Image) -> bool:
 ## Lit les enregistrements du dernier niveau via l'API et affiche leur QR.
 func afficher_dernier_niveau() -> bool:
 	var enregistrements: Dictionary = $PartagePerformancesAPI.lire_donnees_dernier_niveau()
-	return afficher(enregistrements)
+	return await afficher(enregistrements)
 
 ## Affiche le panneau et prépare le QR à partir des enregistrements du niveau.
 func afficher(enregistrements: Dictionary) -> bool:
@@ -45,7 +45,14 @@ func afficher(enregistrements: Dictionary) -> bool:
 		_afficher_erreur(resultat_qr.get("erreur", "Impossible de générer le QR."))
 		return false
 
-	$ImageQR.texture = ImageTexture.create_from_image(resultat_qr.get("image"))
+	var resultat_image: Dictionary = await $PartagePerformancesAPI.ajouter_sous_titre_qr(
+		resultat_qr.get("image")
+	)
+	if not resultat_image.get("succes", false):
+		_afficher_erreur(resultat_image.get("erreur", "Impossible de composer l'image du QR."))
+		return false
+
+	$ImageQR.texture = ImageTexture.create_from_image(resultat_image.get("image"))
 	$Message.visible = false
 	$BoutonPartagerQR.disabled = not OS.has_feature("android")
 	return true

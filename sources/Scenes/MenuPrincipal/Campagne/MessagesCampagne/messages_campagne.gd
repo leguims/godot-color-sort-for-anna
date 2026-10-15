@@ -48,11 +48,11 @@ func _on_panneau_victoire_plateau_continuer() -> void:
 
 func _on_panneau_victoire_niveau_continuer() -> void:
 	_action_apres_partage = ActionApresPartage.NIVEAU_SUIVANT
-	_afficher_partage_dernier_niveau()
+	await _afficher_partage_dernier_niveau()
 
 func _on_panneau_victoire_campagne_continuer() -> void:
 	_action_apres_partage = ActionApresPartage.STATISTIQUES
-	_afficher_partage_dernier_niveau()
+	await _afficher_partage_dernier_niveau()
 
 func _on_panneau_partage_performances_fermer() -> void:
 	$Centrer/PanneauPartagePerformances.hide()
@@ -72,7 +72,7 @@ func _afficher_partage_dernier_niveau() -> void:
 	$Centrer/PanneauVictoireNiveau.hide()
 	$Centrer/PanneauVictoireCampagne.hide()
 	if beta_test:
-		$Centrer/PanneauPartagePerformances.afficher_dernier_niveau()
+		await $Centrer/PanneauPartagePerformances.afficher_dernier_niveau()
 		$Centrer.show()
 	else:
 		_on_panneau_partage_performances_fermer()
@@ -83,7 +83,7 @@ func afficher_partage_performances(enregistrements: Dictionary) -> void:
 	$Centrer/PanneauVictoirePlateau.hide()
 	$Centrer/PanneauVictoireNiveau.hide()
 	$Centrer/PanneauVictoireCampagne.hide()
-	$Centrer/PanneauPartagePerformances.afficher(enregistrements)
+	await $Centrer/PanneauPartagePerformances.afficher(enregistrements)
 	$Centrer.show()
 
 

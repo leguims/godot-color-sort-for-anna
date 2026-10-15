@@ -29,7 +29,7 @@ script = ExtResource("1_ui")
 [node name="Fond" type="Panel" parent="." unique_id=1463730584]
 layout_mode = 0
 offset_right = 380.0
-offset_bottom = 522.0
+offset_bottom = 570.0
 mouse_filter = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_panel")
 
@@ -49,10 +49,10 @@ autowrap_mode = 2
 
 [node name="ImageQR" type="TextureRect" parent="." unique_id=475289190]
 layout_mode = 0
-offset_left = 70.0
-offset_top = 70.0
-offset_right = 310.0
-offset_bottom = 310.0
+offset_left = 35.0
+offset_top = 65.0
+offset_right = 345.0
+offset_bottom = 360.0
 expand_mode = 1
 stretch_mode = 5
 
@@ -73,9 +73,9 @@ autowrap_mode = 2
 [node name="AdresseCourriel" type="Label" parent="." unique_id=946470087]
 layout_mode = 0
 offset_left = 30.0
-offset_top = 310.0
+offset_top = 365.0
 offset_right = 350.0
-offset_bottom = 340.0
+offset_bottom = 395.0
 theme_override_colors/font_color = Color(0.2, 0.15, 0.2, 1)
 theme_override_font_sizes/font_size = 14
 text = "rangelescouleurspouranna@gmail.com"
@@ -85,9 +85,9 @@ vertical_alignment = 1
 [node name="BoutonCopierCourriel" type="Button" parent="." unique_id=1403581164]
 layout_mode = 0
 offset_left = 30.0
-offset_top = 345.0
+offset_top = 400.0
 offset_right = 350.0
-offset_bottom = 380.0
+offset_bottom = 435.0
 theme_override_colors/font_color = Color(1, 0.972549, 0.92941177, 1)
 theme_override_fonts/font = ExtResource("3_font")
 theme_override_font_sizes/font_size = 17
@@ -96,9 +96,9 @@ text = "Copier l'adresse courriel"
 [node name="BoutonPartagerQR" type="Button" parent="." unique_id=997482125]
 layout_mode = 0
 offset_left = 30.0
-offset_top = 395.0
+offset_top = 445.0
 offset_right = 350.0
-offset_bottom = 440.0
+offset_bottom = 490.0
 theme_override_colors/font_color = Color(1, 0.972549, 0.92941177, 1)
 theme_override_fonts/font = ExtResource("3_font")
 theme_override_font_sizes/font_size = 17
@@ -107,9 +107,9 @@ text = "Partager le QR code"
 [node name="BoutonFermer" type="Button" parent="." unique_id=1779941863]
 layout_mode = 0
 offset_left = 30.0
-offset_top = 450.0
+offset_top = 500.0
 offset_right = 350.0
-offset_bottom = 495.0
+offset_bottom = 545.0
 theme_override_colors/font_color = Color(1, 0.972549, 0.92941177, 1)
 theme_override_fonts/font = ExtResource("3_font")
 theme_override_font_sizes/font_size = 18
