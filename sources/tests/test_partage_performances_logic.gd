@@ -262,18 +262,20 @@ func test_fin_de_niveau_affiche_le_partage_apres_le_panneau_de_score() -> void:
 	var menu: MessagesCampagne = add_child_autofree(SCENE_MESSAGES_CAMPAGNE.instantiate())
 	var panneau_partage: Control = menu.get_node("Centrer/PanneauPartagePerformances")
 	var panneau_niveau: Control = menu.get_node("Centrer/PanneauVictoireNiveau")
+	var continuations: Array[bool] = []
+	menu.score_continuer.connect(func() -> void: continuations.append(true))
 
 	panneau_niveau.show()
 	await menu._on_panneau_victoire_niveau_continuer()
 
 	assert_false(panneau_niveau.visible)
 	assert_true(panneau_partage.visible)
-	assert_false(menu.get_node("BoutonCommencer").visible)
+	assert_eq(continuations, [])
 
 	menu._on_panneau_partage_performances_fermer()
 
 	assert_false(panneau_partage.visible)
-	assert_true(menu.get_node("BoutonCommencer").visible)
+	assert_eq(continuations, [true])
 
 func test_fin_de_campagne_affiche_le_partage_avant_les_statistiques() -> void:
 	var menu: MessagesCampagne = add_child_autofree(SCENE_MESSAGES_CAMPAGNE.instantiate())
@@ -285,4 +287,3 @@ func test_fin_de_campagne_affiche_le_partage_avant_les_statistiques() -> void:
 
 	assert_false(panneau_campagne.visible)
 	assert_true(panneau_partage.visible)
-	assert_false(menu.get_node("BoutonCommencer").visible)
