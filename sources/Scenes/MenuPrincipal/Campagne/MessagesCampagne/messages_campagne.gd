@@ -22,11 +22,11 @@ func _ready() -> void:
 func _on_progression_campagne_service_detail_score_plateau(detail_score: Dictionary):
 	afficher_detail_score(detail_score)
 
+# Fin de campagne sans victoire (dernier plateau passé) : même parcours que la victoire,
+# partage des performances puis statistiques.
 func _on_progression_campagne_service_fin_campagne() -> void:
-	AudioService.son_menu_click()
-	VibrationService.vibration_click()
-	# Basculer sur les statistiques
-	get_tree().change_scene_to_file("res://Scenes/MenuPrincipal/menu_principal.tscn")
+	_action_apres_partage = ActionApresPartage.STATISTIQUES
+	await _afficher_partage_dernier_niveau()
 
 
 func _on_bouton_statistiques_pressed() -> void:
@@ -96,10 +96,11 @@ func afficher_abandonner_un_plateau():
 	$Centrer/PanneauDefaite.show()
 
 func afficher_passer_un_plateau():
-	# TODO : Panneau pour le plateau passé
+	# Pas de panneau d'affichage actuellement
+	# TODO : Panneau pour le plateau passé, qui émettra "score_continuer" à sa fermeture
 	# $Centrer.show()
 	# $Centrer/PanneauPasse.show()
-	pass
+	score_continuer.emit() # Sans panneau, redonner directement la main à "campagne"
 
 func afficher_gagner_un_plateau() -> void:
 	# TODO : Insérer ici un message positif pour le joueur apres le score
