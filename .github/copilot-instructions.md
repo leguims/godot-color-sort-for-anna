@@ -34,6 +34,12 @@ Infos de conceptions :
 - Ne jamais utiliser `get_node()` dans la logique métier.
 - Ne jamais faire de logique métier dans les scripts UI.
 
+### Langue
+
+- Réponds toujours dans la langue de l'auteur de l'issue ou du commentaire qui t'a sollicité (français par défaut), jamais en anglais sauf demande explicite.
+- Rédige en français le titre et la description des pull requests, les commentaires, les messages de commit et les commentaires de code.
+- Garde en anglais uniquement les identifiants imposés par Godot ou GitHub (noms d'API, mots-clés).
+
 ---
 
 ## 2. Structure API/Logic Godot
