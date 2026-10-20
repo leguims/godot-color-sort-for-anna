@@ -17,7 +17,7 @@ func before_each():
 	FichiersJsonService.definir_racine_utilisateur(RACINE_TEST)
 	_nettoyer_fichiers_utilisateur()
 	initial_liste_joueurs = SauvegardeListeJoueursService.liste_des_joueurs.duplicate(true)
-	initial_bdd_joueur = SauvegardeBddJoueursService.sauvegarde_joueur.duplicate(true)
+	initial_bdd_joueur = SauvegardeBddJoueursService._sauvegarde_joueur.duplicate(true)
 	initial_bdd_fichier = SauvegardeBddJoueursService.fichier_sauvegarde
 	initial_tableau_scores = SauvegardeTableauDesScoresService.liste_des_scores.duplicate(true)
 	service = add_child_autofree(load("res://Singletons/progression_campagne_service.gd").new())
@@ -34,7 +34,7 @@ func before_each():
 		{"nom": "Beta", "rang": 2, "score": 0, "score_txt": "0"}
 	]
 	SauvegardeBddJoueursService.fichier_sauvegarde = ""
-	SauvegardeBddJoueursService.sauvegarde_joueur = {}
+	SauvegardeBddJoueursService._sauvegarde_joueur = {}
 
 	var plateaux_niveau_1 = [
 		{"nom": "Q1", "date_debut": 110, "duree": 1000, "difficulte": 1, "statut": "reussi"}
@@ -80,7 +80,7 @@ func before_each():
 
 func after_each():
 	SauvegardeListeJoueursService.liste_des_joueurs = initial_liste_joueurs.duplicate(true)
-	SauvegardeBddJoueursService.sauvegarde_joueur = initial_bdd_joueur.duplicate(true)
+	SauvegardeBddJoueursService._sauvegarde_joueur = initial_bdd_joueur.duplicate(true)
 	SauvegardeBddJoueursService.fichier_sauvegarde = initial_bdd_fichier
 	SauvegardeTableauDesScoresService.liste_des_scores = initial_tableau_scores.duplicate(true)
 	_nettoyer_fichiers_utilisateur()
@@ -157,7 +157,7 @@ func test_niveau_en_cours_et_la_campagne_est_terminee_sont_coherents():
 	assert_true(service.niveau_en_cours())
 	assert_false(service.la_campagne_est_terminee())
 
-	SauvegardeBddJoueursService.sauvegarde_joueur["campagne"] = {}
+	SauvegardeBddJoueursService._sauvegarde_joueur["campagne"] = {}
 	assert_true(service.la_campagne_est_terminee())
 
 func test_gagner_un_plateau_emet_les_signaux_et_maj_score():
@@ -170,9 +170,9 @@ func test_gagner_un_plateau_emet_les_signaux_et_maj_score():
 
 func test_abandonner_un_plateau_ne_detruit_pas_la_campaign():
 	service.choisir_le_joueur_pour_la_campagne("Alpha")
-	var campagne_avant = SauvegardeBddJoueursService.sauvegarde_joueur.get("campagne").duplicate(true)
+	var campagne_avant = SauvegardeBddJoueursService._sauvegarde_joueur.get("campagne").duplicate(true)
 	service.abandonner_un_plateau()
-	assert_eq(SauvegardeBddJoueursService.sauvegarde_joueur.get("campagne").keys().size(), campagne_avant.keys().size())
+	assert_eq(SauvegardeBddJoueursService._sauvegarde_joueur.get("campagne").keys().size(), campagne_avant.keys().size())
 
 func test_afficher_niveau_plateau_parties_ne_crashe_pas():
 	service.choisir_le_joueur_pour_la_campagne("Alpha")

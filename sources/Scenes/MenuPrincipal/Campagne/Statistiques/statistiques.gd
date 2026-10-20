@@ -84,7 +84,7 @@ func niveaux():
 
 	var ui_niveau = $Scroll/Content/Niveau
 	
-	ui_niveau.en_cours(str(SauvegardeBddJoueursService.enregistrement_lire_valeur_niveau_joueur()))
+	ui_niveau.en_cours(str(SauvegardeBddJoueursService.enregistrement_campagne_lire_valeur_niveau_joueur()))
 
 	valeur = StatsService.niveau_taux_completion()
 	valeur = str_arrondir_pourcentage(valeur)

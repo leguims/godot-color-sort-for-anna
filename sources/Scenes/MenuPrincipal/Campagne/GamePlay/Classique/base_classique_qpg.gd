@@ -45,7 +45,7 @@ func maj_bandeau_menu() -> void:
 	$MenuPlateau.enregistrer_niveau(niveau_str)
 
 	var pourcentage_niveau_realise
-	if SauvegardeBddJoueursService.enregistrement_lire_valeur_niveau_joueur() == niveau_int:
+	if SauvegardeBddJoueursService.enregistrement_campagne_lire_valeur_niveau_joueur() == niveau_int:
 		pourcentage_niveau_realise = StatsService.niveau_taux_completion() * 100.
 	else:
 		# Niveau courant achevé, On commence le suivant.

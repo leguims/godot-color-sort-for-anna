@@ -114,7 +114,7 @@ func hide_bandeau_menu():
 # Interne
 func _maj_chrono() -> void:
 	"Met à jour le temps du plateau en direct"
-	var temps_ecoule_en_s : float = SauvegardeBddJoueursService.enregistrement_lire_duree_plateau()
+	var temps_ecoule_en_s : float = SauvegardeBddJoueursService.enregistrement_campagne_lire_duree_plateau()
 	var minutes : int = floori(temps_ecoule_en_s / 60.)
 	var secondes : int = floori(temps_ecoule_en_s - 60 * minutes)
 	var decisecondes : int = roundi( (temps_ecoule_en_s - 60 * minutes - secondes) * 10.)
@@ -130,7 +130,7 @@ func _maj_chrono() -> void:
 
 func _maj_coups() -> void:
 	"Met à jour le nombre de coups du plateau en direct"
-	var nb_coups = SauvegardeBddJoueursService.lire_nombre_coups()
+	var nb_coups = SauvegardeBddJoueursService.enregistrement_campagne_lire_nombre_coups()
 	var pluriel = "" if nb_coups < 2 else "s"
 	enregistrer_coups(str(nb_coups) + " Coup" + pluriel)
 

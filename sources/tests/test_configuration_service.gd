@@ -36,7 +36,7 @@ func before_each():
 	configuration_initiale = SauvegardeConfigurationService.configuration_du_jeu.duplicate(true)
 	liste_joueurs_initiale = SauvegardeListeJoueursService.liste_des_joueurs.duplicate(true)
 	tableau_scores_initial = SauvegardeTableauDesScoresService.liste_des_scores.duplicate(true)
-	sauvegarde_joueur_initiale = SauvegardeBddJoueursService.sauvegarde_joueur.duplicate(true)
+	sauvegarde_joueur_initiale = SauvegardeBddJoueursService._sauvegarde_joueur.duplicate(true)
 	fichier_sauvegarde_initial = SauvegardeBddJoueursService.fichier_sauvegarde
 	_nettoyer_fichiers_utilisateur()
 
@@ -44,7 +44,7 @@ func after_each():
 	SauvegardeConfigurationService.configuration_du_jeu = configuration_initiale.duplicate(true)
 	SauvegardeListeJoueursService.liste_des_joueurs = liste_joueurs_initiale.duplicate(true)
 	SauvegardeTableauDesScoresService.liste_des_scores = tableau_scores_initial.duplicate(true)
-	SauvegardeBddJoueursService.sauvegarde_joueur = sauvegarde_joueur_initiale.duplicate(true)
+	SauvegardeBddJoueursService._sauvegarde_joueur = sauvegarde_joueur_initiale.duplicate(true)
 	SauvegardeBddJoueursService.fichier_sauvegarde = fichier_sauvegarde_initial
 	_nettoyer_fichiers_utilisateur()
 	FichiersJsonService.reinitialiser_racine_utilisateur()
@@ -106,7 +106,7 @@ func test_ready_convertit_une_ancienne_version_et_reinitialise_campagne_et_score
 	assert_false(service.vibrations_sont_actives())
 
 	assert_true(SauvegardeBddJoueursService._lire_sauvegarde_joueur("test_configuration_joueur_00.json"))
-	assert_true(SauvegardeBddJoueursService.sauvegarde_joueur.get("campagne") != {"niveau_99": [{"nom": "Ancien", "difficulte": 9, "gameplay": "CLASSIQUE"}]})
+	assert_true(SauvegardeBddJoueursService._sauvegarde_joueur.get("campagne") != {"niveau_99": [{"nom": "Ancien", "difficulte": 9, "gameplay": "CLASSIQUE"}]})
 	assert_eq(int(SauvegardeTableauDesScoresService.lire_score_joueur("Alice")), 0)
 	assert_eq(SauvegardeTableauDesScoresService.lire_score_txt_joueur("Alice"), "0")
 
@@ -156,7 +156,7 @@ func test_ready_change_de_version_sans_reinitialiser_campagne_et_scores_si_lanci
 	# version ne commence pas par "V0."). Les entiers sont relus en float par
 	# FichiersJsonService (round-trip JSON) : comparaison champ par champ.
 	assert_true(SauvegardeBddJoueursService._lire_sauvegarde_joueur("test_configuration_joueur_00.json"))
-	var campagne = SauvegardeBddJoueursService.sauvegarde_joueur.get("campagne")
+	var campagne = SauvegardeBddJoueursService._sauvegarde_joueur.get("campagne")
 	assert_true(campagne.has("niveau_99"))
 	var niveau_99 = campagne.get("niveau_99")
 	assert_eq(niveau_99.size(), 1)

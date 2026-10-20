@@ -23,10 +23,10 @@ func mettre_a_jour_score_pour_victoire() -> Dictionary:
 
 func mettre_a_jour_score_pour_import(nom_joueur : String, niveau : Dictionary) -> void:
 	"Calculer le score du niveau importé via QR"
-	var score_niveau = SauvegardeBddJoueursService.enregistrement_lire_score_niveau(niveau)
+	var score_niveau = SauvegardeBddJoueursService.enregistrement_campagne_lire_score_niveau(niveau)
 	SauvegardeTableauDesScoresService.incrementer_score_joueur(nom_joueur, score_niveau)
 	# LogService.log_debug("Score : +", score_niveau," points pour le niveau.")
-	var score_niveau_parfait = SauvegardeBddJoueursService.enregistrement_lire_score_niveau_parfait(niveau)
+	var score_niveau_parfait = SauvegardeBddJoueursService.enregistrement_campagne_lire_score_niveau_parfait(niveau)
 	SauvegardeTableauDesScoresService.incrementer_score_joueur(nom_joueur, score_niveau_parfait)
 	# LogService.log_debug("Score : +", score_niveau_parfait," points pour le niveau parfait.")
 	
@@ -37,20 +37,20 @@ func mettre_a_jour_score_pour_import(nom_joueur : String, niveau : Dictionary) -
 	for plateau in niveau.get('plateaux', []):
 		if not plateau is Dictionary:
 			continue
-		var score_duree_plateau = SauvegardeBddJoueursService.enregistrement_lire_score_duree_plateau(plateau)
+		var score_duree_plateau = SauvegardeBddJoueursService.enregistrement_campagne_lire_score_duree_plateau(plateau)
 		SauvegardeTableauDesScoresService.incrementer_score_joueur(nom_joueur, score_duree_plateau)
 		# LogService.log_debug("Score '", plateau.get('nom', ''),"' : +", score_duree_plateau," points pour la duree.")
-		var score_ratio_reussite_plateau = SauvegardeBddJoueursService.enregistrement_lire_score_ratio_reussite_plateau(plateau)
+		var score_ratio_reussite_plateau = SauvegardeBddJoueursService.enregistrement_campagne_lire_score_ratio_reussite_plateau(plateau)
 		SauvegardeTableauDesScoresService.incrementer_score_joueur(nom_joueur, score_ratio_reussite_plateau)
 		# LogService.log_debug("Score '", plateau.get('nom', ''),"' : +", score_ratio_reussite_plateau," points pour le ratio.")
 
 func mettre_a_jour_score_pour_passer() -> void:
 	"Calculer et enregistrer le score nul suite au passage d'un plateau"
-	SauvegardeBddJoueursService.enregistrement_modifier_score_duree_plateau(0)
-	SauvegardeBddJoueursService.enregistrement_modifier_score_ratio_reussite_plateau(0)
-	if not SauvegardeBddJoueursService.enregistrement_niveau_en_cours():
-		SauvegardeBddJoueursService.enregistrement_modifier_score_niveau(0)
-		SauvegardeBddJoueursService.enregistrement_modifier_score_niveau_parfait(0)
+	SauvegardeBddJoueursService.enregistrement_campagne_modifier_score_duree_plateau(0)
+	SauvegardeBddJoueursService.enregistrement_campagne_modifier_score_ratio_reussite_plateau(0)
+	if not SauvegardeBddJoueursService.enregistrement_campagne_niveau_en_cours():
+		SauvegardeBddJoueursService.enregistrement_campagne_modifier_score_niveau(0)
+		SauvegardeBddJoueursService.enregistrement_campagne_modifier_score_niveau_parfait(0)
 
 func mettre_a_jour_score_duree() -> Dictionary:
 	"Calculer le score relatif au temps"
@@ -67,7 +67,7 @@ func mettre_a_jour_score_duree() -> Dictionary:
 		100 : 120.
 		}
 
-	var difficulte = SauvegardeBddJoueursService.enregistrement_lire_difficulte_plateau()
+	var difficulte = SauvegardeBddJoueursService.enregistrement_campagne_lire_difficulte_plateau()
 	var temps_reference_en_s = temps_reference_par_difficulte[9]
 	if difficulte <= 9:
 		temps_reference_en_s = temps_reference_par_difficulte[9]
@@ -94,15 +94,15 @@ func mettre_a_jour_score_duree() -> Dictionary:
 
 	var bonus_duree = 0
 	var nom_joueur = SauvegardeBddJoueursService.lire_nom_joueur()
-	var duree_recommence_en_s = SauvegardeBddJoueursService.enregistrement_lire_duree_plateau_recommence()
-	var duree_realise_en_s = SauvegardeBddJoueursService.enregistrement_lire_duree_plateau()
+	var duree_recommence_en_s = SauvegardeBddJoueursService.enregistrement_campagne_lire_duree_plateau_recommence()
+	var duree_realise_en_s = SauvegardeBddJoueursService.enregistrement_campagne_lire_duree_plateau()
 	var duree_totale_en_s = duree_recommence_en_s + duree_realise_en_s
 	# Score sur le ratio du temps référence/joué
 	var ratio_temps = 0.
 	if duree_totale_en_s:
 		ratio_temps = temps_reference_en_s / duree_totale_en_s
 	bonus_duree = roundi(100 * difficulte * ratio_temps)
-	SauvegardeBddJoueursService.enregistrement_modifier_score_duree_plateau(bonus_duree)
+	SauvegardeBddJoueursService.enregistrement_campagne_modifier_score_duree_plateau(bonus_duree)
 	SauvegardeTableauDesScoresService.incrementer_score_joueur(nom_joueur, bonus_duree)
 	return {'type':'duree',
 			'reference': temps_reference_en_s,
@@ -113,11 +113,11 @@ func mettre_a_jour_score_ratio_reussite() -> Dictionary:
 	"Calculer le score relatif au temps"
 	var bonus_ratio_reussite = 0
 	var nom_joueur = SauvegardeBddJoueursService.lire_nom_joueur()
-	var niveau = SauvegardeBddJoueursService.enregistrement_lire_valeur_niveau_joueur()
-	var int_ratio_reussite = SauvegardeBddJoueursService.enregistrement_lire_ratio_reussite_niveau()
-	var ratio_reussite = SauvegardeBddJoueursService.enregistrement_lire_ratio_reussite_niveau() / 100.
+	var niveau = SauvegardeBddJoueursService.enregistrement_campagne_lire_valeur_niveau_joueur()
+	var int_ratio_reussite = SauvegardeBddJoueursService.enregistrement_campagne_lire_ratio_reussite_niveau()
+	var ratio_reussite = SauvegardeBddJoueursService.enregistrement_campagne_lire_ratio_reussite_niveau() / 100.
 	bonus_ratio_reussite = roundi(500 * niveau * ratio_reussite)
-	SauvegardeBddJoueursService.enregistrement_modifier_score_ratio_reussite_plateau(bonus_ratio_reussite)
+	SauvegardeBddJoueursService.enregistrement_campagne_modifier_score_ratio_reussite_plateau(bonus_ratio_reussite)
 	SauvegardeTableauDesScoresService.incrementer_score_joueur(nom_joueur, bonus_ratio_reussite)
 	return {'type':'ratio_reussite',
 			'ratio': int_ratio_reussite,
@@ -129,12 +129,12 @@ func mettre_a_jour_score_niveau() -> Dictionary:
 	"Calculer le score suite à un niveau achevé"
 	var bonus_niveau = 0
 	var niveau_longueur_totale = 0
-	if not SauvegardeBddJoueursService.enregistrement_niveau_en_cours():
+	if not SauvegardeBddJoueursService.enregistrement_campagne_niveau_en_cours():
 		var nom_joueur = SauvegardeBddJoueursService.lire_nom_joueur()
 		niveau_longueur_totale = SauvegardeBddJoueursService.lire_longueur_niveau_courant()
 		# bonus = 500 x longueur du niveau
 		bonus_niveau = roundi(500 * niveau_longueur_totale)
-		SauvegardeBddJoueursService.enregistrement_modifier_score_niveau(bonus_niveau)
+		SauvegardeBddJoueursService.enregistrement_campagne_modifier_score_niveau(bonus_niveau)
 		SauvegardeTableauDesScoresService.incrementer_score_joueur(nom_joueur, bonus_niveau)
 		return {'type':'niveau',
 				'longueur': niveau_longueur_totale,
@@ -144,11 +144,11 @@ func mettre_a_jour_score_niveau() -> Dictionary:
 func mettre_a_jour_score_niveau_parfait() -> Dictionary:
 	"Calculer le score suite à un niveau parfaitement achevé (sans détour)"
 	var bonus_niveau_parfait = 0
-	if not SauvegardeBddJoueursService.enregistrement_niveau_en_cours() \
-		and SauvegardeBddJoueursService.enregistrement_lire_ratio_reussite_niveau() == 100:
+	if not SauvegardeBddJoueursService.enregistrement_campagne_niveau_en_cours() \
+		and SauvegardeBddJoueursService.enregistrement_campagne_lire_ratio_reussite_niveau() == 100:
 		var nom_joueur = SauvegardeBddJoueursService.lire_nom_joueur()
-		bonus_niveau_parfait = SauvegardeBddJoueursService.enregistrement_lire_score_dernier_niveau()
-		SauvegardeBddJoueursService.enregistrement_modifier_score_niveau_parfait(bonus_niveau_parfait)
+		bonus_niveau_parfait = SauvegardeBddJoueursService.enregistrement_campagne_lire_score_dernier_niveau()
+		SauvegardeBddJoueursService.enregistrement_campagne_modifier_score_niveau_parfait(bonus_niveau_parfait)
 		SauvegardeTableauDesScoresService.incrementer_score_joueur(nom_joueur, bonus_niveau_parfait)
 		return {'type':'niveau_parfait',
 				'bonus': 'x2',
@@ -161,6 +161,7 @@ func mettre_a_jour_score_campagne() -> Dictionary:
 	if SauvegardeBddJoueursService.campagne_la_campagne_est_terminee():
 		var nom_joueur = SauvegardeBddJoueursService.lire_nom_joueur()
 		bonus_campagne = FIN_CAMPAGNE
+		SauvegardeBddJoueursService.enregistrement_campagne_modifier_score_fin_campagne(bonus_campagne)
 		SauvegardeTableauDesScoresService.incrementer_score_joueur(nom_joueur, bonus_campagne)
 		return {'type':'campagne',
 				'points': bonus_campagne}

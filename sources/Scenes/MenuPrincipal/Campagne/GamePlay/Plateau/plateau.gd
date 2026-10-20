@@ -99,7 +99,7 @@ func _positionner_une_pile(nb_piles_plateau: int, indice_pile: int) -> Vector2:
 
 func on_pile_clique_gauche(indice_pile : int) -> void:
 	# LogService.log_debug("clique sur la pile : ", indice_pile)
-	if not SauvegardeBddJoueursService.enregistrement_plateau_en_cours():
+	if not SauvegardeBddJoueursService.enregistrement_campagne_plateau_en_cours():
 		# Ignorer les cliques sur les jetons quand il n'y a pas de partie ne cours
 		return
 	var pile_cible = liste_piles[indice_pile]
@@ -147,7 +147,7 @@ func _deselectionner_toutes_les_piles() -> void:
 
 func _on_menu_plateau_deselection_pile() -> void:
 	# si un plateau est en cours
-	if SauvegardeBddJoueursService.enregistrement_plateau_en_cours():
+	if SauvegardeBddJoueursService.enregistrement_campagne_plateau_en_cours():
 		_on_selection_pile_timeout()
 
 func _on_selection_pile_timeout() -> void:

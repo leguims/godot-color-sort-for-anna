@@ -28,7 +28,7 @@ func _activer_joueur_test(reussis: int, restants: int) -> void:
 			"gameplay": "CLASSIQUE"
 		})
 
-	SauvegardeBddJoueursService.sauvegarde_joueur = {
+	SauvegardeBddJoueursService._sauvegarde_joueur = {
 		"nom": "Joueur Audio",
 		"campagne": {
 			"niveau_1": plateaux_restants
@@ -44,13 +44,13 @@ func _activer_joueur_test(reussis: int, restants: int) -> void:
 		"plateaux_libres": {},
 		"nombre_de_parties": {}
 	}
-	FichiersJsonService.write_json_file("test_audio_service.json", SauvegardeBddJoueursService.sauvegarde_joueur)
+	FichiersJsonService.write_json_file("test_audio_service.json", SauvegardeBddJoueursService._sauvegarde_joueur)
 	assert_true(SauvegardeBddJoueursService.choisir_le_joueur("Joueur Audio", "test_audio_service.json"))
 
 func before_each():
 	FichiersJsonService.definir_racine_utilisateur(RACINE_TEST)
 	_nettoyer_fichiers_utilisateur()
-	sauvegarde_joueur_initiale = SauvegardeBddJoueursService.sauvegarde_joueur.duplicate(true)
+	sauvegarde_joueur_initiale = SauvegardeBddJoueursService._sauvegarde_joueur.duplicate(true)
 	fichier_sauvegarde_initial = SauvegardeBddJoueursService.fichier_sauvegarde
 	configuration_initiale = SauvegardeConfigurationService.configuration_du_jeu.duplicate(true)
 
@@ -62,7 +62,7 @@ func before_each():
 	service = add_child_autofree(load("res://Singletons/audio_service.gd").new())
 
 func after_each():
-	SauvegardeBddJoueursService.sauvegarde_joueur = sauvegarde_joueur_initiale
+	SauvegardeBddJoueursService._sauvegarde_joueur = sauvegarde_joueur_initiale
 	SauvegardeBddJoueursService.fichier_sauvegarde = fichier_sauvegarde_initial
 	SauvegardeConfigurationService.configuration_du_jeu = configuration_initiale
 	_nettoyer_fichiers_utilisateur()

@@ -134,21 +134,21 @@ func detail_score_cumule() -> Dictionary:
 	var score_niveau_parfait: int = 0
 	var score_fin_campagne: int = 0
 
-	if SauvegardeBddJoueursService.sauvegarde_joueur.get("enregistrement_campagne", null):
-		for niveau in SauvegardeBddJoueursService.sauvegarde_joueur.get("enregistrement_campagne"):
-			if "score" in niveau:
-				score_niveau += niveau.get("score").get('niveau', 0)
-				score_niveau_parfait += niveau.get("score").get('niveau_parfait', 0)
-			# Comptabiliser les plateaux reussis
-			if "plateaux" in niveau:
-				for plateau_joue in niveau.get("plateaux"):
-					if plateau_joue.get("date_debut") > date_debut_campagne \
-						and 'score' in plateau_joue:
-						score_rapidite += plateau_joue.get("score").get('duree', 0)
-						score_reussite += plateau_joue.get("score").get('ratio_reussite', 0)
+	var campagne = SauvegardeBddJoueursService.enregistrement_campagne_lire_derniere_campagne()
+	if campagne.get("date_debut", 0) < date_debut_campagne:
+		score_fin_campagne = SauvegardeBddJoueursService.enregistrement_campagne_lire_score_derniere_fin_campagne()
 
-	if ProgressionCampagneService.la_campagne_est_terminee():
-		score_fin_campagne = ScoreService.FIN_CAMPAGNE
+	for niveau in SauvegardeBddJoueursService.enregistrement_campagne_lire_niveaux(campagne):
+		if niveau.get("date_debut", 0) < date_debut_campagne:
+			continue
+		score_niveau += SauvegardeBddJoueursService.enregistrement_campagne_lire_score_niveau(niveau)
+		score_niveau_parfait += SauvegardeBddJoueursService.enregistrement_campagne_lire_score_niveau_parfait(niveau)
+		# Comptabiliser les plateaux reussis
+		for plateau in SauvegardeBddJoueursService.enregistrement_campagne_lire_plateaux(niveau):
+			if plateau.get("date_debut", 0) < date_debut_campagne:
+				continue
+			score_rapidite += SauvegardeBddJoueursService.enregistrement_campagne_lire_score_duree_plateau(plateau)
+			score_reussite += SauvegardeBddJoueursService.enregistrement_campagne_lire_score_ratio_reussite_plateau(plateau)
 
 	return {
 		'joueur': joueur,
@@ -204,9 +204,10 @@ func nombre_de_plateau_inacheves() -> int:
 	# Nombre de plateau inachevés
 	var nb_plateaux_inacheves: int = 0
 	# Parcourir la liste des plateaux de chaque niveaux
-	if SauvegardeBddJoueursService.sauvegarde_joueur.get("campagne", null):
-		for niveau in SauvegardeBddJoueursService.sauvegarde_joueur.get("campagne").keys():
-			var liste_plateaux_campagne = SauvegardeBddJoueursService.sauvegarde_joueur.get("campagne").get(niveau)
+	if SauvegardeBddJoueursService.campagne():
+		for nom_niveau in SauvegardeBddJoueursService.campagne_lire_noms_niveaux():
+			var valeur_niveau = SauvegardeBddJoueursService.valeur_niveau(nom_niveau)
+			var liste_plateaux_campagne = SauvegardeBddJoueursService.campagne_lire_liste_plateaux_du_niveau(valeur_niveau)
 			nb_plateaux_inacheves += liste_plateaux_campagne.size()
 	LogService.log_debug("joueur:",joueur, ' nb_plateaux_inacheves=', nb_plateaux_inacheves)
 	return nb_plateaux_inacheves
@@ -216,7 +217,7 @@ func nombre_de_plateau_acheves() -> int:
 	# Nombre de plateau achevés
 	var nb_plateaux_acheves: int = 0
 	# Parcourir la liste des enregistrements de la campagne
-	if SauvegardeBddJoueursService.sauvegarde_joueur.get("enregistrement_campagne", null):
+	if SauvegardeBddJoueursService.enregistrement_campagne():
 		# Comptabiliser les plateaux reussis
 		var npra = nombre_de_plateau_reussis_abandonnes_passes()
 		nb_plateaux_acheves = npra.get('reussis', 0) + npra.get('passes', 0)
@@ -236,13 +237,11 @@ func taux_completion_niveau() -> float:
 	"Taux de complétion du niveau en cours"
 	var joueur = SauvegardeBddJoueursService.lire_nom_joueur()
 	# Consulter le dernier niveau de campagne enregistré
-	if SauvegardeBddJoueursService.sauvegarde_joueur.get("enregistrement_campagne", null):
-		var niveau = SauvegardeBddJoueursService.sauvegarde_joueur.get('enregistrement_campagne').back()
-		var nom_niveau = niveau.get("niveau", "")
+	if SauvegardeBddJoueursService.enregistrement_campagne():
+		var nom_niveau = SauvegardeBddJoueursService.enregistrement_campagne_lire_nom_dernier_niveau()
 		if nom_niveau:
 			var npra_pour_niveau = nombre_de_plateau_reussis_abandonnes_passes_pour_niveau(nom_niveau)
-			var campagne_niveau = SauvegardeBddJoueursService.sauvegarde_joueur.get('campagne').get(nom_niveau, [])
-			var lg_restante: int = campagne_niveau.size()
+			var lg_restante: int = SauvegardeBddJoueursService.campagne_lire_nombre_de_plateaux_realisables_pour_niveau_courant()
 			var lg_realisee: int = npra_pour_niveau.get('reussis', 0) + npra_pour_niveau.get('passes', 0)
 			if (lg_realisee + lg_restante) != 0:
 				var completion: float = 1. * lg_realisee / (lg_realisee + lg_restante)
@@ -263,19 +262,19 @@ func duree_totale_plateaux_tous_les_niveaux_en_s() -> Dictionary:
 	var duree_totale_plateaux_tous_les_niveaux: float = 0.
 	var duree_totale_plateaux_tous_les_niveaux_termines: float = 0.
 	# Parcourir la liste des enregistrements de la campagne
-	if SauvegardeBddJoueursService.sauvegarde_joueur.get("enregistrement_campagne", null):
-		for niveau in SauvegardeBddJoueursService.sauvegarde_joueur.get("enregistrement_campagne"):
-			# Comptabiliser les plateaux reussis
-			if niveau.get("plateaux", null):
-				for plateau_joue in niveau.get("plateaux"):
-					if plateau_joue.get("date_debut") > date_debut_campagne:
-						var duree_en_s = plateau_joue.get("duree")
-						if duree_en_s:
-							# Comptabiliser TOUS les niveaux
-							duree_totale_plateaux_tous_les_niveaux += duree_en_s
-							if niveau.get("date_fin"):
-								# Comptabiliser les niveaux TERMINEES
-								duree_totale_plateaux_tous_les_niveaux_termines += duree_en_s
+
+	if SauvegardeBddJoueursService.enregistrement_campagne():
+		var campagne = SauvegardeBddJoueursService.enregistrement_campagne_lire_derniere_campagne()
+		for niveau in SauvegardeBddJoueursService.enregistrement_campagne_lire_niveaux(campagne):
+			for plateau in SauvegardeBddJoueursService.enregistrement_campagne_lire_plateaux(niveau):
+				if plateau.get("date_debut", 0) > date_debut_campagne:
+					var duree_en_s = plateau.get("duree")
+					if duree_en_s:
+						# Comptabiliser TOUS les niveaux
+						duree_totale_plateaux_tous_les_niveaux += duree_en_s
+						if niveau.get("date_fin"):
+							# Comptabiliser les niveaux TERMINEES
+							duree_totale_plateaux_tous_les_niveaux_termines += duree_en_s
 	LogService.log_debug("joueur:",joueur,
 						' duree_totale_plateaux_tous_les_niveaux=', duree_totale_plateaux_tous_les_niveaux,
 						' duree_totale_plateaux_tous_les_niveaux_termines=', duree_totale_plateaux_tous_les_niveaux_termines)
@@ -287,9 +286,10 @@ func duree_totale_plateaux_tous_les_niveaux_en_s() -> Dictionary:
 func nombre_niveaux_termines() -> int:
 	var date_debut_campagne = SauvegardeConfigurationService.lire_la_date_debut_campagne_timestamp()
 	var nb_niveaux: int = 0
-	if SauvegardeBddJoueursService.sauvegarde_joueur.get("enregistrement_campagne", null):
-		for niveau in SauvegardeBddJoueursService.sauvegarde_joueur.get("enregistrement_campagne"):
-			if niveau.get("date_debut") > date_debut_campagne \
+	if SauvegardeBddJoueursService.enregistrement_campagne():
+		var campagne = SauvegardeBddJoueursService.enregistrement_campagne_lire_derniere_campagne()
+		for niveau in SauvegardeBddJoueursService.enregistrement_campagne_lire_niveaux(campagne):
+			if niveau.get("date_debut", 0) > date_debut_campagne \
 				and niveau.get("date_fin"):
 				nb_niveaux += 1
 	return nb_niveaux
@@ -311,17 +311,17 @@ func nombre_de_plateau_reussis_abandonnes_passes() -> Dictionary:
 	# Nombre de plateau passé
 	var nb_plateaux_passes: int = 0
 	# Parcourir la liste des enregistrements de la campagne
-	if SauvegardeBddJoueursService.sauvegarde_joueur.get("enregistrement_campagne", null):
-		for niveau in SauvegardeBddJoueursService.sauvegarde_joueur.get("enregistrement_campagne"):
-			if niveau.get("plateaux", null):
-				for plateau_joue in niveau.get("plateaux"):
-					if plateau_joue.get("date_debut") > date_debut_campagne:
-						if plateau_joue.get("statut") == "reussi":
-							nb_plateaux_reussis += 1
-						if plateau_joue.get("statut") == "abandonné":
-							nb_plateaux_abandonnes += 1
-						if plateau_joue.get("statut") == "passé":
-							nb_plateaux_passes += 1
+	if SauvegardeBddJoueursService.enregistrement_campagne():
+		var campagne = SauvegardeBddJoueursService.enregistrement_campagne_lire_derniere_campagne()
+		for niveau in SauvegardeBddJoueursService.enregistrement_campagne_lire_niveaux(campagne):
+			for plateau in SauvegardeBddJoueursService.enregistrement_campagne_lire_plateaux(niveau):
+				if plateau.get("date_debut", 0) > date_debut_campagne:
+					if plateau.get("statut") == "reussi":
+						nb_plateaux_reussis += 1
+					if plateau.get("statut") == "abandonné":
+						nb_plateaux_abandonnes += 1
+					if plateau.get("statut") == "passé":
+						nb_plateaux_passes += 1
 	LogService.log_debug("joueur:",joueur,
 						' nb_plateaux_reussis=', nb_plateaux_reussis,
 						' nb_plateaux_abandonnes=', nb_plateaux_abandonnes,
@@ -338,19 +338,18 @@ func nombre_de_plateau_reussis_abandonnes_passes_pour_niveau(nom_niveau : String
 	# Nombre de plateau passé
 	var nb_plateaux_passes: int = 0
 	# Parcourir la liste des enregistrements de la campagne
-	if SauvegardeBddJoueursService.sauvegarde_joueur.get("enregistrement_campagne", null):
-		for niveau in SauvegardeBddJoueursService.sauvegarde_joueur.get("enregistrement_campagne"):
-			# Comptabiliser les plateaux reussis
-			if niveau.get("niveau", "") == nom_niveau:
-				if niveau.get("plateaux", null):
-					for plateau_joue in niveau.get("plateaux"):
-						if plateau_joue.get("date_debut") > date_debut_campagne:
-							if plateau_joue.get("statut") == "reussi":
-								nb_plateaux_reussis += 1
-							if plateau_joue.get("statut") == "abandonné":
-								nb_plateaux_abandonnes += 1
-							if plateau_joue.get("statut") == "passé":
-								nb_plateaux_passes += 1
+	if SauvegardeBddJoueursService.enregistrement_campagne():
+		var campagne = SauvegardeBddJoueursService.enregistrement_campagne_lire_derniere_campagne()
+		for niveau in SauvegardeBddJoueursService.enregistrement_campagne_lire_niveaux(campagne):
+			for plateau in SauvegardeBddJoueursService.enregistrement_campagne_lire_plateaux(niveau):
+				# Comptabiliser les plateaux reussis
+					if plateau.get("date_debut", 0) > date_debut_campagne:
+						if plateau.get("statut") == "reussi":
+							nb_plateaux_reussis += 1
+						if plateau.get("statut") == "abandonné":
+							nb_plateaux_abandonnes += 1
+						if plateau.get("statut") == "passé":
+							nb_plateaux_passes += 1
 	LogService.log_debug("joueur:",joueur,
 						' niveau=', nom_niveau,
 						' nb_plateaux_reussis=', nb_plateaux_reussis,
@@ -385,12 +384,13 @@ func longueur_max_niveau_termine() -> int:
 	var lg_max_niveau_termine: int = 0
 	var lg_max_nom_niveau: String = ""
 	# Parcourir la liste des enregistrements de la campagne
-	if SauvegardeBddJoueursService.sauvegarde_joueur.get("enregistrement_campagne", null):
-		for niveau in SauvegardeBddJoueursService.sauvegarde_joueur.get("enregistrement_campagne"):
+	if SauvegardeBddJoueursService.enregistrement_campagne():
+		var campagne = SauvegardeBddJoueursService.enregistrement_campagne_lire_derniere_campagne()
+		for niveau in SauvegardeBddJoueursService.enregistrement_campagne_lire_niveaux(campagne):
 			# Comptabiliser les plateaux sur les enregistrements terminées
-			if niveau.get("plateaux", null) \
+			if SauvegardeBddJoueursService.enregistrement_campagne_lire_plateaux(niveau) \
 				and niveau.get("date_fin", null) \
-				and niveau.get("date_debut") > date_debut_campagne:
+				and niveau.get("date_debut", 0) > date_debut_campagne:
 				# Longueur niveau
 				var nom_niveau = niveau.get("niveau", "")
 				var npra_pour_niveau = nombre_de_plateau_reussis_abandonnes_passes_pour_niveau(nom_niveau)
@@ -414,8 +414,9 @@ func niveau_taux_reussite_les_infos() -> Dictionary:
 	var taux_max_lg: int = 0
 	var taux_max_niveau: int = 0
 	# Parcourir la liste des enregistrements de la campagne
-	if SauvegardeBddJoueursService.sauvegarde_joueur.get("enregistrement_campagne", null):
-		for niveau in SauvegardeBddJoueursService.sauvegarde_joueur.get("enregistrement_campagne"):
+	if SauvegardeBddJoueursService.enregistrement_campagne():
+		var campagne = SauvegardeBddJoueursService.enregistrement_campagne_lire_derniere_campagne()
+		for niveau in SauvegardeBddJoueursService.enregistrement_campagne_lire_niveaux(campagne):
 			var nom_niveau = niveau.get("niveau", "")
 			var npra_pour_niveau = nombre_de_plateau_reussis_abandonnes_passes_pour_niveau(nom_niveau)
 			var reussis = npra_pour_niveau.get("reussis", 0)
@@ -455,13 +456,13 @@ func plateau_le_temps_moyen_en_s() -> float:
 	var nb_plateaux: int = 0
 	var temps_moyen_en_s: float = 0.
 	# Parcourir la liste des enregistrements de la campagne
-	if SauvegardeBddJoueursService.sauvegarde_joueur.get("enregistrement_campagne", null):
-		for niveau in SauvegardeBddJoueursService.sauvegarde_joueur.get("enregistrement_campagne"):
-			# Comptabiliser les plateaux reussis
-			if niveau.get("plateaux", null) \
-				and niveau.get("date_debut") > date_debut_campagne:
-				for plateau_joue in niveau.get("plateaux"):
-					var duree_en_s = plateau_joue.get("duree", 0)
+	if SauvegardeBddJoueursService.enregistrement_campagne():
+		var campagne = SauvegardeBddJoueursService.enregistrement_campagne_lire_derniere_campagne()
+		for niveau in SauvegardeBddJoueursService.enregistrement_campagne_lire_niveaux(campagne):
+			if niveau.get("date_debut", 0) > date_debut_campagne:
+				for plateau in SauvegardeBddJoueursService.enregistrement_campagne_lire_plateaux(niveau):
+					# Comptabiliser les plateaux reussis
+					var duree_en_s = plateau.get("duree", 0)
 					if duree_en_s:
 						temps_total_en_s += duree_en_s
 						nb_plateaux += 1
@@ -478,15 +479,15 @@ func plateau_le_plus_rapide_les_infos() -> Dictionary:
 	var plus_rapide_temps: float = 0.
 	var plus_rapide_difficulte: int = 0
 	# Parcourir la liste des enregistrements de la campagne
-	if SauvegardeBddJoueursService.sauvegarde_joueur.get("enregistrement_campagne", null):
-		for niveau in SauvegardeBddJoueursService.sauvegarde_joueur.get("enregistrement_campagne"):
-			# Comptabiliser les plateaux reussis
-			if niveau.get("plateaux", null) \
-				and niveau.get("date_debut") > date_debut_campagne:
-				for plateau_joue in niveau.get("plateaux"):
-					var duree_en_s = plateau_joue.get("duree", 0)
+	if SauvegardeBddJoueursService.enregistrement_campagne():
+		var campagne = SauvegardeBddJoueursService.enregistrement_campagne_lire_derniere_campagne()
+		for niveau in SauvegardeBddJoueursService.enregistrement_campagne_lire_niveaux(campagne):
+			if niveau.get("date_debut", 0) > date_debut_campagne:
+				for plateau in SauvegardeBddJoueursService.enregistrement_campagne_lire_plateaux(niveau):
+					# Comptabiliser les plateaux reussis
+					var duree_en_s = plateau.get("duree", 0)
 					if duree_en_s:
-						var difficulte = roundi(plateau_joue.get("difficulte", 0))
+						var difficulte = roundi(plateau.get("difficulte", 0))
 						if duree_en_s <= plus_rapide_temps or plus_rapide_temps == 0.:
 							if duree_en_s == plus_rapide_temps and difficulte > plus_rapide_difficulte:
 								plus_rapide_difficulte = difficulte
@@ -505,15 +506,15 @@ func plateau_le_plus_lent_les_infos() -> Dictionary:
 	var plus_lent_temps: float = 0.
 	var plus_lent_difficulte: int = 0
 	# Parcourir la liste des enregistrements de la campagne
-	if SauvegardeBddJoueursService.sauvegarde_joueur.get("enregistrement_campagne", null):
-		for niveau in SauvegardeBddJoueursService.sauvegarde_joueur.get("enregistrement_campagne"):
-			# Comptabiliser les plateaux reussis
-			if niveau.get("plateaux", null) \
-				and niveau.get("date_debut") > date_debut_campagne:
-				for plateau_joue in niveau.get("plateaux"):
-					var duree_en_s = plateau_joue.get("duree", 0)
+	if SauvegardeBddJoueursService.enregistrement_campagne():
+		var campagne = SauvegardeBddJoueursService.enregistrement_campagne_lire_derniere_campagne()
+		for niveau in SauvegardeBddJoueursService.enregistrement_campagne_lire_niveaux(campagne):
+			if niveau.get("date_debut", 0) > date_debut_campagne:
+				for plateau in SauvegardeBddJoueursService.enregistrement_campagne_lire_plateaux(niveau):
+					# Comptabiliser les plateaux reussis
+					var duree_en_s = plateau.get("duree", 0)
 					if duree_en_s:
-						var difficulte = roundi(plateau_joue.get("difficulte", 0))
+						var difficulte = roundi(plateau.get("difficulte", 0))
 						if duree_en_s >= plus_lent_temps or plus_lent_temps == 0.:
 							if duree_en_s == plus_lent_temps and difficulte > plus_lent_difficulte:
 								plus_lent_difficulte = difficulte
@@ -531,17 +532,17 @@ func plateau_le_plus_galere_les_infos() -> Dictionary:
 	# Plateau le plus galère à résoudre et sa difficulté
 	var plateaux_essais: Dictionary = {}
 	# Parcourir la liste des enregistrements de la campagne et collecter les essais sur chaque plateau
-	if SauvegardeBddJoueursService.sauvegarde_joueur.get("enregistrement_campagne", null):
-		for niveau in SauvegardeBddJoueursService.sauvegarde_joueur.get("enregistrement_campagne"):
-			# Comptabiliser les essais de plateaux
-			if niveau.get("plateaux", null) \
-				and niveau.get("date_debut") > date_debut_campagne:
-				for plateau_joue in niveau.get("plateaux"):
-					var nom_plateau = plateau_joue.get("nom", 'inconnu')
+	if SauvegardeBddJoueursService.enregistrement_campagne():
+		var campagne = SauvegardeBddJoueursService.enregistrement_campagne_lire_derniere_campagne()
+		for niveau in SauvegardeBddJoueursService.enregistrement_campagne_lire_niveaux(campagne):
+			if niveau.get("date_debut", 0) > date_debut_campagne:
+				for plateau in SauvegardeBddJoueursService.enregistrement_campagne_lire_plateaux(niveau):
+					# Comptabiliser les essais de plateaux
+					var nom_plateau = plateau.get("nom", 'inconnu')
 					if nom_plateau in plateaux_essais:
 						plateaux_essais[nom_plateau]['essais'] += 1
 					else:
-						var plateaux_difficulte : int = roundi(plateau_joue.get("difficulte", 0))
+						var plateaux_difficulte : int = roundi(plateau.get("difficulte", 0))
 						plateaux_essais[nom_plateau] = {'essais': 1, 'difficulte': plateaux_difficulte}
 	var plus_galere_nom: String = ''
 	var plus_galere_essais: int = 0
@@ -565,32 +566,32 @@ func serie_de_victoire_maximum() -> int:
 	var serie_de_victoire_max: int = 0
 	var serie_de_victoire_courante: int = 0
 	# Parcourir la liste des enregistrements de la campagne
-	if SauvegardeBddJoueursService.sauvegarde_joueur.get("enregistrement_campagne", null):
+	if SauvegardeBddJoueursService.enregistrement_campagne():
 		# Classer les enregistrements par ordre chronologique
-		var enregistrements_classes = SauvegardeBddJoueursService.sauvegarde_joueur.get("enregistrement_campagne").duplicate()
+		var campagne_classee = SauvegardeBddJoueursService.enregistrement_campagne_lire_derniere_campagne().duplicate()
+		var niveaux_classes = SauvegardeBddJoueursService.enregistrement_campagne_lire_niveaux(campagne_classee)
 		var change = true
 		while change:
 			change = false
-			for index in range(enregistrements_classes.size()-1):
-				var niveau_0 = enregistrements_classes[index]
-				var niveau_1 = enregistrements_classes[index+1]
+			for index in range(niveaux_classes.size()-1):
+				var niveau_0 = niveaux_classes[index]
+				var niveau_1 = niveaux_classes[index+1]
 				var debut_0 = niveau_0.get("date_debut", 0)
 				var debut_1 = niveau_1.get("date_debut", 0)
 				if debut_0 > debut_1:
-					enregistrements_classes[index] = niveau_1
-					enregistrements_classes[index+1] = niveau_0
+					niveaux_classes[index] = niveau_1
+					niveaux_classes[index+1] = niveau_0
 					change = true
 
 		# Lire les enregistrements dans l'ordre chronologique
-		for niveau in enregistrements_classes:
+		for niveau in niveaux_classes:
 			# Comptabiliser les plateaux reussis
-			if niveau.get("plateaux", null) \
-				and niveau.get("date_debut") > date_debut_campagne:
-				for plateau_joue in niveau.get("plateaux"):
-					if plateau_joue.get("statut") == "reussi":
+			if niveau.get("date_debut", 0) > date_debut_campagne:
+				for plateau in SauvegardeBddJoueursService.enregistrement_campagne_lire_plateaux(niveau):
+					if plateau.get("statut") == "reussi":
 						serie_de_victoire_courante += 1
-					if plateau_joue.get("statut") == "abandonné" \
-						or plateau_joue.get("statut") == "passé":
+					if plateau.get("statut") == "abandonné" \
+						or plateau.get("statut") == "passé":
 						# Defaite : Enregistrer le max et repartir à zéro.
 						if serie_de_victoire_courante > serie_de_victoire_max:
 							serie_de_victoire_max = serie_de_victoire_courante
@@ -609,15 +610,15 @@ func gameplay_le_temps_moyen_en_s(gameplay : String) -> float:
 	var nb_plateaux: int = 0
 	var temps_moyen_en_s: float = 0.
 	# Parcourir la liste des enregistrements de la campagne
-	if SauvegardeBddJoueursService.sauvegarde_joueur.get("enregistrement_campagne", null):
-		for niveau in SauvegardeBddJoueursService.sauvegarde_joueur.get("enregistrement_campagne"):
-			# Comptabiliser les plateaux reussis
-			if niveau.get("plateaux", null) \
-				and niveau.get("date_debut") > date_debut_campagne:
-				for plateau_joue in niveau.get("plateaux"):
-					if plateau_joue.get("gameplay").to_upper() != gameplay.to_upper():
+	if SauvegardeBddJoueursService.enregistrement_campagne():
+		var campagne = SauvegardeBddJoueursService.enregistrement_campagne_lire_derniere_campagne()
+		for niveau in SauvegardeBddJoueursService.enregistrement_campagne_lire_niveaux(campagne):
+			if niveau.get("date_debut", 0) > date_debut_campagne:
+				for plateau in SauvegardeBddJoueursService.enregistrement_campagne_lire_plateaux(niveau):
+					# Comptabiliser les plateaux reussis
+					if plateau.get("gameplay").to_upper() != gameplay.to_upper():
 						continue
-					var duree_en_s = plateau_joue.get("duree", 0)
+					var duree_en_s = plateau.get("duree", 0)
 					if duree_en_s:
 						temps_total_en_s += duree_en_s
 						nb_plateaux += 1
@@ -655,19 +656,20 @@ func gameplay_nombre_de_plateau_reussis_abandonnes_passes(gameplay : String) -> 
 	# Nombre de plateau reussis
 	var nb_plateaux_passes: int = 0
 	# Parcourir la liste des enregistrements de la campagne
-	if SauvegardeBddJoueursService.sauvegarde_joueur.get("enregistrement_campagne", null):
-		for niveau in SauvegardeBddJoueursService.sauvegarde_joueur.get("enregistrement_campagne"):
-			# Comptabiliser les plateaux reussis
-			if niveau.get("plateaux", null):
-				for plateau_joue in niveau.get("plateaux"):
-					if plateau_joue.get("gameplay").to_upper() != gameplay.to_upper():
+	if SauvegardeBddJoueursService.enregistrement_campagne():
+		var campagne = SauvegardeBddJoueursService.enregistrement_campagne_lire_derniere_campagne()
+		for niveau in SauvegardeBddJoueursService.enregistrement_campagne_lire_niveaux(campagne):
+			if niveau.get("date_debut", 0) > date_debut_campagne:
+				for plateau in SauvegardeBddJoueursService.enregistrement_campagne_lire_plateaux(niveau):
+					# Comptabiliser les plateaux reussis
+					if plateau.get("gameplay").to_upper() != gameplay.to_upper():
 						continue
-					if plateau_joue.get("date_debut") > date_debut_campagne:
-						if plateau_joue.get("statut") == "reussi":
+					if plateau.get("date_debut", 0) > date_debut_campagne:
+						if plateau.get("statut") == "reussi":
 							nb_plateaux_reussis += 1
-						if plateau_joue.get("statut") == "abandonné":
+						if plateau.get("statut") == "abandonné":
 							nb_plateaux_abandonnes += 1
-						if plateau_joue.get("statut") == "passé":
+						if plateau.get("statut") == "passé":
 							nb_plateaux_passes += 1
 	LogService.log_debug("joueur:",joueur,
 						' nb_plateaux_reussis=', nb_plateaux_reussis,
@@ -682,17 +684,17 @@ func gameplay_le_plus_rapide_les_infos(gameplay : String) -> Dictionary:
 	var plus_rapide_temps: float = 0.
 	var plus_rapide_difficulte: int = 0
 	# Parcourir la liste des enregistrements de la campagne
-	if SauvegardeBddJoueursService.sauvegarde_joueur.get("enregistrement_campagne", null):
-		for niveau in SauvegardeBddJoueursService.sauvegarde_joueur.get("enregistrement_campagne"):
-			# Comptabiliser les plateaux reussis
-			if niveau.get("plateaux", null) \
-				and niveau.get("date_debut") > date_debut_campagne:
-				for plateau_joue in niveau.get("plateaux"):
-					if plateau_joue.get("gameplay").to_upper() != gameplay.to_upper():
+	if SauvegardeBddJoueursService.enregistrement_campagne():
+		var campagne = SauvegardeBddJoueursService.enregistrement_campagne_lire_derniere_campagne()
+		for niveau in SauvegardeBddJoueursService.enregistrement_campagne_lire_niveaux(campagne):
+			if niveau.get("date_debut", 0) > date_debut_campagne:
+				for plateau in SauvegardeBddJoueursService.enregistrement_campagne_lire_plateaux(niveau):
+					# Comptabiliser les plateaux reussis
+					if plateau.get("gameplay").to_upper() != gameplay.to_upper():
 						continue
-					var duree_en_s = plateau_joue.get("duree", 0)
+					var duree_en_s = plateau.get("duree", 0)
 					if duree_en_s:
-						var difficulte = roundi(plateau_joue.get("difficulte", 0))
+						var difficulte = roundi(plateau.get("difficulte", 0))
 						if duree_en_s <= plus_rapide_temps or plus_rapide_temps == 0.:
 							if duree_en_s == plus_rapide_temps and difficulte > plus_rapide_difficulte:
 								plus_rapide_difficulte = difficulte
@@ -712,17 +714,17 @@ func gameplay_le_plus_lent_les_infos(gameplay : String) -> Dictionary:
 	var plus_lent_temps: float = 0.
 	var plus_lent_difficulte: int = 0
 	# Parcourir la liste des enregistrements de la campagne
-	if SauvegardeBddJoueursService.sauvegarde_joueur.get("enregistrement_campagne", null):
-		for niveau in SauvegardeBddJoueursService.sauvegarde_joueur.get("enregistrement_campagne"):
-			# Comptabiliser les plateaux reussis
-			if niveau.get("plateaux", null) \
-				and niveau.get("date_debut") > date_debut_campagne:
-				for plateau_joue in niveau.get("plateaux"):
-					if plateau_joue.get("gameplay").to_upper() != gameplay.to_upper():
+	if SauvegardeBddJoueursService.enregistrement_campagne():
+		var campagne = SauvegardeBddJoueursService.enregistrement_campagne_lire_derniere_campagne()
+		for niveau in SauvegardeBddJoueursService.enregistrement_campagne_lire_niveaux(campagne):
+			if niveau.get("date_debut", 0) > date_debut_campagne:
+				for plateau in SauvegardeBddJoueursService.enregistrement_campagne_lire_plateaux(niveau):
+					# Comptabiliser les plateaux reussis
+					if plateau.get("gameplay").to_upper() != gameplay.to_upper():
 						continue
-					var duree_en_s = plateau_joue.get("duree", 0)
+					var duree_en_s = plateau.get("duree", 0)
 					if duree_en_s:
-						var difficulte = roundi(plateau_joue.get("difficulte", 0))
+						var difficulte = roundi(plateau.get("difficulte", 0))
 						if duree_en_s >= plus_lent_temps or plus_lent_temps == 0.:
 							if duree_en_s == plus_lent_temps and difficulte > plus_lent_difficulte:
 								plus_lent_difficulte = difficulte
@@ -741,19 +743,19 @@ func gameplay_le_plus_galere_les_infos(gameplay : String) -> Dictionary:
 	# Plateau le plus galère à résoudre et sa difficulté
 	var plateaux_essais: Dictionary = {}
 	# Parcourir la liste des enregistrements de la campagne et collecter les essais sur chaque plateau
-	if SauvegardeBddJoueursService.sauvegarde_joueur.get("enregistrement_campagne", null):
-		for niveau in SauvegardeBddJoueursService.sauvegarde_joueur.get("enregistrement_campagne"):
-			# Comptabiliser les essais de plateaux
-			if niveau.get("plateaux", null) \
-				and niveau.get("date_debut") > date_debut_campagne:
-				for plateau_joue in niveau.get("plateaux"):
-					if plateau_joue.get("gameplay").to_upper() != gameplay.to_upper():
+	if SauvegardeBddJoueursService.enregistrement_campagne():
+		var campagne = SauvegardeBddJoueursService.enregistrement_campagne_lire_derniere_campagne()
+		for niveau in SauvegardeBddJoueursService.enregistrement_campagne_lire_niveaux(campagne):
+			if niveau.get("date_debut", 0) > date_debut_campagne:
+				for plateau in SauvegardeBddJoueursService.enregistrement_campagne_lire_plateaux(niveau):
+					# Comptabiliser les essais de plateaux
+					if plateau.get("gameplay").to_upper() != gameplay.to_upper():
 						continue
-					var nom_plateau = plateau_joue.get("nom", 'inconnu')
+					var nom_plateau = plateau.get("nom", 'inconnu')
 					if nom_plateau in plateaux_essais:
 						plateaux_essais[nom_plateau]['essais'] += 1
 					else:
-						var plateaux_difficulte : int = roundi(plateau_joue.get("difficulte", 0))
+						var plateaux_difficulte : int = roundi(plateau.get("difficulte", 0))
 						plateaux_essais[nom_plateau] = {'essais': 1, 'difficulte': plateaux_difficulte}
 	var plus_galere_nom: String = ''
 	var plus_galere_essais: int = 0

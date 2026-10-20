@@ -77,23 +77,23 @@ func test_preparer_enveloppe_refuse_les_donnees_vides_et_une_cle_absente() -> vo
 
 func test_ajouter_sous_titre_qr_preserve_le_qr_et_inclut_le_texte_dans_image() -> void:
 	var api: PartagePerformancesAPI = add_child_autofree(API_PARTAGE.new())
-	var sauvegarde_initiale: Dictionary = SauvegardeBddJoueursService.sauvegarde_joueur.duplicate(true)
+	var sauvegarde_initiale: Dictionary = SauvegardeBddJoueursService._sauvegarde_joueur.duplicate(true)
 	var fichier_initial: String = SauvegardeBddJoueursService.fichier_sauvegarde
-	SauvegardeBddJoueursService.sauvegarde_joueur = {
+	SauvegardeBddJoueursService._sauvegarde_joueur = {
 		"nom": "Joueuse",
 		"enregistrement_campagne": [{"niveau": "niveau_2"}]
 	}
 	SauvegardeBddJoueursService.fichier_sauvegarde = "test"
 	assert_eq(api.lire_sous_titre_qr(), "Joueuse - Niveau 2")
 	if DisplayServer.get_name() == "headless":
-		SauvegardeBddJoueursService.sauvegarde_joueur = sauvegarde_initiale
+		SauvegardeBddJoueursService._sauvegarde_joueur = sauvegarde_initiale
 		SauvegardeBddJoueursService.fichier_sauvegarde = fichier_initial
 		return
 
 	var image_qr := Image.create(128, 128, false, Image.FORMAT_RGBA8)
 	image_qr.fill(Color.BLACK)
 	var resultat: Dictionary = await api.ajouter_sous_titre_qr(image_qr)
-	SauvegardeBddJoueursService.sauvegarde_joueur = sauvegarde_initiale
+	SauvegardeBddJoueursService._sauvegarde_joueur = sauvegarde_initiale
 	SauvegardeBddJoueursService.fichier_sauvegarde = fichier_initial
 	var image_finale: Image = resultat.get("image")
 

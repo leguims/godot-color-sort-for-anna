@@ -14,8 +14,9 @@ var _qr_scanner: Node
 ## Retourne le nom du joueur et les enregistrements de son dernier niveau.
 func lire_donnees_dernier_niveau() -> Dictionary:
 	return {
-		"nom": SauvegardeBddJoueursService.lire_nom_joueur(),
-		"niveau": SauvegardeBddJoueursService.enregistrement_lire_dernier_niveau()
+		"joueur": SauvegardeBddJoueursService.lire_nom_joueur(),
+		"campagne": SauvegardeBddJoueursService.enregistrement_campagne_lire_nom_derniere_campagne(),
+		"niveau": SauvegardeBddJoueursService.enregistrement_campagne_lire_dernier_niveau()
 	}
 
 ## Prépare les données JSON du niveau, leur signature HMAC et le contenu du QR.
@@ -33,7 +34,7 @@ func ajouter_sous_titre_qr(image_qr: Image) -> Dictionary:
 		return {"succes": false, "erreur": "L'image du QR est vide."}
 	var texte_sous_titre := lire_sous_titre_qr()
 	if texte_sous_titre.is_empty():
-		return {"succes": false, "erreur": "Le nom du joueur ou son niveau est indisponible."}
+		return {"succes": false, "erreur": "Le nom du joueur ou sa campagne ou son niveau est indisponible."}
 	var police := load(POLICE_SOUS_TITRE) as Font
 	if police == null:
 		return {"succes": false, "erreur": "La police du sous-titre QR est introuvable."}
@@ -120,13 +121,12 @@ func ajouter_sous_titre_qr(image_qr: Image) -> Dictionary:
 
 ## Retourne le libellé affiché sous le QR au format « Nom - Niveau X ».
 func lire_sous_titre_qr() -> String:
-	var nom_joueur := SauvegardeBddJoueursService.lire_nom_joueur()
-	var nom_niveau := SauvegardeBddJoueursService.enregistrement_lire_niveau_joueur().replace("_", " ")
-	if nom_niveau.begins_with("niveau "):
-		nom_niveau = nom_niveau.trim_prefix("niveau ")
-	if nom_joueur.is_empty() or nom_niveau.is_empty():
+	var nom_joueur : String = SauvegardeBddJoueursService.lire_nom_joueur()
+	var nom_campagne : String = SauvegardeBddJoueursService.enregistrement_campagne_lire_nom_derniere_campagne().capitalize()
+	var nom_niveau : String = SauvegardeBddJoueursService.enregistrement_campagne_lire_nom_dernier_niveau().capitalize()
+	if nom_joueur.is_empty() or nom_campagne.is_empty() or nom_niveau.is_empty():
 		return ""
-	return "%s - Niveau %s" % [nom_joueur, nom_niveau]
+	return "%s - %s - %s" % [nom_joueur, nom_campagne, nom_niveau]
 
 ## Reçoit une image QR et lance son décodage asynchrone avec le plugin.
 func recevoir_image_qr(image: Image) -> bool:

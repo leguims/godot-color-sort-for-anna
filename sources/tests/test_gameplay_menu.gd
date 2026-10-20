@@ -9,11 +9,11 @@ var fichier_sauvegarde_initial: String
 var configuration_initiale: Dictionary
 
 func before_each():
-	sauvegarde_joueur_initiale = SauvegardeBddJoueursService.sauvegarde_joueur.duplicate(true)
+	sauvegarde_joueur_initiale = SauvegardeBddJoueursService._sauvegarde_joueur.duplicate(true)
 	fichier_sauvegarde_initial = SauvegardeBddJoueursService.fichier_sauvegarde
 	configuration_initiale = SauvegardeConfigurationService.configuration_du_jeu.duplicate(true)
 
-	SauvegardeBddJoueursService.sauvegarde_joueur = {
+	SauvegardeBddJoueursService._sauvegarde_joueur = {
 		"nom": "Joueuse test",
 		"campagne": {
 			"niveau_1": [
@@ -28,7 +28,7 @@ func before_each():
 	SauvegardeConfigurationService.configuration_du_jeu["date_debut_campagne"] = "2020-01-01 00:00:00"
 
 func after_each():
-	SauvegardeBddJoueursService.sauvegarde_joueur = sauvegarde_joueur_initiale
+	SauvegardeBddJoueursService._sauvegarde_joueur = sauvegarde_joueur_initiale
 	SauvegardeBddJoueursService.fichier_sauvegarde = fichier_sauvegarde_initial
 	SauvegardeConfigurationService.configuration_du_jeu = configuration_initiale
 

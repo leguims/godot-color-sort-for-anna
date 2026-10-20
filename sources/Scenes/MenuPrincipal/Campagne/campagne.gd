@@ -50,8 +50,8 @@ func _on_menu_commencer_plateau() -> void:
 	_lancer_plateau_de_campagne()
 
 func _lancer_plateau_de_campagne() -> void:
-	var plateau : String = SauvegardeBddJoueursService.enregistrement_lire_nom_plateau()
-	var gameplay_str : String = SauvegardeBddJoueursService.enregistrement_lire_gameplay_plateau()
+	var plateau : String = SauvegardeBddJoueursService.enregistrement_campagne_lire_nom_plateau()
+	var gameplay_str : String = SauvegardeBddJoueursService.enregistrement_campagne_lire_gameplay_plateau()
 	var gameplay : GameplayTypes.Gameplay = GameplayTypes.gameplay_to_enum(gameplay_str)
 	gameplay_courant = gameplay_to_ui(gameplay)
 
