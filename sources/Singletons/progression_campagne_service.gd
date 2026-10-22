@@ -159,10 +159,8 @@ func passer_un_plateau() -> void:
 		fin_niveau.emit()
 
 	# Calculer le score du plateau et l'enregistrer dans l'historique du niveau
-	ScoreService.mettre_a_jour_score_pour_passer()
-
-	if SauvegardeBddJoueursService.campagne_la_campagne_est_terminee():
-		fin_campagne.emit()
+	var detail_score = ScoreService.mettre_a_jour_score_pour_passer()
+	detail_score_plateau.emit(detail_score)
 
 	# Emmettre un signal de mise à jour du niveau
 	# TODO : Le signal n'est lu par personne. Normal ?

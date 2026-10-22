@@ -18,7 +18,9 @@ func mettre_a_jour_score_pour_victoire() -> Dictionary:
 					'campagne': score_campagne
 					}
 
-	bonus_score_anna_damour(score_global)
+	var bonus_anna = bonus_score_anna_damour(score_global)
+	if bonus_anna:
+		score_global['bonus_anna'] = bonus_anna
 	return score_global
 
 func mettre_a_jour_score_pour_import(nom_joueur : String, niveau : Dictionary) -> void:
@@ -44,13 +46,27 @@ func mettre_a_jour_score_pour_import(nom_joueur : String, niveau : Dictionary) -
 		SauvegardeTableauDesScoresService.incrementer_score_joueur(nom_joueur, score_ratio_reussite_plateau)
 		# LogService.log_debug("Score '", plateau.get('nom', ''),"' : +", score_ratio_reussite_plateau," points pour le ratio.")
 
-func mettre_a_jour_score_pour_passer() -> void:
-	"Calculer et enregistrer le score nul suite au passage d'un plateau"
+func mettre_a_jour_score_pour_passer() -> Dictionary:
+	"Calculer et enregistrer le score suite au passage d'un plateau"
+	var score_global = mettre_a_jour_score_pour_victoire()
+	# Les scores locaux du plateaux sont forcés à zéro
 	SauvegardeBddJoueursService.enregistrement_campagne_modifier_score_duree_plateau(0)
 	SauvegardeBddJoueursService.enregistrement_campagne_modifier_score_ratio_reussite_plateau(0)
-	if not SauvegardeBddJoueursService.enregistrement_campagne_niveau_en_cours():
-		SauvegardeBddJoueursService.enregistrement_campagne_modifier_score_niveau(0)
-		SauvegardeBddJoueursService.enregistrement_campagne_modifier_score_niveau_parfait(0)
+	var nom_joueur = SauvegardeBddJoueursService.lire_nom_joueur()
+	SauvegardeTableauDesScoresService.incrementer_score_joueur(nom_joueur, -score_global['duree']['points'])
+	SauvegardeTableauDesScoresService.incrementer_score_joueur(nom_joueur, -score_global['ratio_reussite']['points'])
+	score_global['duree']['points'] = 0
+	score_global['duree']['recommence'] = 0
+	score_global['duree']['realise'] = 0
+	score_global['ratio_reussite']['ratio'] = 0
+	score_global['ratio_reussite']['points'] = 0
+
+	if 'bonus_anna' in score_global:
+		SauvegardeTableauDesScoresService.incrementer_score_joueur(nom_joueur, -score_global['bonus_anna']['points'])
+		score_global.erase('bonus_anna')
+		var bonus_anna = bonus_score_anna_damour(score_global)
+		score_global['bonus_anna'] = bonus_anna
+	return score_global
 
 func mettre_a_jour_score_duree() -> Dictionary:
 	"Calculer le score relatif au temps"
@@ -107,7 +123,8 @@ func mettre_a_jour_score_duree() -> Dictionary:
 	return {'type':'duree',
 			'reference': temps_reference_en_s,
 			'recommence': duree_recommence_en_s,
-			'realise': duree_realise_en_s, 'points': bonus_duree}
+			'realise': duree_realise_en_s,
+			'points': bonus_duree}
 
 func mettre_a_jour_score_ratio_reussite() -> Dictionary:
 	"Calculer le score relatif au temps"
@@ -168,7 +185,7 @@ func mettre_a_jour_score_campagne() -> Dictionary:
 				'points': bonus_campagne}
 	return {}
 
-func bonus_score_anna_damour(score_global : Dictionary) -> void:
+func bonus_score_anna_damour(score_global : Dictionary) -> Dictionary:
 	"Bonus spécifique pour Anna d'Amour, la déesse de ce jeu."
 	var nom_joueur = SauvegardeBddJoueursService.lire_nom_joueur()
 	var nom_anna_triche = lire_nom_anna_triche()
@@ -179,6 +196,8 @@ func bonus_score_anna_damour(score_global : Dictionary) -> void:
 		var bonus_anna = score_total * 3
 		LogService.log_debug("Bonus ", nom_anna_triche, " d'Amour !")
 		SauvegardeTableauDesScoresService.incrementer_score_joueur(nom_joueur, bonus_anna)
+		return {'type':'bonus_anna', 'points': bonus_anna}
+	return {}
 
 func nouveau_joueur_est_nom_anna_triche(nom : String) -> bool:
 	return nom.to_lower() == 'Anna'.to_lower()

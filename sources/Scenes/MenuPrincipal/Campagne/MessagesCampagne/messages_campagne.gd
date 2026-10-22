@@ -96,11 +96,8 @@ func afficher_abandonner_un_plateau():
 	$Centrer/PanneauDefaite.show()
 
 func afficher_passer_un_plateau():
-	# Pas de panneau d'affichage actuellement
-	# TODO : Panneau pour le plateau passé, qui émettra "score_continuer" à sa fermeture
-	# $Centrer.show()
-	# $Centrer/PanneauPasse.show()
-	score_continuer.emit() # Sans panneau, redonner directement la main à "campagne"
+	# TODO : Insérer ici un message positif pour le joueur apres le score
+	pass
 
 func afficher_gagner_un_plateau() -> void:
 	# TODO : Insérer ici un message positif pour le joueur apres le score
