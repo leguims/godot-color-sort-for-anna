@@ -1,7 +1,8 @@
 ﻿extends Node
 
 var chemin_campagne = "res://campagne.json"
-var plateau_campagne = {
+var _nom_campagne : String = ""
+var niveaux_campagne = {
 	#"description_Campagne": "Sequence des niveaux de la campagne",
 	#"description_gameplay": ["CLASSIQUE", "MEMOIRE", "DEFI_DU_GOSSE", "DEFI_DU_BOSS", "QUI_PERD_GAGNE", "FLEMMARD", "DOUBLE_FACE", "DICO"],
 	#"description_coups_min": "[Facultatif] Longueur de resolution la plus courte",
@@ -45,13 +46,19 @@ func _initialiser_les_plateaux() -> void:
 	if fichier_plateaux:
 		if 'liste difficulte des plateaux' in fichier_plateaux:
 			LogService.log_erreur("Le fichier des plateaux est obsolète")
-		if 'campagne' in fichier_plateaux:
-			var dico_campagne = fichier_plateaux.get('campagne')
-			if dico_campagne:
-				plateau_campagne.clear() # Reset de la precedente campagne inachevée
-				for niveau in dico_campagne.keys():
-					# Copie tous les niveaux, sauf 'None'
-					plateau_campagne[niveau] = dico_campagne.get(niveau).duplicate(true)
+		for cle_nom_campagne in fichier_plateaux.keys():
+			if 'campagne' in cle_nom_campagne:
+				_nom_campagne = cle_nom_campagne
+				var dico_campagne = fichier_plateaux.get(_nom_campagne)
+				if dico_campagne:
+					niveaux_campagne.clear() # Reset de la precedente campagne inachevée
+					for cle_nom_niveau in dico_campagne.keys():
+						if 'niveau' in cle_nom_niveau:
+							# Copie tous les niveaux, sauf 'None'
+							niveaux_campagne[cle_nom_niveau] = dico_campagne.get(cle_nom_niveau).duplicate(true)
+
+func nom_campagne() -> String:
+	return _nom_campagne
 
 func nom_niveau(niveau : int) -> String:
 	if niveau > 0:
@@ -59,4 +66,4 @@ func nom_niveau(niveau : int) -> String:
 	return ""
 
 func plateau_liste_niveaux_duplicate() -> Dictionary:
-	return plateau_campagne.duplicate(true)
+	return niveaux_campagne.duplicate(true)

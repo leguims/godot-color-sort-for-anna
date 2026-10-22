@@ -160,7 +160,8 @@ func mettre_a_jour_score_campagne() -> Dictionary:
 	var bonus_campagne = 0
 	if SauvegardeBddJoueursService.campagne_la_campagne_est_terminee():
 		var nom_joueur = SauvegardeBddJoueursService.lire_nom_joueur()
-		bonus_campagne = FIN_CAMPAGNE
+		var ratio_reussite = StatsService.campagne_taux_reussite()
+		bonus_campagne = roundi(FIN_CAMPAGNE * ratio_reussite)
 		SauvegardeBddJoueursService.enregistrement_campagne_modifier_score_fin_campagne(bonus_campagne)
 		SauvegardeTableauDesScoresService.incrementer_score_joueur(nom_joueur, bonus_campagne)
 		return {'type':'campagne',

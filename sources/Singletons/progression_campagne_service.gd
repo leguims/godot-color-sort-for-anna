@@ -48,7 +48,7 @@ func initialiser_le_nouveau_joueur_pour_la_campagne(nom_nouveau_joueur : String)
 				return SauvegardeTableauDesScoresService.ajouter_un_nouveau_joueur(nom_nouveau_joueur)
 	return false
 
-func importer_statistiques_nouveau_joueur_externe(nom_nouveau_joueur : String, enregistrement_campagne_niveau : Dictionary) -> bool:
+func importer_statistiques_nouveau_joueur_externe(nom_nouveau_joueur : String, nom_campagne : String, enregistrement_campagne_niveau : Dictionary) -> bool:
 	if autoriser_le_nouveau_joueur_pour_la_campagne(nom_nouveau_joueur):
 		# Ajouter le joueur dans la liste des joueurs
 		if SauvegardeListeJoueursService.ajouter_un_nouveau_joueur(nom_nouveau_joueur):
@@ -60,17 +60,19 @@ func importer_statistiques_nouveau_joueur_externe(nom_nouveau_joueur : String, e
 				# Ajouter le joueur dans le tableau des scores
 				if SauvegardeTableauDesScoresService.ajouter_un_nouveau_joueur(nom_nouveau_joueur):
 					# importer ses statistiques de jeu
-					if SauvegardeBddJoueursService.enregistrement_campagne_importer_niveau(enregistrement_campagne_niveau):
+					if SauvegardeBddJoueursService.enregistrement_campagne_importer_niveau(nom_campagne, enregistrement_campagne_niveau):
 						# mettre à jour le tableau des scores
 						ScoreService.mettre_a_jour_score_pour_import(nom_nouveau_joueur, enregistrement_campagne_niveau)
 						LogService.log_debug("Import du QR du nouveau joueur *" + nom_nouveau_joueur
+											+ "* pour la campagne *" + nom_campagne + "*"
 											+ "* pour le niveau *" + enregistrement_campagne_niveau.get("niveau", "") + "*")
 						return true
 	LogService.log_erreur("Erreur : Impossible d'importer le QR du nouveau joueur *" + nom_nouveau_joueur
+							+ "* pour la campagne *" + nom_campagne + "*"
 							+ "* pour le niveau *" + enregistrement_campagne_niveau.get("niveau", "") + "*")
 	return false
 
-func importer_statistiques_joueur_externe(nom_joueur : String, enregistrement_campagne_niveau : Dictionary) -> bool:
+func importer_statistiques_joueur_externe(nom_joueur : String, nom_campagne : String, enregistrement_campagne_niveau : Dictionary) -> bool:
 	if SauvegardeListeJoueursService.le_joueur_existe(nom_joueur):
 		var nom_fichier = SauvegardeListeJoueursService.retourner_le_fichier_de_sauvegarde(nom_joueur)
 		if SauvegardeBddJoueursService.choisir_le_joueur(nom_joueur, nom_fichier):
@@ -79,14 +81,16 @@ func importer_statistiques_joueur_externe(nom_joueur : String, enregistrement_ca
 			# TODO : existence de remote_uuid dans la liste des joueurs
 			if SauvegardeBddJoueursService.campagne_la_campagne_est_terminee():
 				# importer ses statistiques de jeu
-				if SauvegardeBddJoueursService.enregistrement_campagne_importer_niveau(enregistrement_campagne_niveau):
+				if SauvegardeBddJoueursService.enregistrement_campagne_importer_niveau(nom_campagne, enregistrement_campagne_niveau):
 					# mettre à jour le tableau des scores
 					ScoreService.mettre_a_jour_score_pour_import(nom_joueur, enregistrement_campagne_niveau)
 					LogService.log_debug("Import du QR du joueur *" + nom_joueur
-								+ "* pour le niveau *" + enregistrement_campagne_niveau.get("niveau", "") + "*")
+										+ "* pour la campagne *" + nom_campagne + "*"
+										+ "* pour le niveau *" + enregistrement_campagne_niveau.get("niveau", "") + "*")
 				# Si le niveau existe deja, considerer que l'importation est ok (car sinon repli sur un nouveau nom).
 				return true
 	LogService.log_erreur("Erreur : Impossible d'importer le QR du joueur *" + nom_joueur
+							+ "* pour la campagne *" + nom_campagne + "*"
 							+ "* pour le niveau *" + enregistrement_campagne_niveau.get("niveau", "") + "*")
 	return false
 
@@ -109,9 +113,9 @@ func commencer_un_plateau() -> void:
 	if SauvegardeBddJoueursService.enregistrement_campagne_plateau_en_cours():
 		abandonner_un_plateau()
 
-	# Premier niveau sans enregistrement => Initialiser un nouveau niveau
+	# Premier niveau sans enregistrement => Initialiser une nouvelle campagne
 	if not SauvegardeBddJoueursService.enregistrement_campagne_niveau_existe():
-		SauvegardeBddJoueursService.enregistrement_campagne_initialiser_un_nouveau_niveau()
+		SauvegardeBddJoueursService.enregistrement_campagne_initialiser_une_nouvelle_campagne()
 
 	# Le niveau en cours est achevé => Initialiser un nouveau niveau
 	if not SauvegardeBddJoueursService.enregistrement_campagne_niveau_en_cours():

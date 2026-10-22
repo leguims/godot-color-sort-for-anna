@@ -92,6 +92,7 @@ func ajouter_un_nouveau_joueur(nom_nouveau_joueur : String, nom_nouveau_fichier 
 	# Crée le compte et l'enregistre
 	_sauvegarde_joueur = sauvegarde_vierge(nom_nouveau_joueur)
 	# Initialiser les plateaux avec 'BDD Plateaux'
+	_sauvegarde_joueur['nom_campagne'] = SauvegardeBddPlateauxService.nom_campagne()
 	_sauvegarde_joueur['campagne'] = SauvegardeBddPlateauxService.plateau_liste_niveaux_duplicate()
 	
 	fichier_sauvegarde = nom_nouveau_fichier
@@ -124,6 +125,7 @@ func reset_sauvegarde_des_joueurs() -> void:
 		# Crée le compte et l'enregistre
 		_sauvegarde_joueur = sauvegarde_vierge(nom_joueur)
 		# Initialiser les plateaux avec 'BDD Plateaux'
+		_sauvegarde_joueur['nom_campagne'] = SauvegardeBddPlateauxService.nom_campagne()
 		_sauvegarde_joueur['campagne'] = SauvegardeBddPlateauxService.plateau_liste_niveaux_duplicate()
 		_enregistrer_sauvegarde_joueur()
 		liberer_le_joueur()
@@ -140,6 +142,7 @@ func remplacer_campagne_des_joueurs():
 		enregistrement_campagne_terminer_niveau()
 		# Remplacer les plateaux residuels d'une ancienne campagne.
 		# avec les plateaux de la nouvelle campagne
+		_sauvegarde_joueur['nom_campagne'] = SauvegardeBddPlateauxService.nom_campagne()
 		_sauvegarde_joueur['campagne'] = SauvegardeBddPlateauxService.plateau_liste_niveaux_duplicate()
 		# Enregistrer les changements
 		_enregistrer_sauvegarde_joueur()
@@ -270,7 +273,7 @@ func campagne_lire_noms_niveaux() -> Array:
 func campagne_lire_nom() -> String:
 	"Nom de la campagne"
 	if le_joueur_existe():
-		return campagne().get('nom', "")
+		return lire_sauvegarde().get('nom_campagne', "")
 	return ""
 
 func campagne_lire_prochain_niveau() -> int:
@@ -312,7 +315,7 @@ func campagne_lire_prochain_gameplay() -> String:
 
 func campagne_supprimer_et_memoriser_plateau_courant() -> bool:
 	"Efface le plateau courant et memorise dans le jeu libre."
-	if le_joueur_existe() and enregistrement_campagne_lire_statut_plateau() == 'en cours':
+	if le_joueur_existe() and enregistrement_campagne_lire_statut_dernier_plateau() == 'en cours':
 		var niveau = enregistrement_campagne_lire_valeur_niveau_joueur()
 		var plateau_courant = campagne_lire_liste_plateaux_du_niveau(niveau).pop_front()
 		# extraire difficulté de 'plateau_courant'
@@ -331,7 +334,7 @@ func campagne_supprimer_et_memoriser_plateau_courant() -> bool:
 
 func campagne_supprimer_et_oublier_plateau_courant() -> bool:
 	"Efface et oublie le plateau courant."
-	if le_joueur_existe() and enregistrement_campagne_lire_statut_plateau() == 'en cours':
+	if le_joueur_existe() and enregistrement_campagne_lire_statut_dernier_plateau() == 'en cours':
 		var niveau = enregistrement_campagne_lire_valeur_niveau_joueur()
 		# Effacer le plateau courant de la campagne
 		campagne_lire_liste_plateaux_du_niveau(niveau).pop_front()
@@ -561,6 +564,10 @@ func enregistrement_campagne_lire_niveau(nom_campagne : String, nom_niveau : Str
 				return niveau
 	return {}
 
+func enregistrement_campagne_lire_nom_niveau(niveau : Dictionary) -> String:
+	"Retourne le nom du niveau"
+	return niveau.get('niveau', '')
+
 func enregistrement_campagne_lire_dernier_niveau() -> Dictionary:
 	"Retourne le dernier niveau"
 	if enregistrement_campagne_niveau_existe():
@@ -620,24 +627,28 @@ func lire_prochain_niveau_de_campagne() -> int:
 	LogService.log_erreur('\t', "Prochain niveau inconnu")
 	return 0
 
-func enregistrement_campagne_inserer_niveau(niveau : Dictionary) -> bool:
+func enregistrement_campagne_inserer_niveau(nom_campagne : String, niveau : Dictionary) -> bool:
 	"Insere un niveau dans le respect de sa chronologie"
 	var _nom_niveau = niveau.get('niveau', '')
-	if _nom_niveau:
-		var date_debut_niveau = niveau.get('date_debut', 0.)
-		# Parcourir les niveaux dans l'ordre croissant de date
-		for index in range(enregistrement_campagne().size()):
-			var enregistrement_courant = enregistrement_campagne()[index]
-			if enregistrement_courant.get('date_debut', 0.) > date_debut_niveau:
-				# Le niveau à inserer est antérieur, prendre la place du niveau courant
-				enregistrement_campagne().insert(index, niveau)
-				_enregistrer_sauvegarde_joueur()
-				return true
-		# Le niveau à inserer est le dernier
-		enregistrement_campagne().append(niveau)
-		_enregistrer_sauvegarde_joueur()
-		return true
-	LogService.log_erreur("Bdd joueurs : Aucune insertion enregistrement du niveau ", _nom_niveau)
+	if nom_campagne and _nom_niveau:
+		var campagne_enregistrement = enregistrement_campagne_lire_campagne(nom_campagne)
+		if campagne_enregistrement:
+			var date_debut_niveau = niveau.get('date_debut', 0.)
+			# Parcourir les niveaux dans l'ordre croissant de date
+			var liste_niveaux = enregistrement_campagne_lire_niveaux(campagne_enregistrement)
+			var nb_niveaux = len(liste_niveaux)
+			for index in range(nb_niveaux):
+				var enregistrement_courant = liste_niveaux[index]
+				if enregistrement_courant.get('date_debut', 0.) > date_debut_niveau:
+					# Le niveau à inserer est antérieur, prendre la place du niveau courant
+					liste_niveaux.insert(index, niveau)
+					_enregistrer_sauvegarde_joueur()
+					return true
+			# Le niveau à inserer est le dernier
+			liste_niveaux.append(niveau)
+			_enregistrer_sauvegarde_joueur()
+			return true
+	LogService.log_erreur("Bdd joueurs : campagne ", nom_campagne, " - Aucune insertion enregistrement du niveau ", _nom_niveau)
 	return false
 
 # Haut niveau
@@ -645,13 +656,11 @@ func enregistrement_campagne_importer_niveau(nom_campagne : String, niveau : Dic
 	"Importe un niveau dans l'enregistrement du joueur"
 	var _nom_niveau = niveau.get('niveau', '')
 	if nom_campagne and _nom_niveau:
-		for campagne_enregistrement in enregistrement_campagne():
-			if campagne_enregistrement.get('campagne', '') == nom_campagne:
-				for niveau_enregistrement in campagne_enregistrement.get('campagne').get('niveaux', []):
-					if niveau_enregistrement.get('niveau', '') == _nom_niveau:
-						# Le niveau est déjà importé
-						return false
-		return enregistrement_campagne_inserer_niveau(niveau)
+		var niveau_enregistrement = enregistrement_campagne_lire_niveau(nom_campagne, _nom_niveau)
+		if niveau_enregistrement:
+			# Le niveau est déjà importé
+			return false
+		return enregistrement_campagne_inserer_niveau(nom_campagne, niveau)
 	LogService.log_erreur("Bdd joueurs : Aucun enregistrement du niveau ", _nom_niveau, " dans la campagne ", nom_campagne)
 	return false
 
@@ -956,11 +965,14 @@ func enregistrement_campagne_modifier_statut_plateau(statut : String) -> void:
 		plateau['statut'] = statut # 'en cours', 'abandonné', 'passé', 'reussi'
 		_enregistrer_sauvegarde_joueur()
 
-func enregistrement_campagne_lire_statut_plateau() -> String:
+func enregistrement_campagne_lire_statut_dernier_plateau() -> String:
 	var plateau = enregistrement_campagne_lire_dernier_plateau()
 	if plateau:
 		return plateau.get('statut')
 	return 'en cours'
+
+func enregistrement_campagne_lire_statut_plateau(plateau : Dictionary) -> String:
+	return plateau.get('statut', 'en cours')
 
 ###############################################
 # Niveaux / Score / Niveau et Niveau parfait
