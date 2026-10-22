@@ -139,10 +139,12 @@ func _maj_coups() -> void:
 # Boutons du bandeau de jeu
 func _on_bouton_recommencer_pressed() -> void:
 	show_fond()
+	LogService.log_debug("[menu_plateau] emission signal : abandon")
 	abandon.emit()
 
 func _on_bouton_passer_pressed() -> void:
 	show_fond()
+	LogService.log_debug("[menu_plateau] emission signal : passe")
 	passe.emit()
 
 # Boutons du bandeau de menu
@@ -181,4 +183,5 @@ func _on_bouton_commencer_pressed() -> void:
 		# afficher_message_simple(message, 5.)
 		pass
 	else:
+		LogService.log_debug("[menu_plateau] emission signal : commencer_plateau")
 		commencer_plateau.emit()

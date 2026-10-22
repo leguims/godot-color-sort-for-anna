@@ -27,6 +27,7 @@ func commencer_un_nouveau_plateau(plateau_texte : String) -> void:
 		var plateau = decodeur.decoder_plateau(plateau_texte)
 		_creer_un_plateau(plateau)
 	else:
+		LogService.log_debug("[plateau] emission signal : plateau_invalide")
 		plateau_invalide.emit()
 
 func hide():
@@ -85,6 +86,7 @@ func _initialiser_une_pile(pile: Pile, jetons_pile_texte) -> void:
 	if not valide:
 		# la pile est invalide, le plateau aussi
 		_effacer_le_plateau()
+		LogService.log_debug("[plateau] emission signal : plateau_invalide")
 		plateau_invalide.emit()
 
 func _positionner_une_pile(nb_piles_plateau: int, indice_pile: int) -> Vector2:

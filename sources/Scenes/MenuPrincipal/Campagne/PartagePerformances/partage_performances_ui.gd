@@ -81,6 +81,7 @@ func _on_api_erreur_decodage_qr(message: String) -> void:
 	_afficher_erreur(message)
 
 func _on_bouton_fermer_pressed() -> void:
+	LogService.log_debug("[partage_performances_ui] emission signal : fermer")
 	fermer.emit()
 
 func _afficher_erreur(message: String) -> void:

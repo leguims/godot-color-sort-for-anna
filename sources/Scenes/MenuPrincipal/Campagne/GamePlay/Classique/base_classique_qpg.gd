@@ -69,13 +69,17 @@ func est_termine(_liste_piles) -> bool:
 
 # Relais de signaux vers la campagne
 func _on_plateau_plateau_invalide() -> void:
+	LogService.log_debug("[base_classique_qpg] emission signal : plateau_invalide")
 	plateau_invalide.emit()
 
 func _on_menu_plateau_abandon() -> void:
+	LogService.log_debug("[base_classique_qpg] emission signal : abandon")
 	abandon.emit()
 
 func _on_menu_plateau_passe() -> void:
+	LogService.log_debug("[base_classique_qpg] emission signal : passe")
 	passe.emit()
 
 func _on_menu_plateau_commencer_plateau() -> void:
+	LogService.log_debug("[base_classique_qpg] emission signal : commencer_plateau")
 	commencer_plateau.emit()

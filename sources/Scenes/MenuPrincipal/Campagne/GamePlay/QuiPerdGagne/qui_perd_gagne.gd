@@ -152,8 +152,8 @@ func est_termine(liste_piles) -> bool:
 
 	var termine = plateau_bloque and une_pile_en_desordre
 	if termine:
-		LogService.log_debug("QuiPerdGagne : victoire.emit()")
 		show_fond()
+		LogService.log_debug("[qui_perd_gagne] emission signal : victoire")
 		victoire.emit()
 	return termine
 

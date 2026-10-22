@@ -19,7 +19,7 @@ func est_termine(liste_piles) -> bool:
 			termine = false
 			break
 	if termine:
-		LogService.log_debug("Classique : victoire.emit()")
 		show_fond()
+		LogService.log_debug("[classique] emission signal : victoire")
 		victoire.emit()
 	return termine

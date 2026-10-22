@@ -57,15 +57,15 @@ func accepter_import() -> void:
 	_import_en_cours = true
 
 	var nom_joueur := str(_import_en_attente.get("nom", ""))
+	var nom_campagne := str(_import_en_attente.get("campagne", ""))
 	var niveau: Dictionary = _import_en_attente.get("niveau", {})
 	var nom_joueur_import := nom_joueur
-	var import_reussi := false
 
-	if not ProgressionCampagneService.importer_statistiques_nouveau_joueur_externe(nom_joueur_import, niveau) \
-		and not ProgressionCampagneService.importer_statistiques_joueur_externe(nom_joueur_import, niveau):
+	if not ProgressionCampagneService.importer_statistiques_nouveau_joueur_externe(nom_joueur_import, nom_campagne, niveau) \
+		and not ProgressionCampagneService.importer_statistiques_joueur_externe(nom_joueur_import, nom_campagne, niveau):
 		nom_joueur_import = nom_joueur + " (import)"
-		if not ProgressionCampagneService.importer_statistiques_nouveau_joueur_externe(nom_joueur_import, niveau) \
-			and not ProgressionCampagneService.importer_statistiques_joueur_externe(nom_joueur_import, niveau):
+		if not ProgressionCampagneService.importer_statistiques_nouveau_joueur_externe(nom_joueur_import, nom_campagne, niveau) \
+			and not ProgressionCampagneService.importer_statistiques_joueur_externe(nom_joueur_import, nom_campagne, niveau):
 			_erreur_import()
 			return
 

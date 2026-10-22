@@ -39,11 +39,14 @@ func _on_bouton_statistiques_pressed() -> void:
 func _on_panneau_defaite_continuer() -> void:
 	$Centrer.hide()
 	$Centrer/PanneauDefaite.hide()
+	LogService.log_debug("[qui_perd_gagne] emission signal : victoire")
+	LogService.log_debug("[messages_campagne] emission signal : score_continuer")
 	score_continuer.emit() #Redonner la main à "campagne" pour la suite
 
 func _on_panneau_victoire_plateau_continuer() -> void:
 	$Centrer.hide()
 	$Centrer/PanneauVictoirePlateau.hide()
+	LogService.log_debug("[messages_campagne] emission signal : score_continuer")
 	score_continuer.emit() #Redonner la main à "campagne" pour la suite
 
 func _on_panneau_victoire_niveau_continuer() -> void:
@@ -62,9 +65,11 @@ func _on_panneau_partage_performances_fermer() -> void:
 	_action_apres_partage = ActionApresPartage.AUCUNE
 	match action:
 		ActionApresPartage.NIVEAU_SUIVANT:
+			LogService.log_debug("[messages_campagne] emission signal : score_continuer")
 			score_continuer.emit()
 		ActionApresPartage.STATISTIQUES:
 			_on_bouton_statistiques_pressed()
+			LogService.log_debug("[messages_campagne] emission signal : score_continuer")
 			score_continuer.emit()
 
 func _afficher_partage_dernier_niveau() -> void:
