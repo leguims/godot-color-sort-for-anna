@@ -23,11 +23,16 @@ func mettre_a_jour_score_pour_victoire() -> Dictionary:
 		score_global['bonus_anna'] = bonus_anna
 	return score_global
 
-func mettre_a_jour_score_pour_import(nom_joueur : String, niveau : Dictionary) -> void:
+func mettre_a_jour_score_pour_import(nom_joueur : String, campagne : Dictionary, niveau : Dictionary) -> void:
 	"Calculer le score du niveau importé via QR"
+	var score_fin_campagne = SauvegardeBddJoueursService.enregistrement_campagne_lire_score_fin_campagne(campagne)
+	SauvegardeTableauDesScoresService.incrementer_score_joueur(nom_joueur, score_fin_campagne)
+	# LogService.log_debug("Score : +", score_fin_campagne," points pour la campagne.")
+
 	var score_niveau = SauvegardeBddJoueursService.enregistrement_campagne_lire_score_niveau(niveau)
 	SauvegardeTableauDesScoresService.incrementer_score_joueur(nom_joueur, score_niveau)
 	# LogService.log_debug("Score : +", score_niveau," points pour le niveau.")
+
 	var score_niveau_parfait = SauvegardeBddJoueursService.enregistrement_campagne_lire_score_niveau_parfait(niveau)
 	SauvegardeTableauDesScoresService.incrementer_score_joueur(nom_joueur, score_niveau_parfait)
 	# LogService.log_debug("Score : +", score_niveau_parfait," points pour le niveau parfait.")

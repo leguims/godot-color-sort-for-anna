@@ -653,12 +653,17 @@ func enregistrement_campagne_inserer_niveau(nom_campagne : String, niveau : Dict
 
 func enregistrement_campagne_inserer_campagne(nom_campagne : String, donnees_campagne : Dictionary) -> void:
 	"Importe une campagne dans l'enregistrement du joueur"
+	var campagne_importee: Dictionary = donnees_campagne.duplicate(true)
 	if not enregistrement_campagne_lire_campagne(nom_campagne):
-		var campagne_importee: Dictionary = donnees_campagne.duplicate(true)
+		# Importe la nouvelle campagne
 		campagne_importee['niveaux'] = []
 		if not lire_sauvegarde().has('enregistrement_campagne'):
 			lire_sauvegarde()['enregistrement_campagne'] = []
 		enregistrement_campagne().append(campagne_importee)
+		_enregistrer_sauvegarde_joueur()
+	if campagne_importee['score']:
+		var campagne_enregistree : Dictionary = enregistrement_campagne_lire_campagne(nom_campagne)
+		campagne_enregistree['score'] = campagne_importee['score'].duplicate(true)
 		_enregistrer_sauvegarde_joueur()
 
 # Haut niveau

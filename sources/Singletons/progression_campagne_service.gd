@@ -63,7 +63,7 @@ func importer_statistiques_nouveau_joueur_externe(nom_nouveau_joueur : String, e
 					# importer ses statistiques de jeu
 					if SauvegardeBddJoueursService.enregistrement_campagne_importer_niveau(enregistrement_campagne_campagne, enregistrement_campagne_niveau):
 						# mettre à jour le tableau des scores
-						ScoreService.mettre_a_jour_score_pour_import(nom_nouveau_joueur, enregistrement_campagne_niveau)
+						ScoreService.mettre_a_jour_score_pour_import(nom_nouveau_joueur, enregistrement_campagne_campagne, enregistrement_campagne_niveau)
 						LogService.log_debug("Import du QR du nouveau joueur *" + nom_nouveau_joueur
 											+ "* pour la campagne *" + nom_campagne + "*"
 											+ "* pour le niveau *" + enregistrement_campagne_niveau.get("niveau", "") + "*")
@@ -85,7 +85,7 @@ func importer_statistiques_joueur_externe(nom_joueur : String, enregistrement_ca
 				# importer ses statistiques de jeu
 				if SauvegardeBddJoueursService.enregistrement_campagne_importer_niveau(enregistrement_campagne_campagne, enregistrement_campagne_niveau):
 					# mettre à jour le tableau des scores
-					ScoreService.mettre_a_jour_score_pour_import(nom_joueur, enregistrement_campagne_niveau)
+					ScoreService.mettre_a_jour_score_pour_import(nom_joueur, enregistrement_campagne_campagne,enregistrement_campagne_niveau)
 					LogService.log_debug("Import du QR du joueur *" + nom_joueur
 										+ "* pour la campagne *" + nom_campagne + "*"
 										+ "* pour le niveau *" + enregistrement_campagne_niveau.get("niveau", "") + "*")
