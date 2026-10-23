@@ -50,18 +50,24 @@ func before_each():
 		},
 		"enregistrement_campagne": [
 			{
-				"niveau": "niveau_1",
+				"campagne": "campagne_test",
 				"date_debut": 100,
-				"date_fin": 200,
-				"plateaux": plateaux_niveau_1,
-				"liste_plateaux": plateaux_niveau_1
-			},
-			{
-				"niveau": "niveau_2",
-				"date_debut": 500,
 				"date_fin": 0,
-				"plateaux": plateaux_niveau_2,
-				"liste_plateaux": plateaux_niveau_2
+				"score": {},
+				"niveaux": [
+					{
+						"niveau": "niveau_1",
+						"date_debut": 100,
+						"date_fin": 200,
+						"plateaux": plateaux_niveau_1
+					},
+					{
+						"niveau": "niveau_2",
+						"date_debut": 500,
+						"date_fin": 0,
+						"plateaux": plateaux_niveau_2
+					}
+				]
 			}
 		],
 		"plateaux_libres": {"1": [{"nom": "Externe"}]},
@@ -153,7 +159,7 @@ func test_initialiser_le_nouveau_joueur_pour_la_campagne_cree_le_compte():
 
 func test_niveau_en_cours_et_la_campagne_est_terminee_sont_coherents():
 	service.choisir_le_joueur_pour_la_campagne("Alpha")
-	assert_true(SauvegardeBddJoueursService.enregistrement_niveau_en_cours())
+	assert_true(SauvegardeBddJoueursService.enregistrement_campagne_niveau_en_cours())
 	assert_true(service.niveau_en_cours())
 	assert_false(service.la_campagne_est_terminee())
 
@@ -202,9 +208,9 @@ func test_commencer_un_plateau_initialise_le_premier_niveau_et_incremente_les_pa
 
 	service.commencer_un_plateau()
 
-	assert_true(SauvegardeBddJoueursService.enregistrement_niveau_existe())
-	assert_true(SauvegardeBddJoueursService.enregistrement_plateau_en_cours())
-	assert_eq(SauvegardeBddJoueursService.enregistrement_lire_nom_plateau(), "P1")
+	assert_true(SauvegardeBddJoueursService.enregistrement_campagne_niveau_existe())
+	assert_true(SauvegardeBddJoueursService.enregistrement_campagne_plateau_en_cours())
+	assert_eq(SauvegardeBddJoueursService.enregistrement_campagne_lire_nom_plateau(), "P1")
 	assert_eq(SauvegardeBddJoueursService.lire_nombre_de_parties_difficulte(1), 1)
 
 func test_commencer_un_plateau_abandonne_le_plateau_precedent_avant_den_demarrer_un_nouveau():
@@ -213,13 +219,19 @@ func test_commencer_un_plateau_abandonne_le_plateau_precedent_avant_den_demarrer
 		"campagne": {"niveau_1": [{"nom": "P2", "gameplay": "CLASSIQUE", "difficulte": 1}]},
 		"enregistrement_campagne": [
 			{
-				"niveau": "niveau_1",
+				"campagne": "campagne_test",
 				"date_debut": 100,
 				"date_fin": 0,
 				"score": {},
-				"plateaux": [
-					{"nom": "P1", "date_debut": 90, "date_fin": 0, "duree": 0, "gameplay": "CLASSIQUE", "difficulte": 1, "statut": "en cours", "score": {}, "coups joués": []}
-				]
+				"niveaux": [{
+					"niveau": "niveau_1",
+					"date_debut": 100,
+					"date_fin": 0,
+					"score": {},
+					"plateaux": [
+						{"nom": "P1", "date_debut": 90, "date_fin": 0, "duree": 0, "gameplay": "CLASSIQUE", "difficulte": 1, "statut": "en cours", "score": {}, "coups joués": []}
+					]
+				}]
 			}
 		],
 		"plateaux_libres": {},
@@ -229,7 +241,7 @@ func test_commencer_un_plateau_abandonne_le_plateau_precedent_avant_den_demarrer
 
 	service.commencer_un_plateau()
 
-	var plateaux = SauvegardeBddJoueursService.enregistrement_lire_dernier_niveau().get("plateaux")
+	var plateaux = SauvegardeBddJoueursService.enregistrement_campagne_lire_dernier_niveau().get("plateaux")
 	assert_eq(plateaux.size(), 2)
 	assert_eq(plateaux[0].get("statut"), "abandonné")
 	assert_true(plateaux[0].get("date_fin") > 0)
@@ -242,13 +254,19 @@ func test_gagner_un_plateau_emet_fin_niveau_quand_cetait_le_dernier_plateau_du_n
 		"campagne": {"niveau_1": [{"nom": "P1", "gameplay": "CLASSIQUE", "difficulte": 1}]},
 		"enregistrement_campagne": [
 			{
-				"niveau": "niveau_1",
+				"campagne": "campagne_test",
 				"date_debut": 100,
 				"date_fin": 0,
 				"score": {},
-				"plateaux": [
-					{"nom": "P1", "date_debut": 90, "date_fin": 0, "duree": 0, "gameplay": "CLASSIQUE", "difficulte": 1, "statut": "en cours", "score": {}, "coups joués": []}
-				]
+				"niveaux": [{
+					"niveau": "niveau_1",
+					"date_debut": 100,
+					"date_fin": 0,
+					"score": {},
+					"plateaux": [
+						{"nom": "P1", "date_debut": 90, "date_fin": 0, "duree": 0, "gameplay": "CLASSIQUE", "difficulte": 1, "statut": "en cours", "score": {}, "coups joués": []}
+					]
+				}]
 			}
 		],
 		"plateaux_libres": {},
@@ -272,13 +290,19 @@ func test_gagner_un_plateau_nemet_pas_fin_niveau_sil_reste_des_plateaux_dans_le_
 		},
 		"enregistrement_campagne": [
 			{
-				"niveau": "niveau_1",
+				"campagne": "campagne_test",
 				"date_debut": 100,
 				"date_fin": 0,
 				"score": {},
-				"plateaux": [
-					{"nom": "P1", "date_debut": 90, "date_fin": 0, "duree": 0, "gameplay": "CLASSIQUE", "difficulte": 1, "statut": "en cours", "score": {}, "coups joués": []}
-				]
+				"niveaux": [{
+					"niveau": "niveau_1",
+					"date_debut": 100,
+					"date_fin": 0,
+					"score": {},
+					"plateaux": [
+						{"nom": "P1", "date_debut": 90, "date_fin": 0, "duree": 0, "gameplay": "CLASSIQUE", "difficulte": 1, "statut": "en cours", "score": {}, "coups joués": []}
+					]
+				}]
 			}
 		],
 		"plateaux_libres": {},

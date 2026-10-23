@@ -31,6 +31,7 @@ func before_each():
 	]
 	SauvegardeBddJoueursService._sauvegarde_joueur = {
 		"nom": "Joueur Test",
+		"nom_campagne": "campagne_test",
 		# Nouvelle convention : 'campagne' ne contient que les niveaux actifs.
 		# Les niveaux terminés sont archivés dans 'enregistrement_campagne' et sortis de la campagne active.
 		# En jeu libre, les plateaux sortis sont indexés par leur difficulté dans 'plateaux_libres'.
@@ -45,25 +46,33 @@ func before_each():
 		},
 		"enregistrement_campagne": [
 			{
-				"niveau": "niveau_1",
+				"campagne": "campagne_test",
 				"date_debut": 1700000000,
-				"date_fin": 1700001000,
-				"score": {"niveau": 100, "niveau_parfait": 50},
-				"plateaux": [
-					{"nom": "A1", "date_debut": 1700000010, "date_fin": 1700000020, "duree": 10, "difficulte": 1, "statut": "reussi", "gameplay": "CLASSIQUE", "score": {"duree": 20, "ratio_reussite": 80}},
-					{"nom": "B", "date_debut": 1700000020, "date_fin": 1700000031, "duree": 11, "difficulte": 2, "statut": "abandonné", "gameplay": "QUI_PERD_GAGNE", "score": {"duree": 5, "ratio_reussite": 10}},
-					{"nom": "B", "date_debut": 1700000030, "date_fin": 1700000045, "duree": 15, "difficulte": 2, "statut": "reussi", "gameplay": "QUI_PERD_GAGNE", "score": {"duree": 30, "ratio_reussite": 90}},
-					{"nom": "C", "date_debut": 1700000040, "date_fin": 1700000049, "duree": 9, "difficulte": 3, "statut": "reussi", "gameplay": "CLASSIQUE", "score": {"duree": 15, "ratio_reussite": 70}}
-				]
-			},
-			{
-				"niveau": "niveau_2",
-				"date_debut": 1700002000,
 				"date_fin": 0,
 				"score": {"niveau": 20, "niveau_parfait": 0},
-				"plateaux": [
-					{"nom": "D", "date_debut": 1700002010, "date_fin": 1700002025, "duree": 15, "difficulte": 2, "statut": "reussi", "gameplay": "CLASSIQUE", "score": {"duree": 25, "ratio_reussite": 85}},
-					{"nom": "A2", "date_debut": 1700002020, "date_fin": 1700002028, "duree": 8, "difficulte": 4, "statut": "reussi", "gameplay": "QUI_PERD_GAGNE", "score": {"duree": 40, "ratio_reussite": 95}}
+				"niveaux": [
+					{
+						"niveau": "niveau_1",
+						"date_debut": 1700000000,
+						"date_fin": 1700001000,
+						"score": {"niveau": 100, "niveau_parfait": 50},
+						"plateaux": [
+							{"nom": "A1", "date_debut": 1700000010, "date_fin": 1700000020, "duree": 10, "difficulte": 1, "statut": "reussi", "gameplay": "CLASSIQUE", "score": {"duree": 20, "ratio_reussite": 80}},
+							{"nom": "B", "date_debut": 1700000020, "date_fin": 1700000031, "duree": 11, "difficulte": 2, "statut": "abandonné", "gameplay": "QUI_PERD_GAGNE", "score": {"duree": 5, "ratio_reussite": 10}},
+							{"nom": "B", "date_debut": 1700000030, "date_fin": 1700000045, "duree": 15, "difficulte": 2, "statut": "reussi", "gameplay": "QUI_PERD_GAGNE", "score": {"duree": 30, "ratio_reussite": 90}},
+							{"nom": "C", "date_debut": 1700000040, "date_fin": 1700000049, "duree": 9, "difficulte": 3, "statut": "reussi", "gameplay": "CLASSIQUE", "score": {"duree": 15, "ratio_reussite": 70}}
+						]
+					},
+					{
+						"niveau": "niveau_2",
+						"date_debut": 1700002000,
+						"date_fin": 0,
+						"score": {"niveau": 20, "niveau_parfait": 0},
+						"plateaux": [
+							{"nom": "D", "date_debut": 1700002010, "date_fin": 1700002025, "duree": 15, "difficulte": 2, "statut": "reussi", "gameplay": "CLASSIQUE", "score": {"duree": 25, "ratio_reussite": 85}},
+							{"nom": "A2", "date_debut": 1700002020, "date_fin": 1700002028, "duree": 8, "difficulte": 4, "statut": "reussi", "gameplay": "QUI_PERD_GAGNE", "score": {"duree": 40, "ratio_reussite": 95}}
+						]
+					}
 				]
 			}
 		],
@@ -94,7 +103,7 @@ func test_campagne_et_niveau_statistiques():
 	assert_true("niveau_2" in campagne)
 	assert_true("niveau_3" in campagne)
 	assert_true(historique.size() >= 1)
-	assert_eq(historique[0].get("niveau"), "niveau_1")
+	assert_eq(historique[0].get("niveaux")[0].get("niveau"), "niveau_1")
 	assert_true("1" in SauvegardeBddJoueursService._sauvegarde_joueur.get("plateaux_libres", {}))
 	assert_true("2" in SauvegardeBddJoueursService._sauvegarde_joueur.get("plateaux_libres", {}))
 	assert_true("3" in SauvegardeBddJoueursService._sauvegarde_joueur.get("plateaux_libres", {}))
@@ -122,7 +131,7 @@ func test_plateau_statistiques():
 	assert_eq(service.plateau_nombre_de_plateaux_joues(), 6)
 	assert_true(abs(service.plateau_taux_de_reussite() - (5.0 / 6.0)) < 0.0001)
 	assert_true(abs(service.campagne_temps_total_en_s() - 68.0) < 0.0001)
-	assert_true(abs(service.plateau_temps_moyen_en_s() - (68.0 / 6.0)) < 0.0001)
+	assert_true(abs(service.plateau_temps_moyen_en_s() - (57.0 / 5.0)) < 0.0001)
 
 	var plus_rapide = service.plateau_plus_rapide_infos()
 	assert_true(abs(plus_rapide.get("temps_en_s") - 8.0) < 0.0001)
@@ -139,7 +148,7 @@ func test_plateau_statistiques():
 
 func test_statistiques_couvrent_les_branches_sans_plateaux_et_egalites():
 	# Cas sans enregistrement de niveau : zéro/ratio limite
-	SauvegardeBddJoueursService._sauvegarde_joueur["enregistrement_campagne"] = []
+	SauvegardeBddJoueursService._sauvegarde_joueur["enregistrement_campagne"][0]["niveaux"] = []
 	assert_eq(service.nombre_niveaux_termines(), 0)
 	assert_eq(service.duree_moyenne_niveaux_terminees_en_s(), 0.0)
 	assert_eq(service.taux_de_reussite_des_plateaux(), 0.0)
@@ -148,7 +157,7 @@ func test_statistiques_couvrent_les_branches_sans_plateaux_et_egalites():
 	assert_eq(service.plateau_le_plus_lent_les_infos().get("temps_en_s"), 0.0)
 
 	# Cas avec valeurs identiques : la difficulté la plus élevée doit être retenue
-	SauvegardeBddJoueursService._sauvegarde_joueur["enregistrement_campagne"] = [
+	SauvegardeBddJoueursService._sauvegarde_joueur["enregistrement_campagne"][0]["niveaux"] = [
 		{
 			"niveau": "niveau_1",
 			"date_debut": 1700000000,
@@ -168,7 +177,7 @@ func test_statistiques_couvrent_les_branches_sans_plateaux_et_egalites():
 	assert_eq(lent.get("difficulte"), 5)
 
 	# Cas avec mêmes noms de plateau pour déclencher le chemin de doublon dans l'indexation
-	SauvegardeBddJoueursService._sauvegarde_joueur["enregistrement_campagne"] = [
+	SauvegardeBddJoueursService._sauvegarde_joueur["enregistrement_campagne"][0]["niveaux"] = [
 		{
 			"niveau": "niveau_1",
 			"date_debut": 1700000000,
@@ -186,7 +195,7 @@ func test_statistiques_couvrent_les_branches_sans_plateaux_et_egalites():
 	assert_eq(galere.get("difficulte"), 2)
 
 	# Cas de reset de série et de max atteint : abandon = coupure de série
-	SauvegardeBddJoueursService._sauvegarde_joueur["enregistrement_campagne"] = [
+	SauvegardeBddJoueursService._sauvegarde_joueur["enregistrement_campagne"][0]["niveaux"] = [
 		{"niveau": "niveau_1", "date_debut": 1700000000, "date_fin": 1700001000, "plateaux": [
 			{"nom": "A", "statut": "reussi"},
 			{"nom": "B", "statut": "reussi"},
@@ -207,7 +216,7 @@ func test_niveau_taux_reussite_les_infos_traite_les_branchs_fallbacks():
 	assert_true(infos.get("taux_min_lg") >= 0)
 	assert_true(infos.get("taux_max_lg") >= 0)
 
-	SauvegardeBddJoueursService._sauvegarde_joueur["enregistrement_campagne"] = [
+	SauvegardeBddJoueursService._sauvegarde_joueur["enregistrement_campagne"][0]["niveaux"] = [
 		{"niveau": "niveau_1", "date_debut": 1700000000, "date_fin": 1700001000, "plateaux": [
 			{"nom": "A", "date_debut": 1700000010, "date_fin": 1700000020, "duree": 10, "difficulte": 2, "statut": "reussi"},
 			{"nom": "B", "date_debut": 1700000020, "date_fin": 1700000040, "duree": 20, "difficulte": 5, "statut": "abandonné"}]
@@ -227,14 +236,14 @@ func test_reussis_abandonnes_par_niveau_et_completion_niveau_couvrent_les_zeros(
 	assert_true(abs(service.taux_completion_niveau() - (2.0 / 3.0)) < 0.0001)
 
 	SauvegardeBddJoueursService._sauvegarde_joueur["campagne"] = {"niveau_99": []}
-	SauvegardeBddJoueursService._sauvegarde_joueur["enregistrement_campagne"] = [
+	SauvegardeBddJoueursService._sauvegarde_joueur["enregistrement_campagne"][0]["niveaux"] = [
 		{"niveau": "niveau_99", "date_debut": 1700000000, "date_fin": 1700001000, "plateaux": []}
 	]
 	assert_eq(service.nombre_de_plateau_reussis_abandonnes_passes_pour_niveau("niveau_99").get("reussis"), 0)
 	assert_true(abs(service.taux_completion_niveau()) < 0.0001)
 
 func test_plateaux_passes_sont_comptes_et_interrompent_les_series_de_victoires():
-	SauvegardeBddJoueursService._sauvegarde_joueur["enregistrement_campagne"] = [
+	SauvegardeBddJoueursService._sauvegarde_joueur["enregistrement_campagne"][0]["niveaux"] = [
 		{
 			"niveau": "niveau_2",
 			"date_debut": 1700002000,
@@ -269,14 +278,14 @@ func test_plateaux_passes_sont_comptes_et_interrompent_les_series_de_victoires()
 
 func test_statistiques_excluent_les_donnees_a_la_date_de_debut_de_campagne():
 	var date_debut_campagne = SauvegardeConfigurationService.lire_la_date_debut_campagne_timestamp()
-	SauvegardeBddJoueursService._sauvegarde_joueur["enregistrement_campagne"].append({
+	SauvegardeBddJoueursService._sauvegarde_joueur["enregistrement_campagne"][0]["niveaux"].append({
 		"niveau": "niveau_0",
-		"date_debut": date_debut_campagne,
+		"date_debut": date_debut_campagne - 1,
 		"date_fin": date_debut_campagne + 100,
 		"plateaux": [
 			{
 				"nom": "Ancien",
-				"date_debut": date_debut_campagne,
+				"date_debut": date_debut_campagne - 1,
 				"date_fin": date_debut_campagne + 10,
 				"duree": 999,
 				"difficulte": 99,
@@ -301,7 +310,7 @@ func test_duree_moyenne_des_niveaux_termines_ne_compte_que_leurs_plateaux():
 	assert_eq(durees.get("terminees"), 45.0)
 	assert_eq(service.duree_moyenne_niveaux_terminees_en_s(), 45.0)
 
-	SauvegardeBddJoueursService._sauvegarde_joueur["enregistrement_campagne"][0]["plateaux"] = []
+	SauvegardeBddJoueursService._sauvegarde_joueur["enregistrement_campagne"][0]["niveaux"][0]["plateaux"] = []
 	assert_eq(service.nombre_niveaux_termines(), 1)
 	assert_eq(service.duree_moyenne_niveaux_terminees_en_s(), 0.0)
 
@@ -326,7 +335,7 @@ func test_gameplay_statistiques_classique():
 func test_gameplay_statistiques_qui_perd_gagne():
 	assert_eq(service.qui_perd_gagne_nombre_de_plateaux_joues(), 3)
 	assert_true(abs(service.qui_perd_gagne_taux_de_reussite() - (2.0 / 3.0)) < 0.0001)
-	assert_true(abs(service.qui_perd_gagne_temps_moyen_en_s() - (34.0 / 3.0)) < 0.0001)
+	assert_true(abs(service.qui_perd_gagne_temps_moyen_en_s() - (23.0 / 2.0)) < 0.0001)
 
 	var plus_rapide = service.qui_perd_gagne_plus_rapide_infos()
 	assert_true(abs(plus_rapide.get("temps_en_s") - 8.0) < 0.0001)
@@ -342,7 +351,7 @@ func test_gameplay_statistiques_qui_perd_gagne():
 	assert_eq(plus_galere.get("difficulte"), 2)
 
 func test_gameplay_statistiques_sans_plateaux_retourne_zero():
-	SauvegardeBddJoueursService._sauvegarde_joueur["enregistrement_campagne"] = []
+	SauvegardeBddJoueursService._sauvegarde_joueur["enregistrement_campagne"][0]["niveaux"] = []
 	assert_eq(service.classique_nombre_de_plateaux_joues(), 0)
 	assert_eq(service.classique_taux_de_reussite(), 0.0)
 	assert_eq(service.classique_temps_moyen_en_s(), 0.0)
@@ -369,8 +378,10 @@ func test_score_detail_cumule_et_pourcentages():
 func test_score_pourcentage_fin_campagne_quand_la_campagne_est_terminee():
 	# Campagne terminée <=> plus aucun niveau actif dans 'campagne'.
 	SauvegardeBddJoueursService._sauvegarde_joueur["campagne"] = {}
+	var score_fin_campagne = roundi(ScoreService.FIN_CAMPAGNE * service.campagne_taux_reussite())
+	SauvegardeBddJoueursService._sauvegarde_joueur["enregistrement_campagne"][0]["score"]["fin_campagne"] = score_fin_campagne
 	assert_true(ProgressionCampagneService.la_campagne_est_terminee())
-	assert_true(abs(service.score_pourcentage_fin_campagne() - (float(ScoreService.FIN_CAMPAGNE) / SCORE_JOUEUR_TEST)) < 0.0001)
+	assert_true(abs(service.score_pourcentage_fin_campagne() - (float(score_fin_campagne) / SCORE_JOUEUR_TEST)) < 0.0001)
 
 func test_score_pourcentages_couvrent_le_cas_score_total_nul():
 	SauvegardeTableauDesScoresService.liste_des_scores = [

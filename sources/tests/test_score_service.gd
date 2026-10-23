@@ -31,29 +31,40 @@ func before_each():
 	]
 	SauvegardeBddJoueursService._sauvegarde_joueur = {
 		"nom": "Joueur Test",
+		"nom_campagne": "campagne_test",
 		"campagne": {
 			"niveau_2": [{"nom": "R3", "difficulte": 2, "gameplay": "CLASSIQUE"}],
 			"niveau_3": [{"nom": "R1", "difficulte": 1, "gameplay": "DEFI_DU_GOSSE"}, {"nom": "R2", "difficulte": 2, "gameplay": "DEFI_DU_BOSS"}]
 		},
 		"enregistrement_campagne": [
 			{
-				"niveau": "niveau_1",
+				"campagne": "campagne_test",
 				"date_debut": 1700000000,
-				"date_fin": 1700001000,
-				"plateaux": [
-					{"nom": "A1", "date_debut": 1700000010, "date_fin": 1700010010, "duree": 10000, "difficulte": 1, "statut": "reussi"},
-					{"nom": "B", "date_debut": 1700000020, "date_fin": 1700011020, "duree": 11000, "difficulte": 2, "statut": "abandonné"},
-					{"nom": "B2", "date_debut": 1700000030, "date_fin": 1700015030, "duree": 15000, "difficulte": 2, "statut": "reussi"},
-					{"nom": "C", "date_debut": 1700000040, "date_fin": 1700009040, "duree": 9000, "difficulte": 3, "statut": "reussi"}
-				]
-			},
-			{
-				"niveau": "niveau_2",
-				"date_debut": 1700002000,
 				"date_fin": 0,
-				"plateaux": [
-					{"nom": "D", "date_debut": 1700002010, "date_fin": 1700017010, "duree": 15000, "difficulte": 2, "statut": "reussi"},
-					{"nom": "A2", "date_debut": 1700002020, "date_fin": 0, "duree": 8000, "difficulte": 4, "statut": "en_cours"}
+				"score": {},
+				"niveaux": [
+					{
+						"niveau": "niveau_1",
+						"date_debut": 1700000000,
+						"date_fin": 1700001000,
+						"score": {},
+						"plateaux": [
+							{"nom": "A1", "date_debut": 1700000010, "date_fin": 1700010010, "duree": 10000, "difficulte": 1, "statut": "reussi"},
+							{"nom": "B", "date_debut": 1700000020, "date_fin": 1700011020, "duree": 11000, "difficulte": 2, "statut": "abandonné"},
+							{"nom": "B2", "date_debut": 1700000030, "date_fin": 1700015030, "duree": 15000, "difficulte": 2, "statut": "reussi"},
+							{"nom": "C", "date_debut": 1700000040, "date_fin": 1700009040, "duree": 9000, "difficulte": 3, "statut": "reussi"}
+						]
+					},
+					{
+						"niveau": "niveau_2",
+						"date_debut": 1700002000,
+						"date_fin": 0,
+						"score": {},
+						"plateaux": [
+							{"nom": "D", "date_debut": 1700002010, "date_fin": 1700017010, "duree": 15000, "difficulte": 2, "statut": "reussi"},
+							{"nom": "A2", "date_debut": 1700002020, "date_fin": 0, "duree": 8000, "difficulte": 4, "statut": "en_cours"}
+						]
+					}
 				]
 			}
 		],
@@ -75,7 +86,7 @@ func after_each():
 	FichiersJsonService.reinitialiser_racine_utilisateur()
 
 func _niveau_en_cours_avec_plateau_actif() -> void:
-	var niveau = SauvegardeBddJoueursService._sauvegarde_joueur.get("enregistrement_campagne").back()
+	var niveau = SauvegardeBddJoueursService._sauvegarde_joueur.get("enregistrement_campagne")[0].get("niveaux").back()
 	var dernier_plateau = niveau.get("plateaux").back()
 	dernier_plateau["statut"] = "en_cours"
 	dernier_plateau["duree"] = 8000
@@ -109,7 +120,7 @@ func test_mettre_a_jour_score_ratio_reussite_est_calcule_avec_precision():
 func test_mettre_a_jour_score_duree_avec_duree_totale_nulle_ne_rapporte_aucun_point():
 	# Un plateau achevé ("date_fin" non nul) avec "duree" à 0 protège la
 	# division (ratio_temps = 0) : aucun bonus de durée ne doit être accordé.
-	var niveau = SauvegardeBddJoueursService._sauvegarde_joueur.get("enregistrement_campagne").back()
+	var niveau = SauvegardeBddJoueursService._sauvegarde_joueur.get("enregistrement_campagne")[0].get("niveaux").back()
 	var plateau_courant = niveau.get("plateaux").back()
 	plateau_courant["date_fin"] = 1700010020
 	plateau_courant["duree"] = 0
@@ -131,20 +142,20 @@ func test_mettre_a_jour_score_pour_victoire_retourne_une_grille_complete():
 	assert_true(score.get("niveau").get("points", 0) >= 0)
 
 func test_mettre_a_jour_score_niveau_ne_declenche_pas_si_niveau_encore_en_cours():
-	var niveau = SauvegardeBddJoueursService._sauvegarde_joueur.get("enregistrement_campagne").back()
+	var niveau = SauvegardeBddJoueursService._sauvegarde_joueur.get("enregistrement_campagne")[0].get("niveaux").back()
 	niveau["date_fin"] = 0
 	var result = service.mettre_a_jour_score_niveau()
 	assert_eq(result, {})
 
 func test_mettre_a_jour_score_niveau_declenche_quand_le_niveau_est_acheve():
-	var niveau = SauvegardeBddJoueursService._sauvegarde_joueur.get("enregistrement_campagne").back()
+	var niveau = SauvegardeBddJoueursService._sauvegarde_joueur.get("enregistrement_campagne")[0].get("niveaux").back()
 	niveau["date_fin"] = 1700003000
 	var result = service.mettre_a_jour_score_niveau()
 	assert_eq(result.get("type"), "niveau")
 	assert_true(result.get("points", 0) >= 0)
 
 func test_mettre_a_jour_score_niveau_parfait_ne_declenche_pas_si_niveau_encore_en_cours():
-	var niveau = SauvegardeBddJoueursService._sauvegarde_joueur.get("enregistrement_campagne").back()
+	var niveau = SauvegardeBddJoueursService._sauvegarde_joueur.get("enregistrement_campagne")[0].get("niveaux").back()
 	niveau["date_fin"] = 0
 	niveau["plateaux"] = [{"nom": "D", "date_debut": 1700002010, "date_fin": 1700017010, "duree": 15000, "difficulte": 2, "statut": "reussi"}]
 	var result = service.mettre_a_jour_score_niveau_parfait()
@@ -153,7 +164,7 @@ func test_mettre_a_jour_score_niveau_parfait_ne_declenche_pas_si_niveau_encore_e
 func test_mettre_a_jour_score_niveau_parfait_ne_declenche_pas_si_le_niveau_nest_pas_parfait():
 	# Un plateau "abandonné" dans le niveau fait chuter le ratio de réussite
 	# sous 100% : le bonus "niveau_parfait" ne doit pas se déclencher.
-	var niveau = SauvegardeBddJoueursService._sauvegarde_joueur.get("enregistrement_campagne").back()
+	var niveau = SauvegardeBddJoueursService._sauvegarde_joueur.get("enregistrement_campagne")[0].get("niveaux").back()
 	niveau["date_fin"] = 1700003000
 	niveau["plateaux"] = [
 		{"nom": "D", "date_debut": 1700002010, "date_fin": 1700017010, "duree": 15000, "difficulte": 2, "statut": "reussi"},
@@ -164,7 +175,7 @@ func test_mettre_a_jour_score_niveau_parfait_ne_declenche_pas_si_le_niveau_nest_
 	assert_eq(result, {})
 
 func test_mettre_a_jour_score_niveau_parfait_declenche_quand_le_niveau_est_parfait():
-	var niveau = SauvegardeBddJoueursService._sauvegarde_joueur.get("enregistrement_campagne").back()
+	var niveau = SauvegardeBddJoueursService._sauvegarde_joueur.get("enregistrement_campagne")[0].get("niveaux").back()
 	niveau["date_fin"] = 1700003000
 	niveau["plateaux"] = [{"nom": "D", "date_debut": 1700002010, "date_fin": 1700017010, "duree": 15000, "difficulte": 2, "statut": "reussi"}]
 	# Terminer le niveau dans la campagne
@@ -182,9 +193,10 @@ func test_mettre_a_jour_score_campagne_declenche_si_la_campagne_est_terminee():
 	SauvegardeBddJoueursService._sauvegarde_joueur["campagne"] = {}
 	var score_avant = SauvegardeTableauDesScoresService.lire_score_joueur("Joueur Test")
 	var result = service.mettre_a_jour_score_campagne()
+	var points_attendus = roundi(service.FIN_CAMPAGNE * StatsService.campagne_taux_reussite())
 	assert_eq(result.get("type"), "campagne")
-	assert_eq(result.get("points"), service.FIN_CAMPAGNE)
-	assert_eq(SauvegardeTableauDesScoresService.lire_score_joueur("Joueur Test"), score_avant + service.FIN_CAMPAGNE)
+	assert_eq(result.get("points"), points_attendus)
+	assert_eq(SauvegardeTableauDesScoresService.lire_score_joueur("Joueur Test"), score_avant + points_attendus)
 
 func test_nouveau_joueur_est_nom_anna_triche():
 	assert_true(service.nouveau_joueur_est_nom_anna_triche("Anna"))
@@ -221,8 +233,7 @@ func test_bonus_score_anna_damour_ne_fait_rien_pour_un_autre_joueur():
 
 func test_mettre_a_jour_score_pour_victoire_applique_le_bonus_anna_pour_ce_joueur():
 	# Vérifie l'intégration complète : quand le joueur courant est "Anna",
-	# le score final doit être strictement supérieur à la somme brute des
-	# points de la grille (bonus x3 appliqué en plus).
+	# le score final correspond à tous les points détaillés, bonus inclus.
 	var nom_anna = service.lire_nom_anna_triche()
 	SauvegardeBddJoueursService._sauvegarde_joueur["nom"] = nom_anna
 	_level_finishes_current_level_as_won()
@@ -234,16 +245,16 @@ func test_mettre_a_jour_score_pour_victoire_applique_le_bonus_anna_pour_ce_joueu
 	var total_points_grille = 0
 	for detail in score.values():
 		total_points_grille += detail.get("points", 0)
-	assert_true(score_apres > score_avant + total_points_grille)
+	assert_eq(score_apres, score_avant + total_points_grille)
 
 func _set_last_plateau_difficulte(difficulte):
-	var niveau = SauvegardeBddJoueursService._sauvegarde_joueur.get("enregistrement_campagne").back()
+	var niveau = SauvegardeBddJoueursService._sauvegarde_joueur.get("enregistrement_campagne")[0].get("niveaux").back()
 	var plateau = niveau.get("plateaux").back()
 	plateau["difficulte"] = difficulte
 	SauvegardeBddJoueursService._enregistrer_sauvegarde_joueur()
 
 func _level_finishes_current_level_as_won():
-	var niveau = SauvegardeBddJoueursService._sauvegarde_joueur.get("enregistrement_campagne").back()
+	var niveau = SauvegardeBddJoueursService._sauvegarde_joueur.get("enregistrement_campagne")[0].get("niveaux").back()
 	niveau["plateaux"] = [
 		{"nom": "D", "date_debut": 1700002010, "duree": 15000, "difficulte": 2, "statut": "reussi"},
 		{"nom": "A2", "date_debut": 1700002020, "duree": 8000, "difficulte": 4, "statut": "reussi"}

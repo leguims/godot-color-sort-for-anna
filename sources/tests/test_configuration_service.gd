@@ -17,8 +17,8 @@ func _lire_configuration_fichier():
 
 func _configuration_par_defaut() -> Dictionary:
 	return {
-		"version": "V1.0.0-rc17",
-		"date_debut_campagne": "2025-10-31 00:00:00",
+		"version": "V1.0.0-rc18",
+		"date_debut_campagne": "2026-10-17 00:00:00",
 		"musiques": true,
 		"effets sonores": true,
 		"vibrations": true
@@ -100,7 +100,7 @@ func test_ready_convertit_une_ancienne_version_et_reinitialise_campagne_et_score
 	FichiersJsonService.write_json_file("configuration_du_jeu.json", ancienne_configuration)
 	service = add_child_autofree(load("res://Singletons/Sauvegarde/configuration_service.gd").new())
 
-	assert_eq(service.lire_la_version(), "V1.0.0-rc17")
+	assert_eq(service.lire_la_version(), "V1.0.0-rc18")
 	assert_false(service.musiques_sont_actives())
 	assert_false(service.effets_sonores_sont_actifs())
 	assert_false(service.vibrations_sont_actives())
@@ -151,7 +151,7 @@ func test_ready_change_de_version_sans_reinitialiser_campagne_et_scores_si_lanci
 	service = add_child_autofree(load("res://Singletons/Sauvegarde/configuration_service.gd").new())
 
 	# La version est mise à jour vers la version courante...
-	assert_eq(service.lire_la_version(), "V1.0.0-rc17")
+	assert_eq(service.lire_la_version(), "V1.0.0-rc18")
 	# ...mais la campagne et les scores ne sont PAS réinitialisés (l'ancienne
 	# version ne commence pas par "V0."). Les entiers sont relus en float par
 	# FichiersJsonService (round-trip JSON) : comparaison champ par champ.

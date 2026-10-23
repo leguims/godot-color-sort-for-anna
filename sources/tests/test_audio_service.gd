@@ -30,15 +30,23 @@ func _activer_joueur_test(reussis: int, restants: int) -> void:
 
 	SauvegardeBddJoueursService._sauvegarde_joueur = {
 		"nom": "Joueur Audio",
+		"nom_campagne": "campagne_test",
 		"campagne": {
 			"niveau_1": plateaux_restants
 		},
 		"enregistrement_campagne": [
 			{
-				"niveau": "niveau_1",
+				"campagne": "campagne_test",
 				"date_debut": 1700000000,
 				"date_fin": 0,
-				"plateaux": plateaux_reussis
+				"score": {},
+				"niveaux": [{
+					"niveau": "niveau_1",
+					"date_debut": 1700000000,
+					"date_fin": 0,
+					"score": {},
+					"plateaux": plateaux_reussis
+				}]
 			}
 		],
 		"plateaux_libres": {},

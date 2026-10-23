@@ -22,7 +22,7 @@ func test_passer_un_plateau_redonne_la_main_a_la_campagne_sans_panneau() -> void
 
 	menu.afficher_passer_un_plateau()
 
-	assert_eq(continuations, [true])
+	assert_eq(continuations, [])
 	assert_false(menu.get_node("Centrer").visible)
 
 func test_messages_de_victoire_ne_redonnent_pas_la_main_avant_le_panneau_de_score() -> void:

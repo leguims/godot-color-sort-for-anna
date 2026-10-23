@@ -373,7 +373,7 @@ func campagne_la_campagne_est_terminee() -> bool:
 
 func nombre_de_parties() -> Dictionary:
 	if le_joueur_existe():
-		return lire_sauvegarde().get('nombre_de_parties')
+		return lire_sauvegarde().get('nombre_de_parties', {})
 	return {}
 
 func nombre_de_parties_difficulte_existe(difficulte : int) -> bool:
