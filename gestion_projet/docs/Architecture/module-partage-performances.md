@@ -13,11 +13,16 @@ $MenuCampagne.afficher_partage_performances(enregistrements_du_niveau)
 Le dictionnaire doit être sérialisable en JSON. À la fin d'un niveau ou de la campagne, le panneau de score s'affiche en premier. Lorsque le joueur le quitte, le partage s'ouvre automatiquement et lit les données via `PartagePerformancesAPI.lire_donnees_dernier_niveau()` :
 
 ```gdscript
+var campagne = SauvegardeBddJoueursService.enregistrement_campagne_lire_derniere_campagne().duplicate(true)
+campagne.erase("niveaux")
 {
-    "nom": SauvegardeBddJoueursService.lire_nom_joueur(),
-    "niveau": SauvegardeBddJoueursService.enregistrement_lire_dernier_niveau()
+    "joueur": SauvegardeBddJoueursService.lire_nom_joueur(),
+    "campagne": campagne,
+    "niveau": SauvegardeBddJoueursService.enregistrement_campagne_lire_dernier_niveau()
 }
 ```
+
+Le dictionnaire `campagne` conserve les métadonnées de l'archive (nom, dates et score) ; seuls les niveaux sont transmis séparément dans `niveau`.
 
 Après fermeture du partage, le jeu reprend son parcours normal : niveau suivant ou statistiques de campagne. `MenuCampagne.afficher_partage_performances()` reste disponible pour afficher le panneau avec un dictionnaire fourni par un appelant.
 
@@ -55,7 +60,7 @@ Le QR contient un objet JSON de la forme :
 {
   "version": 1,
   "algorithme": "HMAC-SHA256",
-  "donnees_json": "{\"niveau\":3}",
+  "donnees_json": "{\"joueur\":\"Joueuse\",\"campagne\":{\"campagne\":\"campagne_2\",\"date_debut\":100,\"date_fin\":200,\"score\":{}},\"niveau\":{\"niveau\":\"niveau_3\"}}",
   "signature": "empreinte hexadécimale"
 }
 ```

@@ -35,10 +35,12 @@ func _build_ui() -> void:
 
 
 func afficher_import_qr(qr_data: Dictionary) -> void:
-	var nom_joueur := str(qr_data.get("nom", ""))
+	var nom_joueur := str(qr_data.get("joueur", ""))
+	var campagne: Dictionary = qr_data.get("campagne", {})
+	var nom_campagne := str(campagne.get("campagne", "")).capitalize()
 	var niveau: Dictionary = qr_data.get("niveau", {})
-	var nom_niveau := str(niveau.get("niveau", "")).replace("_", " ")
-	$PanneauImportQR.afficher_import(nom_joueur, nom_niveau)
+	var nom_niveau := str(niveau.get("niveau", "")).capitalize()
+	$PanneauImportQR.afficher_import(nom_joueur, nom_campagne, nom_niveau)
 
 func _on_panneau_import_qr_accepter() -> void:
 	PartagePerformancesImportService.accepter_import()

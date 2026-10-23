@@ -13,9 +13,12 @@ var _qr_scanner: Node
 
 ## Retourne le nom du joueur et les enregistrements de son dernier niveau.
 func lire_donnees_dernier_niveau() -> Dictionary:
+	var campagne = SauvegardeBddJoueursService.enregistrement_campagne_lire_derniere_campagne().duplicate()
+	# Suppression des niveaux de la campagne
+	campagne.erase('niveaux')
 	return {
 		"joueur": SauvegardeBddJoueursService.lire_nom_joueur(),
-		"campagne": SauvegardeBddJoueursService.enregistrement_campagne_lire_nom_derniere_campagne(),
+		"campagne": campagne,
 		"niveau": SauvegardeBddJoueursService.enregistrement_campagne_lire_dernier_niveau()
 	}
 
@@ -175,14 +178,16 @@ func partager_qr_android(share: Node, texture_qr: Texture2D) -> bool:
 		return false
 
 	var qr_data = lire_donnees_dernier_niveau()
-	var nom_joueur = qr_data.get("nom", "")
-	var nom_niveau = qr_data.get("niveau", "").get("niveau", "").replace("_", " ")
+	var nom_joueur = qr_data.get("joueur", "")
+	var campagne: Dictionary = qr_data.get("campagne", {})
+	var nom_campagne = str(campagne.get("campagne", "")).capitalize()
+	var nom_niveau = qr_data.get("niveau", "").get("niveau", "").capitalize()
 	share.call(
 		"share_texture",
 		texture_qr,
 		nom_joueur + " partage ses performances", # titre
-		"Performances du " + nom_niveau,          # sujet
-		nom_joueur + " partage ses performances sur le " + nom_niveau + "." # texte du partage
+		nom_campagne + " - Performances du " + nom_niveau,          # sujet
+		nom_joueur + " partage ses performances de la " + nom_campagne + " sur le " + nom_niveau + "." # texte du partage
 	)
 	return true
 

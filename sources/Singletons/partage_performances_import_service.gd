@@ -56,16 +56,16 @@ func accepter_import() -> void:
 		return
 	_import_en_cours = true
 
-	var nom_joueur := str(_import_en_attente.get("nom", ""))
-	var nom_campagne := str(_import_en_attente.get("campagne", ""))
-	var niveau: Dictionary = _import_en_attente.get("niveau", {})
+	var nom_joueur := str(_import_en_attente.get("joueur", ""))
+	var donnees_campagne: Dictionary = _import_en_attente.get("campagne", {})
+	var  donnees_niveau: Dictionary = _import_en_attente.get("niveau", {})
 	var nom_joueur_import := nom_joueur
 
-	if not ProgressionCampagneService.importer_statistiques_nouveau_joueur_externe(nom_joueur_import, nom_campagne, niveau) \
-		and not ProgressionCampagneService.importer_statistiques_joueur_externe(nom_joueur_import, nom_campagne, niveau):
+	if not ProgressionCampagneService.importer_statistiques_nouveau_joueur_externe(nom_joueur_import, donnees_campagne, donnees_niveau) \
+		and not ProgressionCampagneService.importer_statistiques_joueur_externe(nom_joueur_import, donnees_campagne, donnees_niveau):
 		nom_joueur_import = nom_joueur + " (import)"
-		if not ProgressionCampagneService.importer_statistiques_nouveau_joueur_externe(nom_joueur_import, nom_campagne, niveau) \
-			and not ProgressionCampagneService.importer_statistiques_joueur_externe(nom_joueur_import, nom_campagne, niveau):
+		if not ProgressionCampagneService.importer_statistiques_nouveau_joueur_externe(nom_joueur_import, donnees_campagne, donnees_niveau) \
+			and not ProgressionCampagneService.importer_statistiques_joueur_externe(nom_joueur_import, donnees_campagne, donnees_niveau):
 			_erreur_import()
 			return
 
@@ -103,13 +103,25 @@ func _on_api_erreur_decodage_qr(_message: String) -> void:
 	_erreur_import()
 
 func _qr_est_exploitable(qr_data: Dictionary) -> bool:
-	var nom: Variant = qr_data.get("nom", "")
-	var niveau: Variant = qr_data.get("niveau", "")
-	if not nom is String or nom.strip_edges().is_empty() or not niveau is Dictionary:
+	var joueur: Variant = qr_data.get("joueur", "")
+	if not joueur is String or joueur.strip_edges().is_empty():
 		return false
+
+	var campagne: Variant = qr_data.get("campagne", {})
+	if not campagne is Dictionary:
+		return false
+	var nom_campagne: Variant = campagne.get("campagne", "")
+	if not nom_campagne is String or nom_campagne.strip_edges().is_empty():
+		return false
+
+	var niveau: Variant = qr_data.get("niveau", "")
+	if not niveau is Dictionary:
+		return false
+
 	var nom_niveau: Variant = niveau.get("niveau", "")
 	var plateaux: Variant = niveau.get("plateaux", null)
-	if not nom_niveau is String or nom_niveau.is_empty() or not plateaux is Array:
+	if not nom_niveau is String or nom_niveau.strip_edges().is_empty() \
+		or not plateaux is Array:
 		return false
 	for plateau in plateaux:
 		if not plateau is Dictionary:

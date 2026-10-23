@@ -124,18 +124,35 @@ func test_autoriser_le_nouveau_joueur_pour_la_campagne():
 	assert_false(service.autoriser_le_nouveau_joueur_pour_la_campagne("   "))
 
 func test_importer_statistiques_cree_un_joueur_sans_plateaux_a_jouer():
+	var donnees_campagne := {
+		"campagne": "campagne_test",
+		"date_debut": 100.0,
+		"date_fin": 200.0,
+		"score": {"fin_campagne": 500}
+	}
 	var niveau := {
 		"niveau": "niveau_1",
 		"score": {"niveau": 10, "niveau_parfait": 0},
 		"plateaux": []
 	}
 
-	assert_true(service.importer_statistiques_nouveau_joueur_externe("Gamma", niveau))
+	assert_true(service.importer_statistiques_nouveau_joueur_externe("Gamma", donnees_campagne, niveau))
 	assert_true(SauvegardeListeJoueursService.le_joueur_existe("Gamma"))
 	assert_true(SauvegardeBddJoueursService.campagne_la_campagne_est_terminee())
-	assert_eq(SauvegardeBddJoueursService.enregistrement_lire_dernier_niveau(), niveau)
+	var campagne_importee: Dictionary = SauvegardeBddJoueursService.enregistrement_campagne_lire_derniere_campagne()
+	assert_eq(campagne_importee.get("campagne"), donnees_campagne.get("campagne"))
+	assert_eq(campagne_importee.get("date_debut"), donnees_campagne.get("date_debut"))
+	assert_eq(campagne_importee.get("date_fin"), donnees_campagne.get("date_fin"))
+	assert_eq(campagne_importee.get("score"), donnees_campagne.get("score"))
+	assert_eq(SauvegardeBddJoueursService.enregistrement_campagne_lire_dernier_niveau(), niveau)
 
 func test_importer_un_niveau_supplementaire_ne_recompte_pas_les_scores_existants():
+	var donnees_campagne := {
+		"campagne": "campagne_test",
+		"date_debut": 100.0,
+		"date_fin": 200.0,
+		"score": {"fin_campagne": 500}
+	}
 	var premier_niveau := {
 		"niveau": "niveau_1",
 		"score": {"niveau": 10, "niveau_parfait": 0},
@@ -147,8 +164,8 @@ func test_importer_un_niveau_supplementaire_ne_recompte_pas_les_scores_existants
 		"plateaux": []
 	}
 
-	assert_true(service.importer_statistiques_nouveau_joueur_externe("Gamma", premier_niveau))
-	assert_true(service.importer_statistiques_joueur_externe("Gamma", deuxieme_niveau))
+	assert_true(service.importer_statistiques_nouveau_joueur_externe("Gamma", donnees_campagne, premier_niveau))
+	assert_true(service.importer_statistiques_joueur_externe("Gamma", donnees_campagne, deuxieme_niveau))
 	assert_eq(SauvegardeTableauDesScoresService.lire_score_joueur("Gamma"), 30)
 
 func test_initialiser_le_nouveau_joueur_pour_la_campagne_cree_le_compte():

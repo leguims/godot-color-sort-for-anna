@@ -651,16 +651,29 @@ func enregistrement_campagne_inserer_niveau(nom_campagne : String, niveau : Dict
 	LogService.log_erreur("Bdd joueurs : campagne ", nom_campagne, " - Aucune insertion enregistrement du niveau ", _nom_niveau)
 	return false
 
+func enregistrement_campagne_inserer_campagne(nom_campagne : String, donnees_campagne : Dictionary) -> void:
+	"Importe une campagne dans l'enregistrement du joueur"
+	if not enregistrement_campagne_lire_campagne(nom_campagne):
+		var campagne_importee: Dictionary = donnees_campagne.duplicate(true)
+		campagne_importee['niveaux'] = []
+		if not lire_sauvegarde().has('enregistrement_campagne'):
+			lire_sauvegarde()['enregistrement_campagne'] = []
+		enregistrement_campagne().append(campagne_importee)
+		_enregistrer_sauvegarde_joueur()
+
 # Haut niveau
-func enregistrement_campagne_importer_niveau(nom_campagne : String, niveau : Dictionary) -> bool:
+func enregistrement_campagne_importer_niveau(donnees_campagne : Dictionary, donnees_niveau : Dictionary) -> bool:
 	"Importe un niveau dans l'enregistrement du joueur"
-	var _nom_niveau = niveau.get('niveau', '')
-	if nom_campagne and _nom_niveau:
+	var nom_campagne: Variant = donnees_campagne.get('campagne', '')
+	var _nom_niveau = donnees_niveau.get('niveau', '')
+	if nom_campagne is String and not nom_campagne.is_empty() and _nom_niveau:
+		enregistrement_campagne_inserer_campagne(nom_campagne, donnees_campagne)
+
 		var niveau_enregistrement = enregistrement_campagne_lire_niveau(nom_campagne, _nom_niveau)
 		if niveau_enregistrement:
 			# Le niveau est déjà importé
 			return false
-		return enregistrement_campagne_inserer_niveau(nom_campagne, niveau)
+		return enregistrement_campagne_inserer_niveau(nom_campagne, donnees_niveau)
 	LogService.log_erreur("Bdd joueurs : Aucun enregistrement du niveau ", _nom_niveau, " dans la campagne ", nom_campagne)
 	return false
 

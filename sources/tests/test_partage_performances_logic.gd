@@ -81,10 +81,13 @@ func test_ajouter_sous_titre_qr_preserve_le_qr_et_inclut_le_texte_dans_image() -
 	var fichier_initial: String = SauvegardeBddJoueursService.fichier_sauvegarde
 	SauvegardeBddJoueursService._sauvegarde_joueur = {
 		"nom": "Joueuse",
-		"enregistrement_campagne": [{"niveau": "niveau_2"}]
+		"enregistrement_campagne": [{
+			"campagne": "campagne_2",
+			"niveaux": [{"niveau": "niveau_2"}]
+		}]
 	}
 	SauvegardeBddJoueursService.fichier_sauvegarde = "test"
-	assert_eq(api.lire_sous_titre_qr(), "Joueuse - Niveau 2")
+	assert_eq(api.lire_sous_titre_qr(), "Joueuse - Campagne 2 - Niveau 2")
 	if DisplayServer.get_name() == "headless":
 		SauvegardeBddJoueursService._sauvegarde_joueur = sauvegarde_initiale
 		SauvegardeBddJoueursService.fichier_sauvegarde = fichier_initial
@@ -120,7 +123,16 @@ func test_verifier_hmac_refuse_une_signature_modifiee_ou_mal_formee() -> void:
 	assert_false(logique.verifier_hmac("donnees", signature, ""))
 
 func test_decoder_qr_retourne_les_donnees_apres_verification_hmac() -> void:
-	var donnees := {"nom": "Joueuse", "niveau": {"niveau": "niveau_2"}}
+	var donnees := {
+		"joueur": "Joueuse",
+		"campagne": {
+			"campagne": "campagne_2",
+			"date_debut": 100.25,
+			"date_fin": 200.5,
+			"score": {"fin_campagne": 500.0}
+		},
+		"niveau": {"niveau": "niveau_2", "plateaux": []}
+	}
 	var enveloppe: Dictionary = logique.preparer_enveloppe(donnees, "cle-test")
 	var resultat: Dictionary = logique.decoder_et_verifier_qr(enveloppe.get("contenu_qr", ""), "cle-test")
 
@@ -191,7 +203,16 @@ func test_api_refuse_le_partage_natif_hors_android() -> void:
 
 func test_api_emet_partage_qr_code_apres_decodage_et_verification() -> void:
 	var api: PartagePerformancesAPI = add_child_autofree(API_PARTAGE.new())
-	var donnees_attendues := {"nom": "Joueuse", "niveau": {"niveau": "niveau_2"}}
+	var donnees_attendues := {
+		"joueur": "Joueuse",
+		"campagne": {
+			"campagne": "campagne_2",
+			"date_debut": 100.25,
+			"date_fin": 200.5,
+			"score": {"fin_campagne": 500.0}
+		},
+		"niveau": {"niveau": "niveau_2", "plateaux": []}
+	}
 	var cle_hmac: String = ProjectSettings.get_setting("partage_performances/cle_hmac", "")
 	var enveloppe: Dictionary = logique.preparer_enveloppe(donnees_attendues, cle_hmac)
 	var qr_valide: Array[Dictionary] = []
@@ -218,7 +239,16 @@ func test_api_signale_quand_le_decodage_nest_pas_disponible() -> void:
 func test_scene_recoit_une_image_et_expose_le_signal_partage_qr_code() -> void:
 	var panneau: PartagePerformancesUI = add_child_autofree(SCENE_PARTAGE.instantiate())
 	var api: PartagePerformancesAPI = panneau.get_node("PartagePerformancesAPI")
-	var donnees_attendues := {"nom": "Joueuse"}
+	var donnees_attendues := {
+		"joueur": "Joueuse",
+		"campagne": {
+			"campagne": "campagne_2",
+			"date_debut": 100.25,
+			"date_fin": 200.5,
+			"score": {"fin_campagne": 500.0}
+		},
+		"niveau": {"niveau": "niveau_2", "plateaux": []}
+	}
 	var cle_hmac: String = ProjectSettings.get_setting("partage_performances/cle_hmac", "")
 	var enveloppe: Dictionary = logique.preparer_enveloppe(donnees_attendues, cle_hmac)
 	var qr_valide: Array[Dictionary] = []
@@ -233,8 +263,15 @@ func test_api_lit_le_nom_du_joueur_et_le_dernier_niveau() -> void:
 	var api: PartagePerformancesAPI = add_child_autofree(API_PARTAGE.new())
 	var donnees: Dictionary = api.lire_donnees_dernier_niveau()
 
-	assert_eq(donnees.get("nom"), SauvegardeBddJoueursService.lire_nom_joueur())
-	assert_eq(donnees.get("niveau"), SauvegardeBddJoueursService.enregistrement_lire_dernier_niveau())
+	assert_eq(donnees.size(), 3)
+	assert_eq(donnees.get("joueur"), SauvegardeBddJoueursService.lire_nom_joueur())
+	var campagne_attendue: Dictionary = SauvegardeBddJoueursService.enregistrement_campagne_lire_derniere_campagne().duplicate(true)
+	campagne_attendue.erase("niveaux")
+	assert_eq(donnees.get("campagne"), campagne_attendue)
+	assert_eq(
+		donnees.get("niveau"),
+		SauvegardeBddJoueursService.enregistrement_campagne_lire_dernier_niveau()
+	)
 
 func test_panneau_explique_lindisponibilite_du_qr_sur_une_plateforme_non_supportee() -> void:
 	if Engine.has_singleton("QRPlugin"):
