@@ -4,7 +4,9 @@
 [ext_resource type="Texture2D" uid="uid://46u7o24484rr" path="res://Art/UI/Gameplay/Classique/background.png" id="2_y18de"]
 [ext_resource type="Texture2D" uid="uid://c1q3i2mxcc4yo" path="res://Art/UI/Gameplay/Classique/base_active.svg" id="3_w50lc"]
 [ext_resource type="Texture2D" uid="uid://bqtrqd0baxmcq" path="res://Art/UI/Gameplay/Classique/button_restart.png" id="3_yobhf"]
+[ext_resource type="FontFile" uid="uid://dbs77if6q2gtc" path="res://Art/UI/Fonts/TeXGyreAdventor/texgyreadventor-bold.otf" id="4_q8ekg"]
 [ext_resource type="Texture2D" uid="uid://pp36u1brjjyd" path="res://Art/UI/Gameplay/Classique/button_pass.svg" id="4_w50lc"]
+[ext_resource type="FontFile" uid="uid://8pcourumhksh" path="res://Art/UI/Fonts/TeXGyreAdventor/texgyreadventor-regular.otf" id="5_tolx0"]
 [ext_resource type="Texture2D" uid="uid://d31xefsvrcvjv" path="res://Art/UI/Gameplay/Classique/base_before.svg" id="6_u7xw0"]
 [ext_resource type="Texture2D" uid="uid://f5kdatxkd5br" path="res://Art/UI/Gameplay/Classique/button_home.svg" id="7_q8ekg"]
 [ext_resource type="Texture2D" uid="uid://fnc6uki83sei" path="res://Art/UI/Gameplay/Classique/button_play.svg" id="8_tolx0"]
@@ -46,6 +48,7 @@ offset_top = 29.0
 offset_right = 187.0
 offset_bottom = 55.0
 theme_override_colors/font_color = Color(0.024, 0.247, 0.471, 1)
+theme_override_fonts/font = ExtResource("4_q8ekg")
 theme_override_font_sizes/font_size = 18
 text = "CLASSIQUE"
 vertical_alignment = 1
@@ -57,6 +60,7 @@ offset_top = 53.0
 offset_right = 192.0
 offset_bottom = 75.0
 theme_override_colors/font_color = Color(0.067, 0.498, 0.502, 1)
+theme_override_fonts/font = ExtResource("5_tolx0")
 theme_override_font_sizes/font_size = 15
 text = "Range tes couleurs"
 vertical_alignment = 1
@@ -68,6 +72,7 @@ offset_top = 32.0
 offset_right = 392.0
 offset_bottom = 69.0
 theme_override_colors/font_color = Color(0.023529412, 0.24705882, 0.47058824, 1)
+theme_override_fonts/font = ExtResource("5_tolx0")
 theme_override_font_sizes/font_size = 26
 text = "00:00.0"
 horizontal_alignment = 1
@@ -81,6 +86,7 @@ offset_top = 47.0
 offset_right = 407.0
 offset_bottom = 96.0
 theme_override_colors/font_color = Color(0.023529412, 0.24705882, 0.47058824, 1)
+theme_override_fonts/font = ExtResource("5_tolx0")
 theme_override_font_sizes/font_size = 27
 text = "7 Coups"
 horizontal_alignment = 1
@@ -136,6 +142,7 @@ offset_top = 16.0
 offset_right = 298.0
 offset_bottom = 56.0
 theme_override_colors/font_color = Color(0.024, 0.247, 0.471, 1)
+theme_override_fonts/font = ExtResource("5_tolx0")
 theme_override_font_sizes/font_size = 21
 text = "Anna Damour"
 vertical_alignment = 1
@@ -148,6 +155,7 @@ offset_top = 58.0
 offset_right = 193.0
 offset_bottom = 78.0
 theme_override_colors/font_color = Color(0.067, 0.498, 0.502, 1)
+theme_override_fonts/font = ExtResource("5_tolx0")
 theme_override_font_sizes/font_size = 14
 text = "NIVEAU X"
 vertical_alignment = 1
@@ -160,6 +168,7 @@ offset_top = 59.0
 offset_right = 299.0
 offset_bottom = 79.0
 theme_override_colors/font_color = Color(0.023529412, 0.24705882, 0.47058824, 1)
+theme_override_fonts/font = ExtResource("5_tolx0")
 theme_override_font_sizes/font_size = 14
 text = "100%"
 horizontal_alignment = 1
@@ -168,10 +177,10 @@ vertical_alignment = 1
 [node name="BoutonMenuPrincipal" type="TextureButton" parent="BandeauMenu" unique_id=2080104737]
 custom_minimum_size = Vector2(10, 10)
 layout_mode = 0
-offset_left = 6.0
-offset_top = 14.0
-offset_right = 84.0
-offset_bottom = 92.0
+offset_left = 14.0
+offset_top = 20.0
+offset_right = 76.0
+offset_bottom = 82.0
 texture_normal = ExtResource("7_q8ekg")
 ignore_texture_size = true
 stretch_mode = 5
@@ -190,10 +199,10 @@ stretch_mode = 5
 [node name="BoutonStatistiques" type="TextureButton" parent="BandeauMenu" unique_id=306885974]
 custom_minimum_size = Vector2(40, 40)
 layout_mode = 0
-offset_left = 392.0
-offset_top = 14.0
-offset_right = 470.0
-offset_bottom = 92.0
+offset_left = 399.0
+offset_top = 20.0
+offset_right = 461.0
+offset_bottom = 82.0
 texture_normal = ExtResource("9_440yi")
 ignore_texture_size = true
 stretch_mode = 5

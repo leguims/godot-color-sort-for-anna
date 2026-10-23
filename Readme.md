@@ -39,15 +39,15 @@ Depuis la phase de tests internes de la version V0.3.0, les fonctionnalités son
 - ~~Vérifier les statistiques et corriger~~ => ok
 - ~~Vérifier "Recommencer" dans les stats~~ => ok
 - ~~Vérifier "Passer" dans les stats~~ => ok
-- Vérifier les exports QR
-- Vérifier les imports QR
+- ~~Vérifier les exports QR~~ => ok
+- ~~Vérifier les imports QR~~ => ok
 - Coder la conversion des enregistrements V0.4.x => V1.0.0
 - Vérifier la conversion des enregistrements V0.4.x => V1.0.0
 
 #### Relecture Anna pour livrer la V1.0.0:
-- numero du niveau sur 2 caracteres pour le bandeau de menu.
-- aligner les tailles de boutons dans les bandeaux. càd reduire les boutons hors bandeau.
-- titre gameplay classique en gras dans le bandeau en jeu.
+- ~~numero du niveau sur 2 caracteres pour le bandeau de menu.~~ => ok
+- ~~aligner les tailles de boutons dans les bandeaux. càd reduire les boutons hors bandeau.~~ => ok
+- ~~titre gameplay classique en gras dans le bandeau en jeu.~~ => ok
 - verifier png jeton en 32x32
 
 #### Remarques Aurélien :

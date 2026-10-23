@@ -3,8 +3,10 @@
 [ext_resource type="Script" uid="uid://bvobgf0gavp5h" path="res://Scenes/MenuPrincipal/Campagne/GamePlay/Commun/menu_plateau.gd" id="1_aq6n0"]
 [ext_resource type="Texture2D" uid="uid://cwd5vnm5n1uoo" path="res://Art/UI/Gameplay/QuiPerdGagne/background.png" id="2_yu0n7"]
 [ext_resource type="Texture2D" uid="uid://by2ed3g0i7utl" path="res://Art/UI/Gameplay/QuiPerdGagne/base_active.svg" id="3_yu0n7"]
+[ext_resource type="FontFile" uid="uid://dbs77if6q2gtc" path="res://Art/UI/Fonts/TeXGyreAdventor/texgyreadventor-bold.otf" id="4_m5lak"]
 [ext_resource type="Texture2D" uid="uid://3edjppndwue" path="res://Art/UI/Gameplay/QuiPerdGagne/button_restart.svg" id="4_yi034"]
 [ext_resource type="Texture2D" uid="uid://caedkte1ie6aq" path="res://Art/UI/Gameplay/QuiPerdGagne/button_pass.svg" id="5_ke1tj"]
+[ext_resource type="FontFile" uid="uid://8pcourumhksh" path="res://Art/UI/Fonts/TeXGyreAdventor/texgyreadventor-regular.otf" id="5_uo1c6"]
 [ext_resource type="Texture2D" uid="uid://bmephnpsiv1fb" path="res://Art/UI/Gameplay/QuiPerdGagne/base_before.svg" id="6_xu0gr"]
 [ext_resource type="Texture2D" uid="uid://cdofnpueweihn" path="res://Art/UI/Gameplay/QuiPerdGagne/button_home.svg" id="7_t8u56"]
 [ext_resource type="Texture2D" uid="uid://ct45vk1sy7j4j" path="res://Art/UI/Gameplay/QuiPerdGagne/button_play.svg" id="8_m5lak"]
@@ -47,6 +49,7 @@ offset_top = 17.0
 offset_right = 187.0
 offset_bottom = 66.0
 theme_override_colors/font_color = Color(0.024, 0.247, 0.471, 1)
+theme_override_fonts/font = ExtResource("4_m5lak")
 theme_override_font_sizes/font_size = 30
 text = "CLASSIQUE"
 horizontal_alignment = 1
@@ -60,6 +63,7 @@ offset_top = 39.0
 offset_right = 192.0
 offset_bottom = 88.0
 theme_override_colors/font_color = Color(0.067, 0.498, 0.502, 1)
+theme_override_fonts/font = ExtResource("5_uo1c6")
 theme_override_font_sizes/font_size = 18
 text = "Range tes couleurs"
 horizontal_alignment = 1
@@ -72,6 +76,7 @@ offset_top = 32.0
 offset_right = 392.0
 offset_bottom = 69.0
 theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_fonts/font = ExtResource("5_uo1c6")
 theme_override_font_sizes/font_size = 26
 text = "00:00.0"
 horizontal_alignment = 1
@@ -85,6 +90,7 @@ offset_top = 47.0
 offset_right = 407.0
 offset_bottom = 96.0
 theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_fonts/font = ExtResource("5_uo1c6")
 theme_override_font_sizes/font_size = 27
 text = "7 Coups"
 horizontal_alignment = 1
@@ -140,6 +146,7 @@ offset_top = 16.0
 offset_right = 298.0
 offset_bottom = 56.0
 theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_fonts/font = ExtResource("5_uo1c6")
 theme_override_font_sizes/font_size = 21
 text = "Anna Damour"
 vertical_alignment = 1
@@ -152,6 +159,7 @@ offset_top = 58.0
 offset_right = 193.0
 offset_bottom = 78.0
 theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_fonts/font = ExtResource("5_uo1c6")
 theme_override_font_sizes/font_size = 14
 text = "X"
 vertical_alignment = 1
@@ -164,6 +172,7 @@ offset_top = 59.0
 offset_right = 299.0
 offset_bottom = 79.0
 theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_fonts/font = ExtResource("5_uo1c6")
 theme_override_font_sizes/font_size = 14
 text = "100%"
 horizontal_alignment = 1
@@ -172,10 +181,10 @@ vertical_alignment = 1
 [node name="BoutonMenuPrincipal" type="TextureButton" parent="BandeauMenu" unique_id=738543853]
 custom_minimum_size = Vector2(10, 10)
 layout_mode = 0
-offset_left = -10.0
-offset_top = -1.0
-offset_right = 98.0
-offset_bottom = 107.0
+offset_left = 4.0
+offset_top = 12.0
+offset_right = 85.0
+offset_bottom = 93.0
 texture_normal = ExtResource("7_t8u56")
 ignore_texture_size = true
 stretch_mode = 5
@@ -194,10 +203,10 @@ stretch_mode = 5
 [node name="BoutonStatistiques" type="TextureButton" parent="BandeauMenu" unique_id=234231829]
 custom_minimum_size = Vector2(40, 40)
 layout_mode = 0
-offset_left = 376.0
-offset_top = -1.0
-offset_right = 484.0
-offset_bottom = 107.0
+offset_left = 389.0
+offset_top = 12.0
+offset_right = 470.0
+offset_bottom = 93.0
 texture_normal = ExtResource("9_uo1c6")
 ignore_texture_size = true
 stretch_mode = 5

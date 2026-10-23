@@ -39,9 +39,9 @@ func maj_bandeau_menu() -> void:
 	niveau_int = SauvegardeBddJoueursService.campagne_lire_prochain_niveau()
 	var niveau_str : String
 	if "NIVEAU " in $MenuPlateau.lire_niveau():
-		niveau_str = "NIVEAU "+String.num_int64(niveau_int)
+		niveau_str = "NIVEAU "+String.num_int64(niveau_int).pad_zeros(2)
 	else:
-		niveau_str = String.num_int64(niveau_int)
+		niveau_str = String.num_int64(niveau_int).pad_zeros(2)
 	$MenuPlateau.enregistrer_niveau(niveau_str)
 
 	var pourcentage_niveau_realise
