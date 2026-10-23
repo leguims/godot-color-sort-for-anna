@@ -201,6 +201,36 @@ func test_api_refuse_le_partage_natif_hors_android() -> void:
 
 	assert_false(api.partager_qr_android(share_node, texture))
 
+func test_sous_titre_sadapte_a_limage_qr_haute_resolution() -> void:
+	if DisplayServer.get_name() == "headless":
+		assert_eq(API_PARTAGE.TAILLE_QR_PARTAGE, 1024)
+		return
+
+	var api: PartagePerformancesAPI = add_child_autofree(API_PARTAGE.new())
+	var sauvegarde_initiale: Dictionary = SauvegardeBddJoueursService._sauvegarde_joueur.duplicate(true)
+	var fichier_initial: String = SauvegardeBddJoueursService.fichier_sauvegarde
+	SauvegardeBddJoueursService._sauvegarde_joueur = {
+		"nom": "A",
+		"enregistrement_campagne": [{
+			"campagne": "b",
+			"niveaux": [{"niveau": "c"}]
+		}]
+	}
+	SauvegardeBddJoueursService.fichier_sauvegarde = "test"
+	var image_qr := Image.create(512, 512, false, Image.FORMAT_RGBA8)
+	image_qr.fill(Color.WHITE)
+
+	var resultat: Dictionary = await api.ajouter_sous_titre_qr(image_qr, 2.0)
+	SauvegardeBddJoueursService._sauvegarde_joueur = sauvegarde_initiale
+	SauvegardeBddJoueursService.fichier_sauvegarde = fichier_initial
+
+	assert_true(resultat.get("succes", false))
+	if not resultat.get("succes", false):
+		return
+	var image_partage: Image = resultat.get("image")
+	assert_eq(image_partage.get_width(), 512)
+	assert_eq(image_partage.get_height(), 668)
+
 func test_api_emet_partage_qr_code_apres_decodage_et_verification() -> void:
 	var api: PartagePerformancesAPI = add_child_autofree(API_PARTAGE.new())
 	var donnees_attendues := {
@@ -268,9 +298,11 @@ func test_api_lit_le_nom_du_joueur_et_le_dernier_niveau() -> void:
 	var campagne_attendue: Dictionary = SauvegardeBddJoueursService.enregistrement_campagne_lire_derniere_campagne().duplicate(true)
 	campagne_attendue.erase("niveaux")
 	assert_eq(donnees.get("campagne"), campagne_attendue)
+	var niveau_attendu: Dictionary = SauvegardeBddJoueursService.enregistrement_campagne_lire_dernier_niveau().duplicate(true)
+	niveau_attendu["plateaux"] = []
 	assert_eq(
 		donnees.get("niveau"),
-		SauvegardeBddJoueursService.enregistrement_campagne_lire_dernier_niveau()
+		niveau_attendu
 	)
 
 func test_panneau_explique_lindisponibilite_du_qr_sur_une_plateforme_non_supportee() -> void:

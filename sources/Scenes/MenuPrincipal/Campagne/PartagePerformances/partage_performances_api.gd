@@ -8,6 +8,9 @@ signal erreur_decodage_qr(message: String)
 const LOGIQUE := preload("res://Scenes/MenuPrincipal/Campagne/PartagePerformances/partage_performances_logic.gd")
 const QR_SCRIPT_PATH := "res://addons/QRPlugin/QR.gd"
 const POLICE_SOUS_TITRE := "res://Art/UI/Fonts/TeXGyreAdventor/texgyreadventor-bold.otf"
+const TAILLE_QR_AFFICHAGE := 512
+const FACTEUR_TAILLE_QR_PARTAGE := 2
+const TAILLE_QR_PARTAGE := TAILLE_QR_AFFICHAGE * FACTEUR_TAILLE_QR_PARTAGE
 var _logique: PartagePerformancesLogic = LOGIQUE.new()
 var _qr_scanner: Node
 
@@ -28,13 +31,15 @@ func preparer_partage(enregistrements: Dictionary) -> Dictionary:
 	return _logique.preparer_enveloppe(enregistrements, cle_hmac)
 
 ## Génère l'image du QR avec le plugin natif sur Android ou iOS.
-func generer_image_qr(contenu: String) -> Dictionary:
-	return _logique.generer_image_qr(contenu, self)
+func generer_image_qr(contenu: String, taille: int = TAILLE_QR_AFFICHAGE) -> Dictionary:
+	return _logique.generer_image_qr(contenu, self, taille)
 
 ## Compose l'image QR avec les libellés destinés aux joueurs.
-func ajouter_sous_titre_qr(image_qr: Image) -> Dictionary:
+func ajouter_sous_titre_qr(image_qr: Image, facteur_echelle: float = 1.0) -> Dictionary:
 	if image_qr == null or image_qr.is_empty():
 		return {"succes": false, "erreur": "L'image du QR est vide."}
+	if facteur_echelle <= 0.0:
+		return {"succes": false, "erreur": "L'échelle du sous-titre QR est invalide."}
 	var texte_sous_titre := lire_sous_titre_qr()
 	if texte_sous_titre.is_empty():
 		return {"succes": false, "erreur": "Le nom du joueur ou sa campagne ou son niveau est indisponible."}
@@ -42,34 +47,36 @@ func ajouter_sous_titre_qr(image_qr: Image) -> Dictionary:
 	if police == null:
 		return {"succes": false, "erreur": "La police du sous-titre QR est introuvable."}
 
-	var taille_police := 22
-	while taille_police > 12 and police.get_string_size(
+	var taille_police_minimale := maxi(1, roundi(12 * facteur_echelle))
+	var taille_police := maxi(taille_police_minimale, roundi(22 * facteur_echelle))
+	var marge_horizontale := roundi(24 * facteur_echelle)
+	while taille_police > taille_police_minimale and police.get_string_size(
 		texte_sous_titre,
 		HORIZONTAL_ALIGNMENT_LEFT,
 		-1,
 		taille_police
-	).x > image_qr.get_width() - 48:
+	).x > image_qr.get_width() - marge_horizontale * 2:
 		taille_police -= 1
 	while police.get_string_size(
 		texte_sous_titre,
 		HORIZONTAL_ALIGNMENT_LEFT,
 		-1,
 		taille_police
-	).x > image_qr.get_width() - 48:
+	).x > image_qr.get_width() - marge_horizontale * 2:
 		var candidat := texte_sous_titre.left(texte_sous_titre.length() - 1).strip_edges() + "..."
 		if police.get_string_size(
 			candidat,
 			HORIZONTAL_ALIGNMENT_LEFT,
 			-1,
 			taille_police
-		).x <= image_qr.get_width() - 48:
+		).x <= image_qr.get_width() - marge_horizontale * 2:
 			texte_sous_titre = candidat
 			break
 		texte_sous_titre = texte_sous_titre.left(texte_sous_titre.length() - 1).strip_edges()
 	if texte_sous_titre.is_empty():
 		return {"succes": false, "erreur": "Le sous-titre QR est trop long."}
 
-	var hauteur_sous_titre := 78
+	var hauteur_sous_titre := roundi(78 * facteur_echelle)
 	var viewport := SubViewport.new()
 	viewport.size = Vector2i(image_qr.get_width(), hauteur_sous_titre)
 	viewport.transparent_bg = false
@@ -81,14 +88,18 @@ func ajouter_sous_titre_qr(image_qr: Image) -> Dictionary:
 	viewport.add_child(fond)
 
 	var separateur := ColorRect.new()
-	separateur.position = Vector2(40, 12)
-	separateur.size = Vector2(maxi(0, image_qr.get_width() - 80), 2)
+	var marge_separateur := roundi(40 * facteur_echelle)
+	separateur.position = Vector2(marge_separateur, roundi(12 * facteur_echelle))
+	separateur.size = Vector2(
+		maxi(0, image_qr.get_width() - marge_separateur * 2),
+		maxi(1, roundi(2 * facteur_echelle))
+	)
 	separateur.color = Color("edc9a5")
 	viewport.add_child(separateur)
 
 	var etiquette := Label.new()
-	etiquette.position = Vector2(0, 24)
-	etiquette.size = Vector2(image_qr.get_width(), 40)
+	etiquette.position = Vector2(0, roundi(24 * facteur_echelle))
+	etiquette.size = Vector2(image_qr.get_width(), roundi(40 * facteur_echelle))
 	etiquette.text = texte_sous_titre
 	etiquette.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	etiquette.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
@@ -121,6 +132,16 @@ func ajouter_sous_titre_qr(image_qr: Image) -> Dictionary:
 		Vector2i(0, image_qr.get_height())
 	)
 	return {"succes": true, "image": image_finale}
+
+## Génère une seconde image haute résolution pour le partage, sans modifier l'aperçu.
+func generer_image_qr_pour_partage(contenu: String) -> Dictionary:
+	var resultat_qr := generer_image_qr(contenu, TAILLE_QR_PARTAGE)
+	if not resultat_qr.get("succes", false):
+		return resultat_qr
+	return await ajouter_sous_titre_qr(
+		resultat_qr.get("image"),
+		FACTEUR_TAILLE_QR_PARTAGE
+	)
 
 ## Retourne le libellé affiché sous le QR au format « Nom - Niveau X ».
 func lire_sous_titre_qr() -> String:

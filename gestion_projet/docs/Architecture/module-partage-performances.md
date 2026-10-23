@@ -30,6 +30,7 @@ Le panneau conserve deux options :
 
 - Sur Android, « Partager le QR code » transmet l'image QR au dialogue natif de partage (`Share.share_texture`). Le joueur choisit ensuite l'application de destination.
 - L'image partagée contient le QR et un sous-titre au format « Nom - Niveau X », placé sous le QR sans empiéter sur sa zone de lecture.
+- L'aperçu du panneau reste à sa résolution normale ; au partage, le QR est régénéré en haute résolution avec le même contenu signé.
 - L'adresse `rangelescouleurspouranna@gmail.com` reste affichée et peut être copiée. Pour l'envoyer manuellement par courriel, le joueur peut faire une capture d'écran du QR et la joindre à son message.
 
 Le projet n'envoie aucun courriel automatiquement.

@@ -83,9 +83,11 @@ func decoder_et_verifier_qr(contenu_qr: String, cle_hmac: String) -> Dictionary:
 	return {"succes": true, "donnees": donnees}
 
 ## Génère une image QR avec l'extension native chargée dans le projet.
-func generer_image_qr(contenu: String, parent: Node) -> Dictionary:
+func generer_image_qr(contenu: String, parent: Node, taille: int = 512) -> Dictionary:
 	if not Engine.has_singleton("QRPlugin"):
 		return _erreur("La génération de QR n'est disponible que dans les exports Android.")
+	if taille <= 0:
+		return _erreur("La taille de l'image QR doit être supérieure à zéro.")
 
 	var qr_script := load("res://addons/QRPlugin/QR.gd") as Script
 	if qr_script == null:
@@ -96,7 +98,7 @@ func generer_image_qr(contenu: String, parent: Node) -> Dictionary:
 		return _erreur("Impossible d'initialiser le plugin QR.")
 
 	parent.add_child(qr_node)
-	var image: Variant = qr_node.call("generate_qr_image", contenu, 512, Color.BLACK, Color.WHITE)
+	var image: Variant = qr_node.call("generate_qr_image", contenu, taille, Color.BLACK, Color.WHITE)
 	qr_node.queue_free()
 	if not image is Image or image.is_empty():
 		return _erreur("Le plugin QR n'a pas pu générer l'image.")
