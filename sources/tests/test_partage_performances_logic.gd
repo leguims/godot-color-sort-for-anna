@@ -299,7 +299,6 @@ func test_api_lit_le_nom_du_joueur_et_le_dernier_niveau() -> void:
 	campagne_attendue.erase("niveaux")
 	assert_eq(donnees.get("campagne"), campagne_attendue)
 	var niveau_attendu: Dictionary = SauvegardeBddJoueursService.enregistrement_campagne_lire_dernier_niveau().duplicate(true)
-	niveau_attendu["plateaux"] = []
 	assert_eq(
 		donnees.get("niveau"),
 		niveau_attendu

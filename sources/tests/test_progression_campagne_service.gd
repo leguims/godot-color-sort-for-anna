@@ -146,27 +146,51 @@ func test_importer_statistiques_cree_un_joueur_sans_plateaux_a_jouer():
 	assert_eq(campagne_importee.get("score"), donnees_campagne.get("score"))
 	assert_eq(SauvegardeBddJoueursService.enregistrement_campagne_lire_dernier_niveau(), niveau)
 
-func test_importer_un_niveau_supplementaire_ne_recompte_pas_les_scores_existants():
-	var donnees_campagne := {
+func test_importer_trois_etapes_de_score_plateau_niveau_et_campagne():
+	var campagne_sans_fin := {
 		"campagne": "campagne_test",
 		"date_debut": 100.0,
 		"date_fin": 200.0,
+		"score": {}
+	}
+	# 'fin_campagne' n'existe que dans les données de la campagne terminée
+	var campagne_terminee := {
+		"campagne": "campagne_test",
+		"date_debut": 100.0,
+		"date_fin": 300.0,
 		"score": {"fin_campagne": 500}
 	}
-	var premier_niveau := {
+	# Etape 1 : un plateau joué, le niveau n'est pas fini (pas de score de niveau)
+	var niveau_1 := {
 		"niveau": "niveau_1",
-		"score": {"niveau": 10, "niveau_parfait": 0},
-		"plateaux": []
+		"score": {},
+		"plateaux": [{"nom": "p1", "statut": "reussi", "score": {"duree": 5, "ratio_reussite": 7}}]
 	}
-	var deuxieme_niveau := {
+	# Etape 2 : un plateau qui finit le niveau (plateau + niveau + niveau parfait)
+	var niveau_2 := {
 		"niveau": "niveau_2",
-		"score": {"niveau": 20, "niveau_parfait": 0},
-		"plateaux": []
+		"score": {"niveau": 20, "niveau_parfait": 100},
+		"plateaux": [{"nom": "p2", "statut": "reussi", "score": {"duree": 3, "ratio_reussite": 4}}]
+	}
+	# Etape 3 : un plateau qui finit le niveau suivant et la campagne
+	var niveau_3 := {
+		"niveau": "niveau_3",
+		"score": {"niveau": 30, "niveau_parfait": 0},
+		"plateaux": [{"nom": "p3", "statut": "reussi", "score": {"duree": 1, "ratio_reussite": 2}}]
 	}
 
-	assert_true(service.importer_statistiques_nouveau_joueur_externe("Gamma", donnees_campagne, premier_niveau))
-	assert_true(service.importer_statistiques_joueur_externe("Gamma", donnees_campagne, deuxieme_niveau))
-	assert_eq(SauvegardeTableauDesScoresService.lire_score_joueur("Gamma"), 30)
+	assert_true(service.importer_statistiques_nouveau_joueur_externe("Gamma", campagne_sans_fin, niveau_1))
+	assert_eq(SauvegardeTableauDesScoresService.lire_score_joueur("Gamma"), 12)
+
+	assert_true(service.importer_statistiques_joueur_externe("Gamma", campagne_sans_fin, niveau_2))
+	assert_eq(SauvegardeTableauDesScoresService.lire_score_joueur("Gamma"), 12 + 7 + 20 + 100)
+
+	assert_true(service.importer_statistiques_joueur_externe("Gamma", campagne_terminee, niveau_3))
+	assert_eq(SauvegardeTableauDesScoresService.lire_score_joueur("Gamma"), 139 + 3 + 30 + 500)
+
+	# Ré-importer un niveau déjà importé ne recompte rien
+	assert_true(service.importer_statistiques_joueur_externe("Gamma", campagne_terminee, niveau_3))
+	assert_eq(SauvegardeTableauDesScoresService.lire_score_joueur("Gamma"), 672)
 
 func test_initialiser_le_nouveau_joueur_pour_la_campagne_cree_le_compte():
 	assert_true(service.initialiser_le_nouveau_joueur_pour_la_campagne("Gamma"))

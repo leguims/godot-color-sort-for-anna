@@ -43,9 +43,9 @@ func test_les_gameplays_affichent_le_menu_et_les_donnees_du_niveau_avant_la_part
 		assert_eq(menu.get_node("BandeauMenu/Pourcentage").text, "0%")
 
 		if gameplay is Classique:
-			assert_eq(menu.get_node("BandeauMenu/Niveau").text, "NIVEAU 1")
+			assert_eq(menu.get_node("BandeauMenu/Niveau").text, "NIVEAU 01")
 		else:
-			assert_eq(menu.get_node("BandeauMenu/Niveau").text, "1")
+			assert_eq(menu.get_node("BandeauMenu/Niveau").text, "01")
 
 func test_le_bouton_commencer_emet_le_signal_du_gameplay_sans_lancer_directement_le_plateau():
 	var gameplay = add_child_autofree(SCENE_CLASSIQUE.instantiate())

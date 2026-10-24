@@ -26,7 +26,7 @@ func _initialiser_la_configuration() -> void:
 	# Enregistrement de la configuration sur le disque
 	_enregistrer_la_configuration()
 
-	LogService.log_debug("fichier_configuration = ", fichier_configuration)
+	LogService.log_debug("configuration_du_jeu = ", configuration_du_jeu)
 
 
 func _enregistrer_la_configuration() -> void:

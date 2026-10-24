@@ -368,11 +368,20 @@ func test_score_detail_cumule_et_pourcentages():
 	assert_eq(detail.get("niveau_parfait"), 50)
 	assert_eq(detail.get("fin_campagne"), 0)
 
-	assert_eq(service.score(), "1.000")
-	assert_true(abs(service.score_pourcentage_rapidite() - (135.0 / SCORE_JOUEUR_TEST)) < 0.0001)
-	assert_true(abs(service.score_pourcentage_reussite() - (430.0 / SCORE_JOUEUR_TEST)) < 0.0001)
-	assert_true(abs(service.score_pourcentage_niveau() - (120.0 / SCORE_JOUEUR_TEST)) < 0.0001)
-	assert_true(abs(service.score_pourcentage_niveau_parfait() - (50.0 / SCORE_JOUEUR_TEST)) < 0.0001)
+	# Le total est la somme des détails (ici 735), et les parts sont calculées dessus
+	var total = detail.get("rapidite") + detail.get("reussite") + detail.get("niveau") \
+		+ detail.get("niveau_parfait") + detail.get("fin_campagne")
+	assert_eq(total, 735)
+	assert_eq(service.score_total(), total)
+	assert_eq(service.score(), "735")
+	assert_true(abs(service.score_pourcentage_rapidite() - (135.0 / total)) < 0.0001)
+	assert_true(abs(service.score_pourcentage_reussite() - (430.0 / total)) < 0.0001)
+	assert_true(abs(service.score_pourcentage_niveau() - (120.0 / total)) < 0.0001)
+	assert_true(abs(service.score_pourcentage_niveau_parfait() - (50.0 / total)) < 0.0001)
+	var somme = service.score_pourcentage_rapidite() + service.score_pourcentage_reussite() \
+		+ service.score_pourcentage_niveau() + service.score_pourcentage_niveau_parfait() \
+		+ service.score_pourcentage_fin_campagne()
+	assert_true(abs(somme - 1.0) < 0.0001)
 	assert_true(abs(service.score_pourcentage_fin_campagne()) < 0.0001)
 
 func test_score_pourcentage_fin_campagne_quand_la_campagne_est_terminee():
@@ -381,12 +390,11 @@ func test_score_pourcentage_fin_campagne_quand_la_campagne_est_terminee():
 	var score_fin_campagne = roundi(ScoreService.FIN_CAMPAGNE * service.campagne_taux_reussite())
 	SauvegardeBddJoueursService._sauvegarde_joueur["enregistrement_campagne"][0]["score"]["fin_campagne"] = score_fin_campagne
 	assert_true(ProgressionCampagneService.la_campagne_est_terminee())
-	assert_true(abs(service.score_pourcentage_fin_campagne() - (float(score_fin_campagne) / SCORE_JOUEUR_TEST)) < 0.0001)
+	assert_true(abs(service.score_pourcentage_fin_campagne() - (float(score_fin_campagne) / service.score_total())) < 0.0001)
 
 func test_score_pourcentages_couvrent_le_cas_score_total_nul():
-	SauvegardeTableauDesScoresService.liste_des_scores = [
-		{"nom": "Joueur Test", "rang": 1, "score": 0, "score_txt": "0"}
-	]
+	SauvegardeBddJoueursService._sauvegarde_joueur["enregistrement_campagne"] = []
+	assert_eq(service.score_total(), 0)
 	assert_eq(service.score_pourcentage_rapidite(), 0.0)
 	assert_eq(service.score_pourcentage_reussite(), 0.0)
 	assert_eq(service.score_pourcentage_niveau(), 0.0)
