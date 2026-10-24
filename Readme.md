@@ -43,6 +43,7 @@ Depuis la phase de tests internes de la version V0.3.0, les fonctionnalités son
 - ~~Vérifier les imports QR~~ => ok
 - Coder la conversion des enregistrements V0.4.x => V1.0.0
 - Vérifier la conversion des enregistrements V0.4.x => V1.0.0
+- Le nom de campagne dans la sauvegarde est 'campagne' ! Il doit etre 'campagne_2'.
 
 #### Relecture Anna pour livrer la V1.0.0:
 - ~~numero du niveau sur 2 caracteres pour le bandeau de menu.~~ => ok
@@ -123,6 +124,8 @@ Depuis la phase de tests internes de la version V0.3.0, les fonctionnalités son
     - remote_uuid = uuid initial du joueur distant
     - uuid = uuid local sur le phone receveur (si l'original uuid existe deja)
 - Au Démarrage, la configuration pourrait resserer les indexes de fichiers des joueurs.
+- QR : inclure la version du jeu dans le QR code ou vérifier que la campagne correspond à la campagne courante.
+- QR : Refusere d'importer un QR d'une autre campagne.
 
 #### Web
 - Ajouter un menu pour exporter les sauvegardes (avec chiffrage secret)

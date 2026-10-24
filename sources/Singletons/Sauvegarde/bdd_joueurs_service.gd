@@ -136,8 +136,8 @@ func remplacer_campagne_des_joueurs():
 	# Parcourir chaque joueurs
 	for nom_joueur in SauvegardeListeJoueursService.retourner_la_liste_des_joueurs():
 		fichier_sauvegarde = SauvegardeListeJoueursService.retourner_le_fichier_de_sauvegarde(nom_joueur)
-		_lire_sauvegarde_joueur(fichier_sauvegarde)
-		# Clore tout niveau en cours.
+		choisir_le_joueur(nom_joueur, fichier_sauvegarde)
+		# Cloturer tout niveau en cours.
 		enregistrement_campagne_terminer_plateau()
 		enregistrement_campagne_terminer_niveau()
 		# Remplacer les plateaux residuels d'une ancienne campagne.
@@ -188,6 +188,7 @@ func commencer_un_plateau() -> void:
 
 
 func _lire_sauvegarde_joueur(fichier : String) -> bool:
+	"Ouvre et charge la sauvegarde du joueur depuis le fichier spécifié."
 	var lecture_sauvegarde_joueur = FichiersJsonService.read_json_file(fichier)
 	if lecture_sauvegarde_joueur:
 		fichier_sauvegarde = fichier
@@ -451,6 +452,14 @@ func enregistrement_campagne_lire_nom_derniere_campagne() -> String:
 	if enregistrement_campagne_existe():
 		return enregistrement_campagne_lire_derniere_campagne().get('campagne', '')
 	return ""
+
+func enregistrement_campagne_modifier_nom_derniere_campagne(nouveau_nom : String) -> bool:
+	"Modifie le nom de la dernière campagne"
+	if enregistrement_campagne_existe():
+		enregistrement_campagne_lire_derniere_campagne()['campagne'] = nouveau_nom
+		_enregistrer_sauvegarde_joueur()
+		return true
+	return false
 
 func enregistrement_campagne_en_cours() -> bool:
 	"Indique si une campagne est en cours de réalisation"
