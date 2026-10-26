@@ -128,7 +128,6 @@ func _V0_4_X___V1_0_0() -> void:
 		#  2 - Effacer    'plateaux/difficulte'
 		#  3 - Transcrire 'ascensions' => 'enregistrement_campagne'
 		#  4 - Creer      'plateaux_libres'
-		#  5 - Creer      'campagne/niveau'
 		# 1 - Fermer l'ancienne campagne et copier la nouvelle campagne
 		SauvegardeBddJoueursService.remplacer_campagne_des_joueurs()
 		var ancien_fichier_sauvegarde_joueur = {}
@@ -139,6 +138,9 @@ func _V0_4_X___V1_0_0() -> void:
 			var plateaux = SauvegardeBddJoueursService._sauvegarde_joueur.get('plateaux',[])
 			var fin_campagne = plateaux.is_empty()
 			SauvegardeBddJoueursService._sauvegarde_joueur.erase('plateaux')
+			#  4 - Creer 'plateaux_libres'
+			SauvegardeBddJoueursService._sauvegarde_joueur['plateaux_libres'] = {}
+			var plateaux_libres = SauvegardeBddJoueursService._sauvegarde_joueur['plateaux_libres']
 			#  3 - Transcrire 'ascensions' => 'enregistrement_campagne'
 			# 'Ascension[]' => 'Campagne_1/Niveaux[]'
 			var liste_ascensions = SauvegardeBddJoueursService._sauvegarde_joueur.get('ascensions', [])
@@ -187,6 +189,12 @@ func _V0_4_X___V1_0_0() -> void:
 						dernier_plateau['statut'] = statut
 						dernier_plateau['score'] = score
 						dernier_plateau['coups joués'] = coups_joues
+						#  4 - Creer 'plateaux_libres'
+						var plateau_libre = {'difficulte': difficulte, 'gameplay': gameplay, 'nom': nom}
+						var difficulte_str_int =  str( int(difficulte) )
+						if not plateaux_libres.has(difficulte_str_int):
+							plateaux_libres[difficulte_str_int] = []
+						plateaux_libres[difficulte_str_int].append(plateau_libre)
 			# Effacer l'ancienne clé
 			SauvegardeBddJoueursService._sauvegarde_joueur.erase('ascensions')
 

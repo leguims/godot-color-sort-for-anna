@@ -1083,6 +1083,8 @@ func enregistrement_campagne_lire_nombre_coups() -> int:
 func plateaux_libres() -> Dictionary: # TODO : INUTILISE !
 	"Pointeur sur la sauvegarde des plateaux libres du joueur."
 	if le_joueur_existe():
+		if not lire_sauvegarde().get('plateaux_libres'):
+			lire_sauvegarde()['plateaux_libres'] = {}
 		return lire_sauvegarde().get('plateaux_libres')
 	return {} # Aucun plateau libre
 
