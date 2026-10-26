@@ -136,7 +136,7 @@ func _V0_4_X___V1_0_0() -> void:
 			ancien_fichier_sauvegarde_joueur = SauvegardeListeJoueursService.retourner_le_fichier_de_sauvegarde(nom_joueur)
 			SauvegardeBddJoueursService.choisir_le_joueur(nom_joueur, ancien_fichier_sauvegarde_joueur)
 			# 2 - Effacer 'plateaux/difficulte'
-			var plateaux = SauvegardeBddJoueursService._sauvegarde_joueur.erase('plateaux')
+			var plateaux = SauvegardeBddJoueursService._sauvegarde_joueur.get('plateaux',[])
 			var fin_campagne = plateaux.is_empty()
 			SauvegardeBddJoueursService._sauvegarde_joueur.erase('plateaux')
 			#  3 - Transcrire 'ascensions' => 'enregistrement_campagne'
@@ -144,9 +144,11 @@ func _V0_4_X___V1_0_0() -> void:
 			var liste_ascensions = SauvegardeBddJoueursService._sauvegarde_joueur.get('ascensions', [])
 			if liste_ascensions:
 				# Creer la campagne 'Campagne_1'
-				SauvegardeBddJoueursService.enregistrement_campagne_initialiser_une_nouvelle_campagne( )
+				SauvegardeBddJoueursService.enregistrement_campagne_initialiser_une_nouvelle_campagne()
 				# Corriger le nom de la campagne
-				SauvegardeBddJoueursService.enregistrement_campagne_modifier_nom_derniere_campagne("Campagne_1")
+				var derniere_campagne = SauvegardeBddJoueursService.enregistrement_campagne_lire_derniere_campagne()
+				SauvegardeBddJoueursService.enregistrement_campagne_modifier_nom_derniere_campagne("campagne_1")
+				derniere_campagne['date_debut'] = liste_ascensions[0].get('date_debut', 0.0)
 				if fin_campagne:
 					# Ajouter le score de fin de campagne
 					SauvegardeBddJoueursService.enregistrement_campagne_modifier_score_fin_campagne(500000)

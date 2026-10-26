@@ -147,7 +147,7 @@ func remplacer_campagne_des_joueurs():
 		# Enregistrer les changements
 		_enregistrer_sauvegarde_joueur()
 		liberer_le_joueur()
-		LogService.log_debug("Remplacement de campagne pour le joueur :", nom_joueur)
+		LogService.log_debug("Remplacement de campagne pour le joueur : ", nom_joueur)
 
 func gagner_un_plateau() -> void:
 	# Valider le plateau courant (effacer de la liste des plateaux jouables)
