@@ -21,11 +21,25 @@ func _ready() -> void:
 
 
 func _initialiser_la_configuration() -> void:
-	_V0_2_X___V0_3_X()
-	_V0_3_X___V0_4_X()
-	_V0_4_X___V1_0_0()
-	# Enregistrement de la configuration sur le disque
-	_enregistrer_la_configuration()
+	var version_courante_disque = '?'
+	# Lire la configuration du jeu
+	var fichier_configuration_courant = FichiersJsonService.read_json_file("configuration_du_jeu.json")
+	if fichier_configuration_courant:
+		version_courante_disque = fichier_configuration_courant.get('version')
+
+	if version_courante_disque.split('.')[0] != lire_la_version().split('.')[0] \
+		or version_courante_disque.split('.')[1] != lire_la_version().split('.')[1]:
+		# Transcription des enregistrements des versions précédentes
+		_V0_2_X___V0_3_X()
+		_V0_3_X___V0_4_X()
+		_V0_4_X___V1_0_X()
+
+		# Remise à zéro des scores
+		SauvegardeTableauDesScoresService.remise_a_zero()
+		# Copier nouvelle campagne pour les joueurs + l'initialiser
+		SauvegardeBddJoueursService.remplacer_initier_campagne_des_joueurs()
+		# Enregistrement de la configuration sur le disque
+		_enregistrer_la_configuration()
 
 	LogService.log_debug("configuration_du_jeu = ", configuration_du_jeu)
 
@@ -82,7 +96,7 @@ func lire_la_date_debut_campagne_timestamp() -> int:
 	var datetime = configuration_du_jeu.get('date_debut_campagne', '?')
 	return Time.get_unix_time_from_datetime_string(datetime)
 
-func _V0_4_X___V1_0_0() -> void:
+func _V0_4_X___V1_0_X() -> void:
 	# CONVERSION [V0.4.X -> V1.0.0]
 	var version_courante_disque = '?'
 
@@ -106,14 +120,13 @@ func _V0_4_X___V1_0_0() -> void:
 			configuration_du_jeu['vibrations'] = fichier_configuration_courant.get('vibrations')
 		# Enregistrer la transcription de configuration 'V0.4.0'
 		var version_logicielle = lire_la_version()
-		configuration_du_jeu['version'] = 'V0.4.X'
+		configuration_du_jeu['version'] = 'V1.0.X'
 		_enregistrer_la_configuration()
 		configuration_du_jeu['version'] = version_logicielle
 
 		# #####################
 		# Fichier 'scores.json'
 		# #####################
-		SauvegardeTableauDesScoresService.remise_a_zero()
 		# Pas de transcription nécessaire
 
 		# ################################
@@ -125,21 +138,19 @@ func _V0_4_X___V1_0_0() -> void:
 		# Fichier 'sauvegarde_joueur_XX.json'
 		# ###################################
 		# Pour chaque joueur:
-		#  1 - Creer      'campagne/niveau'
-		#  2 - Effacer    'plateaux/difficulte'
+		#  1 - Effacer    'plateaux/difficulte'
+		#  2 - Creer      'plateaux_libres'
 		#  3 - Transcrire 'ascensions' => 'enregistrement_campagne'
-		#  4 - Creer      'plateaux_libres'
-		# 1 - Fermer l'ancienne campagne et copier la nouvelle campagne
-		SauvegardeBddJoueursService.remplacer_campagne_des_joueurs()
+		#  4 - Transcrire  'plateaux_libres'
 		var ancien_fichier_sauvegarde_joueur = {}
 		for nom_joueur in SauvegardeListeJoueursService.retourner_la_liste_des_joueurs():
 			ancien_fichier_sauvegarde_joueur = SauvegardeListeJoueursService.retourner_le_fichier_de_sauvegarde(nom_joueur)
 			SauvegardeBddJoueursService.choisir_le_joueur(nom_joueur, ancien_fichier_sauvegarde_joueur)
-			# 2 - Effacer 'plateaux/difficulte'
+			# 1 - Effacer 'plateaux/difficulte'
 			var plateaux = SauvegardeBddJoueursService._sauvegarde_joueur.get('plateaux',[])
 			var fin_campagne = plateaux.is_empty()
 			SauvegardeBddJoueursService._sauvegarde_joueur.erase('plateaux')
-			#  4 - Creer 'plateaux_libres'
+			#  2 - Creer 'plateaux_libres'
 			SauvegardeBddJoueursService._sauvegarde_joueur['plateaux_libres'] = {}
 			var plateaux_libres = SauvegardeBddJoueursService._sauvegarde_joueur['plateaux_libres']
 			#  3 - Transcrire 'ascensions' => 'enregistrement_campagne'
@@ -157,7 +168,7 @@ func _V0_4_X___V1_0_0() -> void:
 					SauvegardeBddJoueursService.enregistrement_campagne_modifier_score_fin_campagne(500000)
 			var valeur_niveau = 1
 			for ascension in liste_ascensions:
-				SauvegardeBddJoueursService.enregistrement_campagne_initialiser_un_nouveau_niveau()
+				SauvegardeBddJoueursService.enregistrement_campagne_initialiser_un_nouveau_niveau(valeur_niveau)
 				# Corriger le nom du niveau, date de debut, de fin, 
 				var dernier_niveau = SauvegardeBddJoueursService.enregistrement_campagne_lire_dernier_niveau()
 				dernier_niveau['niveau'] = SauvegardeBddJoueursService.nom_niveau(valeur_niveau)
@@ -190,7 +201,7 @@ func _V0_4_X___V1_0_0() -> void:
 						dernier_plateau['statut'] = statut
 						dernier_plateau['score'] = score
 						dernier_plateau['coups joués'] = coups_joues
-						#  4 - Creer 'plateaux_libres'
+						#  4 - Transcrire 'plateaux_libres'
 						var plateau_libre = {'difficulte': difficulte, 'gameplay': gameplay, 'nom': nom}
 						var difficulte_str_int =  str( int(difficulte) )
 						if not plateaux_libres.has(difficulte_str_int):
@@ -218,7 +229,7 @@ func _V0_3_X___V0_4_X() -> void:
 	if version_courante_disque.begins_with('V0.3.'):
 		# Enregistrer la transcription de configuration 'V0.3.0'
 		var version_logicielle = lire_la_version()
-		configuration_du_jeu['version'] = 'V0.3.X'
+		configuration_du_jeu['version'] = 'V0.4.X'
 		_enregistrer_la_configuration()
 		configuration_du_jeu['version'] = version_logicielle
 

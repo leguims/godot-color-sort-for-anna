@@ -72,6 +72,7 @@ func _ready() -> void:
 	# Connecter les signaux attendus
 	var pcs = get_node("/root/ProgressionCampagneService")
 	pcs.fin_niveau.connect(_on_progression_campagne_service_fin_niveau)
+	pcs.fin_campagne.connect(_on_progression_campagne_service_fin_campagne)
 
 	# Creation compte initial 'Alain Konu'
 	if not FichiersJsonService.json_file_exists("sauvegarde_joueur_00.json"):
@@ -79,6 +80,9 @@ func _ready() -> void:
 
 func _on_progression_campagne_service_fin_niveau():
 	enregistrement_campagne_terminer_niveau()
+
+func _on_progression_campagne_service_fin_campagne():
+	enregistrement_campagne_terminer_campagne()
 
 
 # <<< API externe
@@ -131,19 +135,22 @@ func reset_sauvegarde_des_joueurs() -> void:
 		liberer_le_joueur()
 		LogService.log_debug("Reset de la campagne pour le joueur :", nom_joueur)
 
-func remplacer_campagne_des_joueurs():
+func remplacer_initier_campagne_des_joueurs():
 	"""Parcourir tous les joueurs et remplacer les plateaux à jouer par ceux du fichier courant"""
 	# Parcourir chaque joueurs
 	for nom_joueur in SauvegardeListeJoueursService.retourner_la_liste_des_joueurs():
 		fichier_sauvegarde = SauvegardeListeJoueursService.retourner_le_fichier_de_sauvegarde(nom_joueur)
 		choisir_le_joueur(nom_joueur, fichier_sauvegarde)
-		# Cloturer tout niveau en cours.
+		# Cloturer tout plateau, niveau et campagne en cours.
 		enregistrement_campagne_terminer_plateau()
 		enregistrement_campagne_terminer_niveau()
+		enregistrement_campagne_terminer_campagne()
 		# Remplacer les plateaux residuels d'une ancienne campagne.
 		# avec les plateaux de la nouvelle campagne
 		_sauvegarde_joueur['nom_campagne'] = SauvegardeBddPlateauxService.nom_campagne()
 		_sauvegarde_joueur['campagne'] = SauvegardeBddPlateauxService.plateau_liste_niveaux_duplicate()
+		# Initialiser la nouvelle campagne pour le joueur
+		enregistrement_campagne_initialiser_une_nouvelle_campagne()
 		# Enregistrer les changements
 		_enregistrer_sauvegarde_joueur()
 		liberer_le_joueur()
@@ -596,14 +603,18 @@ func enregistrement_campagne_niveau_en_cours() -> bool:
 		return not niveau_courant.get('date_fin')
 	return false
 	
-func enregistrement_campagne_initialiser_un_nouveau_niveau() -> bool:
+func enregistrement_campagne_initialiser_un_nouveau_niveau(forcer_valeur_niveau = 0) -> bool:
 	"Crée et initialise un nouveau niveau"
-	var prochain_niveau = lire_prochain_niveau_de_campagne()
-	if prochain_niveau:
-		var nom_du_niveau = nom_niveau(prochain_niveau)
+	var valeur_prochain_niveau
+	if forcer_valeur_niveau:
+		valeur_prochain_niveau = forcer_valeur_niveau
+	else:
+		valeur_prochain_niveau = lire_prochain_niveau_de_campagne()
+	if valeur_prochain_niveau:
+		var nom_prochain_niveau = nom_niveau(valeur_prochain_niveau)
 		if not enregistrement_campagne_niveau_en_cours():
 			var enregistrement_campagne_niveau = {
-				'niveau': nom_du_niveau,
+				'niveau': nom_prochain_niveau,
 				'date_debut': Time.get_unix_time_from_system(), # Timestamp
 				'date_fin': 0., # Timestamp
 				'score': {},
@@ -1083,9 +1094,7 @@ func enregistrement_campagne_lire_nombre_coups() -> int:
 func plateaux_libres() -> Dictionary: # TODO : INUTILISE !
 	"Pointeur sur la sauvegarde des plateaux libres du joueur."
 	if le_joueur_existe():
-		if not lire_sauvegarde().get('plateaux_libres'):
-			lire_sauvegarde()['plateaux_libres'] = {}
-		return lire_sauvegarde().get('plateaux_libres')
+		return lire_sauvegarde().get('plateaux_libres', {})
 	return {} # Aucun plateau libre
 
 func plateaux_libres_difficulte_existe(difficulte : int) -> bool: # TODO : INUTILISE !

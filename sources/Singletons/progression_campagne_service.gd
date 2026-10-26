@@ -133,10 +133,13 @@ func gagner_un_plateau() -> void:
 
 	# Déterminer si le niveau est achevé (pas de plateau suivant)
 	if not SauvegardeBddJoueursService.campagne_lire_prochain_plateau_pour_niveau_courant():
-		# BDD joueur + Préparer la jauge pour la prochaine ascension
-		LogService.log_debug("[qui_perd_gagne] emission signal : victoire")
 		LogService.log_debug("[progression_campagne_service] emission signal : fin_niveau")
 		fin_niveau.emit()
+
+	# Déterminer si la campagne est achevée
+	if la_campagne_est_terminee():
+		LogService.log_debug("[progression_campagne_service] emission signal : fin_campagne")
+		fin_campagne.emit()
 
 	# Calculer le score du plateau et l'enregistrer dans l'historique du niveau
 	var detail_score = ScoreService.mettre_a_jour_score_pour_victoire()
@@ -159,10 +162,13 @@ func passer_un_plateau() -> void:
 
 	# Déterminer si le niveau est achevé (pas de plateau suivant)
 	if not SauvegardeBddJoueursService.campagne_lire_prochain_plateau_pour_niveau_courant():
-		# BDD joueur + Préparer la jauge pour la prochaine ascension
-		LogService.log_debug("[qui_perd_gagne] emission signal : victoire")
 		LogService.log_debug("[progression_campagne_service] emission signal : fin_niveau")
 		fin_niveau.emit()
+
+	# Déterminer si la campagne est achevée
+	if la_campagne_est_terminee():
+		LogService.log_debug("[progression_campagne_service] emission signal : fin_campagne")
+		fin_campagne.emit()
 
 	# Calculer le score du plateau et l'enregistrer dans l'historique du niveau
 	var detail_score = ScoreService.mettre_a_jour_score_pour_passer()

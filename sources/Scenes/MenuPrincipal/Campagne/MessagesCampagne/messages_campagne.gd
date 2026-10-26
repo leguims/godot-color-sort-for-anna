@@ -25,8 +25,10 @@ func _on_progression_campagne_service_detail_score_plateau(detail_score: Diction
 # Fin de campagne sans victoire (dernier plateau passé) : même parcours que la victoire,
 # partage des performances puis statistiques.
 func _on_progression_campagne_service_fin_campagne() -> void:
-	_action_apres_partage = ActionApresPartage.STATISTIQUES
-	await _afficher_partage_dernier_niveau()
+	pass
+	# TODO : Vérifier : TRAITE PAR FIN_NIVEAU
+	# _action_apres_partage = ActionApresPartage.STATISTIQUES
+	# await _afficher_partage_dernier_niveau()
 
 
 func _on_bouton_statistiques_pressed() -> void:

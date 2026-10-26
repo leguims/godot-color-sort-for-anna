@@ -99,7 +99,6 @@ func _on_classique_passe() -> void:
 
 func _on_messages_campagne_score_continuer() -> void:
 	# Fin d'affichage du score, réactiver le menu
-	pass
 	if not ProgressionCampagneService.la_campagne_est_terminee():
 		$MessagesCampagne.hide()
 
