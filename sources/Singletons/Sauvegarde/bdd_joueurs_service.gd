@@ -496,8 +496,9 @@ func enregistrement_campagne_terminer_campagne() -> void:
 	"Enregistre la date de fin de la campagne"
 	var campagne_courante = enregistrement_campagne_lire_derniere_campagne()
 	if campagne_courante:
-		campagne_courante['date_fin'] = Time.get_unix_time_from_system() # Timestamp
-		_enregistrer_sauvegarde_joueur()
+		if not campagne_courante.get('date_fin'):
+			campagne_courante['date_fin'] = Time.get_unix_time_from_system() # Timestamp
+			_enregistrer_sauvegarde_joueur()
 
 
 ###############################################
@@ -629,8 +630,9 @@ func enregistrement_campagne_terminer_niveau() -> void:
 	"Enregistre la date de fin d'un niveau"
 	var niveau_courant = enregistrement_campagne_lire_dernier_niveau()
 	if niveau_courant:
-		niveau_courant['date_fin'] = Time.get_unix_time_from_system() # Timestamp
-		_enregistrer_sauvegarde_joueur()
+		if not niveau_courant.get('date_fin'):
+			niveau_courant['date_fin'] = Time.get_unix_time_from_system() # Timestamp
+			_enregistrer_sauvegarde_joueur()
 
 # Haut niveau
 func lire_prochain_niveau_de_campagne() -> int:
@@ -867,8 +869,15 @@ func enregistrement_campagne_terminer_plateau() -> void:
 	if enregistrement_campagne_plateau_en_cours():
 		var niveau_courant = enregistrement_campagne_lire_dernier_niveau()
 		var plateau = niveau_courant.get('plateaux').back()
-		plateau['date_fin'] = Time.get_unix_time_from_system() # Timestamp
-		plateau['duree'] = plateau.get('date_fin') - plateau.get('date_debut')
+		if plateau.get('statut') == 'en cours':
+			# Reprise avec un plateau inachevé
+			plateau['date_fin'] = plateau['date_debut'] # Timestamp
+			plateau['duree'] = 0.
+			plateau['statut'] = 'passé'
+		else:
+			# Fin du plateau courant
+			plateau['date_fin'] = Time.get_unix_time_from_system() # Timestamp
+			plateau['duree'] = plateau.get('date_fin') - plateau.get('date_debut')
 		_enregistrer_sauvegarde_joueur()
 
 func enregistrement_campagne_lire_nombre_plateaux_acheves() -> int:

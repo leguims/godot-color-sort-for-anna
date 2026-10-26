@@ -25,7 +25,7 @@ func _initialiser_la_configuration() -> void:
 	# Lire la configuration du jeu
 	var fichier_configuration_courant = FichiersJsonService.read_json_file("configuration_du_jeu.json")
 	if fichier_configuration_courant:
-		version_courante_disque = fichier_configuration_courant.get('version')
+		version_courante_disque = fichier_configuration_courant.get('version', '?')
 
 	if version_courante_disque.split('.')[0] != lire_la_version().split('.')[0] \
 		or version_courante_disque.split('.')[1] != lire_la_version().split('.')[1]:
@@ -33,14 +33,9 @@ func _initialiser_la_configuration() -> void:
 		_V0_2_X___V0_3_X()
 		_V0_3_X___V0_4_X()
 		_V0_4_X___V1_0_X()
+		_V1_0_X()
 
-		# Remise à zéro des scores
-		SauvegardeTableauDesScoresService.remise_a_zero()
-		# Copier nouvelle campagne pour les joueurs + l'initialiser
-		SauvegardeBddJoueursService.remplacer_initier_campagne_des_joueurs()
-		# Enregistrement de la configuration sur le disque
-		_enregistrer_la_configuration()
-
+	synchronisation_avec_fichier_configuration_du_jeu()
 	LogService.log_debug("configuration_du_jeu = ", configuration_du_jeu)
 
 
@@ -96,14 +91,40 @@ func lire_la_date_debut_campagne_timestamp() -> int:
 	var datetime = configuration_du_jeu.get('date_debut_campagne', '?')
 	return Time.get_unix_time_from_datetime_string(datetime)
 
+func synchronisation_avec_fichier_configuration_du_jeu() -> void:
+	var fichier_configuration_courant = FichiersJsonService.read_json_file("configuration_du_jeu.json")
+	if fichier_configuration_courant:
+		if 'musiques' in fichier_configuration_courant:
+			configuration_du_jeu['musiques'] = fichier_configuration_courant.get('musiques')
+		if 'effets sonores' in fichier_configuration_courant:
+			configuration_du_jeu['effets sonores'] = fichier_configuration_courant.get('effets sonores')
+		if 'vibrations' in fichier_configuration_courant:
+			configuration_du_jeu['vibrations'] = fichier_configuration_courant.get('vibrations')
+
+func _V1_0_X() -> void:
+	# Traitement global [V1.0.X]
+
+	# ###################################
+	# Fichier 'configuration_du_jeu.json'
+	# ###################################
+	# Conserver les réglages utilisateur avant d'enregistrer la nouvelle version.
+	synchronisation_avec_fichier_configuration_du_jeu()
+
+	# Remise à zéro des scores
+	SauvegardeTableauDesScoresService.remise_a_zero()
+	# Copier nouvelle campagne pour les joueurs + l'initialiser
+	SauvegardeBddJoueursService.remplacer_initier_campagne_des_joueurs()
+	# Enregistrement de la configuration sur le disque
+	_enregistrer_la_configuration()
+
 func _V0_4_X___V1_0_X() -> void:
-	# CONVERSION [V0.4.X -> V1.0.0]
+	# CONVERSION [V0.4.X -> V1.0.X]
 	var version_courante_disque = '?'
 
 	# Lire la configuration du jeu
 	var fichier_configuration_courant = FichiersJsonService.read_json_file("configuration_du_jeu.json")
 	if fichier_configuration_courant:
-		version_courante_disque = fichier_configuration_courant.get('version')
+		version_courante_disque = fichier_configuration_courant.get('version', '?')
 	else:
 		version_courante_disque = 'V0.4.X' # Version par defaut si fichier absent
 
@@ -112,12 +133,7 @@ func _V0_4_X___V1_0_X() -> void:
 		# Fichier 'configuration_du_jeu.json'
 		# ###################################
 		# Conserver les réglages utilisateur avant d'enregistrer la nouvelle version.
-		if 'musiques' in fichier_configuration_courant:
-			configuration_du_jeu['musiques'] = fichier_configuration_courant.get('musiques')
-		if 'effets sonores' in fichier_configuration_courant:
-			configuration_du_jeu['effets sonores'] = fichier_configuration_courant.get('effets sonores')
-		if 'vibrations' in fichier_configuration_courant:
-			configuration_du_jeu['vibrations'] = fichier_configuration_courant.get('vibrations')
+		synchronisation_avec_fichier_configuration_du_jeu()
 		# Enregistrer la transcription de configuration 'V0.4.0'
 		var version_logicielle = lire_la_version()
 		configuration_du_jeu['version'] = 'V1.0.X'
@@ -222,11 +238,16 @@ func _V0_3_X___V0_4_X() -> void:
 	# Lire la configuration du jeu
 	var fichier_configuration_courant = FichiersJsonService.read_json_file("configuration_du_jeu.json")
 	if fichier_configuration_courant:
-		version_courante_disque = fichier_configuration_courant.get('version')
+		version_courante_disque = fichier_configuration_courant.get('version', '?')
 	else:
 		version_courante_disque = 'V0.3.X' # Version par defaut si fichier absent
 
 	if version_courante_disque.begins_with('V0.3.'):
+		# ###################################
+		# Fichier 'configuration_du_jeu.json'
+		# ###################################
+		# Conserver les réglages utilisateur avant d'enregistrer la nouvelle version.
+		synchronisation_avec_fichier_configuration_du_jeu()
 		# Enregistrer la transcription de configuration 'V0.3.0'
 		var version_logicielle = lire_la_version()
 		configuration_du_jeu['version'] = 'V0.4.X'
