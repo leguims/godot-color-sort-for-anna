@@ -1,0 +1,17 @@
+[
+    {
+        "fichier_sauvegarde": "sauvegarde_joueur_00.json",
+        "indice": 0.0,
+        "nom": "Alain Konu"
+    },
+    {
+        "fichier_sauvegarde": "sauvegarde_joueur_01.json",
+        "indice": 1.0,
+        "nom": "test score"
+    },
+    {
+        "fichier_sauvegarde": "sauvegarde_joueur_02.json",
+        "indice": 2.0,
+        "nom": "test V0.4 => V1.0"
+    }
+]

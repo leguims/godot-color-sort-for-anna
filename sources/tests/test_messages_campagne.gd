@@ -2,7 +2,7 @@ extends GutTest
 
 const SCENE_MESSAGES_CAMPAGNE = preload("res://Scenes/MenuPrincipal/Campagne/MessagesCampagne/messages_campagne.tscn")
 
-func test_fin_de_campagne_sans_victoire_affiche_le_partage_avant_les_statistiques() -> void:
+func test_fin_de_campagne_est_traitee_par_la_fin_de_niveau_et_n_affiche_rien() -> void:
 	var menu: MessagesCampagne = add_child_autofree(SCENE_MESSAGES_CAMPAGNE.instantiate())
 	var panneau_partage: Control = menu.get_node("Centrer/PanneauPartagePerformances")
 	var continuations: Array[bool] = []
@@ -10,9 +10,8 @@ func test_fin_de_campagne_sans_victoire_affiche_le_partage_avant_les_statistique
 
 	await menu._on_progression_campagne_service_fin_campagne()
 
-	assert_true(menu.get_node("Centrer").visible)
-	assert_true(panneau_partage.visible)
-	assert_eq(menu._action_apres_partage, MessagesCampagne.ActionApresPartage.STATISTIQUES)
+	# Le partage de fin de campagne est affiché par la fin du dernier niveau.
+	assert_false(panneau_partage.visible)
 	assert_eq(continuations, [])
 
 func test_passer_un_plateau_redonne_la_main_a_la_campagne_sans_panneau() -> void:

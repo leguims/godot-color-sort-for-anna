@@ -498,22 +498,26 @@ func test_reset_sauvegarde_des_joueurs_vide_la_progression_de_chaque_joueur():
 
 	SauvegardeListeJoueursService.liste_des_joueurs = initial_liste_joueurs
 
-func test_remplacer_campagne_des_joueurs_cloture_et_renouvelle_la_campagne():
+func test_remplacer_initier_campagne_des_joueurs_cloture_et_renouvelle_la_campagne():
 	var initial_liste_joueurs = SauvegardeListeJoueursService.liste_des_joueurs.duplicate(true)
 	SauvegardeListeJoueursService.liste_des_joueurs = [
 		{"indice": 0, "nom": "Joueur C", "fichier_sauvegarde": "joueur_c.json"}
 	]
 	_ecrire_sauvegarde_test("joueur_c.json", _sauvegarde_joueur_de_test())
 
-	singleton.remplacer_campagne_des_joueurs()
+	singleton.remplacer_initier_campagne_des_joueurs()
 
 	var sauvegarde_c = FichiersJsonService.read_json_file("joueur_c.json")
 	assert_eq(sauvegarde_c.get("campagne"), SauvegardeBddPlateauxService.plateau_liste_niveaux_duplicate())
-	# Le niveau et le plateau en cours sont clos, sans clôturer l'enregistrement de campagne.
-	var derniere_campagne = sauvegarde_c.get("enregistrement_campagne")[0]
-	assert_eq(derniere_campagne.get("date_fin"), 0)
-	var dernier_niveau = derniere_campagne.get("niveaux")[0]
+	# Plateau, niveau et campagne en cours sont clos, puis une nouvelle campagne est initiée.
+	var campagnes = sauvegarde_c.get("enregistrement_campagne")
+	assert_eq(campagnes.size(), 2)
+	var ancienne_campagne = campagnes[0]
+	assert_true(ancienne_campagne.get("date_fin") > 0)
+	var dernier_niveau = ancienne_campagne.get("niveaux")[0]
+	assert_true(dernier_niveau.get("date_fin") > 0)
 	assert_true(dernier_niveau.get("plateaux")[0].get("date_fin") > 0)
+	assert_eq(campagnes[1].get("date_fin"), 0)
 	assert_false(singleton.le_joueur_existe())
 
 	SauvegardeListeJoueursService.liste_des_joueurs = initial_liste_joueurs
