@@ -21,6 +21,7 @@ func _ready() -> void:
 
 
 func _initialiser_la_configuration() -> void:
+	_V0_2_X___V0_3_X()
 	_V0_3_X___V0_4_X()
 	_V0_4_X___V1_0_0()
 	# Enregistrement de la configuration sur le disque
@@ -205,10 +206,23 @@ func _V0_4_X___V1_0_0() -> void:
 
 func _V0_3_X___V0_4_X() -> void:
 	# CONVERSION [V0.3.X -> V0.4.X]
+	var version_courante_disque = '?'
+
+	# Lire la configuration du jeu
+	var fichier_configuration_courant = FichiersJsonService.read_json_file("configuration_du_jeu.json")
+	if fichier_configuration_courant:
+		version_courante_disque = fichier_configuration_courant.get('version')
+	else:
+		version_courante_disque = 'V0.3.X' # Version par defaut si fichier absent
+
+	if version_courante_disque.begins_with('V0.3.'):
+		# Enregistrer la transcription de configuration 'V0.3.0'
+		var version_logicielle = lire_la_version()
+		configuration_du_jeu['version'] = 'V0.3.X'
+		_enregistrer_la_configuration()
+		configuration_du_jeu['version'] = version_logicielle
+
+func _V0_2_X___V0_3_X() -> void:
+	# CONVERSION [V0.2.X -> V0.3.X]
 	# Effacer le fichier de sauvegarde obsolete qui devient incompatible.
 	FichiersJsonService.remove_json_file("sauvegarde.json")
-
-	# TODO : Identifier la campagne
-	if false:
-		# Reset campagne Totale (effacement existant + alignement sur nouvelle campagne)
-		SauvegardeBddJoueursService.reset_sauvegarde_des_joueurs()
