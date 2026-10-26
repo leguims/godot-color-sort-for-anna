@@ -33,7 +33,7 @@ Depuis la phase de tests internes de la version V0.3.0, les fonctionnalités son
 #### Bug V0.4.0 :
 - Définir une combinaison secrete pour declencher l'export des fichiers JSON.
 
-#### à faire d'urgence pour livrer la V1.0.0:
+#### à faire d'urgence pour livrer la V1.0.0 en test:
 - ~~Jouer la campagne complete~~ => ok
 - ~~Vérifier l'avancement dans le niveau (pourcentage)~~ => ok
 - ~~Vérifier les statistiques et corriger~~ => ok
@@ -46,11 +46,18 @@ Depuis la phase de tests internes de la version V0.3.0, les fonctionnalités son
 - ~~Le nom de campagne dans la sauvegarde est 'campagne' ! Il doit etre 'campagne_2'.~~ => ok
 - ~~La campagne 2 ne s'enrgistre pas !~~ => ok
 
+#### à faire d'urgence pour livrer la V1.0.0 apres test:
+- Effacer la campagne de tests
+- Effacer les scores
+- Supprimer le TAG "beta-test"
+- Incorporer le partage dans statistiques et score de niveau/campagne
+- Vérifier que le QR est partageable avec la vraie campagne (taille des infos)
+
 #### Relecture Anna pour livrer la V1.0.0:
 - ~~numero du niveau sur 2 caracteres pour le bandeau de menu.~~ => ok
 - ~~aligner les tailles de boutons dans les bandeaux. càd reduire les boutons hors bandeau.~~ => ok
 - ~~titre gameplay classique en gras dans le bandeau en jeu.~~ => ok
-- verifier png jeton en 32x32
+- verifier png jeton en 32x32 : face de cube 32x32 avec jeton plus grand pour donner le cube.
 
 #### Remarques Aurélien :
 - ~~bug sur les boutons du menu principal~~
@@ -70,11 +77,11 @@ Depuis la phase de tests internes de la version V0.3.0, les fonctionnalités son
 - ~~Séparer la campagne des plateaux et interfacer le gameplay entre eux.~~
 - ~~Structurer le fichier 'Solutions_classees.json' pour incorporer le déroulé de la campagne (sequence plateaux et gameplay)~~
   - ~~Le contenu devra être identique à la section "Campagne" du fichier vierge de sauvegarde d'un joueur.~~
-  - L'enregistrement de campagne désignera la campagne en cours
-  - Dans la campagne en cours, ajouter une balise "score" qui contiendra le bonus de fin de niveau.
-  - Dans la campagne, enregistrer tous ses niveaux.
+  - ~~L'enregistrement de campagne désignera la campagne en cours~~
+  - ~~Dans la campagne en cours, ajouter une balise "score" qui contiendra le bonus de fin de niveau.~~
+  - ~~Dans la campagne, enregistrer tous ses niveaux.~~
   - Une campagne de test pourra être effacée sans détruire une campagne réglementaire passée.
-  - Dans le score en jeu, la jauge "ratio" devrait refléter le rapport entre les victoires et les défaites.
+  - ~~Dans le score en jeu, la jauge "ratio" devrait refléter le rapport entre les victoires et les défaites.~~
 - ~~Structurer la sauvegarde 'sauvegarde_joueur_XX.json' pour incorporer la campagne~~
   - ~~"ascensions" devient "enregistrement_campagne" pour les statistiques~~
   - ~~Un plateau terminé en campagne devient accessible pour le jeu libre~~
@@ -101,10 +108,10 @@ Depuis la phase de tests internes de la version V0.3.0, les fonctionnalités son
 #### Suggestions générales
 - (Faro) Aligner les piles sur la même ligne pour que ca soit plus facile à jouer (-1 Totol)
 - Sauvegarder l'état du plateau en cours après chaque coup. Le joueur qui quitte le jeu, reprend là où il était. Quand il revient, il commence avec son temps moyen sur ce type de niveau.
-- (Aleksandar): thème sur le fond du décors. Trop austère.
+- ~~(Aleksandar): thème sur le fond du décors. Trop austère.~~
 - Selon ton humeur, demander 5 plateaux faciles ou 5 ultras difficiles. (mode libre)
 - pour les plateaux impossibles à perdre, les classer dans DÉTENTE
-- pour les plateaux impossibles à gagner, proposer au joueur de trouver la combinaison pour perdre. (Mode No Win)
+- ~~pour les plateaux impossibles à gagner, proposer au joueur de trouver la combinaison pour perdre. (Mode No Win)~~
 - Pouvoir effacer un joueur (avec confirmation)
 - Effacer automatiquement un joueur sans fichier de statistiques.
 - Ajouter un menu pour effacer un joueur (avec resolution d'un plateau pour confirmer)
@@ -125,8 +132,6 @@ Depuis la phase de tests internes de la version V0.3.0, les fonctionnalités son
     - remote_uuid = uuid initial du joueur distant
     - uuid = uuid local sur le phone receveur (si l'original uuid existe deja)
 - Au Démarrage, la configuration pourrait resserer les indexes de fichiers des joueurs.
-- QR : inclure la version du jeu dans le QR code ou vérifier que la campagne correspond à la campagne courante.
-- QR : Refuser d'importer un QR d'une autre campagne.
 - Dans la gestion de campagne, ne plus éditer la derniere campagne, mais viser la campagne avec son nom.
 
 #### Web
@@ -136,9 +141,9 @@ Depuis la phase de tests internes de la version V0.3.0, les fonctionnalités son
 #### Niveaux
 - Prevoir une musique spéciale pour la réussite de la derniere ascension possible et le message de félicitations.
 - Il faudrait prevoir un jeu libre avec choix de difficulté et choix de longueur d'ascension + La campagne qui orchestre les longueurs d'ascensions à faire (10 puis 20 ...)
-- TRICHE ANATOLE :
-    - Quand anatole comme 'nom' on peux mettre n'importe quelle couleur sur n'importe quelle couleur et ça marche mais pas beaucoup de point
-    - Il y aura un bouton gagner Ou quand tout les Block seront dans une case remplie
+- ~~TRICHE ANATOLE :~~ bouton 'PASSER'
+    - ~~Quand anatole comme 'nom' on peux mettre n'importe quelle couleur sur n'importe quelle couleur et ça marche mais pas beaucoup de point~~
+    - ~~Il y aura un bouton gagner Ou quand tout les Block seront dans une case remplie~~
 
 #### Statistiques
 - Outils visuels:
@@ -231,11 +236,11 @@ Developpé par GitHub Copilot avec 'GPT-6 Luna'
 
 ### Campagne
 
-- 1 campagne = Plusieurs niveaux
-- 1 niveau = Plusieurs plateaux de difficulté et gameplay différents
-- Les niveaux sont prédéfinis dans la campagne (pas d'ajustement selon le niveau des joueurs).
-- La campagne est un ensemble de plateaux séquencés et non aléatoires. Tout se déroule dans le même ordre et permet la comparaison des score d'un joueur à l'autre : __Jeu Compétitif__.
-- Un plateau non résolu est bloquant, le joueur doit le résoudre pour passer au suivant
+- ~~1 campagne = Plusieurs niveaux~~
+- ~~1 niveau = Plusieurs plateaux de difficulté et gameplay différents~~
+- ~~Les niveaux sont prédéfinis dans la campagne (pas d'ajustement selon le niveau des joueurs).~~
+- ~~La campagne est un ensemble de plateaux séquencés et non aléatoires. Tout se déroule dans le même ordre et permet la comparaison des score d'un joueur à l'autre : __Jeu Compétitif__.~~
+- ~~Un plateau non résolu est bloquant, le joueur doit le résoudre pour passer au suivant~~
 - Un __Plateau Rare__ est un plateau exceptionnel qui offre un défi unique et des récompenses spéciales:
   - Il apparait en dernier plateau de la campagne.
   - Son gameplay est unique.
@@ -315,42 +320,8 @@ Prévoir un processus de partage des scores fiable ente les joueurs:
 - RTC : Peut insérer le score dans le tableau des scores locaux.
 - RTC : dois pouvoir effacer ce joueur (supprimer des score + statistiques)
 - Insérer un QR-Code pour partager l'application RTC.
-
-#### Génération du QR code (Jeu A)
-
-```gdscript
-var secret_key = "MA_CLE_SECRETE_STRICTEMENT_INTERNE".to_utf8_buffer()
-var data_json = '{"level": 10, "gold": 500}'
-
-# Création du HMAC
-var crypto = Crypto.new()
-var hmac_bytes = crypto.hmac_digest(HashingContext.HASH_SHA256, secret_key, data_json.to_utf8_buffer())
-var signature = Marshalls.raw_to_base64(hmac_bytes)
-
-# Payload final stocké dans le QR code
-var final_payload = JSON.stringify({"data": data_json, "sig": signature})
-```
-
-#### Verification lors du scan (Jeu B)
-
-```gdscript
-var secret_key = "MA_CLE_SECRETE_STRICTEMENT_INTERNE".to_utf8_buffer()
-
-# Lecture du QR code
-var parsed = JSON.parse_string(qr_scanned_string)
-var received_data = parsed["data"]
-var received_sig = parsed["sig"]
-
-# Recalcul de l'empreinte
-var crypto = Crypto.new()
-var expected_bytes = crypto.hmac_digest(HashingContext.HASH_SHA256, secret_key, received_data.to_utf8_buffer())
-var expected_sig = Marshalls.raw_to_base64(expected_bytes)
-
-if received_sig == expected_sig:
-	print("Données authentiques ! Injection autorisée.")
-else:
-	print("Code invalide ou falsifié !")
-```
+- QR : inclure la version du jeu dans le QR code ou vérifier que la campagne correspond à la campagne courante.
+- QR : Refuser d'importer un QR d'une autre campagne.
 
 ### Jeu libre
 

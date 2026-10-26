@@ -1,0 +1,119 @@
+{
+    "[test]campagne_2": {
+        "niveau_1": [
+            {
+                "nom": "ACD .BAD .BCB .CBC .DDAA",
+                "difficulte": 9,
+                "gameplay": "CLASSIQUE"
+            }
+        ],
+        "niveau_2": [
+            {
+                "nom": "ABBBAB .BBAACC .CACCACA.CB     ",
+                "difficulte": 23,
+                "gameplay": "CLASSIQUE"
+            },
+            {
+                "nom": "ACA .ABD .CBDB.DBCC.DA  ",
+                "difficulte": 20,
+                "gameplay": "QUI_PERD_GAGNE"
+            }
+        ],
+        "niveau_3": [
+            {
+                "nom": "BABBB  .BACABC .CCACABC.CAA    ",
+                "difficulte": 34,
+                "gameplay": "CLASSIQUE"
+            },
+            {
+                "nom": "ACCA.BCBD.BD  .DAB .DAC ",
+                "difficulte": 29,
+                "gameplay": "QUI_PERD_GAGNE"
+            }
+        ],
+        "niveau_4": [
+            {
+                "nom": "ABA .ACCB.CDC .DBA .DBD ",
+                "difficulte": 42,
+                "gameplay": "QUI_PERD_GAGNE"
+            },
+            {
+                "nom": "ACCBA .BAABB .BCBACA.CC    ",
+                "difficulte": 40,
+                "gameplay": "CLASSIQUE"
+            }
+        ],
+        "niveau_5": [
+            {
+                "nom": "BACD.CCAB.DADA.DBBC.    ",
+                "difficulte": 50,
+                "gameplay": "CLASSIQUE"
+            },
+            {
+                "nom": "BAAABB    .BAAABB    .BBABABAA  ",
+                "difficulte": 52,
+                "gameplay": "QUI_PERD_GAGNE"
+            }
+        ],
+        "niveau_6": [
+            {
+                "nom": "BAABBA    .BAABBB    .BBAAAABA  ",
+                "difficulte": 59,
+                "gameplay": "CLASSIQUE"
+            },
+            {
+                "nom": "ADA .ADDB.CBBA.CBCC.D   ",
+                "difficulte": 60,
+                "gameplay": "QUI_PERD_GAGNE"
+            }
+        ],
+        "niveau_7": [
+            {
+                "nom": "ABACBCB .ACBBCAC .CBAA    .CAABBC  ",
+                "difficulte": 72,
+                "gameplay": "CLASSIQUE"
+            },
+            {
+                "nom": "ADDB.BA  .BCAC.DCBD.CA  ",
+                "difficulte": 71,
+                "gameplay": "QUI_PERD_GAGNE"
+            }
+        ],
+        "niveau_8": [
+            {
+                "nom": "ABBABB   .ABBBABAA .AAAB     ",
+                "difficulte": 78,
+                "gameplay": "CLASSIQUE"
+            },
+            {
+                "nom": "ABAABA  .ABBBABAB.BA      ",
+                "difficulte": 79,
+                "gameplay": "QUI_PERD_GAGNE"
+            }
+        ],
+        "niveau_9": [
+            {
+                "nom": "BAACBC .BBA    .CACACA .CCBBAB ",
+                "difficulte": 90,
+                "gameplay": "CLASSIQUE"
+            },
+            {
+                "nom": "ABBBBA     .BABAABBAAB .BAABAA     ",
+                "difficulte": 88,
+                "gameplay": "QUI_PERD_GAGNE"
+            }
+        ],
+        "niveau_10": [
+            {
+                "nom": "ABAABABAAA .BAABAA     .BBBBBB     ",
+                "difficulte": 95,
+                "gameplay": "QUI_PERD_GAGNE"
+            },
+            {
+                "nom": "ABACA  .ACCAB  .BCCBCC .BBABA  ",
+                "difficulte": 95,
+                "gameplay": "CLASSIQUE"
+            }
+        ]
+    }
+}
