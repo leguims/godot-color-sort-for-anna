@@ -294,6 +294,7 @@ func campagne_lire_prochain_niveau() -> int:
 			prochain_niveau = niveau
 	if prochain_niveau == 9999:
 		LogService.log_erreur("Aucun prochain niveau de campagne trouvé")
+		prochain_niveau = 0
 	return prochain_niveau
 
 func campagne_lire_liste_plateaux_du_niveau(niveau : int) -> Array:
@@ -325,19 +326,22 @@ func campagne_supprimer_et_memoriser_plateau_courant() -> bool:
 	"Efface le plateau courant et memorise dans le jeu libre."
 	if le_joueur_existe() and enregistrement_campagne_lire_statut_dernier_plateau() == 'en cours':
 		var niveau = enregistrement_campagne_lire_valeur_niveau_joueur()
-		var plateau_courant = campagne_lire_liste_plateaux_du_niveau(niveau).pop_front()
-		# extraire difficulté de 'plateau_courant'
-		var difficulte_int : int = roundi(plateau_courant.get('difficulte'))
-		var difficulte_str = str(difficulte_int)
-		# Deplacer le plateau dans les plateaux libres
-		if not plateaux_libres_difficulte_existe(difficulte_int):
-			plateaux_libres()[difficulte_str] = []
-		plateaux_libres_lire_liste_plateaux_de_difficulte(difficulte_int).append(plateau_courant)
+		var liste_plateaux = campagne_lire_liste_plateaux_du_niveau(niveau)
+		var plateau_courant = {}
+		if not liste_plateaux.is_empty():
+			plateau_courant = liste_plateaux.pop_front()
+			# extraire difficulté de 'plateau_courant'
+			var difficulte_int : int = roundi(plateau_courant.get('difficulte'))
+			var difficulte_str = str(difficulte_int)
+			# Deplacer le plateau dans les plateaux libres
+			if not plateaux_libres_difficulte_existe(difficulte_int):
+				plateaux_libres()[difficulte_str] = []
+			plateaux_libres_lire_liste_plateaux_de_difficulte(difficulte_int).append(plateau_courant)
 		if campagne_lire_liste_plateaux_du_niveau(niveau).is_empty():
 			# Le niveau est terminé, effacer sa reference dans les plateaux restants.
 			campagne().erase(nom_niveau(niveau))
 		_enregistrer_sauvegarde_joueur()
-		return true
+		return len(plateau_courant) != 0
 	return false
 
 func campagne_supprimer_et_oublier_plateau_courant() -> bool:
@@ -345,12 +349,15 @@ func campagne_supprimer_et_oublier_plateau_courant() -> bool:
 	if le_joueur_existe() and enregistrement_campagne_lire_statut_dernier_plateau() == 'en cours':
 		var niveau = enregistrement_campagne_lire_valeur_niveau_joueur()
 		# Effacer le plateau courant de la campagne
-		campagne_lire_liste_plateaux_du_niveau(niveau).pop_front()
+		var liste_plateaux = campagne_lire_liste_plateaux_du_niveau(niveau)
+		var plateau_courant = {}
+		if not liste_plateaux.is_empty():
+			plateau_courant = liste_plateaux.pop_front()
 		if campagne_lire_liste_plateaux_du_niveau(niveau).is_empty():
 			# Le niveau est terminé, effacer sa reference dans les plateaux restants.
 			campagne().erase(nom_niveau(niveau))
 		_enregistrer_sauvegarde_joueur()
-		return true
+		return len(plateau_courant) != 0
 	return false
 
 func campagne_supprimer_les_plateaux() -> void:
@@ -477,7 +484,7 @@ func enregistrement_campagne_en_cours() -> bool:
 	
 func enregistrement_campagne_initialiser_une_nouvelle_campagne() -> bool:
 	"Crée et initialise une nouvelle campagne"
-	if not enregistrement_campagne_en_cours():
+	if le_joueur_existe() and not enregistrement_campagne_en_cours():
 		var enregistrement_nouvelle_campagne = {
 			'campagne': campagne_lire_nom(),
 			'date_debut': Time.get_unix_time_from_system(), # Timestamp
@@ -613,7 +620,9 @@ func enregistrement_campagne_initialiser_un_nouveau_niveau(forcer_valeur_niveau 
 		valeur_prochain_niveau = lire_prochain_niveau_de_campagne()
 	if valeur_prochain_niveau:
 		var nom_prochain_niveau = nom_niveau(valeur_prochain_niveau)
-		if not enregistrement_campagne_niveau_en_cours():
+		if le_joueur_existe() \
+			and enregistrement_campagne_en_cours() \
+			and not enregistrement_campagne_niveau_en_cours():
 			var enregistrement_campagne_niveau = {
 				'niveau': nom_prochain_niveau,
 				'date_debut': Time.get_unix_time_from_system(), # Timestamp
@@ -676,14 +685,14 @@ func enregistrement_campagne_inserer_niveau(nom_campagne : String, niveau : Dict
 func enregistrement_campagne_inserer_campagne(nom_campagne : String, donnees_campagne : Dictionary) -> void:
 	"Importe une campagne dans l'enregistrement du joueur"
 	var campagne_importee: Dictionary = donnees_campagne.duplicate(true)
-	if not enregistrement_campagne_lire_campagne(nom_campagne):
+	if le_joueur_existe() and not enregistrement_campagne_lire_campagne(nom_campagne):
 		# Importe la nouvelle campagne
 		campagne_importee['niveaux'] = []
 		if not lire_sauvegarde().has('enregistrement_campagne'):
 			lire_sauvegarde()['enregistrement_campagne'] = []
 		enregistrement_campagne().append(campagne_importee)
 		_enregistrer_sauvegarde_joueur()
-	if campagne_importee['score']:
+	if campagne_importee.get('score'):
 		var campagne_enregistree : Dictionary = enregistrement_campagne_lire_campagne(nom_campagne)
 		campagne_enregistree['score'] = campagne_importee['score'].duplicate(true)
 		_enregistrer_sauvegarde_joueur()
@@ -845,7 +854,10 @@ func enregistrement_campagne_initialiser_un_nouveau_plateau(nom : String,
 									gameplay : String,
 									difficulte : int) -> bool:
 	"Crée et initialise un nouveau plateau"
-	if not enregistrement_campagne_plateau_en_cours():
+	if le_joueur_existe() \
+		and enregistrement_campagne_en_cours() \
+		and enregistrement_campagne_niveau_en_cours() \
+		and not enregistrement_campagne_plateau_en_cours():
 		var nouveau_plateau = {
 			'nom': nom,
 			'gameplay': gameplay,
@@ -858,10 +870,11 @@ func enregistrement_campagne_initialiser_un_nouveau_plateau(nom : String,
 			'coups joués': []
 			}
 		var niveau_courant = enregistrement_campagne_lire_dernier_niveau()
-		var liste_plateaux = niveau_courant.get('plateaux')
-		liste_plateaux.append(nouveau_plateau)
-		_enregistrer_sauvegarde_joueur()
-		return true
+		if niveau_courant:
+			var liste_plateaux = niveau_courant.get('plateaux')
+			liste_plateaux.append(nouveau_plateau)
+			_enregistrer_sauvegarde_joueur()
+			return true
 	return false
 
 func enregistrement_campagne_terminer_plateau() -> void:
@@ -1077,9 +1090,11 @@ func enregistrement_campagne_coups_joues_ajouter_un_nouveau_coup(depart : int,
 	"Ajouter un nouveau coup à coups_joues"
 	if enregistrement_campagne_plateau_en_cours():
 		var nouveau_coup = {'depart': roundi(depart), 'arrivee': roundi(arrivee)}
-		enregistrement_campagne_coups_joues().append(nouveau_coup)
-		_enregistrer_sauvegarde_joueur()
-		return true
+		var coups_joues = enregistrement_campagne_coups_joues()
+		if coups_joues != null:
+			coups_joues.append(nouveau_coup)
+			_enregistrer_sauvegarde_joueur()
+			return true
 	return false
 
 func enregistrement_campagne_lire_nombre_coups() -> int:

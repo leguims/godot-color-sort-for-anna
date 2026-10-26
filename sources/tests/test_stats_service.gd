@@ -400,3 +400,656 @@ func test_score_pourcentages_couvrent_le_cas_score_total_nul():
 	assert_eq(service.score_pourcentage_niveau(), 0.0)
 	assert_eq(service.score_pourcentage_niveau_parfait(), 0.0)
 	assert_eq(service.score_pourcentage_fin_campagne(), 0.0)
+
+
+# ---------------------------------------------------------
+# Aides
+# ---------------------------------------------------------
+
+const DATE_VALIDE = 1700000000
+
+func _niveaux() -> Array:
+	return SauvegardeBddJoueursService._sauvegarde_joueur["enregistrement_campagne"][0]["niveaux"]
+
+func _definir_niveaux(niveaux: Array) -> void:
+	SauvegardeBddJoueursService._sauvegarde_joueur["enregistrement_campagne"][0]["niveaux"] = niveaux
+
+func _niveau(nom: String, plateaux: Array, termine: bool = true, debut: int = DATE_VALIDE) -> Dictionary:
+	return {"niveau": nom, "date_debut": debut, "date_fin": debut + 1000 if termine else 0, "score": {}, "plateaux": plateaux}
+
+func _plateau(nom: String, statut: String, duree: float, difficulte: int, gameplay: String = "CLASSIQUE", debut: int = DATE_VALIDE + 10) -> Dictionary:
+	return {"nom": nom, "date_debut": debut, "duree": duree, "difficulte": difficulte, "statut": statut, "gameplay": gameplay, "score": {}}
+
+func _campagne_suivante() -> Dictionary:
+	return {
+		"campagne": "campagne_suivante",
+		"date_debut": DATE_VALIDE + 100000,
+		"date_fin": 0,
+		"score": {"fin_campagne": 900},
+		"niveaux": [{
+			"niveau": "niveau_1",
+			"date_debut": DATE_VALIDE + 100000,
+			"date_fin": DATE_VALIDE + 101000,
+			"score": {"niveau": 40, "niveau_parfait": 0},
+			"plateaux": [
+				{"nom": "N1", "date_debut": DATE_VALIDE + 100010, "duree": 4, "difficulte": 3, "statut": "reussi", "gameplay": "CLASSIQUE", "score": {"duree": 7, "ratio_reussite": 8}},
+				{"nom": "N2", "date_debut": DATE_VALIDE + 100020, "duree": 6, "difficulte": 5, "statut": "abandonné", "gameplay": "QUI_PERD_GAGNE", "score": {"duree": 1, "ratio_reussite": 2}}
+			]
+		}]
+	}
+
+
+# ---------------------------------------------------------
+# Score : pourcentages
+# ---------------------------------------------------------
+
+func test_score_total_pourcentages_appel_direct_egal_aux_alias():
+	assert_eq(service.score_total_pourcentage_rapidite(), service.score_pourcentage_rapidite())
+	assert_eq(service.score_total_pourcentage_reussite(), service.score_pourcentage_reussite())
+	assert_eq(service.score_total_pourcentage_niveau(), service.score_pourcentage_niveau())
+	assert_eq(service.score_total_pourcentage_niveau_parfait(), service.score_pourcentage_niveau_parfait())
+	assert_eq(service.score_total_pourcentage_fin_campagne(), service.score_pourcentage_fin_campagne())
+	assert_almost_eq(service.score_total_pourcentage_rapidite(), 135.0 / 735.0, 0.0001)
+	assert_almost_eq(service.score_total_pourcentage_reussite(), 430.0 / 735.0, 0.0001)
+	assert_almost_eq(service.score_total_pourcentage_niveau(), 120.0 / 735.0, 0.0001)
+	assert_almost_eq(service.score_total_pourcentage_niveau_parfait(), 50.0 / 735.0, 0.0001)
+
+func test_score_total_pourcentage_une_seule_composante_vaut_un():
+	SauvegardeBddJoueursService._sauvegarde_joueur["enregistrement_campagne"][0]["score"] = {"fin_campagne": 500}
+	_definir_niveaux([])
+	assert_eq(service.score_total(), 500)
+	assert_eq(service.score_total_pourcentage_fin_campagne(), 1.0)
+	assert_eq(service.score_total_pourcentage_rapidite(), 0.0)
+	assert_eq(service.score_total_pourcentage_reussite(), 0.0)
+	assert_eq(service.score_total_pourcentage_niveau(), 0.0)
+	assert_eq(service.score_total_pourcentage_niveau_parfait(), 0.0)
+
+func test_score_formate_avec_separateur_de_milliers():
+	SauvegardeBddJoueursService._sauvegarde_joueur["enregistrement_campagne"][0]["score"] = {"fin_campagne": 1234567}
+	_definir_niveaux([])
+	assert_eq(service.score_total(), 1234567)
+	assert_eq(service.score(), "1.234.567")
+
+func test_score_zero_sans_donnees():
+	_definir_niveaux([])
+	assert_eq(service.score(), "0")
+
+func test_detail_score_fin_campagne_ignore_si_campagne_commencee_avant_la_date_de_debut():
+	var campagne = SauvegardeBddJoueursService._sauvegarde_joueur["enregistrement_campagne"][0]
+	campagne["date_debut"] = 1000
+	campagne["score"]["fin_campagne"] = 500
+	var detail = service.detail_score_cumule()
+	assert_eq(detail.get("fin_campagne"), 0)
+	assert_eq(detail.get("niveau"), 120)
+
+func test_detail_score_fin_campagne_pris_en_compte_a_la_date_exacte_de_debut():
+	var campagne = SauvegardeBddJoueursService._sauvegarde_joueur["enregistrement_campagne"][0]
+	campagne["date_debut"] = SauvegardeConfigurationService.lire_la_date_debut_campagne_timestamp()
+	campagne["score"]["fin_campagne"] = 500
+	assert_eq(service.detail_score_cumule().get("fin_campagne"), 500)
+
+func test_detail_score_cumule_ignore_les_niveaux_et_plateaux_anterieurs_a_la_date_de_debut():
+	var date_debut = SauvegardeConfigurationService.lire_la_date_debut_campagne_timestamp()
+	var ancien_niveau = _niveau("niveau_0", [_plateau("Ancien", "reussi", 5, 1, "CLASSIQUE", date_debut - 5)], true, date_debut - 10)
+	ancien_niveau["score"] = {"niveau": 1000, "niveau_parfait": 1000}
+	ancien_niveau["plateaux"][0]["score"] = {"duree": 1000, "ratio_reussite": 1000}
+	_niveaux().append(ancien_niveau)
+	var niveau_recent = _niveau("niveau_9", [_plateau("Ancien2", "reussi", 5, 1, "CLASSIQUE", date_debut - 5)], true, DATE_VALIDE)
+	niveau_recent["plateaux"][0]["score"] = {"duree": 1000, "ratio_reussite": 1000}
+	_niveaux().append(niveau_recent)
+	var detail = service.detail_score_cumule()
+	assert_eq(detail.get("rapidite"), 135)
+	assert_eq(detail.get("reussite"), 430)
+	assert_eq(detail.get("niveau"), 120)
+	assert_eq(detail.get("niveau_parfait"), 50)
+
+func test_detail_score_cumule_sans_joueur_ni_donnees():
+	SauvegardeBddJoueursService.liberer_le_joueur()
+	var detail = service.detail_score_cumule()
+	assert_eq(detail.get("joueur"), "")
+	assert_eq(detail.get("rapidite"), 0)
+	assert_eq(detail.get("reussite"), 0)
+	assert_eq(detail.get("niveau"), 0)
+	assert_eq(detail.get("niveau_parfait"), 0)
+	assert_eq(detail.get("fin_campagne"), 0)
+	assert_eq(service.score_total(), 0)
+
+func test_detail_score_cumule_a_la_date_exacte_de_debut_incoherent_avec_les_autres_statistiques():
+	# Les scores retiennent date_debut == date de début de campagne ('<' -> continue),
+	# alors que les autres statistiques l'excluent ('>' strict).
+	var date_debut = SauvegardeConfigurationService.lire_la_date_debut_campagne_timestamp()
+	var niveau = _niveau("niveau_9", [_plateau("Pile", "reussi", 5, 1, "CLASSIQUE", date_debut)], true, date_debut)
+	niveau["score"] = {"niveau": 7, "niveau_parfait": 0}
+	_definir_niveaux([niveau])
+	assert_eq(service.detail_score_cumule().get("niveau"), 7)
+	assert_eq(service.nombre_niveaux_termines(), 0)
+	assert_eq(service.nombre_de_plateau_joues(), 0)
+
+
+# ---------------------------------------------------------
+# Aucune donnée / division par zéro
+# ---------------------------------------------------------
+
+func test_statistiques_sans_enregistrement_de_campagne():
+	SauvegardeBddJoueursService._sauvegarde_joueur["enregistrement_campagne"] = []
+	SauvegardeBddJoueursService._sauvegarde_joueur["campagne"] = {}
+	assert_eq(service.nombre_de_plateau_inacheves(), 0)
+	assert_eq(service.nombre_de_plateau_acheves(), 0)
+	assert_eq(service.nombre_de_plateaux_totaux(), 0)
+	assert_eq(service.taux_completion_campagne(), 0.0)
+	assert_eq(service.campagne_taux_completion(), 0.0)
+	assert_eq(service.taux_completion_niveau(), 0.0)
+	assert_eq(service.niveau_taux_completion(), 0.0)
+	assert_eq(service.duree_totale_plateaux_tous_les_niveaux_en_s(), {"toutes": 0.0, "terminees": 0.0})
+	assert_eq(service.campagne_temps_total_en_s(), 0.0)
+	assert_eq(service.nombre_niveaux_termines(), 0)
+	assert_eq(service.niveau_terminees(), 0)
+	assert_eq(service.duree_moyenne_niveaux_terminees_en_s(), 0.0)
+	assert_eq(service.nombre_de_plateau_reussis_abandonnes_passes(), {"reussis": 0, "abandonnes": 0, "passes": 0})
+	assert_eq(service.nombre_de_plateau_joues(), 0)
+	assert_eq(service.taux_de_reussite_des_plateaux(), 0.0)
+	assert_eq(service.campagne_taux_reussite(), 0.0)
+	assert_eq(service.longueur_max_niveau_termine(), 0)
+	assert_eq(service.niveau_longueur_max(), 0)
+	assert_eq(service.serie_de_victoire_maximum(), 0)
+	assert_eq(service.campagne_serie_max_reussite(), 0)
+	assert_eq(service.plateau_le_temps_moyen_en_s(), 0.0)
+	assert_eq(service.plateau_temps_moyen_en_s(), 0.0)
+	assert_eq(service.plateau_le_plus_rapide_les_infos(), {"temps_en_s": 0.0, "difficulte": 0})
+	assert_eq(service.plateau_le_plus_lent_les_infos(), {"temps_en_s": 0.0, "difficulte": 0})
+	assert_eq(service.plateau_le_plus_galere_les_infos(), {"nom": "", "essais": 0, "difficulte": 0})
+	assert_eq(service.niveau_taux_reussite_les_infos(), {
+		"taux_min": 0.0, "taux_min_lg": 0, "taux_min_niveau": 0,
+		"taux_max": 0.0, "taux_max_lg": 0, "taux_max_niveau": 0
+	})
+	assert_eq(service.score_total(), 0)
+
+func test_statistiques_sans_joueur_selectionne():
+	SauvegardeBddJoueursService.liberer_le_joueur()
+	assert_eq(service.campagne_nom_joueur(), "")
+	assert_eq(service.nombre_de_plateaux_totaux(), 0)
+	assert_eq(service.taux_completion_campagne(), 0.0)
+	assert_eq(service.taux_completion_niveau(), 0.0)
+	assert_eq(service.nombre_niveaux_termines(), 0)
+	assert_eq(service.taux_de_reussite_des_plateaux(), 0.0)
+	assert_eq(service.longueur_max_niveau_termine(), 0)
+	assert_eq(service.serie_de_victoire_maximum(), 0)
+	assert_eq(service.plateau_le_plus_galere_les_infos().get("essais"), 0)
+	assert_eq(service.classique_nombre_de_plateaux_joues(), 0)
+	assert_eq(service.qui_perd_gagne_taux_de_reussite(), 0.0)
+
+func test_taux_completion_campagne_vaut_un_quand_il_ne_reste_aucun_plateau():
+	SauvegardeBddJoueursService._sauvegarde_joueur["campagne"] = {}
+	assert_eq(service.nombre_de_plateau_inacheves(), 0)
+	assert_eq(service.nombre_de_plateaux_totaux(), 5)
+	assert_eq(service.taux_completion_campagne(), 1.0)
+
+func test_taux_completion_campagne_sans_cle_campagne_ne_divise_pas_par_zero():
+	SauvegardeBddJoueursService._sauvegarde_joueur.erase("campagne")
+	SauvegardeBddJoueursService._sauvegarde_joueur["enregistrement_campagne"] = []
+	assert_eq(service.nombre_de_plateau_inacheves(), 0)
+	assert_eq(service.taux_completion_campagne(), 0.0)
+
+func test_nombre_de_plateau_inacheves_compte_tous_les_niveaux_actifs():
+	SauvegardeBddJoueursService._sauvegarde_joueur["campagne"]["niveau_4"] = [{"nom": "X"}, {"nom": "Y"}, {"nom": "Z"}]
+	assert_eq(service.nombre_de_plateau_inacheves(), 6)
+	SauvegardeBddJoueursService._sauvegarde_joueur["campagne"]["niveau_5"] = []
+	assert_eq(service.nombre_de_plateau_inacheves(), 6)
+
+func test_taux_completion_campagne_compte_les_plateaux_passes_comme_acheves():
+	_definir_niveaux([_niveau("niveau_1", [
+		_plateau("A", "reussi", 5, 1),
+		_plateau("B", "passé", 0, 1),
+		_plateau("C", "abandonné", 4, 1)
+	])])
+	assert_eq(service.nombre_de_plateau_acheves(), 2)
+	assert_eq(service.nombre_de_plateaux_totaux(), 5)
+	assert_almost_eq(service.taux_completion_campagne(), 2.0 / 5.0, 0.0001)
+
+func test_plateaux_en_cours_ne_sont_ni_acheves_ni_comptes_dans_le_taux_de_reussite():
+	_definir_niveaux([_niveau("niveau_1", [
+		_plateau("A", "reussi", 5, 1),
+		_plateau("B", "en cours", 0, 1)
+	], false)])
+	assert_eq(service.nombre_de_plateau_reussis_abandonnes_passes(), {"reussis": 1, "abandonnes": 0, "passes": 0})
+	assert_eq(service.nombre_de_plateau_joues(), 1)
+	assert_eq(service.taux_de_reussite_des_plateaux(), 1.0)
+
+func test_taux_de_reussite_nul_quand_aucun_plateau_reussi():
+	_definir_niveaux([_niveau("niveau_1", [
+		_plateau("A", "abandonné", 5, 1),
+		_plateau("B", "passé", 0, 1)
+	])])
+	assert_eq(service.nombre_de_plateau_joues(), 2)
+	assert_eq(service.taux_de_reussite_des_plateaux(), 0.0)
+
+
+# ---------------------------------------------------------
+# Plusieurs campagnes : seule la dernière compte
+# ---------------------------------------------------------
+
+func test_statistiques_ignorent_les_campagnes_precedentes():
+	var ancienne = _campagne_suivante()
+	ancienne["campagne"] = "campagne_ancienne"
+	ancienne["date_debut"] = DATE_VALIDE - 5000
+	ancienne["score"] = {"fin_campagne": 777777}
+	SauvegardeBddJoueursService._sauvegarde_joueur["enregistrement_campagne"].push_front(ancienne)
+	assert_eq(service.nombre_de_plateau_acheves(), 5)
+	assert_eq(service.nombre_de_plateau_reussis_abandonnes_passes(), {"reussis": 5, "abandonnes": 1, "passes": 0})
+	assert_eq(service.nombre_niveaux_termines(), 1)
+	assert_eq(service.campagne_temps_total_en_s(), 68.0)
+	assert_eq(service.campagne_serie_max_reussite(), 4)
+	var detail = service.detail_score_cumule()
+	assert_eq(detail.get("fin_campagne"), 0)
+	assert_eq(service.score_total(), 735)
+
+func test_statistiques_ne_lisent_que_la_derniere_campagne():
+	SauvegardeBddJoueursService._sauvegarde_joueur["enregistrement_campagne"].append(_campagne_suivante())
+	assert_eq(service.nombre_de_plateau_reussis_abandonnes_passes(), {"reussis": 1, "abandonnes": 1, "passes": 0})
+	assert_eq(service.nombre_de_plateau_joues(), 2)
+	assert_eq(service.nombre_de_plateau_acheves(), 1)
+	assert_eq(service.nombre_de_plateau_inacheves(), 3)
+	assert_eq(service.nombre_de_plateaux_totaux(), 4)
+	assert_almost_eq(service.taux_completion_campagne(), 0.25, 0.0001)
+	assert_almost_eq(service.campagne_taux_reussite(), 0.5, 0.0001)
+	assert_eq(service.campagne_serie_max_reussite(), 1)
+	assert_eq(service.nombre_niveaux_termines(), 1)
+	assert_eq(service.niveau_longueur_max(), 1)
+	assert_eq(service.duree_totale_plateaux_tous_les_niveaux_en_s(), {"toutes": 10.0, "terminees": 10.0})
+	assert_eq(service.duree_moyenne_niveaux_terminees_en_s(), 10.0)
+	assert_eq(service.plateau_le_temps_moyen_en_s(), 4.0)
+	assert_eq(service.plateau_le_plus_rapide_les_infos(), {"temps_en_s": 4.0, "difficulte": 3})
+	assert_eq(service.plateau_le_plus_lent_les_infos(), {"temps_en_s": 4.0, "difficulte": 3})
+	assert_eq(service.plateau_le_plus_galere_les_infos(), {"nom": "N1", "essais": 1, "difficulte": 3})
+	assert_almost_eq(service.taux_completion_niveau(), 1.0, 0.0001)
+
+func test_detail_score_et_gameplay_de_la_derniere_campagne():
+	SauvegardeBddJoueursService._sauvegarde_joueur["enregistrement_campagne"].append(_campagne_suivante())
+	var detail = service.detail_score_cumule()
+	assert_eq(detail.get("rapidite"), 8)
+	assert_eq(detail.get("reussite"), 10)
+	assert_eq(detail.get("niveau"), 40)
+	assert_eq(detail.get("niveau_parfait"), 0)
+	assert_eq(detail.get("fin_campagne"), 900)
+	assert_eq(service.score_total(), 958)
+	assert_eq(service.classique_nombre_de_plateaux_joues(), 1)
+	assert_eq(service.classique_taux_de_reussite(), 1.0)
+	assert_eq(service.qui_perd_gagne_nombre_de_plateaux_joues(), 1)
+	assert_eq(service.qui_perd_gagne_taux_de_reussite(), 0.0)
+
+
+# ---------------------------------------------------------
+# Niveaux terminés
+# ---------------------------------------------------------
+
+func test_niveau_terminees_ignore_les_niveaux_en_cours_et_anterieurs():
+	var date_debut = SauvegardeConfigurationService.lire_la_date_debut_campagne_timestamp()
+	_definir_niveaux([
+		_niveau("niveau_1", [_plateau("A", "reussi", 5, 1)], true),
+		_niveau("niveau_2", [_plateau("B", "reussi", 5, 1)], true),
+		_niveau("niveau_3", [_plateau("C", "reussi", 5, 1)], false),
+		_niveau("niveau_0", [_plateau("D", "reussi", 5, 1)], true, date_debut - 10)
+	])
+	assert_eq(service.nombre_niveaux_termines(), 2)
+	assert_eq(service.niveau_terminees(), 2)
+
+func test_duree_moyenne_niveaux_terminees_divise_par_le_nombre_de_niveaux_termines():
+	_definir_niveaux([
+		_niveau("niveau_1", [_plateau("A", "reussi", 10, 1), _plateau("B", "abandonné", 6, 1)], true),
+		_niveau("niveau_2", [_plateau("C", "reussi", 20, 1)], true),
+		_niveau("niveau_3", [_plateau("D", "reussi", 100, 1)], false)
+	])
+	assert_eq(service.duree_totale_plateaux_tous_les_niveaux_en_s(), {"toutes": 136.0, "terminees": 36.0})
+	assert_eq(service.duree_moyenne_niveaux_terminees_en_s(), 18.0)
+
+func test_duree_totale_ignore_les_plateaux_sans_duree_et_les_plateaux_anterieurs():
+	var date_debut = SauvegardeConfigurationService.lire_la_date_debut_campagne_timestamp()
+	_definir_niveaux([_niveau("niveau_1", [
+		_plateau("A", "reussi", 0, 1),
+		_plateau("B", "reussi", 12.5, 1),
+		_plateau("C", "reussi", 99, 1, "CLASSIQUE", date_debut - 1),
+		{"nom": "D", "date_debut": DATE_VALIDE + 30, "statut": "reussi", "gameplay": "CLASSIQUE"}
+	])])
+	assert_eq(service.duree_totale_plateaux_tous_les_niveaux_en_s(), {"toutes": 12.5, "terminees": 12.5})
+
+func test_niveau_longueur_max_retient_le_plus_long_niveau_termine():
+	_definir_niveaux([
+		_niveau("niveau_1", [_plateau("A", "reussi", 1, 1), _plateau("B", "reussi", 1, 1)], true),
+		_niveau("niveau_2", [
+			_plateau("C", "reussi", 1, 1), _plateau("D", "reussi", 1, 1),
+			_plateau("E", "reussi", 1, 1), _plateau("F", "reussi", 1, 1),
+			_plateau("G", "abandonné", 1, 1), _plateau("H", "abandonné", 1, 1)
+		], true),
+		_niveau("niveau_3", [_plateau("I", "reussi", 1, 1), _plateau("J", "reussi", 1, 1), _plateau("K", "reussi", 1, 1), _plateau("L", "reussi", 1, 1), _plateau("M", "reussi", 1, 1)], false)
+	])
+	assert_eq(service.longueur_max_niveau_termine(), 4)
+	assert_eq(service.niveau_longueur_max(), 4)
+
+func test_longueur_max_ignore_niveau_termine_sans_plateaux_et_niveau_anterieur():
+	var date_debut = SauvegardeConfigurationService.lire_la_date_debut_campagne_timestamp()
+	_definir_niveaux([
+		_niveau("niveau_1", [], true),
+		_niveau("niveau_0", [_plateau("A", "reussi", 1, 1), _plateau("B", "reussi", 1, 1)], true, date_debut - 10)
+	])
+	assert_eq(service.longueur_max_niveau_termine(), 0)
+
+func test_longueur_max_niveau_termine_ne_compte_pas_les_plateaux_passes():
+	# Comportement actuel (discutable) : seuls les plateaux 'reussi' comptent dans la longueur.
+	_definir_niveaux([_niveau("niveau_1", [
+		_plateau("A", "reussi", 1, 1), _plateau("B", "reussi", 1, 1),
+		_plateau("C", "passé", 0, 1), _plateau("D", "passé", 0, 1)
+	], true)])
+	assert_eq(service.longueur_max_niveau_termine(), 2)
+
+func test_longueur_max_niveau_termine_ex_aequo_garde_le_premier():
+	_definir_niveaux([
+		_niveau("niveau_1", [_plateau("A", "reussi", 1, 1), _plateau("B", "reussi", 1, 1)], true),
+		_niveau("niveau_2", [_plateau("C", "reussi", 1, 1), _plateau("D", "reussi", 1, 1)], true)
+	])
+	assert_eq(service.longueur_max_niveau_termine(), 2)
+
+func test_niveau_taux_reussite_infos_retourne_les_niveaux_min_et_max():
+	_definir_niveaux([
+		_niveau("niveau_1", [_plateau("A", "reussi", 1, 1), _plateau("B", "abandonné", 1, 1)], true),
+		_niveau("niveau_2", [_plateau("C", "reussi", 1, 1), _plateau("D", "reussi", 1, 1), _plateau("E", "reussi", 1, 1)], true),
+		_niveau("niveau_3", [_plateau("F", "passé", 0, 1)], true)
+	])
+	var infos = service.niveau_taux_reussite_les_infos()
+	assert_eq(infos.get("taux_min"), 0.0)
+	assert_eq(infos.get("taux_min_lg"), 0)
+	assert_eq(infos.get("taux_min_niveau"), 3)
+	assert_eq(infos.get("taux_max"), 1.0)
+	assert_eq(infos.get("taux_max_lg"), 3)
+	assert_eq(infos.get("taux_max_niveau"), 2)
+	assert_eq(service.niveau_taux_reussite_infos(), infos)
+
+func test_niveau_taux_reussite_infos_ex_aequo_garde_le_premier_niveau():
+	_definir_niveaux([
+		_niveau("niveau_4", [_plateau("A", "reussi", 1, 1), _plateau("B", "abandonné", 1, 1)], true),
+		_niveau("niveau_5", [_plateau("C", "reussi", 1, 1), _plateau("D", "abandonné", 1, 1)], true)
+	])
+	var infos = service.niveau_taux_reussite_les_infos()
+	assert_eq(infos.get("taux_min"), 0.5)
+	assert_eq(infos.get("taux_max"), 0.5)
+	assert_eq(infos.get("taux_min_niveau"), 4)
+	assert_eq(infos.get("taux_max_niveau"), 4)
+
+func test_niveau_taux_reussite_infos_niveau_sans_nom():
+	_definir_niveaux([{"date_debut": DATE_VALIDE, "date_fin": DATE_VALIDE + 1, "plateaux": [_plateau("A", "reussi", 1, 1)]}])
+	var infos = service.niveau_taux_reussite_les_infos()
+	assert_eq(infos.get("taux_max_niveau"), 0)
+
+func test_reussis_abandonnes_passes_pour_niveau():
+	_definir_niveaux([
+		_niveau("niveau_1", [_plateau("A", "reussi", 1, 1), _plateau("B", "passé", 0, 1)], true),
+		_niveau("niveau_2", [_plateau("C", "abandonné", 1, 1), _plateau("D", "abandonné", 1, 1), _plateau("E", "reussi", 1, 1)], true)
+	])
+	assert_eq(service.nombre_de_plateau_reussis_abandonnes_passes_pour_niveau("niveau_1"),
+		{"niveau": "niveau_1", "reussis": 1, "abandonnes": 0, "passes": 1})
+	assert_eq(service.nombre_de_plateau_reussis_abandonnes_passes_pour_niveau("niveau_2"),
+		{"niveau": "niveau_2", "reussis": 1, "abandonnes": 2, "passes": 0})
+	assert_eq(service.nombre_de_plateau_reussis_abandonnes_passes_pour_niveau("niveau_inconnu"),
+		{"niveau": "niveau_inconnu", "reussis": 0, "abandonnes": 0, "passes": 0})
+
+func test_taux_completion_niveau_compte_les_plateaux_passes_et_restants():
+	SauvegardeBddJoueursService._sauvegarde_joueur["campagne"] = {"niveau_2": [{"nom": "R", "difficulte": 2}, {"nom": "S", "difficulte": 2}]}
+	_definir_niveaux([_niveau("niveau_2", [
+		_plateau("A", "reussi", 1, 2),
+		_plateau("B", "passé", 0, 2),
+		_plateau("C", "abandonné", 1, 2)
+	], false)])
+	assert_almost_eq(service.taux_completion_niveau(), 2.0 / 4.0, 0.0001)
+
+func test_taux_completion_niveau_vaut_un_sans_plateau_restant():
+	SauvegardeBddJoueursService._sauvegarde_joueur["campagne"] = {}
+	_definir_niveaux([_niveau("niveau_2", [_plateau("A", "reussi", 1, 2), _plateau("B", "reussi", 1, 2)], true)])
+	assert_eq(service.taux_completion_niveau(), 1.0)
+
+func test_taux_completion_niveau_vaut_zero_sans_plateau_realise():
+	_definir_niveaux([_niveau("niveau_2", [], false)])
+	assert_eq(service.taux_completion_niveau(), 1.0 * 0 / 1)
+
+
+# ---------------------------------------------------------
+# Plateaux : temps moyen, plus rapide, plus lent, plus galère
+# ---------------------------------------------------------
+
+func test_plateau_temps_moyen_ne_compte_que_les_plateaux_reussis_avec_duree():
+	_definir_niveaux([_niveau("niveau_1", [
+		_plateau("A", "reussi", 10, 1),
+		_plateau("B", "reussi", 20, 1),
+		_plateau("C", "abandonné", 100, 1),
+		_plateau("D", "passé", 50, 1),
+		_plateau("E", "reussi", 0, 1)
+	])])
+	assert_eq(service.plateau_le_temps_moyen_en_s(), 15.0)
+	assert_eq(service.plateau_temps_moyen_en_s(), 15.0)
+
+func test_plateau_temps_moyen_ignore_les_niveaux_anterieurs_a_la_date_de_debut():
+	var date_debut = SauvegardeConfigurationService.lire_la_date_debut_campagne_timestamp()
+	_definir_niveaux([
+		_niveau("niveau_0", [_plateau("A", "reussi", 1000, 1)], true, date_debut - 10),
+		_niveau("niveau_1", [_plateau("B", "reussi", 8, 1)], true)
+	])
+	assert_eq(service.plateau_le_temps_moyen_en_s(), 8.0)
+
+func test_plateau_plus_rapide_et_plus_lent_ignorent_abandonnes_et_passes():
+	_definir_niveaux([_niveau("niveau_1", [
+		_plateau("A", "abandonné", 1, 9),
+		_plateau("B", "passé", 2, 9),
+		_plateau("C", "reussi", 30, 3),
+		_plateau("D", "reussi", 12, 4),
+		_plateau("E", "reussi", 50, 6),
+		_plateau("F", "reussi", 0, 8)
+	])])
+	assert_eq(service.plateau_plus_rapide_infos(), {"temps_en_s": 12.0, "difficulte": 4})
+	assert_eq(service.plateau_plus_lent_infos(), {"temps_en_s": 50.0, "difficulte": 6})
+
+func test_plateau_plus_rapide_ex_aequo_retient_la_difficulte_la_plus_elevee_quelque_soit_lordre():
+	_definir_niveaux([_niveau("niveau_1", [
+		_plateau("A", "reussi", 10, 5),
+		_plateau("B", "reussi", 10, 2)
+	])])
+	assert_eq(service.plateau_le_plus_rapide_les_infos().get("temps_en_s"), 10.0)
+	assert_eq(service.plateau_le_plus_rapide_les_infos().get("difficulte"), 5)
+
+func test_plateau_plus_lent_ex_aequo_retient_la_difficulte_la_plus_elevee_quelque_soit_lordre():
+	_definir_niveaux([_niveau("niveau_1", [
+		_plateau("A", "reussi", 10, 5),
+		_plateau("B", "reussi", 10, 2)
+	])])
+	assert_eq(service.plateau_le_plus_lent_les_infos().get("temps_en_s"), 10.0)
+	assert_eq(service.plateau_le_plus_lent_les_infos().get("difficulte"), 5)
+
+func test_plateau_plus_galere_premier_ex_aequo_conserve():
+	_definir_niveaux([_niveau("niveau_1", [
+		_plateau("A", "abandonné", 1, 2),
+		_plateau("A", "reussi", 1, 2),
+		_plateau("B", "abandonné", 1, 7),
+		_plateau("B", "reussi", 1, 7)
+	])])
+	assert_eq(service.plateau_le_plus_galere_les_infos(), {"nom": "A", "essais": 2, "difficulte": 2})
+	assert_eq(service.plateau_plus_galere_infos(), {"nom": "A", "essais": 2, "difficulte": 2})
+
+func test_plateau_plus_galere_cumule_les_essais_a_travers_les_niveaux_et_les_statuts():
+	_definir_niveaux([
+		_niveau("niveau_1", [_plateau("A", "abandonné", 1, 4), _plateau("B", "reussi", 1, 1)], true),
+		_niveau("niveau_2", [_plateau("A", "passé", 0, 4), _plateau("A", "reussi", 1, 4)], true)
+	])
+	assert_eq(service.plateau_le_plus_galere_les_infos(), {"nom": "A", "essais": 3, "difficulte": 4})
+
+func test_plateau_plus_galere_regroupe_les_plateaux_sans_nom():
+	_definir_niveaux([_niveau("niveau_1", [
+		{"date_debut": DATE_VALIDE + 10, "difficulte": 3, "statut": "reussi", "gameplay": "CLASSIQUE"},
+		{"date_debut": DATE_VALIDE + 20, "difficulte": 3, "statut": "reussi", "gameplay": "CLASSIQUE"},
+		_plateau("B", "reussi", 1, 1)
+	])])
+	assert_eq(service.plateau_le_plus_galere_les_infos(), {"nom": "inconnu", "essais": 2, "difficulte": 3})
+
+func test_plateau_plus_galere_ignore_les_niveaux_anterieurs():
+	var date_debut = SauvegardeConfigurationService.lire_la_date_debut_campagne_timestamp()
+	_definir_niveaux([
+		_niveau("niveau_0", [_plateau("Z", "abandonné", 1, 9), _plateau("Z", "abandonné", 1, 9)], true, date_debut - 10),
+		_niveau("niveau_1", [_plateau("A", "reussi", 1, 1)], true)
+	])
+	assert_eq(service.plateau_le_plus_galere_les_infos(), {"nom": "A", "essais": 1, "difficulte": 1})
+
+func test_plateau_difficulte_flottante_est_arrondie():
+	_definir_niveaux([_niveau("niveau_1", [_plateau("A", "reussi", 10, 1)])])
+	_niveaux()[0]["plateaux"][0]["difficulte"] = 10.6
+	assert_eq(service.plateau_le_plus_rapide_les_infos().get("difficulte"), 11)
+	assert_eq(service.plateau_le_plus_lent_les_infos().get("difficulte"), 11)
+	assert_eq(service.plateau_le_plus_galere_les_infos().get("difficulte"), 11)
+
+
+# ---------------------------------------------------------
+# Série de victoires
+# ---------------------------------------------------------
+
+func test_serie_de_victoire_classe_les_niveaux_par_ordre_chronologique():
+	_definir_niveaux([
+		_niveau("niveau_2", [
+			_plateau("C", "reussi", 1, 1), _plateau("D", "reussi", 1, 1),
+			_plateau("E", "abandonné", 1, 1), _plateau("F", "reussi", 1, 1)
+		], true, DATE_VALIDE + 2000),
+		_niveau("niveau_1", [_plateau("A", "reussi", 1, 1), _plateau("B", "reussi", 1, 1)], true, DATE_VALIDE)
+	])
+	assert_eq(service.serie_de_victoire_maximum(), 4)
+
+func test_serie_de_victoire_trie_en_place_les_niveaux_enregistres():
+	_definir_niveaux([
+		_niveau("niveau_2", [_plateau("C", "reussi", 1, 1)], true, DATE_VALIDE + 2000),
+		_niveau("niveau_1", [_plateau("A", "reussi", 1, 1)], true, DATE_VALIDE)
+	])
+	service.serie_de_victoire_maximum()
+	assert_eq(_niveaux()[0].get("niveau"), "niveau_1")
+	assert_eq(_niveaux()[1].get("niveau"), "niveau_2")
+
+func test_serie_de_victoire_coupee_par_abandon_et_passage_pas_par_en_cours():
+	_definir_niveaux([_niveau("niveau_1", [
+		_plateau("A", "reussi", 1, 1),
+		_plateau("B", "en cours", 0, 1),
+		_plateau("C", "reussi", 1, 1),
+		_plateau("D", "passé", 0, 1),
+		_plateau("E", "reussi", 1, 1),
+		_plateau("F", "abandonné", 1, 1)
+	])])
+	assert_eq(service.serie_de_victoire_maximum(), 2)
+
+func test_serie_de_victoire_derniere_serie_et_sans_defaite():
+	_definir_niveaux([_niveau("niveau_1", [
+		_plateau("A", "reussi", 1, 1), _plateau("B", "reussi", 1, 1), _plateau("C", "reussi", 1, 1)
+	])])
+	assert_eq(service.serie_de_victoire_maximum(), 3)
+
+func test_serie_de_victoire_nulle_si_que_des_defaites():
+	_definir_niveaux([_niveau("niveau_1", [_plateau("A", "abandonné", 1, 1), _plateau("B", "passé", 0, 1)])])
+	assert_eq(service.serie_de_victoire_maximum(), 0)
+
+func test_serie_de_victoire_ignore_les_niveaux_anterieurs_a_la_date_de_debut():
+	var date_debut = SauvegardeConfigurationService.lire_la_date_debut_campagne_timestamp()
+	_definir_niveaux([
+		_niveau("niveau_0", [_plateau("A", "reussi", 1, 1), _plateau("B", "reussi", 1, 1), _plateau("C", "reussi", 1, 1)], true, date_debut - 10),
+		_niveau("niveau_1", [_plateau("D", "reussi", 1, 1)], true)
+	])
+	assert_eq(service.serie_de_victoire_maximum(), 1)
+
+
+# ---------------------------------------------------------
+# Gameplay
+# ---------------------------------------------------------
+
+func _definir_niveau_gameplays() -> void:
+	_definir_niveaux([_niveau("niveau_1", [
+		_plateau("a", "reussi", 10, 2, "CLASSIQUE"),
+		_plateau("b", "passé", 0, 2, "CLASSIQUE"),
+		_plateau("c", "abandonné", 7, 3, "CLASSIQUE"),
+		_plateau("d", "reussi", 0, 1, "CLASSIQUE"),
+		_plateau("e", "reussi", 20, 4, "QUI_PERD_GAGNE")
+	])])
+
+func test_gameplay_appels_directs_sur_la_campagne_de_reference():
+	assert_eq(service.gameplay_nombre_de_plateau_reussis_abandonnes_passes("CLASSIQUE"), {"reussis": 3, "abandonnes": 0, "passes": 0})
+	assert_eq(service.gameplay_nombre_de_plateau_reussis_abandonnes_passes("QUI_PERD_GAGNE"), {"reussis": 2, "abandonnes": 1, "passes": 0})
+	assert_eq(service.gameplay_nombre_de_plateau_joues("CLASSIQUE"), 3)
+	assert_eq(service.gameplay_nombre_de_plateau_joues("QUI_PERD_GAGNE"), 3)
+	assert_almost_eq(service.gameplay_taux_de_reussite_des_plateaux("QUI_PERD_GAGNE"), 2.0 / 3.0, 0.0001)
+	assert_almost_eq(service.gameplay_le_temps_moyen_en_s("CLASSIQUE"), 34.0 / 3.0, 0.0001)
+	assert_eq(service.gameplay_le_plus_rapide_les_infos("CLASSIQUE"), {"temps_en_s": 9.0, "difficulte": 3})
+	assert_eq(service.gameplay_le_plus_lent_les_infos("CLASSIQUE"), {"temps_en_s": 15.0, "difficulte": 2})
+	assert_eq(service.gameplay_le_plus_galere_les_infos("QUI_PERD_GAGNE"), {"nom": "B", "essais": 2, "difficulte": 2})
+
+func test_gameplay_est_insensible_a_la_casse():
+	assert_eq(service.gameplay_nombre_de_plateau_joues("classique"), 3)
+	assert_eq(service.gameplay_nombre_de_plateau_joues("Classique"), 3)
+	assert_eq(service.gameplay_nombre_de_plateau_joues("qui_perd_gagne"), 3)
+	assert_eq(service.gameplay_le_plus_rapide_les_infos("classique"), service.gameplay_le_plus_rapide_les_infos("CLASSIQUE"))
+	assert_eq(service.gameplay_le_plus_galere_les_infos("qui_perd_gagne"), service.gameplay_le_plus_galere_les_infos("QUI_PERD_GAGNE"))
+
+func test_gameplay_inconnu_ou_vide_retourne_zero():
+	for gameplay in ["INCONNU", ""]:
+		assert_eq(service.gameplay_nombre_de_plateau_reussis_abandonnes_passes(gameplay), {"reussis": 0, "abandonnes": 0, "passes": 0})
+		assert_eq(service.gameplay_nombre_de_plateau_joues(gameplay), 0)
+		assert_eq(service.gameplay_taux_de_reussite_des_plateaux(gameplay), 0.0)
+		assert_eq(service.gameplay_le_temps_moyen_en_s(gameplay), 0.0)
+		assert_eq(service.gameplay_le_plus_rapide_les_infos(gameplay), {"temps_en_s": 0.0, "difficulte": 0})
+		assert_eq(service.gameplay_le_plus_lent_les_infos(gameplay), {"temps_en_s": 0.0, "difficulte": 0})
+		assert_eq(service.gameplay_le_plus_galere_les_infos(gameplay), {"nom": "", "essais": 0, "difficulte": 0})
+
+func test_gameplay_statuts_mixtes_comptes_et_taux():
+	_definir_niveau_gameplays()
+	assert_eq(service.gameplay_nombre_de_plateau_reussis_abandonnes_passes("CLASSIQUE"), {"reussis": 2, "abandonnes": 1, "passes": 1})
+	assert_eq(service.classique_nombre_de_plateaux_joues(), 4)
+	assert_eq(service.classique_taux_de_reussite(), 0.5)
+	assert_eq(service.qui_perd_gagne_nombre_de_plateaux_joues(), 1)
+	assert_eq(service.qui_perd_gagne_taux_de_reussite(), 1.0)
+
+func test_gameplay_temps_moyen_ignore_non_reussis_et_durees_nulles():
+	_definir_niveau_gameplays()
+	assert_eq(service.classique_temps_moyen_en_s(), 10.0)
+	assert_eq(service.qui_perd_gagne_temps_moyen_en_s(), 20.0)
+
+func test_gameplay_plus_rapide_plus_lent_ignorent_non_reussis_et_durees_nulles():
+	_definir_niveau_gameplays()
+	assert_eq(service.classique_plus_rapide_infos(), {"temps_en_s": 10.0, "difficulte": 2})
+	assert_eq(service.classique_plus_lent_infos(), {"temps_en_s": 10.0, "difficulte": 2})
+	assert_eq(service.qui_perd_gagne_plus_rapide_infos(), {"temps_en_s": 20.0, "difficulte": 4})
+	assert_eq(service.qui_perd_gagne_plus_lent_infos(), {"temps_en_s": 20.0, "difficulte": 4})
+
+func test_gameplay_plus_galere_compte_tous_les_statuts_du_gameplay():
+	_definir_niveau_gameplays()
+	assert_eq(service.classique_plus_galere_infos(), {"nom": "a", "essais": 1, "difficulte": 2})
+	assert_eq(service.qui_perd_gagne_plus_galere_infos(), {"nom": "e", "essais": 1, "difficulte": 4})
+
+func test_gameplay_plus_rapide_et_plus_lent_ex_aequo_retiennent_la_difficulte_la_plus_elevee_quelque_soit_lordre():
+	_definir_niveaux([_niveau("niveau_1", [
+		_plateau("A", "reussi", 10, 5, "CLASSIQUE"),
+		_plateau("B", "reussi", 10, 2, "CLASSIQUE")
+	])])
+	assert_eq(service.gameplay_le_plus_rapide_les_infos("CLASSIQUE").get("difficulte"), 5)
+	assert_eq(service.gameplay_le_plus_lent_les_infos("CLASSIQUE").get("difficulte"), 5)
+
+func test_gameplay_temps_moyen_ne_filtre_pas_les_plateaux_par_date_contrairement_aux_comptes():
+	var date_debut = SauvegardeConfigurationService.lire_la_date_debut_campagne_timestamp()
+	_definir_niveaux([
+		_niveau("niveau_0", [_plateau("Z", "reussi", 1, 9, "CLASSIQUE", date_debut - 5)], true, date_debut - 10),
+		_niveau("niveau_1", [
+			_plateau("Y", "reussi", 1, 9, "CLASSIQUE", date_debut - 5),
+			_plateau("A", "reussi", 6, 2, "CLASSIQUE")
+		], true)
+	])
+	assert_eq(service.classique_nombre_de_plateaux_joues(), 1)
+	assert_eq(service.classique_temps_moyen_en_s(), 3.5)
+
+func test_gameplay_ignore_les_plateaux_sans_gameplay():
+	# Un plateau importé (QR) sans clé 'gameplay' ne doit pas faire planter les statistiques.
+	_definir_niveaux([_niveau("niveau_1", [
+		_plateau("A", "reussi", 5, 1, "CLASSIQUE"),
+		{"nom": "B", "date_debut": DATE_VALIDE + 20, "duree": 7, "difficulte": 2, "statut": "reussi"}
+	])])
+	assert_eq(service.classique_nombre_de_plateaux_joues(), 1)
+	assert_eq(service.classique_taux_de_reussite(), 1.0)
+	assert_eq(service.classique_temps_moyen_en_s(), 5.0)
+	assert_eq(service.classique_plus_rapide_infos().get("temps_en_s"), 5.0)
+	assert_eq(service.classique_plus_lent_infos().get("temps_en_s"), 5.0)
+	assert_eq(service.classique_plus_galere_infos().get("nom"), "A")

@@ -371,16 +371,16 @@ func nombre_de_plateau_reussis_abandonnes_passes_pour_niveau(nom_niveau : String
 
 func nombre_de_plateau_joues() -> int:
 	var infos_plateaux = nombre_de_plateau_reussis_abandonnes_passes()
-	var reussis = infos_plateaux.get('reussis')
-	var abandonne = infos_plateaux.get('abandonnes')
-	var passe = infos_plateaux.get('passes')
+	var reussis = infos_plateaux.get('reussis', 0)
+	var abandonne = infos_plateaux.get('abandonnes', 0)
+	var passe = infos_plateaux.get('passes', 0)
 	return reussis + abandonne + passe
 
 func taux_de_reussite_des_plateaux() -> float:
 	var infos_plateaux = nombre_de_plateau_reussis_abandonnes_passes()
-	var reussis = infos_plateaux.get('reussis')
-	var abandonne = infos_plateaux.get('abandonnes')
-	var passe = infos_plateaux.get('passes')
+	var reussis = infos_plateaux.get('reussis', 0)
+	var abandonne = infos_plateaux.get('abandonnes', 0)
+	var passe = infos_plateaux.get('passes', 0)
 	var total = reussis + abandonne + passe
 	if total == 0:
 		return 0.
@@ -637,7 +637,7 @@ func gameplay_le_temps_moyen_en_s(gameplay : String) -> float:
 					var status = SauvegardeBddJoueursService.enregistrement_campagne_lire_statut_plateau(plateau)
 					if status == 'reussi':
 						# Comptabiliser les plateaux reussis
-						if plateau.get("gameplay").to_upper() != gameplay.to_upper():
+						if plateau.get("gameplay",'').to_upper() != gameplay.to_upper():
 							continue
 						var duree_en_s = plateau.get("duree", 0)
 						if duree_en_s:
@@ -652,16 +652,16 @@ func gameplay_le_temps_moyen_en_s(gameplay : String) -> float:
 
 func gameplay_nombre_de_plateau_joues(gameplay : String) -> int:
 	var infos_plateaux = gameplay_nombre_de_plateau_reussis_abandonnes_passes(gameplay)
-	var reussis = infos_plateaux.get('reussis')
-	var abandonne = infos_plateaux.get('abandonnes')
-	var passe = infos_plateaux.get('passes')
+	var reussis = infos_plateaux.get('reussis', 0)
+	var abandonne = infos_plateaux.get('abandonnes', 0)
+	var passe = infos_plateaux.get('passes', 0)
 	return reussis + abandonne + passe
 
 func gameplay_taux_de_reussite_des_plateaux(gameplay : String) -> float:
 	var infos_plateaux = gameplay_nombre_de_plateau_reussis_abandonnes_passes(gameplay)
-	var reussis = infos_plateaux.get('reussis')
-	var abandonne = infos_plateaux.get('abandonnes')
-	var passe = infos_plateaux.get('passes')
+	var reussis = infos_plateaux.get('reussis', 0)
+	var abandonne = infos_plateaux.get('abandonnes', 0)
+	var passe = infos_plateaux.get('passes', 0)
 	var total = reussis + abandonne + passe
 	if total == 0:
 		return 0.
@@ -683,7 +683,7 @@ func gameplay_nombre_de_plateau_reussis_abandonnes_passes(gameplay : String) -> 
 			if niveau.get("date_debut", 0) > date_debut_campagne:
 				for plateau in SauvegardeBddJoueursService.enregistrement_campagne_lire_plateaux(niveau):
 					# Comptabiliser les plateaux reussis
-					if plateau.get("gameplay").to_upper() != gameplay.to_upper():
+					if plateau.get("gameplay", '').to_upper() != gameplay.to_upper():
 						continue
 					if plateau.get("date_debut", 0) > date_debut_campagne:
 						if plateau.get("statut") == "reussi":
@@ -714,7 +714,7 @@ func gameplay_le_plus_rapide_les_infos(gameplay : String) -> Dictionary:
 					var status = SauvegardeBddJoueursService.enregistrement_campagne_lire_statut_plateau(plateau)
 					if status == 'reussi':
 						# Comptabiliser les plateaux reussis
-						if plateau.get("gameplay").to_upper() != gameplay.to_upper():
+						if plateau.get("gameplay",'').to_upper() != gameplay.to_upper():
 							continue
 						var duree_en_s = plateau.get("duree", 0)
 						if duree_en_s:
@@ -747,7 +747,7 @@ func gameplay_le_plus_lent_les_infos(gameplay : String) -> Dictionary:
 					var status = SauvegardeBddJoueursService.enregistrement_campagne_lire_statut_plateau(plateau)
 					if status == 'reussi':
 						# Comptabiliser les plateaux reussis
-						if plateau.get("gameplay").to_upper() != gameplay.to_upper():
+						if plateau.get("gameplay",'').to_upper() != gameplay.to_upper():
 							continue
 						var duree_en_s = plateau.get("duree", 0)
 						if duree_en_s:
@@ -776,7 +776,7 @@ func gameplay_le_plus_galere_les_infos(gameplay : String) -> Dictionary:
 			if niveau.get("date_debut", 0) > date_debut_campagne:
 				for plateau in SauvegardeBddJoueursService.enregistrement_campagne_lire_plateaux(niveau):
 					# Comptabiliser les essais de plateaux
-					if plateau.get("gameplay").to_upper() != gameplay.to_upper():
+					if plateau.get("gameplay",'').to_upper() != gameplay.to_upper():
 						continue
 					var nom_plateau = plateau.get("nom", 'inconnu')
 					if nom_plateau in plateaux_essais:

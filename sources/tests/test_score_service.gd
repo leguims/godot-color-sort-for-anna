@@ -262,3 +262,339 @@ func _level_finishes_current_level_as_won():
 	niveau["date_fin"] = 1700003000
 	SauvegardeBddJoueursService._sauvegarde_joueur["campagne"].erase("niveau_2")
 	SauvegardeBddJoueursService._enregistrer_sauvegarde_joueur()
+
+
+# ---------------------------------------------------------
+# mettre_a_jour_score_pour_import
+# ---------------------------------------------------------
+
+func _score(nom: String = "Joueur Test") -> int:
+	return SauvegardeTableauDesScoresService.lire_score_joueur(nom)
+
+func _niveau_importe(plateaux) -> Dictionary:
+	return {"niveau": "niveau_7", "score": {"niveau": 3500, "niveau_parfait": 3500}, "plateaux": plateaux}
+
+func test_import_additionne_campagne_niveau_niveau_parfait_et_plateaux():
+	var campagne = {"score": {"fin_campagne": 400000}}
+	var niveau = _niveau_importe([
+		{"nom": "P1", "score": {"duree": 120, "ratio_reussite": 800}},
+		{"nom": "P2", "score": {"duree": 30, "ratio_reussite": 500}}
+	])
+	service.mettre_a_jour_score_pour_import("Joueur Test", campagne, niveau)
+	assert_eq(_score(), 400000 + 3500 + 3500 + 120 + 800 + 30 + 500)
+
+func test_import_ne_modifie_pas_les_donnees_importees():
+	var campagne = {"score": {"fin_campagne": 10}}
+	var niveau = _niveau_importe([{"nom": "P1", "score": {"duree": 1, "ratio_reussite": 2}}])
+	var campagne_avant = campagne.duplicate(true)
+	var niveau_avant = niveau.duplicate(true)
+	service.mettre_a_jour_score_pour_import("Joueur Test", campagne, niveau)
+	assert_eq(campagne, campagne_avant)
+	assert_eq(niveau, niveau_avant)
+
+func test_import_ne_modifie_pas_la_sauvegarde_du_joueur_courant():
+	var sauvegarde_avant = SauvegardeBddJoueursService._sauvegarde_joueur.duplicate(true)
+	service.mettre_a_jour_score_pour_import("Joueur Test", {"score": {"fin_campagne": 10}}, _niveau_importe([]))
+	assert_eq(SauvegardeBddJoueursService._sauvegarde_joueur, sauvegarde_avant)
+
+func test_import_met_a_jour_le_texte_et_le_rang():
+	service.mettre_a_jour_score_pour_import("Joueur Test", {"score": {"fin_campagne": 1234567}}, {})
+	assert_eq(SauvegardeTableauDesScoresService.lire_score_txt_joueur("Joueur Test"), "1.234.567")
+	assert_eq(SauvegardeTableauDesScoresService.retourner_classement()[0].get("nom"), "Joueur Test")
+
+func test_import_campagne_et_niveau_vides_n_ajoute_rien():
+	service.mettre_a_jour_score_pour_import("Joueur Test", {}, {})
+	assert_eq(_score(), 0)
+
+func test_import_sans_cle_plateaux_ne_compte_que_campagne_et_niveau():
+	service.mettre_a_jour_score_pour_import("Joueur Test", {"score": {"fin_campagne": 100}}, {"score": {"niveau": 10, "niveau_parfait": 1}})
+	assert_eq(_score(), 111)
+
+func test_import_plateaux_vide_ne_compte_que_campagne_et_niveau():
+	service.mettre_a_jour_score_pour_import("Joueur Test", {"score": {"fin_campagne": 100}}, {"score": {"niveau": 10, "niveau_parfait": 1}, "plateaux": []})
+	assert_eq(_score(), 111)
+
+func test_import_plateaux_non_tableau_est_ignore():
+	for valeur in ["texte", {"a": 1}, 12, true]:
+		SauvegardeTableauDesScoresService.modifier_score_joueur("Joueur Test", 0)
+		service.mettre_a_jour_score_pour_import("Joueur Test", {}, {"score": {"niveau": 10}, "plateaux": valeur})
+		assert_eq(_score(), 10)
+
+func test_import_plateaux_null_est_ignore():
+	service.mettre_a_jour_score_pour_import("Joueur Test", {}, {"score": {"niveau": 10}, "plateaux": null})
+	assert_eq(_score(), 10)
+
+func test_import_ignore_les_plateaux_qui_ne_sont_pas_des_dictionnaires():
+	var niveau = _niveau_importe([5, "texte", null, [1, 2], {"score": {"duree": 7, "ratio_reussite": 3}}])
+	service.mettre_a_jour_score_pour_import("Joueur Test", {}, niveau)
+	assert_eq(_score(), 3500 + 3500 + 7 + 3)
+
+func test_import_plateau_sans_score_ou_score_partiel():
+	var niveau = {"plateaux": [
+		{"nom": "A"},
+		{"nom": "B", "score": {}},
+		{"nom": "C", "score": {"duree": 4}},
+		{"nom": "D", "score": {"ratio_reussite": 6}},
+		{"nom": "E", "score": {"duree": 0, "ratio_reussite": 0}}
+	]}
+	service.mettre_a_jour_score_pour_import("Joueur Test", {}, niveau)
+	assert_eq(_score(), 10)
+
+func test_import_scores_a_zero_n_ajoutent_rien():
+	service.mettre_a_jour_score_pour_import("Joueur Test", {"score": {"fin_campagne": 0}}, {"score": {"niveau": 0, "niveau_parfait": 0}, "plateaux": []})
+	assert_eq(_score(), 0)
+
+func test_import_cumule_sur_le_score_existant_et_sur_plusieurs_appels():
+	SauvegardeTableauDesScoresService.modifier_score_joueur("Joueur Test", 1000)
+	service.mettre_a_jour_score_pour_import("Joueur Test", {"score": {"fin_campagne": 5}}, {})
+	service.mettre_a_jour_score_pour_import("Joueur Test", {"score": {"fin_campagne": 5}}, {})
+	assert_eq(_score(), 1010)
+
+func test_import_joueur_inconnu_ne_plante_pas_et_ne_modifie_aucun_score():
+	service.mettre_a_jour_score_pour_import("Inconnu", {"score": {"fin_campagne": 100}}, _niveau_importe([{"score": {"duree": 1, "ratio_reussite": 1}}]))
+	assert_eq(_score("Inconnu"), 0)
+	assert_eq(_score(), 0)
+	assert_eq(_score(service.lire_nom_anna_triche()), 0)
+
+func test_import_nom_vide_ne_plante_pas():
+	service.mettre_a_jour_score_pour_import("", {"score": {"fin_campagne": 100}}, {})
+	assert_eq(_score(), 0)
+
+func test_import_n_applique_pas_le_bonus_anna():
+	var nom_anna = service.lire_nom_anna_triche()
+	service.mettre_a_jour_score_pour_import(nom_anna, {"score": {"fin_campagne": 100}}, {"score": {"niveau": 10, "niveau_parfait": 1}, "plateaux": [{"score": {"duree": 2, "ratio_reussite": 3}}]})
+	assert_eq(_score(nom_anna), 116)
+
+func test_import_score_nul_ou_non_entier_dans_la_campagne():
+	service.mettre_a_jour_score_pour_import("Joueur Test", {"score": null}, {"score": null, "plateaux": []})
+	assert_eq(_score(), 0)
+
+func test_import_scores_negatifs_sont_retranches():
+	SauvegardeTableauDesScoresService.modifier_score_joueur("Joueur Test", 100)
+	service.mettre_a_jour_score_pour_import("Joueur Test", {}, {"score": {"niveau": -30}})
+	assert_eq(_score(), 70)
+
+
+# ---------------------------------------------------------
+# mettre_a_jour_score_pour_passer
+# ---------------------------------------------------------
+
+func _preparer_plateau_a_passer(duree: float = 20., difficulte: int = 4) -> void:
+	_level_finishes_current_level_as_won()
+	var niveau = SauvegardeBddJoueursService._sauvegarde_joueur.get("enregistrement_campagne")[0].get("niveaux").back()
+	var plateau = niveau.get("plateaux").back()
+	plateau["date_fin"] = 1700002040
+	plateau["duree"] = duree
+	plateau["difficulte"] = difficulte
+	SauvegardeBddJoueursService._enregistrer_sauvegarde_joueur()
+
+func _dernier_plateau() -> Dictionary:
+	return SauvegardeBddJoueursService._sauvegarde_joueur.get("enregistrement_campagne")[0].get("niveaux").back().get("plateaux").back()
+
+func test_passer_met_a_zero_les_points_de_duree_et_de_ratio_dans_le_resultat():
+	_preparer_plateau_a_passer()
+	var score = service.mettre_a_jour_score_pour_passer()
+	assert_eq(score.get("duree").get("points"), 0)
+	assert_eq(score.get("duree").get("recommence"), 0)
+	assert_eq(score.get("duree").get("realise"), 0)
+	assert_eq(score.get("duree").get("type"), "duree")
+	assert_eq(score.get("ratio_reussite").get("points"), 0)
+	assert_eq(score.get("ratio_reussite").get("ratio"), 0)
+	assert_eq(score.get("ratio_reussite").get("type"), "ratio_reussite")
+
+func test_passer_conserve_les_points_de_niveau_et_niveau_parfait():
+	_preparer_plateau_a_passer()
+	var score = service.mettre_a_jour_score_pour_passer()
+	assert_eq(score.get("niveau").get("points"), 1000)
+	assert_eq(score.get("niveau_parfait").get("points"), 1000)
+	assert_eq(score.get("campagne"), {})
+	assert_false(score.has("bonus_anna"))
+
+func test_passer_retranche_les_points_de_duree_et_ratio_du_tableau_des_scores():
+	_preparer_plateau_a_passer()
+	var avant = _score()
+	service.mettre_a_jour_score_pour_passer()
+	assert_eq(_score(), avant + 1000 + 1000)
+
+func test_passer_met_a_zero_les_scores_du_plateau_en_base():
+	_preparer_plateau_a_passer()
+	service.mettre_a_jour_score_pour_passer()
+	var plateau = _dernier_plateau()
+	assert_eq(plateau.get("score").get("duree"), 0)
+	assert_eq(plateau.get("score").get("ratio_reussite"), 0)
+
+func test_passer_est_inferieur_a_une_victoire_de_la_valeur_de_duree_et_ratio():
+	_preparer_plateau_a_passer()
+	var avant = _score()
+	var victoire = service.mettre_a_jour_score_pour_victoire()
+	var gain_victoire = _score() - avant
+	assert_gt(victoire.get("duree").get("points"), 0)
+	assert_gt(victoire.get("ratio_reussite").get("points"), 0)
+	SauvegardeTableauDesScoresService.modifier_score_joueur("Joueur Test", avant)
+	service.mettre_a_jour_score_pour_passer()
+	var gain_passer = _score() - avant
+	assert_eq(gain_victoire - gain_passer, victoire.get("duree").get("points") + victoire.get("ratio_reussite").get("points"))
+
+func test_passer_plateau_milieu_de_niveau_ne_laisse_aucun_point():
+	var niveau = SauvegardeBddJoueursService._sauvegarde_joueur.get("enregistrement_campagne")[0].get("niveaux").back()
+	niveau["plateaux"] = [
+		{"nom": "D", "date_debut": 1700002010, "date_fin": 1700002030, "duree": 20, "difficulte": 2, "statut": "reussi"},
+		{"nom": "A2", "date_debut": 1700002020, "date_fin": 1700002050, "duree": 30, "difficulte": 4, "statut": "reussi"}
+	]
+	niveau["date_fin"] = 0
+	SauvegardeBddJoueursService._enregistrer_sauvegarde_joueur()
+	var avant = _score()
+	var score = service.mettre_a_jour_score_pour_passer()
+	assert_eq(_score(), avant)
+	assert_eq(score.get("niveau"), {})
+	assert_eq(score.get("niveau_parfait"), {})
+	assert_eq(score.get("campagne"), {})
+	assert_eq(score.get("duree").get("points"), 0)
+
+func test_passer_en_fin_de_campagne_conserve_le_bonus_de_campagne():
+	_preparer_plateau_a_passer()
+	SauvegardeBddJoueursService._sauvegarde_joueur["campagne"] = {}
+	var avant = _score()
+	var score = service.mettre_a_jour_score_pour_passer()
+	var points_campagne = roundi(service.FIN_CAMPAGNE * StatsService.campagne_taux_reussite())
+	assert_eq(score.get("campagne").get("type"), "campagne")
+	assert_eq(score.get("campagne").get("points"), points_campagne)
+	assert_eq(_score(), avant + 1000 + 1000 + points_campagne)
+
+func test_passer_avec_bonus_anna_recalcule_le_bonus_sans_duree_ni_ratio():
+	var nom_anna = service.lire_nom_anna_triche()
+	SauvegardeBddJoueursService._sauvegarde_joueur["nom"] = nom_anna
+	_preparer_plateau_a_passer()
+	var avant = _score(nom_anna)
+	var score = service.mettre_a_jour_score_pour_passer()
+	assert_true(score.has("bonus_anna"))
+	assert_eq(score.get("bonus_anna").get("type"), "bonus_anna")
+	assert_eq(score.get("bonus_anna").get("points"), (1000 + 1000) * 3)
+	assert_eq(_score(nom_anna), avant + 1000 + 1000 + (1000 + 1000) * 3)
+
+func test_passer_avec_bonus_anna_hors_fin_de_niveau_donne_un_bonus_nul():
+	var nom_anna = service.lire_nom_anna_triche()
+	SauvegardeBddJoueursService._sauvegarde_joueur["nom"] = nom_anna
+	var niveau = SauvegardeBddJoueursService._sauvegarde_joueur.get("enregistrement_campagne")[0].get("niveaux").back()
+	niveau["plateaux"] = [
+		{"nom": "D", "date_debut": 1700002010, "date_fin": 1700002030, "duree": 20, "difficulte": 2, "statut": "reussi"},
+		{"nom": "A2", "date_debut": 1700002020, "date_fin": 1700002050, "duree": 30, "difficulte": 4, "statut": "reussi"}
+	]
+	SauvegardeBddJoueursService._enregistrer_sauvegarde_joueur()
+	var avant = _score(nom_anna)
+	var score = service.mettre_a_jour_score_pour_passer()
+	assert_eq(score.get("bonus_anna").get("points"), 0)
+	assert_eq(_score(nom_anna), avant)
+
+func test_passer_est_idempotent_sur_le_tableau_des_scores_net():
+	_preparer_plateau_a_passer()
+	var avant = _score()
+	service.mettre_a_jour_score_pour_passer()
+	var apres_premier = _score()
+	service.mettre_a_jour_score_pour_passer()
+	assert_eq(_score(), apres_premier + 1000 + 1000)
+	assert_eq(apres_premier, avant + 1000 + 1000)
+
+func test_passer_sans_duree_realisee_ne_retranche_rien_de_trop():
+	_preparer_plateau_a_passer(0.)
+	var avant = _score()
+	var score = service.mettre_a_jour_score_pour_passer()
+	assert_eq(score.get("duree").get("points"), 0)
+	assert_eq(_score(), avant + 1000 + 1000)
+
+func test_passer_difficulte_elevee_ne_laisse_aucun_point_de_duree():
+	_preparer_plateau_a_passer(5., 100)
+	var avant = _score()
+	service.mettre_a_jour_score_pour_passer()
+	assert_eq(_score(), avant + 1000 + 1000)
+
+func test_passer_joueur_absent_du_tableau_des_scores_ne_plante_pas():
+	SauvegardeTableauDesScoresService.liste_des_scores = []
+	_preparer_plateau_a_passer()
+	var score = service.mettre_a_jour_score_pour_passer()
+	assert_eq(score.get("duree").get("points"), 0)
+	assert_eq(_score(), 0)
+
+
+# ---------------------------------------------------------
+# Cas limites complémentaires
+# ---------------------------------------------------------
+
+func test_score_duree_difficulte_superieure_a_cent_reste_calcule():
+	_set_last_plateau_difficulte(150)
+	var score = service.mettre_a_jour_score_duree()
+	assert_eq(score.get("type"), "duree")
+	assert_eq(score.get("reference"), 9.0)
+
+func test_score_duree_reference_par_difficulte():
+	var cas = {1: 9.0, 9: 9.0, 10: 12.0, 20: 14.0, 30: 16.0, 40: 18.0, 50: 20.0, 60: 25.0, 71: 30.0, 81: 60.0, 100: 120.0}
+	for difficulte in cas:
+		_set_last_plateau_difficulte(difficulte)
+		assert_eq(service.mettre_a_jour_score_duree().get("reference"), cas[difficulte], "difficulté %d" % difficulte)
+
+func test_score_duree_points_exacts():
+	_preparer_plateau_a_passer(18., 4)
+	var avant = _score()
+	var score = service.mettre_a_jour_score_duree()
+	assert_eq(score.get("points"), roundi(100 * 4 * 9. / 18.))
+	assert_eq(_score(), avant + score.get("points"))
+	assert_eq(_dernier_plateau().get("score").get("duree"), score.get("points"))
+
+func test_score_ratio_reussite_est_enregistre_dans_le_plateau_et_le_tableau():
+	var avant = _score()
+	var score = service.mettre_a_jour_score_ratio_reussite()
+	assert_eq(_score(), avant + score.get("points"))
+	assert_eq(_dernier_plateau().get("score").get("ratio_reussite"), score.get("points"))
+
+func test_score_niveau_points_egaux_a_500_fois_la_longueur():
+	_level_finishes_current_level_as_won()
+	var score = service.mettre_a_jour_score_niveau()
+	assert_eq(score.get("longueur"), 2)
+	assert_eq(score.get("points"), 1000)
+
+func test_score_niveau_parfait_double_le_score_du_niveau():
+	_preparer_plateau_a_passer()
+	service.mettre_a_jour_score_niveau()
+	var score = service.mettre_a_jour_score_niveau_parfait()
+	assert_eq(score.get("points"), 1000)
+	assert_eq(score.get("bonus"), "x2")
+
+func test_score_niveau_sans_joueur_retourne_zero_point_et_niveau_parfait_vide():
+	# Comportement actuel (discutable) : sans niveau enregistré, le niveau est considéré terminé et renvoie 0 point.
+	SauvegardeBddJoueursService.liberer_le_joueur()
+	assert_eq(service.mettre_a_jour_score_niveau(), {"type": "niveau", "longueur": 0, "points": 0})
+	assert_eq(service.mettre_a_jour_score_niveau_parfait(), {})
+
+func test_bonus_anna_sans_points_dans_la_grille():
+	var nom_anna = service.lire_nom_anna_triche()
+	SauvegardeBddJoueursService._sauvegarde_joueur["nom"] = nom_anna
+	var bonus = service.bonus_score_anna_damour({"niveau": {}, "campagne": {}})
+	assert_eq(bonus.get("points"), 0)
+	assert_eq(bonus.get("type"), "bonus_anna")
+
+func test_bonus_anna_nom_insensible_a_la_casse():
+	var nom_anna = service.lire_nom_anna_triche()
+	SauvegardeBddJoueursService._sauvegarde_joueur["nom"] = nom_anna.to_upper()
+	var bonus = service.bonus_score_anna_damour({"niveau": {"points": 10}})
+	assert_eq(bonus.get("points"), 30)
+
+func test_bonus_anna_grille_vide():
+	var nom_anna = service.lire_nom_anna_triche()
+	SauvegardeBddJoueursService._sauvegarde_joueur["nom"] = nom_anna
+	assert_eq(service.bonus_score_anna_damour({}).get("points"), 0)
+
+func test_bonus_anna_retourne_vide_pour_un_autre_joueur():
+	assert_eq(service.bonus_score_anna_damour({"niveau": {"points": 10}}), {})
+
+func test_nouveau_joueur_est_nom_anna_triche_nom_vide_et_nom_decore():
+	assert_false(service.nouveau_joueur_est_nom_anna_triche(""))
+	assert_false(service.nouveau_joueur_est_nom_anna_triche(service.lire_nom_anna_triche()))
+	assert_true(service.nouveau_joueur_est_nom_anna_triche("ANNA"))
+	assert_false(service.nouveau_joueur_est_nom_anna_triche(" Anna"))
+
+func test_lire_nom_anna_triche_est_stable():
+	assert_eq(service.lire_nom_anna_triche(), service.lire_nom_anna_triche())
+	assert_ne(service.lire_nom_anna_triche().to_lower(), "anna")
+
+func test_fin_campagne_vaut_500000():
+	assert_eq(service.FIN_CAMPAGNE, 500000)

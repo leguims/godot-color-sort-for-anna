@@ -41,7 +41,6 @@ func _on_bouton_statistiques_pressed() -> void:
 func _on_panneau_defaite_continuer() -> void:
 	$Centrer.hide()
 	$Centrer/PanneauDefaite.hide()
-	LogService.log_debug("[qui_perd_gagne] emission signal : victoire")
 	LogService.log_debug("[messages_campagne] emission signal : score_continuer")
 	score_continuer.emit() #Redonner la main à "campagne" pour la suite
 

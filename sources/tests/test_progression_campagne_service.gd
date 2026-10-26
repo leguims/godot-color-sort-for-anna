@@ -355,3 +355,195 @@ func test_gagner_un_plateau_nemet_pas_fin_niveau_sil_reste_des_plateaux_dans_le_
 
 	assert_false(fin_niveau_recu)
 	assert_true(SauvegardeBddJoueursService.campagne_niveau_existe(1))
+
+
+# ---------------------------------------------------------
+# passer_un_plateau
+# ---------------------------------------------------------
+
+var fin_campagne_recue = false
+
+func _on_fin_campagne():
+	fin_campagne_recue = true
+
+func _plateau_en_cours(nom: String, difficulte: int = 1) -> Dictionary:
+	return {"nom": nom, "date_debut": Time.get_unix_time_from_system() - 30., "date_fin": 0, "duree": 0, "gameplay": "CLASSIQUE", "difficulte": difficulte, "statut": "en cours", "score": {}, "coups joués": []}
+
+func _ecrire_alpha(campagne: Dictionary, plateaux: Array, plateaux_libres: Dictionary = {}) -> void:
+	FichiersJsonService.write_json_file("sauvegarde_joueur_alpha.json", {
+		"nom": "Alpha",
+		"campagne": campagne,
+		"enregistrement_campagne": [{
+			"campagne": "campagne_test",
+			"date_debut": 100,
+			"date_fin": 0,
+			"score": {},
+			"niveaux": [{
+				"niveau": "niveau_1",
+				"date_debut": 100,
+				"date_fin": 0,
+				"score": {},
+				"plateaux": plateaux
+			}]
+		}],
+		"plateaux_libres": plateaux_libres,
+		"nombre_de_parties": {}
+	})
+	service.fin_campagne.connect(_on_fin_campagne)
+	fin_campagne_recue = false
+	assert_true(service.choisir_le_joueur_pour_la_campagne("Alpha"))
+
+func _plateau_p1(plateaux_restants: int = 2) -> Dictionary:
+	var liste = []
+	for index in range(plateaux_restants):
+		liste.append({"nom": "P%d" % (index + 1), "gameplay": "CLASSIQUE", "difficulte": 1})
+	return {"niveau_1": liste}
+
+func _dernier_plateau_enregistre() -> Dictionary:
+	return SauvegardeBddJoueursService.enregistrement_campagne_lire_dernier_plateau()
+
+func test_passer_un_plateau_retire_le_plateau_courant_de_la_campagne():
+	_ecrire_alpha(_plateau_p1(2), [_plateau_en_cours("P1")])
+	service.passer_un_plateau()
+	var restants = SauvegardeBddJoueursService._sauvegarde_joueur.get("campagne").get("niveau_1")
+	assert_eq(restants.size(), 1)
+	assert_eq(restants[0].get("nom"), "P2")
+
+func test_passer_un_plateau_enregistre_le_statut_passe_et_termine_le_plateau():
+	_ecrire_alpha(_plateau_p1(2), [_plateau_en_cours("P1")])
+	service.passer_un_plateau()
+	var plateau = _dernier_plateau_enregistre()
+	assert_eq(plateau.get("statut"), "passé")
+	assert_gt(plateau.get("date_fin"), 0)
+	assert_false(SauvegardeBddJoueursService.enregistrement_campagne_plateau_en_cours())
+
+func test_passer_un_plateau_n_enregistre_pas_de_temps_de_jeu_pour_un_plateau_passe():
+	_ecrire_alpha(_plateau_p1(2), [_plateau_en_cours("P1")])
+	service.passer_un_plateau()
+	assert_eq(_dernier_plateau_enregistre().get("duree"), 0.0)
+
+func test_passer_un_plateau_ne_memorise_pas_le_plateau_dans_les_plateaux_libres():
+	_ecrire_alpha(_plateau_p1(2), [_plateau_en_cours("P1")], {"1": [{"nom": "Externe"}]})
+	service.passer_un_plateau()
+	assert_eq(SauvegardeBddJoueursService._sauvegarde_joueur.get("plateaux_libres"), {"1": [{"nom": "Externe"}]})
+
+func test_gagner_un_plateau_memorise_le_plateau_contrairement_a_passer():
+	_ecrire_alpha(_plateau_p1(2), [_plateau_en_cours("P1")])
+	service.gagner_un_plateau()
+	assert_eq(SauvegardeBddJoueursService._sauvegarde_joueur.get("plateaux_libres").get("1").size(), 1)
+
+func test_passer_un_plateau_emet_detail_score_sans_points_de_duree_ni_de_ratio():
+	_ecrire_alpha(_plateau_p1(2), [_plateau_en_cours("P1")])
+	service.passer_un_plateau()
+	assert_not_null(detail_score_received)
+	assert_eq(detail_score_received.get("duree").get("points"), 0)
+	assert_eq(detail_score_received.get("duree").get("realise"), 0)
+	assert_eq(detail_score_received.get("duree").get("recommence"), 0)
+	assert_eq(detail_score_received.get("ratio_reussite").get("points"), 0)
+	assert_eq(detail_score_received.get("ratio_reussite").get("ratio"), 0)
+
+func test_passer_un_plateau_remet_a_zero_les_scores_du_plateau_en_base():
+	_ecrire_alpha(_plateau_p1(2), [_plateau_en_cours("P1")])
+	service.passer_un_plateau()
+	var score = _dernier_plateau_enregistre().get("score")
+	assert_eq(score.get("duree"), 0)
+	assert_eq(score.get("ratio_reussite"), 0)
+
+func test_passer_un_plateau_ne_modifie_pas_le_score_hors_niveau_et_campagne():
+	_ecrire_alpha(_plateau_p1(2), [_plateau_en_cours("P1")])
+	var avant = SauvegardeTableauDesScoresService.lire_score_joueur("Alpha")
+	service.passer_un_plateau()
+	assert_eq(SauvegardeTableauDesScoresService.lire_score_joueur("Alpha"), avant)
+
+func test_passer_un_plateau_n_emet_pas_fin_niveau_ni_fin_campagne_s_il_reste_des_plateaux():
+	_ecrire_alpha(_plateau_p1(2), [_plateau_en_cours("P1")])
+	service.passer_un_plateau()
+	assert_false(fin_niveau_recu)
+	assert_false(fin_campagne_recue)
+
+func test_passer_le_dernier_plateau_du_niveau_emet_fin_niveau_et_fin_campagne():
+	_ecrire_alpha(_plateau_p1(1), [_plateau_en_cours("P1")])
+	service.passer_un_plateau()
+	assert_true(fin_niveau_recu)
+	assert_true(fin_campagne_recue)
+	assert_false(SauvegardeBddJoueursService.campagne_niveau_existe(1))
+	assert_true(service.la_campagne_est_terminee())
+
+func test_passer_le_dernier_plateau_du_niveau_sans_fin_de_campagne():
+	var campagne = _plateau_p1(1)
+	campagne["niveau_2"] = [{"nom": "Q1", "gameplay": "CLASSIQUE", "difficulte": 2}]
+	_ecrire_alpha(campagne, [_plateau_en_cours("P1")])
+	service.passer_un_plateau()
+	assert_true(fin_niveau_recu)
+	assert_false(fin_campagne_recue)
+	assert_false(service.la_campagne_est_terminee())
+
+func test_passer_le_dernier_plateau_attribue_les_points_de_niveau_et_de_campagne_sans_duree_ni_ratio():
+	_ecrire_alpha(_plateau_p1(1), [_plateau_en_cours("P1")])
+	var avant = SauvegardeTableauDesScoresService.lire_score_joueur("Alpha")
+	service.passer_un_plateau()
+	var attendu = 0
+	for cle in ["niveau", "niveau_parfait", "campagne"]:
+		attendu += detail_score_received.get(cle, {}).get("points", 0)
+	assert_eq(SauvegardeTableauDesScoresService.lire_score_joueur("Alpha"), avant + attendu)
+
+func test_passer_deux_plateaux_de_suite_les_marque_tous_les_deux_passes():
+	_ecrire_alpha(_plateau_p1(3), [_plateau_en_cours("P1")])
+	service.passer_un_plateau()
+	service.commencer_un_plateau()
+	service.passer_un_plateau()
+	var plateaux = SauvegardeBddJoueursService.enregistrement_campagne_lire_dernier_niveau().get("plateaux")
+	assert_eq(plateaux.size(), 2)
+	assert_eq(plateaux[0].get("statut"), "passé")
+	assert_eq(plateaux[1].get("statut"), "passé")
+	assert_eq(plateaux[1].get("nom"), "P2")
+	assert_eq(SauvegardeBddJoueursService._sauvegarde_joueur.get("campagne").get("niveau_1").size(), 1)
+
+func test_passer_un_plateau_apres_commencer_un_plateau():
+	_ecrire_alpha(_plateau_p1(2), [])
+	service.commencer_un_plateau()
+	assert_true(SauvegardeBddJoueursService.enregistrement_campagne_plateau_en_cours())
+	service.passer_un_plateau()
+	assert_eq(_dernier_plateau_enregistre().get("statut"), "passé")
+	assert_eq(_dernier_plateau_enregistre().get("nom"), "P1")
+	assert_eq(SauvegardeBddJoueursService.lire_nombre_de_parties_difficulte(1), 1)
+
+func test_passer_un_plateau_est_enregistre_dans_la_sauvegarde_du_joueur():
+	_ecrire_alpha(_plateau_p1(2), [_plateau_en_cours("P1")])
+	service.passer_un_plateau()
+	var sauvegarde = FichiersJsonService.read_json_file("sauvegarde_joueur_alpha.json")
+	var plateaux = sauvegarde.get("enregistrement_campagne")[0].get("niveaux")[0].get("plateaux")
+	assert_eq(plateaux[0].get("statut"), "passé")
+	assert_eq(sauvegarde.get("campagne").get("niveau_1").size(), 1)
+
+func test_passer_un_plateau_deja_termine_ne_modifie_pas_son_statut():
+	# Défaut attendu : sans plateau en cours, l'appel ne doit rien modifier (le plateau réussi devient 'passé').
+	var plateau_reussi = _plateau_en_cours("P0")
+	plateau_reussi["statut"] = "reussi"
+	plateau_reussi["date_fin"] = 150
+	plateau_reussi["duree"] = 12
+	_ecrire_alpha(_plateau_p1(2), [plateau_reussi])
+	service.passer_un_plateau()
+	assert_eq(_dernier_plateau_enregistre().get("statut"), "reussi")
+	assert_eq(SauvegardeBddJoueursService._sauvegarde_joueur.get("campagne").get("niveau_1").size(), 2)
+
+func test_passer_un_plateau_sans_plateau_en_cours_ne_retire_rien_de_la_campagne():
+	var plateau_reussi = _plateau_en_cours("P0")
+	plateau_reussi["statut"] = "reussi"
+	plateau_reussi["date_fin"] = 150
+	_ecrire_alpha(_plateau_p1(2), [plateau_reussi])
+	service.passer_un_plateau()
+	assert_eq(SauvegardeBddJoueursService._sauvegarde_joueur.get("campagne").get("niveau_1").size(), 2)
+
+func test_passer_un_plateau_dont_le_statut_n_est_pas_en_cours_ne_retire_rien():
+	_ecrire_alpha(_plateau_p1(2), [{"nom": "P1", "date_debut": 90, "date_fin": 0, "duree": 0, "gameplay": "CLASSIQUE", "difficulte": 1, "statut": "en_cours", "score": {}}])
+	service.passer_un_plateau()
+	assert_eq(SauvegardeBddJoueursService._sauvegarde_joueur.get("campagne").get("niveau_1").size(), 2)
+
+func test_passer_un_plateau_sans_joueur_ne_plante_pas():
+	# Comportement actuel (discutable) : sans joueur, fin_niveau et fin_campagne sont tout de même émis.
+	SauvegardeBddJoueursService.liberer_le_joueur()
+	var scores_avant = SauvegardeTableauDesScoresService.liste_des_scores.duplicate(true)
+	service.passer_un_plateau()
+	assert_eq(SauvegardeTableauDesScoresService.liste_des_scores, scores_avant)
+	assert_not_null(detail_score_received)

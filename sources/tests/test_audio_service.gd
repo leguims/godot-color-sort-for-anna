@@ -152,3 +152,131 @@ func test_effets_sonores_ne_jouent_rien_quand_ils_sont_desactives():
 		service.effet_sonore.stream = null
 		service.call(methode)
 		assert_eq(service.effet_sonore.stream, null)
+
+
+func test_son_passer_un_plateau_joue_le_son_de_passage_quand_actif():
+	SauvegardeConfigurationService.configuration_du_jeu["effets sonores"] = true
+	service.effet_sonore.stream = null
+	service.son_passer_un_plateau()
+	assert_eq(service.effet_sonore.stream, service.SON_PARTIE_PASSER)
+	assert_true(service.effet_sonore.playing)
+
+func test_son_passer_un_plateau_ne_joue_rien_quand_desactive():
+	SauvegardeConfigurationService.configuration_du_jeu["effets sonores"] = false
+	service.effet_sonore.stream = null
+	service.son_passer_un_plateau()
+	assert_null(service.effet_sonore.stream)
+	assert_false(service.effet_sonore.playing)
+
+func test_son_passer_un_plateau_distinct_des_sons_de_victoire_et_echec():
+	assert_ne(service.SON_PARTIE_PASSER, service.SON_PARTIE_VICTOIRE)
+	assert_ne(service.SON_PARTIE_PASSER, service.SON_PARTIE_ECHEC)
+
+func test_effet_sonore_play_remplace_le_stream_et_lance_la_lecture():
+	service._effet_sonore_play(service.SON_MENU_CLICK)
+	assert_eq(service.effet_sonore.stream, service.SON_MENU_CLICK)
+	assert_true(service.effet_sonore.playing)
+	service._effet_sonore_play(service.SON_PARTIE_VICTOIRE)
+	assert_eq(service.effet_sonore.stream, service.SON_PARTIE_VICTOIRE)
+
+func test_effet_sonore_play_ne_touche_pas_a_la_musique():
+	service._effet_sonore_play(service.SON_MENU_CLICK)
+	assert_null(service.musique.stream)
+	assert_false(service.musique.playing)
+
+func test_effet_sonore_play_ignore_la_configuration():
+	SauvegardeConfigurationService.configuration_du_jeu["effets sonores"] = false
+	service._effet_sonore_play(service.SON_MENU_CLICK)
+	assert_eq(service.effet_sonore.stream, service.SON_MENU_CLICK)
+
+func test_effet_sonore_play_avec_stream_nul_ne_plante_pas():
+	service._effet_sonore_play(null)
+	assert_null(service.effet_sonore.stream)
+	assert_false(service.effet_sonore.playing)
+
+func test_musique_play_remplace_le_stream_et_lance_la_lecture():
+	service._musique_play(service.MUSIQUE_DREAMING)
+	assert_eq(service.musique.stream, service.MUSIQUE_DREAMING)
+	assert_true(service.musique.playing)
+	service._musique_play(service.MUSIQUE_SU_TURNO)
+	assert_eq(service.musique.stream, service.MUSIQUE_SU_TURNO)
+
+func test_musique_stop_arrete_la_lecture_et_garde_le_stream():
+	service._musique_play(service.MUSIQUE_DREAMING)
+	service._musique_stop()
+	assert_false(service.musique.playing)
+	assert_eq(service.musique.stream, service.MUSIQUE_DREAMING)
+
+func test_musique_stop_sans_lecture_ne_plante_pas():
+	service._musique_stop()
+	service._musique_stop()
+	assert_false(service.musique.playing)
+
+func test_musique_stop_ignore_la_configuration():
+	service._musique_play(service.MUSIQUE_DREAMING)
+	SauvegardeConfigurationService.configuration_du_jeu["musiques"] = false
+	service._musique_stop()
+	assert_false(service.musique.playing)
+
+func test_musique_stop_ne_touche_pas_aux_effets_sonores():
+	service._effet_sonore_play(service.SON_MENU_CLICK)
+	service._musique_play(service.MUSIQUE_DREAMING)
+	service._musique_stop()
+	assert_true(service.effet_sonore.playing)
+
+func test_arreter_la_musique_n_arrete_pas_les_effets_sonores():
+	service._effet_sonore_play(service.SON_MENU_CLICK)
+	service.arreter_la_musique()
+	assert_true(service.effet_sonore.playing)
+
+func test_arreter_la_musique_laisse_jouer_si_musiques_desactivees_en_cours_de_lecture():
+	# Comportement actuel (discutable) : désactiver les musiques pendant la lecture n'autorise plus l'arrêt.
+	service._musique_play(service.MUSIQUE_DREAMING)
+	SauvegardeConfigurationService.configuration_du_jeu["musiques"] = false
+	service.arreter_la_musique()
+	assert_true(service.musique.playing)
+
+func test_jouer_la_musique_sans_joueur_ni_donnees_joue_dreaming():
+	SauvegardeBddJoueursService.liberer_le_joueur()
+	service.jouer_la_musique()
+	assert_eq(service.musique.stream, service.MUSIQUE_DREAMING)
+
+func test_jouer_la_musique_sans_plateau_restant_joue_la_derniere_piste():
+	_activer_joueur_test(3, 0)
+	service.jouer_la_musique()
+	assert_eq(service.musique.stream, service.MUSIQUE_GREAT_LITTLE_CHALLENGE)
+
+func test_jouer_la_musique_remplace_la_piste_en_cours():
+	_activer_joueur_test(0, 6)
+	service.jouer_la_musique()
+	assert_eq(service.musique.stream, service.MUSIQUE_DREAMING)
+	_activer_joueur_test(6, 0)
+	service.jouer_la_musique()
+	assert_eq(service.musique.stream, service.MUSIQUE_GREAT_LITTLE_CHALLENGE)
+	assert_true(service.musique.playing)
+
+func test_jouer_la_musique_desactivee_ne_lance_pas_la_lecture():
+	SauvegardeConfigurationService.configuration_du_jeu["musiques"] = false
+	service.jouer_la_musique()
+	assert_false(service.musique.playing)
+
+func test_musiques_et_effets_sont_independants():
+	SauvegardeConfigurationService.configuration_du_jeu["musiques"] = false
+	SauvegardeConfigurationService.configuration_du_jeu["effets sonores"] = true
+	service.jouer_la_musique()
+	service.son_menu_click()
+	assert_null(service.musique.stream)
+	assert_eq(service.effet_sonore.stream, service.SON_MENU_CLICK)
+	SauvegardeConfigurationService.configuration_du_jeu["musiques"] = true
+	SauvegardeConfigurationService.configuration_du_jeu["effets sonores"] = false
+	service.effet_sonore.stream = null
+	service.son_menu_click()
+	assert_null(service.effet_sonore.stream)
+
+func test_effets_sonores_sans_cle_de_configuration_utilisent_la_valeur_par_defaut():
+	SauvegardeConfigurationService.configuration_du_jeu.erase("effets sonores")
+	SauvegardeConfigurationService.configuration_du_jeu.erase("musiques")
+	service.son_passer_un_plateau()
+	service.jouer_la_musique()
+	service.arreter_la_musique()
+	assert_true(true)

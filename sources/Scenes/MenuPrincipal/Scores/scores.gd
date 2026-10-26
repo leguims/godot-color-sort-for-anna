@@ -1,7 +1,7 @@
 extends Control
 
 const TOP_N := 5
-const ASSET_DIR := "res://Art/UI/scores/"
+const ASSET_DIR := "res://Art/UI/Scores/"
 const NAVY := Color("0a274d")
 const CORAL := Color("f04d3c")
 const PANEL := Color("fbefe0")
