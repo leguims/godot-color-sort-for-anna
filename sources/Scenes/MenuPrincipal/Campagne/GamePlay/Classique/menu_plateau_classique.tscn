@@ -67,7 +67,7 @@ vertical_alignment = 1
 
 [node name="Chrono" type="Label" parent="BandeauEnJeu" unique_id=1265229291]
 layout_mode = 0
-offset_left = 292.0
+offset_left = 299.0
 offset_top = 32.0
 offset_right = 392.0
 offset_bottom = 69.0
@@ -75,7 +75,6 @@ theme_override_colors/font_color = Color(0.023529412, 0.24705882, 0.47058824, 1)
 theme_override_fonts/font = ExtResource("5_tolx0")
 theme_override_font_sizes/font_size = 26
 text = "00:00.0"
-horizontal_alignment = 1
 vertical_alignment = 1
 
 [node name="Coups" type="Label" parent="BandeauEnJeu" unique_id=363019818]
