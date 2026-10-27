@@ -8,8 +8,8 @@ extends Node
 
 # Dico : {'caracteristique': reglage}
 var configuration_du_jeu = {
-	'version': 'V1.0.0-rc18',
-	'date_debut_campagne': "2026-10-17 00:00:00",
+	'version': 'V1.0.0-rc19',
+	'date_debut_campagne': "2026-10-27 00:00:00",
 	'musiques': true,
 	'effets sonores': true,
 	'vibrations': true
@@ -208,8 +208,8 @@ func _V0_4_X___V1_0_X() -> void:
 						var date_fin = plateau.get('date_fin', 0.)
 						var duree = plateau.get('duree', 0)
 						var statut = plateau.get('statut', 'reussi')
-						var score = plateau.get('score', {}).duplicate()
-						var coups_joues = plateau.get('coups joués', []).duplicate()
+						var score = plateau.get('score', {}).duplicate(true)
+						var coups_joues = plateau.get('coups joués', []).duplicate(true)
 						var dernier_plateau = SauvegardeBddJoueursService.enregistrement_campagne_lire_dernier_plateau()
 						dernier_plateau['date_debut'] = date_debut
 						dernier_plateau['date_fin'] = date_fin
