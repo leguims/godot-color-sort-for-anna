@@ -82,6 +82,9 @@ func accepter_import() -> void:
 	var donnees_campagne: Dictionary = _import_en_attente.get("campagne", {})
 	var  donnees_niveau: Dictionary = _import_en_attente.get("niveau", {})
 	var nom_joueur_import := nom_joueur
+	# TODO : rétablir l'import de QR ou l'import JSON
+	LogService.log_erreur("Dans cette version, l'import de QR n'est plus compatible.")
+	_erreur_import()
 
 	if not ProgressionCampagneService.importer_statistiques_nouveau_joueur_externe(nom_joueur_import, donnees_campagne, donnees_niveau) \
 		and not ProgressionCampagneService.importer_statistiques_joueur_externe(nom_joueur_import, donnees_campagne, donnees_niveau):

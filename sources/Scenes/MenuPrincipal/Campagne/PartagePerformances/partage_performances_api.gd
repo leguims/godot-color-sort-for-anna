@@ -222,6 +222,11 @@ func _on_qr_detected(contenu_qr: String) -> void:
 	_liberer_qr_scanner()
 	var cle_hmac: String = ProjectSettings.get_setting("partage_performances/cle_hmac", "")
 	var resultat: Dictionary = _logique.decoder_et_verifier_qr(contenu_qr, cle_hmac)
+	# TODO : rétablir l'import de QR ou l'import JSON
+	erreur_decodage_qr.emit("Dans cette version, l'import de QR n'est plus compatible.")
+	LogService.log_erreur("Dans cette version, l'import de QR n'est plus compatible.")
+	return
+
 	if not resultat.get("succes", false):
 		erreur_decodage_qr.emit(resultat.get("erreur", "Le QR ne peut pas être validé."))
 		return
