@@ -586,7 +586,7 @@ func serie_de_victoire_maximum() -> int:
 	# Parcourir la liste des enregistrements de la campagne
 	if SauvegardeBddJoueursService.enregistrement_campagne():
 		# Classer les enregistrements par ordre chronologique
-		var campagne_classee = SauvegardeBddJoueursService.enregistrement_campagne_lire_derniere_campagne().duplicate()
+		var campagne_classee = SauvegardeBddJoueursService.enregistrement_campagne_lire_derniere_campagne().duplicate(true)
 		var niveaux_classes = SauvegardeBddJoueursService.enregistrement_campagne_lire_niveaux(campagne_classee)
 		var change = true
 		while change:

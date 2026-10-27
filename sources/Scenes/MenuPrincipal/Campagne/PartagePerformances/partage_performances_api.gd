@@ -16,13 +16,20 @@ var _qr_scanner: Node
 
 ## Retourne le nom du joueur et les enregistrements de son dernier niveau.
 func lire_donnees_dernier_niveau() -> Dictionary:
-	var campagne = SauvegardeBddJoueursService.enregistrement_campagne_lire_derniere_campagne().duplicate()
-	# Suppression des niveaux de la campagne
-	campagne.erase('niveaux')
+	var niveau = SauvegardeBddJoueursService.enregistrement_campagne_lire_dernier_niveau()
+	var plateaux = SauvegardeBddJoueursService.enregistrement_campagne_lire_plateaux(niveau).duplicate(true)
+	for plateau in plateaux:
+		# Allegement des données utile pour réduire le poids du QR code
+		plateau.erase('coups joués')
+		plateau.erase('date_debut')
+		plateau.erase('date_fin')
+		plateau.erase('score')
 	return {
 		"joueur": SauvegardeBddJoueursService.lire_nom_joueur(),
-		"campagne": campagne,
-		"niveau": SauvegardeBddJoueursService.enregistrement_campagne_lire_dernier_niveau()
+		"campagne": SauvegardeBddJoueursService.enregistrement_campagne_lire_nom_derniere_campagne(),
+		"niveau": SauvegardeBddJoueursService.enregistrement_campagne_lire_nom_dernier_niveau(),
+		"plateaux": plateaux,
+		"Status": 'Ne pas importer'
 	}
 
 ## Prépare les données JSON du niveau, leur signature HMAC et le contenu du QR.
@@ -200,9 +207,8 @@ func partager_qr_android(share: Node, texture_qr: Texture2D) -> bool:
 
 	var qr_data = lire_donnees_dernier_niveau()
 	var nom_joueur = qr_data.get("joueur", "")
-	var campagne: Dictionary = qr_data.get("campagne", {})
-	var nom_campagne = str(campagne.get("campagne", "")).capitalize()
-	var nom_niveau = qr_data.get("niveau", "").get("niveau", "").capitalize()
+	var nom_campagne = qr_data.get("campagne", "").capitalize()
+	var nom_niveau = qr_data.get("niveau", "").capitalize()
 	share.call(
 		"share_texture",
 		texture_qr,
