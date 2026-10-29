@@ -63,6 +63,9 @@ func niveau_taux_reussite_infos() -> Dictionary:
 
 # #######
 # Plateau
+func plateau_nombre_de_plateaux_joues() -> int:
+	return nombre_de_plateaux_joues()
+
 func plateau_nombre_essais_de_plateaux() -> int:
 	return nombre_essais_de_plateaux()
 
@@ -86,6 +89,9 @@ func plateau_plus_galere_infos() -> Dictionary:
 
 # #######
 # Gameplay Classique
+func classique_nombre_de_plateaux_joues() -> int:
+	return gameplay_nombre_de_plateaux_joues("CLASSIQUE")
+
 func classique_nombre_essais_de_plateaux() -> int:
 	return gameplay_nombre_essais_de_plateaux("CLASSIQUE")
 
@@ -106,6 +112,9 @@ func classique_plus_galere_infos() -> Dictionary:
 
 # #######
 # Gameplay Qui Perd Gagne
+func qui_perd_gagne_nombre_de_plateaux_joues() -> int:
+	return gameplay_nombre_de_plateaux_joues("QUI_PERD_GAGNE")
+
 func qui_perd_gagne_nombre_essais_de_plateaux() -> int:
 	return gameplay_nombre_essais_de_plateaux("QUI_PERD_GAGNE")
 
@@ -382,7 +391,8 @@ func nombre_essais_de_plateaux() -> int:
 func nombre_de_plateaux_joues() -> int:
 	var infos_plateaux = nombre_de_plateau_reussis_abandonnes_passes()
 	var reussis = infos_plateaux.get('reussis', 0)
-	return reussis
+	var passe = infos_plateaux.get('passes', 0)
+	return reussis + passe
 
 func taux_de_reussite_des_plateaux() -> float:
 	var infos_plateaux = nombre_de_plateau_reussis_abandonnes_passes()
@@ -697,7 +707,8 @@ func gameplay_nombre_essais_de_plateaux(gameplay : String) -> int:
 func gameplay_nombre_de_plateaux_joues(gameplay : String) -> int:
 	var infos_plateaux = gameplay_nombre_de_plateau_reussis_abandonnes_passes(gameplay)
 	var reussis = infos_plateaux.get('reussis', 0)
-	return reussis
+	var passe = infos_plateaux.get('passes', 0)
+	return reussis + passe
 
 func gameplay_taux_de_reussite_des_plateaux(gameplay : String) -> float:
 	var infos_plateaux = gameplay_nombre_de_plateau_reussis_abandonnes_passes(gameplay)

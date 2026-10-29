@@ -54,19 +54,58 @@ theme_override_font_sizes/font_size = 27
 text = "Mode"
 vertical_alignment = 1
 
-[node name="Plateaux" type="Panel" parent="." unique_id=2137623898]
+[node name="Nombre" type="Panel" parent="." unique_id=2137623898]
 layout_mode = 0
 offset_left = 10.0
 offset_top = 30.0
-offset_right = 110.0
+offset_right = 70.0
 offset_bottom = 70.0
 mouse_filter = 2
 theme_override_styles/panel = SubResource("cell")
 
-[node name="Titre" type="Label" parent="Plateaux" unique_id=148008339]
+[node name="Titre" type="Label" parent="Nombre" unique_id=148008339]
+layout_mode = 1
+anchors_preset = 10
+anchor_right = 1.0
+offset_bottom = 20.0
+grow_horizontal = 2
+theme_override_colors/font_color = Color(0.06275, 0.16863, 0.31373, 1)
+theme_override_fonts/font = ExtResource("regular")
+theme_override_font_sizes/font_size = 10
+text = "Nombre"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Valeur" type="Label" parent="Nombre" unique_id=1427059428]
+layout_mode = 1
+anchors_preset = 12
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = -20.0
+grow_horizontal = 2
+grow_vertical = 0
+theme_override_colors/font_color = Color(0.87451, 0.50196, 0, 1)
+theme_override_fonts/font = ExtResource("bold")
+theme_override_font_sizes/font_size = 16
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Essais" type="Panel" parent="." unique_id=168259589]
 layout_mode = 0
-offset_right = 100.0
-offset_bottom = 18.0
+offset_left = 85.0
+offset_top = 30.0
+offset_right = 145.0
+offset_bottom = 70.0
+mouse_filter = 2
+theme_override_styles/panel = SubResource("cell")
+
+[node name="Titre" type="Label" parent="Essais" unique_id=562521918]
+layout_mode = 1
+anchors_preset = 10
+anchor_right = 1.0
+offset_bottom = 20.0
+grow_horizontal = 2
 theme_override_colors/font_color = Color(0.06275, 0.16863, 0.31373, 1)
 theme_override_fonts/font = ExtResource("regular")
 theme_override_font_sizes/font_size = 10
@@ -74,30 +113,36 @@ text = "Essais"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="Valeur" type="Label" parent="Plateaux" unique_id=1427059428]
-layout_mode = 0
-offset_top = 18.0
-offset_right = 100.0
-offset_bottom = 40.0
+[node name="Valeur" type="Label" parent="Essais" unique_id=836046320]
+layout_mode = 1
+anchors_preset = 12
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = -20.0
+grow_horizontal = 2
+grow_vertical = 0
 theme_override_colors/font_color = Color(0.87451, 0.50196, 0, 1)
 theme_override_fonts/font = ExtResource("bold")
 theme_override_font_sizes/font_size = 16
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="TempsMoyen" type="Panel" parent="." unique_id=1687143466]
+[node name="TempsMoyen" type="Panel" parent="." unique_id=1787907306]
 layout_mode = 0
-offset_left = 116.0
+offset_left = 160.0
 offset_top = 30.0
-offset_right = 216.0
+offset_right = 250.0
 offset_bottom = 70.0
 mouse_filter = 2
 theme_override_styles/panel = SubResource("cell")
 
-[node name="Titre" type="Label" parent="TempsMoyen" unique_id=1765483678]
-layout_mode = 0
-offset_right = 100.0
-offset_bottom = 18.0
+[node name="Titre" type="Label" parent="TempsMoyen" unique_id=1681487654]
+layout_mode = 1
+anchors_preset = 10
+anchor_right = 1.0
+offset_bottom = 20.0
+grow_horizontal = 2
 theme_override_colors/font_color = Color(0.06275, 0.16863, 0.31373, 1)
 theme_override_fonts/font = ExtResource("regular")
 theme_override_font_sizes/font_size = 10
@@ -105,30 +150,36 @@ text = "Temps moyen"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="Valeur" type="Label" parent="TempsMoyen" unique_id=1154875803]
-layout_mode = 0
-offset_top = 18.0
-offset_right = 100.0
-offset_bottom = 40.0
+[node name="Valeur" type="Label" parent="TempsMoyen" unique_id=1692943240]
+layout_mode = 1
+anchors_preset = 12
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = -20.0
+grow_horizontal = 2
+grow_vertical = 0
 theme_override_colors/font_color = Color(0.87451, 0.50196, 0, 1)
 theme_override_fonts/font = ExtResource("bold")
 theme_override_font_sizes/font_size = 16
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="Reussite" type="Panel" parent="." unique_id=1073389585]
+[node name="Reussite" type="Panel" parent="." unique_id=1558586407]
 layout_mode = 0
-offset_left = 222.0
+offset_left = 266.0
 offset_top = 30.0
-offset_right = 322.0
+offset_right = 326.0
 offset_bottom = 70.0
 mouse_filter = 2
 theme_override_styles/panel = SubResource("cell")
 
-[node name="Titre" type="Label" parent="Reussite" unique_id=1641704394]
-layout_mode = 0
-offset_right = 100.0
-offset_bottom = 18.0
+[node name="Titre" type="Label" parent="Reussite" unique_id=1300511651]
+layout_mode = 1
+anchors_preset = 10
+anchor_right = 1.0
+offset_bottom = 20.0
+grow_horizontal = 2
 theme_override_colors/font_color = Color(0.06275, 0.16863, 0.31373, 1)
 theme_override_fonts/font = ExtResource("regular")
 theme_override_font_sizes/font_size = 10
@@ -136,11 +187,15 @@ text = "Réussite"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="Valeur" type="Label" parent="Reussite" unique_id=2063165435]
-layout_mode = 0
-offset_top = 18.0
-offset_right = 100.0
-offset_bottom = 40.0
+[node name="Valeur" type="Label" parent="Reussite" unique_id=907816911]
+layout_mode = 1
+anchors_preset = 12
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = -20.0
+grow_horizontal = 2
+grow_vertical = 0
 theme_override_colors/font_color = Color(0.87451, 0.50196, 0, 1)
 theme_override_fonts/font = ExtResource("bold")
 theme_override_font_sizes/font_size = 16

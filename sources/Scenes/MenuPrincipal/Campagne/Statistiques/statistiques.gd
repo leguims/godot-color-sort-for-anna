@@ -119,8 +119,11 @@ func plateaux():
 
 	var ui_plateau = $Scroll/Content/Plateau
 
-	valeur = str(StatsService.plateau_nombre_essais_de_plateaux())
+	valeur = str(StatsService.plateau_nombre_de_plateaux_joues())
 	ui_plateau.nb_plateaux(valeur)
+
+	valeur = str(StatsService.plateau_nombre_essais_de_plateaux())
+	ui_plateau.nb_essais(valeur)
 
 	var temps_moyen = StatsService.plateau_temps_moyen_en_s()
 	valeur = str_arrondir_temps_en_s(temps_moyen)
@@ -157,8 +160,11 @@ func classique():
 
 	var ui_classique = $Scroll/Content/Classique
 
-	valeur = str(StatsService.classique_nombre_essais_de_plateaux())
+	valeur = str(StatsService.classique_nombre_de_plateaux_joues())
 	ui_classique.nb_plateaux(valeur)
+
+	valeur = str(StatsService.classique_nombre_essais_de_plateaux())
+	ui_classique.nb_essais(valeur)
 
 	valeur = StatsService.classique_temps_moyen_en_s()
 	valeur = str_arrondir_temps_en_s(valeur)
@@ -195,10 +201,12 @@ func qui_perd_gagne():
 	# TODO : plateaux : diagrammes et courbes
 
 	var ui_qui_perd_gagne = $Scroll/Content/QuiPerdGagne
-	
+
+	valeur = str(StatsService.qui_perd_gagne_nombre_de_plateaux_joues())
+	ui_qui_perd_gagne.nb_plateaux(valeur)
 
 	valeur = str(StatsService.qui_perd_gagne_nombre_essais_de_plateaux())
-	ui_qui_perd_gagne.nb_plateaux(valeur)
+	ui_qui_perd_gagne.nb_essais(valeur)
 
 	valeur = StatsService.qui_perd_gagne_temps_moyen_en_s()
 	valeur = str_arrondir_temps_en_s(valeur)

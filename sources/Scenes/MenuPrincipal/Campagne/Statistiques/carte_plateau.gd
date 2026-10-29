@@ -1,7 +1,10 @@
 extends Control
 
 func nb_plateaux(valeur : String) -> void:
-	$Plateaux/Valeur.text = valeur
+	$Nombre/Valeur.text = valeur
+
+func nb_essais(valeur : String) -> void:
+	$Essais/Valeur.text = valeur
 
 func temps_moyen(valeur : String) -> void:
 	$TempsMoyen/Valeur.text = valeur
