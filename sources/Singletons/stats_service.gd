@@ -63,11 +63,14 @@ func niveau_taux_reussite_infos() -> Dictionary:
 
 # #######
 # Plateau
-func plateau_nombre_de_plateaux_joues() -> int:
-	return nombre_de_plateau_joues()
+func plateau_nombre_essais_de_plateaux() -> int:
+	return nombre_essais_de_plateaux()
 
 func plateau_taux_de_reussite() -> float:
 	return taux_de_reussite_des_plateaux()
+
+func plateau_taux_de_realisation() -> float:
+	return taux_de_realisation_des_plateaux()
 
 func plateau_temps_moyen_en_s() -> float:
 	return plateau_le_temps_moyen_en_s()
@@ -83,8 +86,8 @@ func plateau_plus_galere_infos() -> Dictionary:
 
 # #######
 # Gameplay Classique
-func classique_nombre_de_plateaux_joues() -> int:
-	return gameplay_nombre_de_plateau_joues("CLASSIQUE")
+func classique_nombre_essais_de_plateaux() -> int:
+	return gameplay_nombre_essais_de_plateaux("CLASSIQUE")
 
 func classique_taux_de_reussite() -> float:
 	return gameplay_taux_de_reussite_des_plateaux("CLASSIQUE")
@@ -103,8 +106,8 @@ func classique_plus_galere_infos() -> Dictionary:
 
 # #######
 # Gameplay Qui Perd Gagne
-func qui_perd_gagne_nombre_de_plateaux_joues() -> int:
-	return gameplay_nombre_de_plateau_joues("QUI_PERD_GAGNE")
+func qui_perd_gagne_nombre_essais_de_plateaux() -> int:
+	return gameplay_nombre_essais_de_plateaux("QUI_PERD_GAGNE")
 
 func qui_perd_gagne_taux_de_reussite() -> float:
 	return gameplay_taux_de_reussite_des_plateaux("QUI_PERD_GAGNE")
@@ -228,7 +231,7 @@ func nombre_de_plateau_acheves() -> int:
 	if SauvegardeBddJoueursService.enregistrement_campagne():
 		# Comptabiliser les plateaux reussis
 		var npra = nombre_de_plateau_reussis_abandonnes_passes()
-		nb_plateaux_acheves = npra.get('reussis', 0) + npra.get('passes', 0)
+		nb_plateaux_acheves = npra.get('reussis', 0)
 	LogService.log_debug("joueur:",joueur, ' nb_plateaux_acheves=', nb_plateaux_acheves)
 	return nb_plateaux_acheves
 
@@ -369,12 +372,17 @@ func nombre_de_plateau_reussis_abandonnes_passes_pour_niveau(nom_niveau : String
 			'abandonnes': nb_plateaux_abandonnes,
 			'passes': nb_plateaux_passes}
 
-func nombre_de_plateau_joues() -> int:
+func nombre_essais_de_plateaux() -> int:
 	var infos_plateaux = nombre_de_plateau_reussis_abandonnes_passes()
 	var reussis = infos_plateaux.get('reussis', 0)
 	var abandonne = infos_plateaux.get('abandonnes', 0)
 	var passe = infos_plateaux.get('passes', 0)
 	return reussis + abandonne + passe
+
+func nombre_de_plateaux_joues() -> int:
+	var infos_plateaux = nombre_de_plateau_reussis_abandonnes_passes()
+	var reussis = infos_plateaux.get('reussis', 0)
+	return reussis
 
 func taux_de_reussite_des_plateaux() -> float:
 	var infos_plateaux = nombre_de_plateau_reussis_abandonnes_passes()
@@ -382,6 +390,15 @@ func taux_de_reussite_des_plateaux() -> float:
 	var abandonne = infos_plateaux.get('abandonnes', 0)
 	var passe = infos_plateaux.get('passes', 0)
 	var total = reussis + abandonne + passe
+	if total == 0:
+		return 0.
+	return 1. * reussis / total
+
+func taux_de_realisation_des_plateaux() -> float:
+	var infos_plateaux = nombre_de_plateau_reussis_abandonnes_passes()
+	var reussis = infos_plateaux.get('reussis', 0)
+	var passe = infos_plateaux.get('passes', 0)
+	var total = reussis + passe
 	if total == 0:
 		return 0.
 	return 1. * reussis / total
@@ -434,14 +451,25 @@ func niveau_taux_reussite_les_infos() -> Dictionary:
 			var realises = reussis + abandonnes + passes
 			if realises:
 				var taux = 1. * reussis / realises
-				if taux < taux_min:
-					taux_min = taux
-					taux_min_lg = reussis
-					taux_min_niveau = SauvegardeBddJoueursService.valeur_niveau(nom_niveau)
-				if taux > taux_max:
-					taux_max = taux
-					taux_max_lg = reussis
-					taux_max_niveau = SauvegardeBddJoueursService.valeur_niveau(nom_niveau)
+				var valeur_niveau = SauvegardeBddJoueursService.valeur_niveau(nom_niveau)
+				if taux <= taux_min:
+					if taux < taux_min:
+						taux_min = taux
+						taux_min_lg = reussis
+						taux_min_niveau = valeur_niveau
+					elif valeur_niveau < taux_min_niveau:
+						# Rechercher le plus bas niveau avec le taux minimum
+						taux_min_lg = reussis
+						taux_min_niveau = valeur_niveau
+				if taux >= taux_max:
+					if taux > taux_max:
+						taux_max = taux
+						taux_max_lg = reussis
+						taux_max_niveau = valeur_niveau
+					elif valeur_niveau > taux_max_niveau:
+						# Rechercher le plus bas niveau avec le taux maximum
+						taux_max_lg = reussis
+						taux_max_niveau = valeur_niveau
 	# Gommer les valeurs initiales
 	if taux_min == 101.:
 		taux_min = 0.
@@ -458,6 +486,7 @@ func niveau_taux_reussite_les_infos() -> Dictionary:
 			'taux_max': taux_max, 'taux_max_lg': taux_max_lg, 'taux_max_niveau': taux_max_niveau}
 
 func plateau_le_temps_moyen_en_s() -> float:
+	"Temps moyen de résolution d'un plateau. Temps des essais cumulés compte pour 1 plateau."
 	var joueur = SauvegardeBddJoueursService.lire_nom_joueur()
 	var date_debut_campagne = SauvegardeConfigurationService.lire_la_date_debut_campagne_timestamp()
 	# Plateau termine le plus vite et sa difficulté
@@ -470,25 +499,26 @@ func plateau_le_temps_moyen_en_s() -> float:
 		for niveau in SauvegardeBddJoueursService.enregistrement_campagne_lire_niveaux(campagne):
 			if niveau.get("date_debut", 0) > date_debut_campagne:
 				for plateau in SauvegardeBddJoueursService.enregistrement_campagne_lire_plateaux(niveau):
-					# TODO : Il faudrait ajouter le temps 'abandonné' pour un même plateau
+					# Comptabiliser le temps cumulé des plateaux
+					var duree_en_s = plateau.get("duree", 0)
+					temps_total_en_s += duree_en_s
 					var status = SauvegardeBddJoueursService.enregistrement_campagne_lire_statut_plateau(plateau)
 					if status == 'reussi':
-						# Comptabiliser les plateaux reussis
-						var duree_en_s = plateau.get("duree", 0)
-						if duree_en_s:
-							temps_total_en_s += duree_en_s
-							nb_plateaux += 1
+						nb_plateaux += 1
 	if nb_plateaux:
+		# Moyenne = temps total / nombre de plateaux joués (et pas sur l'ensemble des essais)
 		temps_moyen_en_s = temps_total_en_s / nb_plateaux
 	LogService.log_debug("joueur:",joueur,
 						' temps_moyen=', temps_moyen_en_s)
 	return temps_moyen_en_s
 
 func plateau_le_plus_rapide_les_infos() -> Dictionary:
+	"Plateau le plus rapide. Temps des essais cumulés"
 	var joueur = SauvegardeBddJoueursService.lire_nom_joueur()
 	var date_debut_campagne = SauvegardeConfigurationService.lire_la_date_debut_campagne_timestamp()
 	# Plateau termine le plus vite et sa difficulté
-	var plus_rapide_temps: float = 0.
+	var temps_plateau_en_s: float = 0.
+	var plus_rapide_temps: float = -1.
 	var plus_rapide_difficulte: int = 0
 	# Parcourir la liste des enregistrements de la campagne
 	if SauvegardeBddJoueursService.enregistrement_campagne():
@@ -496,29 +526,35 @@ func plateau_le_plus_rapide_les_infos() -> Dictionary:
 		for niveau in SauvegardeBddJoueursService.enregistrement_campagne_lire_niveaux(campagne):
 			if niveau.get("date_debut", 0) > date_debut_campagne:
 				for plateau in SauvegardeBddJoueursService.enregistrement_campagne_lire_plateaux(niveau):
-					# TODO : Il faudrait ajouter le temps 'abandonné' pour un même plateau
+					# Cumuler les essais du plateau
+					var duree_en_s = plateau.get("duree", 0)
+					temps_plateau_en_s += duree_en_s
 					var status = SauvegardeBddJoueursService.enregistrement_campagne_lire_statut_plateau(plateau)
 					if status == 'reussi':
-						# Comptabiliser les plateaux reussis
-						var duree_en_s = plateau.get("duree", 0)
-						if duree_en_s:
-							var difficulte = roundi(plateau.get("difficulte", 0))
-							if duree_en_s <= plus_rapide_temps or plus_rapide_temps == 0.:
-								if duree_en_s == plus_rapide_temps and difficulte > plus_rapide_difficulte:
-									plus_rapide_difficulte = difficulte
-								else:
-									plus_rapide_temps = duree_en_s
-									plus_rapide_difficulte = difficulte
+						var difficulte = roundi(plateau.get("difficulte", 0))
+						if temps_plateau_en_s <= plus_rapide_temps or plus_rapide_temps == -1.:
+							if temps_plateau_en_s < plus_rapide_temps or plus_rapide_temps == -1.:
+								plus_rapide_temps = temps_plateau_en_s
+								plus_rapide_difficulte = difficulte
+							elif difficulte > plus_rapide_difficulte:
+								plus_rapide_difficulte = difficulte
+					if status == 'reussi' or status == 'passé':
+						# Plateau terminé, RAZ temps.
+						temps_plateau_en_s = 0
+	if plus_rapide_temps == -1.:
+		plus_rapide_temps = 0.
 	LogService.log_debug("joueur:",joueur,
 						' plus_rapide_temps=', plus_rapide_temps,
 						' plus_rapide_difficulte=', plus_rapide_difficulte)
 	return {'temps_en_s': plus_rapide_temps, 'difficulte': plus_rapide_difficulte}
 
 func plateau_le_plus_lent_les_infos() -> Dictionary:
+	"Plateau le plus lent. Temps des essais cumulés"
 	var joueur = SauvegardeBddJoueursService.lire_nom_joueur()
 	var date_debut_campagne = SauvegardeConfigurationService.lire_la_date_debut_campagne_timestamp()
 	# Plateau le plus lent à résoudre et sa difficulté
-	var plus_lent_temps: float = 0.
+	var temps_plateau_en_s: float = 0.
+	var plus_lent_temps: float = -1.
 	var plus_lent_difficulte: int = 0
 	# Parcourir la liste des enregistrements de la campagne
 	if SauvegardeBddJoueursService.enregistrement_campagne():
@@ -526,19 +562,23 @@ func plateau_le_plus_lent_les_infos() -> Dictionary:
 		for niveau in SauvegardeBddJoueursService.enregistrement_campagne_lire_niveaux(campagne):
 			if niveau.get("date_debut", 0) > date_debut_campagne:
 				for plateau in SauvegardeBddJoueursService.enregistrement_campagne_lire_plateaux(niveau):
-					# TODO : Il faudrait ajouter le temps 'abandonné' pour un même plateau
+					# Cumuler les essais du plateau
+					var duree_en_s = plateau.get("duree", 0)
+					temps_plateau_en_s += duree_en_s
 					var status = SauvegardeBddJoueursService.enregistrement_campagne_lire_statut_plateau(plateau)
 					if status == 'reussi':
-						# Comptabiliser les plateaux reussis
-						var duree_en_s = plateau.get("duree", 0)
-						if duree_en_s:
-							var difficulte = roundi(plateau.get("difficulte", 0))
-							if duree_en_s >= plus_lent_temps or plus_lent_temps == 0.:
-								if duree_en_s == plus_lent_temps and difficulte > plus_lent_difficulte:
-									plus_lent_difficulte = difficulte
-								else:
-									plus_lent_temps = duree_en_s
-									plus_lent_difficulte = difficulte
+						var difficulte = roundi(plateau.get("difficulte", 0))
+						if temps_plateau_en_s >= plus_lent_temps or plus_lent_temps == -1.:
+							if temps_plateau_en_s > plus_lent_temps or plus_lent_temps == -1.:
+								plus_lent_temps = temps_plateau_en_s
+								plus_lent_difficulte = difficulte
+							elif difficulte > plus_lent_difficulte:
+								plus_lent_difficulte = difficulte
+					if status == 'reussi' or status == 'passé':
+						# Plateau terminé, RAZ temps.
+						temps_plateau_en_s = 0
+	if plus_lent_temps == -1.:
+		plus_lent_temps = 0.
 	LogService.log_debug("joueur:",joueur,
 						' plus_lent_temps=', plus_lent_temps,
 						' plus_lent_difficulte=', plus_lent_difficulte)
@@ -633,16 +673,13 @@ func gameplay_le_temps_moyen_en_s(gameplay : String) -> float:
 		for niveau in SauvegardeBddJoueursService.enregistrement_campagne_lire_niveaux(campagne):
 			if niveau.get("date_debut", 0) > date_debut_campagne:
 				for plateau in SauvegardeBddJoueursService.enregistrement_campagne_lire_plateaux(niveau):
-					# TODO : Il faudrait ajouter le temps 'abandonné' pour un même plateau
+					if plateau.get("gameplay",'').to_upper() != gameplay.to_upper():
+						continue
+					var duree_en_s = plateau.get("duree", 0)
+					temps_total_en_s += duree_en_s
 					var status = SauvegardeBddJoueursService.enregistrement_campagne_lire_statut_plateau(plateau)
 					if status == 'reussi':
-						# Comptabiliser les plateaux reussis
-						if plateau.get("gameplay",'').to_upper() != gameplay.to_upper():
-							continue
-						var duree_en_s = plateau.get("duree", 0)
-						if duree_en_s:
-							temps_total_en_s += duree_en_s
-							nb_plateaux += 1
+						nb_plateaux += 1
 	if nb_plateaux:
 		temps_moyen_en_s = temps_total_en_s / nb_plateaux
 	LogService.log_debug("joueur:",joueur,
@@ -650,12 +687,17 @@ func gameplay_le_temps_moyen_en_s(gameplay : String) -> float:
 						' temps_moyen=', temps_moyen_en_s)
 	return temps_moyen_en_s
 
-func gameplay_nombre_de_plateau_joues(gameplay : String) -> int:
+func gameplay_nombre_essais_de_plateaux(gameplay : String) -> int:
 	var infos_plateaux = gameplay_nombre_de_plateau_reussis_abandonnes_passes(gameplay)
 	var reussis = infos_plateaux.get('reussis', 0)
 	var abandonne = infos_plateaux.get('abandonnes', 0)
 	var passe = infos_plateaux.get('passes', 0)
 	return reussis + abandonne + passe
+
+func gameplay_nombre_de_plateaux_joues(gameplay : String) -> int:
+	var infos_plateaux = gameplay_nombre_de_plateau_reussis_abandonnes_passes(gameplay)
+	var reussis = infos_plateaux.get('reussis', 0)
+	return reussis
 
 func gameplay_taux_de_reussite_des_plateaux(gameplay : String) -> float:
 	var infos_plateaux = gameplay_nombre_de_plateau_reussis_abandonnes_passes(gameplay)
@@ -682,7 +724,6 @@ func gameplay_nombre_de_plateau_reussis_abandonnes_passes(gameplay : String) -> 
 		for niveau in SauvegardeBddJoueursService.enregistrement_campagne_lire_niveaux(campagne):
 			if niveau.get("date_debut", 0) > date_debut_campagne:
 				for plateau in SauvegardeBddJoueursService.enregistrement_campagne_lire_plateaux(niveau):
-					# Comptabiliser les plateaux reussis
 					if plateau.get("gameplay", '').to_upper() != gameplay.to_upper():
 						continue
 					if plateau.get("date_debut", 0) > date_debut_campagne:
@@ -702,7 +743,8 @@ func gameplay_le_plus_rapide_les_infos(gameplay : String) -> Dictionary:
 	var joueur = SauvegardeBddJoueursService.lire_nom_joueur()
 	var date_debut_campagne = SauvegardeConfigurationService.lire_la_date_debut_campagne_timestamp()
 	# Plateau termine le plus vite et sa difficulté
-	var plus_rapide_temps: float = 0.
+	var temps_plateau_en_s: float = 0.
+	var plus_rapide_temps: float = -1.
 	var plus_rapide_difficulte: int = 0
 	# Parcourir la liste des enregistrements de la campagne
 	if SauvegardeBddJoueursService.enregistrement_campagne():
@@ -710,21 +752,24 @@ func gameplay_le_plus_rapide_les_infos(gameplay : String) -> Dictionary:
 		for niveau in SauvegardeBddJoueursService.enregistrement_campagne_lire_niveaux(campagne):
 			if niveau.get("date_debut", 0) > date_debut_campagne:
 				for plateau in SauvegardeBddJoueursService.enregistrement_campagne_lire_plateaux(niveau):
-					# TODO : Il faudrait ajouter le temps 'abandonné' pour un même plateau
+					if plateau.get("gameplay",'').to_upper() != gameplay.to_upper():
+						continue
+					var duree_en_s = plateau.get("duree", 0)
+					temps_plateau_en_s += duree_en_s
 					var status = SauvegardeBddJoueursService.enregistrement_campagne_lire_statut_plateau(plateau)
 					if status == 'reussi':
-						# Comptabiliser les plateaux reussis
-						if plateau.get("gameplay",'').to_upper() != gameplay.to_upper():
-							continue
-						var duree_en_s = plateau.get("duree", 0)
-						if duree_en_s:
-							var difficulte = roundi(plateau.get("difficulte", 0))
-							if duree_en_s <= plus_rapide_temps or plus_rapide_temps == 0.:
-								if duree_en_s == plus_rapide_temps and difficulte > plus_rapide_difficulte:
-									plus_rapide_difficulte = difficulte
-								else:
-									plus_rapide_temps = duree_en_s
-									plus_rapide_difficulte = difficulte
+						var difficulte = roundi(plateau.get("difficulte", 0))
+						if temps_plateau_en_s <= plus_rapide_temps or plus_rapide_temps == -1.:
+							if temps_plateau_en_s < plus_rapide_temps or plus_rapide_temps == -1.:
+								plus_rapide_temps = temps_plateau_en_s
+								plus_rapide_difficulte = difficulte
+							elif difficulte > plus_rapide_difficulte:
+								plus_rapide_difficulte = difficulte
+					if status == 'reussi' or status == 'passé':
+						# Plateau terminé, RAZ temps.
+						temps_plateau_en_s = 0
+	if plus_rapide_temps == -1.:
+		plus_rapide_temps = 0.
 	LogService.log_debug("joueur:",joueur,
 						"gameplay:", gameplay,
 						' plus_rapide_temps=', plus_rapide_temps,
@@ -735,7 +780,8 @@ func gameplay_le_plus_lent_les_infos(gameplay : String) -> Dictionary:
 	var joueur = SauvegardeBddJoueursService.lire_nom_joueur()
 	var date_debut_campagne = SauvegardeConfigurationService.lire_la_date_debut_campagne_timestamp()
 	# Plateau le plus lent à résoudre et sa difficulté
-	var plus_lent_temps: float = 0.
+	var temps_plateau_en_s: float = 0.
+	var plus_lent_temps: float = -1.
 	var plus_lent_difficulte: int = 0
 	# Parcourir la liste des enregistrements de la campagne
 	if SauvegardeBddJoueursService.enregistrement_campagne():
@@ -743,21 +789,24 @@ func gameplay_le_plus_lent_les_infos(gameplay : String) -> Dictionary:
 		for niveau in SauvegardeBddJoueursService.enregistrement_campagne_lire_niveaux(campagne):
 			if niveau.get("date_debut", 0) > date_debut_campagne:
 				for plateau in SauvegardeBddJoueursService.enregistrement_campagne_lire_plateaux(niveau):
-					# TODO : Il faudrait ajouter le temps 'abandonné' pour un même plateau
+					if plateau.get("gameplay",'').to_upper() != gameplay.to_upper():
+						continue
+					var duree_en_s = plateau.get("duree", 0)
+					temps_plateau_en_s += duree_en_s
 					var status = SauvegardeBddJoueursService.enregistrement_campagne_lire_statut_plateau(plateau)
 					if status == 'reussi':
-						# Comptabiliser les plateaux reussis
-						if plateau.get("gameplay",'').to_upper() != gameplay.to_upper():
-							continue
-						var duree_en_s = plateau.get("duree", 0)
-						if duree_en_s:
-							var difficulte = roundi(plateau.get("difficulte", 0))
-							if duree_en_s >= plus_lent_temps or plus_lent_temps == 0.:
-								if duree_en_s == plus_lent_temps and difficulte > plus_lent_difficulte:
-									plus_lent_difficulte = difficulte
-								else:
-									plus_lent_temps = duree_en_s
-									plus_lent_difficulte = difficulte
+						var difficulte = roundi(plateau.get("difficulte", 0))
+						if temps_plateau_en_s >= plus_lent_temps or plus_lent_temps == -1.:
+							if temps_plateau_en_s > plus_lent_temps or plus_lent_temps == -1.:
+								plus_lent_temps = temps_plateau_en_s
+								plus_lent_difficulte = difficulte
+							elif difficulte < plus_lent_difficulte:
+								plus_lent_difficulte = difficulte
+					if status == 'reussi' or status == 'passé':
+						# Plateau terminé, RAZ temps.
+						temps_plateau_en_s = 0
+	if plus_lent_temps == -1.:
+		plus_lent_temps = 0.
 	LogService.log_debug("joueur:",joueur,
 						"gameplay:", gameplay,
 						' plus_lent_temps=', plus_lent_temps,

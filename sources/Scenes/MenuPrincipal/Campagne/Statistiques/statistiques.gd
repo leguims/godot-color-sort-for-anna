@@ -119,7 +119,7 @@ func plateaux():
 
 	var ui_plateau = $Scroll/Content/Plateau
 
-	valeur = str(StatsService.plateau_nombre_de_plateaux_joues())
+	valeur = str(StatsService.plateau_nombre_essais_de_plateaux())
 	ui_plateau.nb_plateaux(valeur)
 
 	var temps_moyen = StatsService.plateau_temps_moyen_en_s()
@@ -143,7 +143,8 @@ func plateaux():
 	ui_plateau.plus_lent_difficulte(valeur)
 
 	var plus_galere = StatsService.plateau_plus_galere_infos()
-	valeur = str(plus_galere.get('essais'))
+	var accord_en_nombre = 's' if plus_galere.get('essais') > 1 else ''
+	valeur = str(plus_galere.get('essais')) + ' essai' + accord_en_nombre
 	ui_plateau.plus_galere_essais(valeur)
 	valeur = str(plus_galere.get('difficulte'))
 	ui_plateau.plus_galere_difficulte(valeur)
@@ -156,7 +157,7 @@ func classique():
 
 	var ui_classique = $Scroll/Content/Classique
 
-	valeur = str(StatsService.classique_nombre_de_plateaux_joues())
+	valeur = str(StatsService.classique_nombre_essais_de_plateaux())
 	ui_classique.nb_plateaux(valeur)
 
 	valeur = StatsService.classique_temps_moyen_en_s()
@@ -180,7 +181,8 @@ func classique():
 	ui_classique.plus_lent_difficulte(valeur)
 
 	var plus_galere = StatsService.classique_plus_galere_infos()
-	valeur = str(plus_galere.get('essais'))
+	var accord_en_nombre = 's' if plus_galere.get('essais') > 1 else ''
+	valeur = str(plus_galere.get('essais')) + ' essai' + accord_en_nombre
 	ui_classique.plus_galere_essais(valeur)
 	valeur = str(plus_galere.get('difficulte'))
 	ui_classique.plus_galere_difficulte(valeur)
@@ -195,7 +197,7 @@ func qui_perd_gagne():
 	var ui_qui_perd_gagne = $Scroll/Content/QuiPerdGagne
 	
 
-	valeur = str(StatsService.qui_perd_gagne_nombre_de_plateaux_joues())
+	valeur = str(StatsService.qui_perd_gagne_nombre_essais_de_plateaux())
 	ui_qui_perd_gagne.nb_plateaux(valeur)
 
 	valeur = StatsService.qui_perd_gagne_temps_moyen_en_s()
@@ -219,7 +221,8 @@ func qui_perd_gagne():
 	ui_qui_perd_gagne.plus_lent_difficulte(valeur)
 
 	var plus_galere = StatsService.qui_perd_gagne_plus_galere_infos()
-	valeur = str(plus_galere.get('essais'))
+	var accord_en_nombre = 's' if plus_galere.get('essais') > 1 else ''
+	valeur = str(plus_galere.get('essais')) + ' essai' + accord_en_nombre
 	ui_qui_perd_gagne.plus_galere_essais(valeur)
 	valeur = str(plus_galere.get('difficulte'))
 	ui_qui_perd_gagne.plus_galere_difficulte(valeur)
