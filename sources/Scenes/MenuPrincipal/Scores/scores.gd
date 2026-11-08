@@ -81,7 +81,19 @@ func _build_row(parent: Control, index: int, row_y: float, rank: int, item: Dict
 
 	var player_name := Label.new()
 	player_name.name = "Nom"
-	player_name.text = str(item.get("nom", "-"))
+	var name : String = str(item.get("nom", "-"))
+	if len(name) > 8:
+		# Coupe le nom sur un espace, trait d'union ou souligné
+		var pos_space = name.rfind(' ', 9)
+		var pos_trait_union = name.rfind('-', 9)
+		var pos_souligne = name.rfind('_', 9)
+		var pos_max = max(pos_space, pos_trait_union, pos_souligne)
+		if pos_max != -1:
+			name[pos_max] = '\n'
+		else:
+			# Sinon, coupe brutalement au neuvieme caractere.
+			name = name.insert(8,'\n')
+	player_name.text = name
 	player_name.position = Vector2(106, 0)
 	player_name.size = Vector2(90 if index == 0 else 122, row.size.y)
 	player_name.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
