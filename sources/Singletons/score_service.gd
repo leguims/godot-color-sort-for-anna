@@ -75,12 +75,12 @@ func mettre_a_jour_score_duree() -> Dictionary:
 	var difficulte = SauvegardeBddJoueursService.enregistrement_campagne_lire_difficulte_plateau()
 	var gameplay = SauvegardeBddJoueursService.enregistrement_campagne_lire_gameplay_plateau()
 	var temps_reference_en_s = 0.
-	if gameplay == "classique":
+	if gameplay.to_lower() == "classique":
 		temps_reference_en_s = _classique_temps_reference_par_difficulte(difficulte)
-	elif gameplay == "qui_perd_gagne":
+	elif gameplay.to_lower() == "qui_perd_gagne":
 		temps_reference_en_s = _qui_perd_gagne_temps_reference_par_difficulte(difficulte)
 	else:
-		LogService.log_erreur("Erreur : Gameplay inattendu pour le score !")
+		LogService.log_erreur("Erreur : Gameplay inattendu pour le score ! " + str(gameplay))
 
 	var bonus_duree = 0
 	var nom_joueur = SauvegardeBddJoueursService.lire_nom_joueur()
@@ -138,7 +138,9 @@ func _temps_reference_par_difficulte(difficulte: int, temps_reference_par_diffic
 	for ref_difficulte in liste_ref_difficulte_croissant:
 		if difficulte <= ref_difficulte:
 			temps_reference_en_s = temps_reference_par_difficulte[ref_difficulte]
-		else:
+			LogService.log_debug("Difficulté : ", str(difficulte),
+								" <= ", str(ref_difficulte),
+								", Temps de référence : ", str(temps_reference_en_s))
 			break
 	if temps_reference_en_s == 0.:
 		LogService.log_erreur("Erreur : Difficulté inattendue pour le score !")
