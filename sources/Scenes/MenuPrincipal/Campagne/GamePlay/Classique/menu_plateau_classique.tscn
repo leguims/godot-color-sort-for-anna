@@ -150,13 +150,13 @@ vertical_alignment = 1
 custom_minimum_size = Vector2(90, 20)
 layout_mode = 0
 offset_left = 103.0
-offset_top = 58.0
+offset_top = 61.0
 offset_right = 193.0
-offset_bottom = 78.0
+offset_bottom = 81.0
 theme_override_colors/font_color = Color(0.067, 0.498, 0.502, 1)
-theme_override_fonts/font = ExtResource("5_tolx0")
-theme_override_font_sizes/font_size = 14
-text = "NIVEAU X"
+theme_override_fonts/font = ExtResource("4_q8ekg")
+theme_override_font_sizes/font_size = 17
+text = "NIVEAU XX"
 vertical_alignment = 1
 
 [node name="Pourcentage" type="Label" parent="BandeauMenu" unique_id=1217840596]
