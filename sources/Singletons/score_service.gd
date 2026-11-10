@@ -102,30 +102,30 @@ func mettre_a_jour_score_duree() -> Dictionary:
 
 func _classique_temps_reference_par_difficulte(difficulte: int) -> int:
 	var temps_reference_par_difficulte = {
-		9 : 23.5,
-		23 : 32.1,
-		34 : 35.,
-		40 : 35.,
-		50 : 43.,
-		59 : 54.7,
-		72 : 274.,
+		9 : 22.5,
+		23 : 33.5,
+		34 : 37.8,
+		40 : 39.6,
+		50 : 41.3,
+		59 : 49.4,
+		72 : 91.3,
 		78 : 102.,
-		90 : 114.8,
-		95 : 120.5,
-		100 : 120.5
+		90 : 124.5,
+		95 : 130.,
+		100 : 130
 		}
 	return _temps_reference_par_difficulte(difficulte, temps_reference_par_difficulte)
 
 func _qui_perd_gagne_temps_reference_par_difficulte(difficulte: int) -> int:
 	var temps_reference_par_difficulte = {
-		20 : 28.7,
-		29 : 28.7,
-		42 : 32.9,
-		52 : 32.9,
-		60 : 32.9,
-		71 : 41.4,
-		79 : 75.,
-		88 : 75.,
+		20 : 25.5,
+		29 : 29.8,
+		42 : 36.3,
+		52 : 38.,
+		60 : 39.,
+		71 : 40.,
+		79 : 41.,
+		88 : 46.3,
 		95 : 75.,
 		100 : 75.
 		}
