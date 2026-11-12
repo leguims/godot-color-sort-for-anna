@@ -99,16 +99,14 @@ func accepter_import() -> void:
 		return
 	_import_en_cours = true
 
-	var nom_joueur := str(_import_en_attente.get("joueur", ""))
+	# Préfixe pour indiquer l'import
+	# Code unicodes essayés : 0x2913, 0x21A7, 0x2B07, 0x2193, 0x21E9, 0x1F4E5, 0xFE0F, 0x1F4BE
+	var nom_joueur := String.chr(0x1F4BE)+' '+str(_import_en_attente.get("joueur", ""))
 	var campagne: Dictionary = _import_en_attente.get("campagne", {})
-	var nom_joueur_import := nom_joueur
-	if not ProgressionCampagneService.importer_campagne_nouveau_joueur_externe(nom_joueur_import, campagne) \
-		and not ProgressionCampagneService.importer_campagne_joueur_externe(nom_joueur_import, campagne):
-		nom_joueur_import = nom_joueur + " (import)"
-		if not ProgressionCampagneService.importer_campagne_nouveau_joueur_externe(nom_joueur_import, campagne) \
-			and not ProgressionCampagneService.importer_campagne_joueur_externe(nom_joueur_import, campagne):
-			_erreur_import()
-			return
+	if not ProgressionCampagneService.importer_campagne_nouveau_joueur_externe(nom_joueur, campagne) \
+		and not ProgressionCampagneService.importer_campagne_joueur_externe(nom_joueur, campagne):
+		_erreur_import()
+		return
 
 	if not _api.call("marquer_campagne_comme_partagee", _import_en_attente):
 		LogService.log_erreur("Impossible de marquer la campagne importée comme déjà partagée.")
