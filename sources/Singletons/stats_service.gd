@@ -32,6 +32,9 @@ func score_pourcentage_fin_campagne() -> float:
 func campagne_nom_joueur() -> String:
 	return SauvegardeBddJoueursService.lire_nom_joueur()
 
+func campagne_nom() -> String:
+	return SauvegardeBddJoueursService.enregistrement_campagne_lire_nom_derniere_campagne().capitalize()
+
 func campagne_taux_completion() -> float:
 	var joueur = SauvegardeBddJoueursService.lire_nom_joueur()
 	LogService.log_debug("joueur:",joueur, ' campagne_taux_completion=', taux_completion_campagne())

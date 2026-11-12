@@ -1,5 +1,8 @@
 extends Control
 
+func nom(nom : String) -> void:
+	$Titre.text = nom
+
 func completion(nom : String) -> void:
 	$Completion/Valeur.text = nom
 

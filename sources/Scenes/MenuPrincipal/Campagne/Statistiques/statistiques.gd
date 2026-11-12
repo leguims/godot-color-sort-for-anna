@@ -81,6 +81,9 @@ func campagne():
 	
 	var ui_campagne = $Scroll/Content/Campagne
 
+	valeur = StatsService.campagne_nom()
+	ui_campagne.nom(valeur)
+
 	valeur = StatsService.campagne_taux_completion()
 	valeur = str_arrondir_pourcentage(valeur)
 	ui_campagne.completion(valeur)
