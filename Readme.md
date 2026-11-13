@@ -24,18 +24,6 @@ Depuis la phase de tests internes de la version V0.3.0, les fonctionnalités son
 
 ## V1.0.0 : Travaux pour la prochaine version
 
-### Bugs
-
-#### Bug V0.3.0 :
-- [à surveiller] L'affichage "Niveau = 5 - indice Plateau = 0 - Nombre de parties = <null>" est en erreur !
-
-#### Bug V0.4.0 :
-- Définir une combinaison secrete pour declencher l'export des fichiers JSON.
-
-#### Bug V1.0.0 :
-- un clic sur une pile vide sans sélection déplace un jeton depuis la dernière pile (indice −1) et enregistre un coup invalide. Bug corrigé, mais historique à nettoyer au demarrage en supprimant les "coups" avec '-1'.
-
-
 #### à faire d'urgence pour livrer la V1.0.0 en test:
 - ~~Jouer la campagne complete~~ => ok
 - ~~Vérifier l'avancement dans le niveau (pourcentage)~~ => ok
@@ -49,22 +37,13 @@ Depuis la phase de tests internes de la version V0.3.0, les fonctionnalités son
 - ~~Le nom de campagne dans la sauvegarde est 'campagne' ! Il doit etre 'campagne_2'.~~ => ok
 - ~~La campagne 2 ne s'enrgistre pas !~~ => ok
 
-#### à faire d'urgence pour livrer la V1.0.0 apres test:
-- Effacer la campagne de tests
-- Effacer les scores
-- Supprimer le TAG "beta-test"
-- Incorporer le partage dans statistiques et score de niveau/campagne
-- Vérifier le partage du fichier JSON signé avec les données complètes de la campagne
-
 #### Relecture Anna pour livrer la V1.0.0:
 - ~~numero du niveau sur 2 caracteres pour le bandeau de menu.~~ => ok
 - ~~aligner les tailles de boutons dans les bandeaux. càd reduire les boutons hors bandeau.~~ => ok
 - ~~titre gameplay classique en gras dans le bandeau en jeu.~~ => ok
-- verifier png jeton en 32x32 : face de cube 32x32 avec jeton plus grand pour donner le cube.
 
 #### Remarques Aurélien :
 - ~~bug sur les boutons du menu principal~~
-- élargir la zone de saisie autours des piles
 - ~~lisibilité des messages (bravo, perdu, continuer)~~
 - ~~message de score un peu serré~~
 - ~~crédit difficile à lire~~
@@ -109,119 +88,29 @@ Depuis la phase de tests internes de la version V0.3.0, les fonctionnalités son
     - ~~plateaux => plateaux_libres (peuplé par les plateaux de campagne terminés)~~
 
 #### Suggestions générales
-- (Faro) Aligner les piles sur la même ligne pour que ca soit plus facile à jouer (-1 Totol)
-- Sauvegarder l'état du plateau en cours après chaque coup. Le joueur qui quitte le jeu, reprend là où il était. Quand il revient, il commence avec son temps moyen sur ce type de niveau.
 - ~~(Aleksandar): thème sur le fond du décors. Trop austère.~~
-- Selon ton humeur, demander 5 plateaux faciles ou 5 ultras difficiles. (mode libre)
-- pour les plateaux impossibles à perdre, les classer dans DÉTENTE
 - ~~pour les plateaux impossibles à gagner, proposer au joueur de trouver la combinaison pour perdre. (Mode No Win)~~
-- Pouvoir effacer un joueur (avec confirmation)
-- Effacer automatiquement un joueur sans fichier de statistiques.
-- Ajouter un menu pour effacer un joueur (avec resolution d'un plateau pour confirmer)
-- (Anatole) Gagner des pieces sur des reussite majeur et les utiliser pour passer un plateau.
 - ~~(Dorian/Anatole) Ajouter un bouton pour passer un plateau.~~
   - ~~Le plateau n'est pas ajouté dans les plateaux "jeu libre"~~
   - ~~Le plateau est effacé de la campagne actuelle~~
   - ~~Le plateau a un status "passé" qui sera comptabilisé avec les plateaux "abandonné"~~
   - ~~Le plateau ne rapporte aucun point => Prévoir une variante du panneau "Abandon".~~
-- Gerer les homonymes:
-  - Ajouter un UUID avec chaque joueur dans la liste des joueurs
-  - Utiliser l'UUID pour identifier le joueur dans toutes les transactions internes : score, campagne, statistiques.
-  - Ajouter l'UUID dans le fichier JSON signé
-  - étudier si l'uuid devrait etre dans le nom du fichier de sauvegarde à la place de l'indice.
-  - compte local :
-    - uuid = uuid du joueur local
-  - compte remote :
-    - remote_uuid = uuid initial du joueur distant
-    - uuid = uuid local sur le phone receveur (si l'original uuid existe deja)
-- Au Démarrage, la configuration pourrait resserer les indexes de fichiers des joueurs.
-- Dans la gestion de campagne, ne plus éditer la derniere campagne, mais viser la campagne avec son nom.
-
-#### Web
-- Ajouter un menu pour exporter les sauvegardes (avec chiffrage secret)
-- Ajouter un menu pour importer les sauvegardes chiffrées
 
 #### Niveaux
-- Prevoir une musique spéciale pour la réussite de la derniere ascension possible et le message de félicitations.
-- Il faudrait prevoir un jeu libre avec choix de difficulté et choix de longueur d'ascension + La campagne qui orchestre les longueurs d'ascensions à faire (10 puis 20 ...)
+- ~~Prevoir une musique spéciale pour la réussite de la derniere ascension possible et le message de félicitations.~~ ABANDON
+- ~~Il faudrait prevoir un jeu libre avec choix de difficulté et choix de longueur d'ascension + La campagne qui orchestre les longueurs d'ascensions à faire (10 puis 20 ...)~~ ABANDON
 - ~~TRICHE ANATOLE :~~ bouton 'PASSER'
     - ~~Quand anatole comme 'nom' on peux mettre n'importe quelle couleur sur n'importe quelle couleur et ça marche mais pas beaucoup de point~~
     - ~~Il y aura un bouton gagner Ou quand tout les Block seront dans une case remplie~~
 
-#### Statistiques
-- Outils visuels:
-  - GAUGE (Jauge) : jauge circulaire ou semi-circulaire
-    - Progression vers un objectif mensuel
-    - Pourcentage de niveaux complétés
-    - Temps de jeu par rapport à un objectif
-  - Bar chart (daigramme en barres) : 
-    - Victoires / défaites
-    - Nombre de parties par jour
-    - Temps de jeu par mois
-  - Line chart (courbe) : 
-    - Temps de jeu par mois
-    - Durée moyenne des parties au fil du temps
-  - Le plus simple sur GODOT 4.5: utiliser la bibliotheque de base.
-    - Control + TextureProgressBar + Label + Graphiques "faits maison"
-- Page de statisques contient (de haut en bas):
-  - Campagne:
-    - [Line chart] Temps de jeu,
-    - [Bar chart 1] Nombre de parties
-    - [Bar chart 1] Nombre de défaites
-  - Ascension:
-    - [Line chart] durée d'ascension (temps, plateaux), 
-  - Niveau (notion artificielle à construire):
-    - [Line chart] Idée de représentation graphique : Dessiner une courbe avec x=niveaux et y=f(x)=echecs, taux de réussite ...
-    - [Line chart] Idée : Representer les courbes sur 1 mois d'activité et comparer au dernier mois (en pointillé) 
-    - [Bar chart 2] échecs par niveau, 
-    - [Bar chart 2] taux de réussite par niveau, 
-    - [Bar chart 2] temps moyen par niveau,
-    - [Bar chart 2] complétion par niveau,
-- Prévoir un téléchargement des stats:
-    - nommer le téléphone + compte google
-    - indiquer la date de création.
-    - zipper les données : comptes de jeux, scores et séquences de jeu.
-    - réaliser un SHA1 de l'ensemble
-    - envoyer le tout à l'adresse mail du jeu.
-    - Prévoir côté mail :
-      - vérifier le zip avec le SHA1
-      - créer une base de donnée avec tous les joueurs
-      - faire un classement de tout le monde.
-- Automatisation des scores:
-    - activer Google Play Games Services (GPGS)
-    - créer un leaderboard
-    - enregistrer l'ID. 
-    - importer le plug in GPGS dans godot.
-    - https://godotengine.org/asset-library/asset/2440#:~:text=2.0%20Tools%204.0%20Community,%2D%20Load%20events%20by%20ids
-
-#### Android
-- Pour Android : voir si une astuce de zoom existe sur Godot pour grandir les piles suivant la taille des piles.
-
 #### Ambiance
-- (Anna) Le score est animé quand il augmente. Comme une machine à sous.
-- (Faro) Ajouter de la musique dans les menus (+1 Totol)
 - ~~(option) détecter une position de plateau bloquée ou impossible.~~ Réalisé pour Qui Perd Gagne.
-- (Totol) Quand un joueur met du temps à jouer, faire une animation pour dire d'abandonner ou faire apparaître une main qui y invite. C'est du troll.
-- (Guigui) messages d'amour pour joueuse d'amour !
-- (copilot) Ajouter des defis (complete en moins de X mouvements)
-- (Guigui) Pour le son de fin de rangée, interroger la taille de la rangée pour boucler un son en fonction de sa taille.
 - ~~(Guigui) Changer de thème quand on joue une 2onde fois un plateau en échec. (Rouge avec un logo "Attention")~~ ABANDON (les plateaux sont en séquence, pas la peine de rappeler que le plateau a déjà été joué)
 - ~~(Guigui) en jeu, afficher la complétion de l'ascension et de la campagne sous le nom sous forme de pourcentage.~~
-- (Guigui) Cloner les sons de  victoire, debut, fin, echecs pour varier les plaisirs.
-- (Anatole) Fond d'écran mobile avec un lapin mignon qui devient flippant, furieux après 2 minutes, puis tout mignon à nouveau. Un screamer à 2 minutes.
-
-#### Accessibilité
-- Le tremblement peut faire selectioner/désélectionner une pile dans le même temps. Faire une tempo pour sélectionner une pile afin de se protéger des tremblements.
-- Augmenter la zone de sélection des piles
-- Augmenter le contraste des cases vides
-- Augmenter le temps de deselection automatique
 
 #### Beta test : calibrer les temps
 _S'appuie sur le partage des score de la V2.0._
 Developpé par GitHub Copilot avec 'GPT-6 Luna'
-- [outil] Réaliser une campagne triple plateaux pour calibrer les temps:
-  - [outil] Meilleur 1er temps de réussite = temps reference
-  - [outil] Meilleur temps de réussite = temps record (score augmenté)
 - ~~À chaque fin de niveau:~~
   - ~~produire un fichier JSON signé avec:~~
     - ~~Nom du joueur~~
@@ -231,8 +120,6 @@ Developpé par GitHub Copilot avec 'GPT-6 Luna'
   - ~~Réaliser un panneau pour indiquer la consigne + bouton partage.~~
 - ~~Signature HMAC du fichier JSON avec l'API native de Godot~~
 - ~~Plugin de partage (sms, whatsapp ...) : Share Plugin (par cengiz-pz)~~
-- Supprimer le panneau 'Beta test' et introduire un bouton dans la page des scores de Niveau/Campagne.
-- Ajouter un bouton dans la page des statistiquesS
 
 ## V1.0 : Pour une version long terme
 

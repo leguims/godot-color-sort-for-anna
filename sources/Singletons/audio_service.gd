@@ -1,11 +1,11 @@
 extends Node
 
-const MUSIQUE_SOLVE_THE_PUZZLE = preload("res://Art/Musique/Solve The Puzzle.ogg")
-const MUSIQUE_DREAMING = preload("res://Art/Musique/Dreaming.ogg")
-const MUSIQUE_GREAT_LITTLE_CHALLENGE = preload("res://Art/Musique/Great Little Challenge.ogg")
-const MUSIQUE_HUMBLE_MATCH = preload("res://Art/Musique/Humble Match.ogg")
-const MUSIQUE_SU_TURNO = preload("res://Art/Musique/Su Turno.ogg")
-const MUSIQUE_THE_THREE_PRINCESSES_OF_LILAC_MEADOW = preload("res://Art/Musique/The Three Princesses of Lilac Meadow.ogg")
+const MUSIQUE_SOLVE_THE_PUZZLE : String = "res://Art/Musique/Solve The Puzzle.ogg"
+const MUSIQUE_DREAMING : String = "res://Art/Musique/Dreaming.ogg"
+const MUSIQUE_GREAT_LITTLE_CHALLENGE : String = "res://Art/Musique/Great Little Challenge.ogg"
+const MUSIQUE_HUMBLE_MATCH : String = "res://Art/Musique/Humble Match.ogg"
+const MUSIQUE_SU_TURNO : String = "res://Art/Musique/Su Turno.ogg"
+const MUSIQUE_THE_THREE_PRINCESSES_OF_LILAC_MEADOW : String = "res://Art/Musique/The Three Princesses of Lilac Meadow.ogg"
 
 const SON_MENU_CLICK = preload("res://Art/EffetSonore/menu-click.mp3")
 
@@ -19,6 +19,7 @@ const SON_JETON_DEPLACER_PLEINE = preload("res://Art/EffetSonore/move-full.mp3")
 const SON_JETON_DEPLACER_ECHEC = preload("res://Art/EffetSonore/move-fail.mp3")
 
 var musique: AudioStreamPlayer
+var chemin_musique_actuelle: String
 var effet_sonore: AudioStreamPlayer
 
 ####################################
@@ -32,12 +33,17 @@ func _ready() -> void:
 	effet_sonore = AudioStreamPlayer.new()
 	add_child(effet_sonore)
 
-func _musique_play(stream: AudioStream):
-	musique.stream = stream
+func _musique_play(chemin_musique: String):
+	if chemin_musique_actuelle != chemin_musique:
+		chemin_musique_actuelle = chemin_musique
+		musique.stream = load(chemin_musique)
 	musique.play()
 
 func _musique_stop():
 	musique.stop()
+	# Liberer la memoire associee au flux audio
+	chemin_musique_actuelle = ""
+	musique.stream = null
 
 func _effet_sonore_play(stream: AudioStream):
 	effet_sonore.stream = stream
