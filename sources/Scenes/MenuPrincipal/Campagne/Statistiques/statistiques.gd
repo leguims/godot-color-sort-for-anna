@@ -264,7 +264,7 @@ func str_arrondir_pourcentage(pourcentage: float) -> String:
 	# Passage en pourcentage * 100
 	pourcentage = 100. * pourcentage
 	# Précision du pourcentage selon le taux.
-	if pourcentage < 10.0:
+	if 0.1 <= pourcentage and pourcentage < 10.0:
 		# 1 decimale
 		return str(round(pourcentage * 10) / 10.0) + '%'
 	else:
