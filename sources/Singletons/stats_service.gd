@@ -32,6 +32,9 @@ func score_pourcentage_fin_campagne() -> float:
 func campagne_nom_joueur() -> String:
 	return SauvegardeBddJoueursService.lire_nom_joueur()
 
+func campagne_medaille_joueur() -> String:
+	return lire_medaille_joueur()
+
 func campagne_nom() -> String:
 	return SauvegardeBddJoueursService.enregistrement_campagne_lire_nom_derniere_campagne().capitalize()
 
@@ -221,6 +224,32 @@ func score_total_pourcentage_fin_campagne() -> float:
 		return 0.
 	var score_fin_campagne :int = detail_score_cumule().get('fin_campagne', 0)
 	return 1. * score_fin_campagne / _score_total
+
+func lire_medaille_joueur() -> String:
+	var valeur_niveau : int = SauvegardeBddJoueursService.enregistrement_campagne_lire_valeur_niveau_joueur()
+	var taux_reussite_campagne : float = campagne_taux_reussite()
+	if valeur_niveau >= 8:
+		if taux_reussite_campagne >= 0.8:
+			return 'diamant'
+		elif taux_reussite_campagne >= 0.6:
+			return 'or'
+		elif taux_reussite_campagne >= 0.4:
+			return 'argent'
+		else:
+			return 'bronze'
+	elif valeur_niveau >= 7:
+		if taux_reussite_campagne >= 0.7:
+			return 'or'
+		elif taux_reussite_campagne >= 0.5:
+			return 'argent'
+		else:
+			return 'bronze'
+	elif valeur_niveau >= 5:
+		if taux_reussite_campagne >= 0.6:
+			return 'argent'
+		return 'bronze'
+	else:
+		return 'bronze'
 
 func nombre_de_plateau_inacheves() -> int:
 	var joueur = SauvegardeBddJoueursService.lire_nom_joueur()

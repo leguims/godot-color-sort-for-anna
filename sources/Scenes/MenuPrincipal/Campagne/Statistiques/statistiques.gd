@@ -48,8 +48,9 @@ func score():
 
 	var ui_score = $Scroll/Content/Score
 
-	# TODO : Gerer dans un service le type de medaille.
-	ui_score.nom_grade('bronze')
+	var medaille : String = StatsService.lire_medaille_joueur()
+	ui_score.medaille(medaille)
+	ui_score.nom_grade(medaille)
 	ui_score.nom_joueur(StatsService.campagne_nom_joueur())
 	ui_score.score(StatsService.score().replace('.', ' '))
 

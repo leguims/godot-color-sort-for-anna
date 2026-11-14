@@ -38,6 +38,16 @@ func enregistrer_coups(coups : String):
 	$BandeauEnJeu/Coups.text = coups
 
 # Bandeau de menu
+func enregistrer_medaille(nom : String) -> void:
+	if nom.to_lower() == 'bronze':
+		$BandeauMenu/Medaille.texture = load('res://Art/UI/icons/grades/medaille_bronze_32.png')
+	if nom.to_lower() == 'argent':
+		$BandeauMenu/Medaille.texture = load('res://Art/UI/icons/grades/medaille_argent_32.png')
+	if nom.to_lower() == 'or':
+		$BandeauMenu/Medaille.texture = load('res://Art/UI/icons/grades/medaille_or_32.png')
+	if nom.to_lower() == 'diamant':
+		$BandeauMenu/Medaille.texture = load('res://Art/UI/icons/grades/medaille_diamant_32.png')
+
 func enregistrer_joueur(joueur : String):
 	$BandeauMenu/Joueur.text = joueur
 

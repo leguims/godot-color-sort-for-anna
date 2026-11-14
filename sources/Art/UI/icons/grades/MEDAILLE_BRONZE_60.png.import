@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://bqd37gkoeur8e"
-path="res://.godot/imported/medaille_bronze_48.png-6dfcd9e7ea47473b7e20f7b8e4e68328.ctex"
+uid="uid://dy20bdh1f1s88"
+path="res://.godot/imported/MEDAILLE_BRONZE_60.png-17a1a38f1baacb105e9eac2aec3591e9.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Art/UI/icons/grades/medaille_bronze_48.png"
-dest_files=["res://.godot/imported/medaille_bronze_48.png-6dfcd9e7ea47473b7e20f7b8e4e68328.ctex"]
+source_file="res://Art/UI/icons/grades/MEDAILLE_BRONZE_60.png"
+dest_files=["res://.godot/imported/MEDAILLE_BRONZE_60.png-17a1a38f1baacb105e9eac2aec3591e9.ctex"]
 
 [params]
 

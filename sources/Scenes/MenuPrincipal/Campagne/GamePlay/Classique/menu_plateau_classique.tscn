@@ -11,6 +11,7 @@
 [ext_resource type="Texture2D" uid="uid://f5kdatxkd5br" path="res://Art/UI/Gameplay/Classique/button_home.svg" id="7_q8ekg"]
 [ext_resource type="Texture2D" uid="uid://fnc6uki83sei" path="res://Art/UI/Gameplay/Classique/button_play.svg" id="8_tolx0"]
 [ext_resource type="Texture2D" uid="uid://y0x0sbnscxy4" path="res://Art/UI/Gameplay/Classique/button_stats.svg" id="9_440yi"]
+[ext_resource type="Texture2D" uid="uid://bu0xuqyrl42vy" path="res://Art/UI/icons/grades/medaille_bronze_32.png" id="9_s7vys"]
 
 [node name="MenuPlateauClassique" type="Node" unique_id=561806520]
 script = ExtResource("1_cfw72")
@@ -133,11 +134,23 @@ texture = ExtResource("6_u7xw0")
 expand_mode = 1
 stretch_mode = 5
 
+[node name="Medaille" type="TextureRect" parent="BandeauMenu" unique_id=845882588]
+custom_minimum_size = Vector2(32, 32)
+layout_mode = 0
+offset_left = 103.0
+offset_top = 24.0
+offset_right = 135.0
+offset_bottom = 56.0
+mouse_filter = 2
+texture = ExtResource("9_s7vys")
+expand_mode = 1
+stretch_mode = 5
+
 [node name="Joueur" type="Label" parent="BandeauMenu" unique_id=1642082932]
-custom_minimum_size = Vector2(160, 40)
+custom_minimum_size = Vector2(160, 32)
 layout_mode = 0
 offset_left = 138.0
-offset_top = 16.0
+offset_top = 24.0
 offset_right = 298.0
 offset_bottom = 56.0
 theme_override_colors/font_color = Color(0.024, 0.247, 0.471, 1)

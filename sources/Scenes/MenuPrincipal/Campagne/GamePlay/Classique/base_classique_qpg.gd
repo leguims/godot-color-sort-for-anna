@@ -32,6 +32,9 @@ func commencer_un_nouveau_gameplay() -> void:
 	$MenuPlateau.show_menu()
 
 func maj_bandeau_menu() -> void:
+	var medaille : String = StatsService.lire_medaille_joueur()
+	$MenuPlateau.enregistrer_medaille(medaille)
+
 	var nom : String = SauvegardeBddJoueursService.lire_nom_joueur()
 	$MenuPlateau.enregistrer_joueur(nom)
 
