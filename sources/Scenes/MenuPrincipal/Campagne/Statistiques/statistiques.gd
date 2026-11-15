@@ -3,6 +3,7 @@ extends Control
 const PREFIXE_CAMPAGNE_TEST := "[test]"
 
 func _ready():
+	background()
 	score()
 	campagne()
 	niveaux()
@@ -39,6 +40,24 @@ func _on_retour_pressed() -> void:
 		# Retour au menu de campagne
 		get_tree().change_scene_to_file("res://Scenes/MenuPrincipal/Campagne/campagne.tscn")
 
+func background():
+	# Identifier la medaille et charger le background associé
+	var valeur
+	var ui_score = $Scroll/Content/Background
+
+	var medaille : String = StatsService.lire_medaille_joueur()
+	ui_score.texture = load('res://Art/UI/Statistiques/background.png')
+	if medaille.to_lower() == 'bronze':
+		# TODO
+		pass
+	if medaille.to_lower() == 'argent':
+		# TODO
+		pass
+	if medaille.to_lower() == 'or':
+		ui_score.texture = load('res://Art/UI/Statistiques/background_or.png')
+	if medaille.to_lower() == 'diamant':
+		# TODO
+		pass
 
 func score():
 	# Identifier le joueur
