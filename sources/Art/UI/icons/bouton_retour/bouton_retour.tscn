@@ -1,0 +1,50 @@
+[gd_scene format=3 uid="uid://w107yrff5att"]
+
+[ext_resource type="Script" uid="uid://csrhrxv0rp8xs" path="res://Art/UI/icons/bouton_retour/bouton_retour.gd" id="1_ru35t"]
+[ext_resource type="Texture2D" uid="uid://bgyrgpm2kf6a2" path="res://Art/UI/icons/bouton_retour/retour.png" id="1_tqm7m"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ru35t"]
+bg_color = Color(0.0627451, 0.16862746, 0.3137255, 1)
+corner_radius_top_left = 30
+corner_radius_top_right = 30
+corner_radius_bottom_right = 30
+corner_radius_bottom_left = 30
+
+[sub_resource type="InputEventKey" id="InputEventKey_pa4px"]
+keycode = 4194305
+
+[sub_resource type="Shortcut" id="Shortcut_guquf"]
+events = [SubResource("InputEventKey_pa4px")]
+
+[node name="BoutonRetour" type="Control" unique_id=316379464]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 60.0
+offset_bottom = 60.0
+script = ExtResource("1_ru35t")
+
+[node name="Fond" type="Panel" parent="." unique_id=381479841]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_ru35t")
+
+[node name="Bouton" type="Button" parent="." unique_id=1670724150]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+tooltip_text = "Fermer la preview"
+focus_mode = 0
+shortcut = SubResource("Shortcut_guquf")
+icon = ExtResource("1_tqm7m")
+flat = true
+icon_alignment = 1
+expand_icon = true
+
+[connection signal="pressed" from="Bouton" to="." method="_on_bouton_pressed"]

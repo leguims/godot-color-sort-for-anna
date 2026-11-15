@@ -3,7 +3,7 @@ extends Control
 const PREFIXE_CAMPAGNE_TEST := "[test]"
 
 func _ready():
-	background()
+	theme_medaille()
 	score()
 	campagne()
 	niveaux()
@@ -30,7 +30,7 @@ func _afficher_le_partage_si_necessaire() -> void:
 func _on_panneau_partage_performances_fermer() -> void:
 	$PanneauPartagePerformances.hide()
 
-func _on_retour_pressed() -> void:
+func _on_bouton_retour_pressed() -> void:
 	AudioService.son_menu_click()
 	VibrationService.vibration_click()
 	if ProgressionCampagneService.la_campagne_est_terminee():
@@ -40,24 +40,40 @@ func _on_retour_pressed() -> void:
 		# Retour au menu de campagne
 		get_tree().change_scene_to_file("res://Scenes/MenuPrincipal/Campagne/campagne.tscn")
 
-func background():
-	# Identifier la medaille et charger le background associé
-	var valeur
-	var ui_score = $Scroll/Content/Background
-
+func theme_medaille():
+	# Identifier la medaille et charger le theme_medaille associé
 	var medaille : String = StatsService.lire_medaille_joueur()
+
+	# Fond d'ecran
+	var ui_score = $Scroll/Content/Background
 	ui_score.texture = load('res://Art/UI/Statistiques/background.png')
 	if medaille.to_lower() == 'bronze':
-		# TODO
-		pass
+		ui_score.texture = load('res://Art/UI/Statistiques/background_bronze.png')
 	if medaille.to_lower() == 'argent':
-		# TODO
-		pass
+		ui_score.texture = load('res://Art/UI/Statistiques/background_argent.png')
 	if medaille.to_lower() == 'or':
 		ui_score.texture = load('res://Art/UI/Statistiques/background_or.png')
 	if medaille.to_lower() == 'diamant':
-		# TODO
-		pass
+		ui_score.texture = load('res://Art/UI/Statistiques/background_diamant.png')
+
+	# Panneau Statistique
+	$Scroll/Content/Banniere/Fond.get("theme_override_styles/panel").bg_color = Color('102b50')
+	$Scroll/Content/Banniere/Titre.add_theme_color_override("font_color", Color('ffffff'))
+	if medaille.to_lower() == 'bronze':
+		$Scroll/Content/Banniere/Fond.get("theme_override_styles/panel").bg_color = Color('f5dfbd')
+		$Scroll/Content/Banniere/Titre.add_theme_color_override("font_color", Color('24463a'))
+	if medaille.to_lower() == 'argent':
+		$Scroll/Content/Banniere/Fond.get("theme_override_styles/panel").bg_color = Color('eaf2f7')
+		$Scroll/Content/Banniere/Titre.add_theme_color_override("font_color", Color('243848'))
+	if medaille.to_lower() == 'or':
+		$Scroll/Content/Banniere/Fond.get("theme_override_styles/panel").bg_color = Color('e0b865')
+		$Scroll/Content/Banniere/Titre.add_theme_color_override("font_color", Color('39212d'))
+	if medaille.to_lower() == 'diamant':
+		$Scroll/Content/Banniere/Fond.get("theme_override_styles/panel").bg_color = Color('eff4fe')
+		$Scroll/Content/Banniere/Titre.add_theme_color_override("font_color", Color('2f5478'))
+
+	# Bouton retour
+	$Scroll/Content/BoutonRetour.medaille(medaille)
 
 func score():
 	# Identifier le joueur
@@ -69,7 +85,6 @@ func score():
 
 	var medaille : String = StatsService.lire_medaille_joueur()
 	ui_score.medaille(medaille)
-	ui_score.nom_grade(medaille)
 	ui_score.nom_joueur(StatsService.campagne_nom_joueur())
 	ui_score.score(StatsService.score().replace('.', ' '))
 
