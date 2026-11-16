@@ -10,6 +10,7 @@ func medaille(nom : String) -> void:
 		_image_grade('res://Art/UI/icons/grades/medaille_bronze_60.png')
 		_nom_grade(nom)
 		_couleur_fond(Color('f5dfbd'))
+		_couleur_fond_sombre(Color('f7dfb8'))
 		_couleur_lisere(Color('b57645'))
 		_couleur_texte_sombre(Color('24463a'))
 		_couleur_texte_clair(Color('76513b'))
@@ -18,6 +19,7 @@ func medaille(nom : String) -> void:
 		_image_grade('res://Art/UI/icons/grades/medaille_argent_60.png')
 		_nom_grade(nom)
 		_couleur_fond(Color('eaf2f7'))
+		_couleur_fond_sombre(Color('e0f2fc'))
 		_couleur_lisere(Color('9fb2c0'))
 		_couleur_texte_sombre(Color('243848'))
 		_couleur_texte_clair(Color('596e7e'))
@@ -26,6 +28,7 @@ func medaille(nom : String) -> void:
 		_image_grade('res://Art/UI/icons/grades/medaille_or_60.png')
 		_nom_grade(nom)
 		_couleur_fond(Color('e0b865'))
+		_couleur_fond_sombre(Color('e6b85a'))
 		_couleur_lisere(Color('ad7e47'))
 		_couleur_texte_sombre(Color('39212d'))
 		_couleur_texte_clair(Color('532118'))
@@ -34,6 +37,7 @@ func medaille(nom : String) -> void:
 		_image_grade('res://Art/UI/icons/grades/medaille_diamant_60.png')
 		_nom_grade(nom)
 		_couleur_fond(Color('eff4fe'))
+		_couleur_fond_sombre(Color('eaf0fe'))
 		_couleur_lisere(Color('4c78a2'))
 		_couleur_texte_sombre(Color('2f5478'))
 		_couleur_texte_clair(Color('437db6'))
@@ -41,6 +45,13 @@ func medaille(nom : String) -> void:
 
 func _couleur_fond(couleur : Color) -> void:
 	$Fond.get("theme_override_styles/panel").bg_color = couleur
+	$Rapidite/Fond.get("theme_override_styles/panel").bg_color = couleur
+	$Reussite/Fond.get("theme_override_styles/panel").bg_color = couleur
+	$Niveau/Fond.get("theme_override_styles/panel").bg_color = couleur
+	$Parfait/Fond.get("theme_override_styles/panel").bg_color = couleur
+	$Campagne/Fond.get("theme_override_styles/panel").bg_color = couleur
+
+func _couleur_fond_sombre(couleur : Color) -> void:
 	$Rapidite/Fond.get("theme_override_styles/panel").bg_color = couleur
 	$Reussite/Fond.get("theme_override_styles/panel").bg_color = couleur
 	$Niveau/Fond.get("theme_override_styles/panel").bg_color = couleur

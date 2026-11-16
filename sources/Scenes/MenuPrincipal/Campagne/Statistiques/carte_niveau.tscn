@@ -134,7 +134,7 @@ offset_bottom = 10.0
 [node name="Entete" type="Control" parent="Tableau" unique_id=1930093740]
 anchors_preset = 0
 
-[node name="1" type="Label" parent="Tableau/Entete" unique_id=884886964]
+[node name="col1" type="Label" parent="Tableau/Entete" unique_id=884886964]
 layout_mode = 0
 offset_left = 10.0
 offset_top = 73.0
@@ -146,7 +146,7 @@ theme_override_font_sizes/font_size = 11
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="2" type="Label" parent="Tableau/Entete" unique_id=722429309]
+[node name="col2" type="Label" parent="Tableau/Entete" unique_id=722429309]
 layout_mode = 0
 offset_left = 128.0
 offset_top = 73.0
@@ -159,7 +159,7 @@ text = "Réussite"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="3" type="Label" parent="Tableau/Entete" unique_id=246371950]
+[node name="col3" type="Label" parent="Tableau/Entete" unique_id=246371950]
 layout_mode = 0
 offset_left = 244.0
 offset_top = 73.0

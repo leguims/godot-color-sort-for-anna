@@ -75,6 +75,27 @@ func theme_medaille():
 	# Bouton retour
 	$Scroll/Content/BoutonRetour.medaille(medaille)
 
+	# Modes de jeu
+	$Scroll/Content/BanniereMode/Fond.get("theme_override_styles/panel").bg_color = Color('102b50')
+	$Scroll/Content/BanniereMode/Fond.get("theme_override_styles/panel").border_color = Color('efc49f')
+	$Scroll/Content/BanniereMode/Titre.add_theme_color_override("font_color", Color('ffffff'))
+	if medaille.to_lower() == 'bronze':
+		$Scroll/Content/BanniereMode/Fond.get("theme_override_styles/panel").bg_color = Color('f5dfbd')
+		$Scroll/Content/BanniereMode/Fond.get("theme_override_styles/panel").border_color = Color('b57645')
+		$Scroll/Content/BanniereMode/Titre.add_theme_color_override("font_color", Color('24463a'))
+	if medaille.to_lower() == 'argent':
+		$Scroll/Content/BanniereMode/Fond.get("theme_override_styles/panel").bg_color = Color('eaf2f7')
+		$Scroll/Content/BanniereMode/Fond.get("theme_override_styles/panel").border_color = Color('9fb2c0')
+		$Scroll/Content/BanniereMode/Titre.add_theme_color_override("font_color", Color('243848'))
+	if medaille.to_lower() == 'or':
+		$Scroll/Content/BanniereMode/Fond.get("theme_override_styles/panel").bg_color = Color('e0b865')
+		$Scroll/Content/BanniereMode/Fond.get("theme_override_styles/panel").border_color = Color('ad7e47')
+		$Scroll/Content/BanniereMode/Titre.add_theme_color_override("font_color", Color('39212d'))
+	if medaille.to_lower() == 'diamant':
+		$Scroll/Content/BanniereMode/Fond.get("theme_override_styles/panel").bg_color = Color('eff4fe')
+		$Scroll/Content/BanniereMode/Fond.get("theme_override_styles/panel").border_color = Color('4c78a2')
+		$Scroll/Content/BanniereMode/Titre.add_theme_color_override("font_color", Color('2f5478'))
+
 func score():
 	# Identifier le joueur
 	# Consulter la BDD pour obtenir les indicateurs à afficher
@@ -116,6 +137,8 @@ func campagne():
 	
 	var ui_campagne = $Scroll/Content/Campagne
 
+	var medaille : String = StatsService.lire_medaille_joueur()
+	ui_campagne.medaille(medaille)
 	valeur = StatsService.campagne_nom()
 	ui_campagne.nom(valeur)
 
@@ -144,6 +167,8 @@ func niveaux():
 	
 	ui_niveau.en_cours(str(SauvegardeBddJoueursService.enregistrement_campagne_lire_valeur_niveau_joueur()))
 
+	var medaille : String = StatsService.lire_medaille_joueur()
+	ui_niveau.medaille(medaille)
 	valeur = StatsService.niveau_taux_completion()
 	valeur = str_arrondir_pourcentage(valeur)
 	ui_niveau.completion(valeur)
@@ -177,6 +202,8 @@ func plateaux():
 
 	var ui_plateau = $Scroll/Content/Plateau
 
+	var medaille : String = StatsService.lire_medaille_joueur()
+	ui_plateau.medaille(medaille)
 	valeur = str(StatsService.plateau_nombre_de_plateaux_joues())
 	ui_plateau.nb_plateaux(valeur)
 
@@ -218,6 +245,8 @@ func classique():
 
 	var ui_classique = $Scroll/Content/Classique
 
+	var medaille : String = StatsService.lire_medaille_joueur()
+	ui_classique.medaille(medaille)
 	valeur = str(StatsService.classique_nombre_de_plateaux_joues())
 	ui_classique.nb_plateaux(valeur)
 
@@ -260,6 +289,8 @@ func qui_perd_gagne():
 
 	var ui_qui_perd_gagne = $Scroll/Content/QuiPerdGagne
 
+	var medaille : String = StatsService.lire_medaille_joueur()
+	ui_qui_perd_gagne.medaille(medaille)
 	valeur = str(StatsService.qui_perd_gagne_nombre_de_plateaux_joues())
 	ui_qui_perd_gagne.nb_plateaux(valeur)
 
