@@ -12,7 +12,7 @@
 [ext_resource type="Texture2D" uid="uid://ct45vk1sy7j4j" path="res://Art/UI/Gameplay/QuiPerdGagne/button_play.svg" id="8_m5lak"]
 [ext_resource type="Texture2D" uid="uid://b6bel5tao173w" path="res://Art/UI/Gameplay/QuiPerdGagne/button_stats.svg" id="9_uo1c6"]
 [ext_resource type="Texture2D" uid="uid://bu0xuqyrl42vy" path="res://Art/UI/icons/grades/medaille_bronze_32.png" id="9_df1ic"]
-[ext_resource type="PackedScene" uid="uid://clivjrc0ilg21" path="res://Scenes/MenuPrincipal/Campagne/GamePlay/QuiPerdGagne/aide_qpg.tscn" id="aide"]
+[ext_resource type="PackedScene" uid="uid://clivjrc0ilg21" path="res://Scenes/MenuPrincipal/Campagne/GamePlay/QuiPerdGagne/aide_qui_perd_gagne.tscn" id="aide"]
 
 [node name="MenuPlateauQuiPerdGagne" type="Node" unique_id=561806520]
 script = ExtResource("1_aq6n0")
