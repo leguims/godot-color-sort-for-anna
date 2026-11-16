@@ -11,6 +11,20 @@ signal deselection_pile
 # Notifie la scene `campagne` que le bouton est pressé
 signal commencer_plateau
 
+@onready var _aide: CanvasLayer = get_node_or_null("AideFixee")
+
+
+func _ouvrir_aide() -> void:
+	_aide.ouvrir()
+	$BandeauMenu.hide()
+
+
+func _fermer_aide() -> void:
+	_aide.hide()
+	$BandeauMenu.show()
+	$BandeauMenu/BoutonAide.grab_focus()
+
+
 func _process(_delta: float) -> void:
 	# Afficher le temps
 	_maj_chrono()
@@ -111,6 +125,8 @@ func hide_bandeau_en_jeu():
 	$BandeauEnJeu/BoutonPasser.hide()
 
 func hide_bandeau_menu():
+	if _aide != null:
+		_aide.hide()
 	$BandeauMenu.hide()
 	$BandeauMenu/Fond.hide()
 	$BandeauMenu/Joueur.hide()

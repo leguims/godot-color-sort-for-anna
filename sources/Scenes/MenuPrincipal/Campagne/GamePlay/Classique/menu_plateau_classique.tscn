@@ -1,6 +1,6 @@
 [gd_scene format=3 uid="uid://bam876b5yqom6"]
 
-[ext_resource type="Script" uid="uid://bvobgf0gavp5h" path="res://Scenes/MenuPrincipal/Campagne/GamePlay/Commun/menu_plateau.gd" id="1_cfw72"]
+[ext_resource type="Script" uid="uid://bvobgf0gavp5h" path="res://Scenes/MenuPrincipal/Campagne/GamePlay/Classique/menu_plateau_classique_qpg.gd" id="1_cfw72"]
 [ext_resource type="Texture2D" uid="uid://46u7o24484rr" path="res://Art/UI/Gameplay/Classique/background.png" id="2_y18de"]
 [ext_resource type="Texture2D" uid="uid://c1q3i2mxcc4yo" path="res://Art/UI/Gameplay/Classique/base_active.svg" id="3_w50lc"]
 [ext_resource type="Texture2D" uid="uid://bqtrqd0baxmcq" path="res://Art/UI/Gameplay/Classique/button_restart.png" id="3_yobhf"]
@@ -12,6 +12,7 @@
 [ext_resource type="Texture2D" uid="uid://fnc6uki83sei" path="res://Art/UI/Gameplay/Classique/button_play.svg" id="8_tolx0"]
 [ext_resource type="Texture2D" uid="uid://y0x0sbnscxy4" path="res://Art/UI/Gameplay/Classique/button_stats.svg" id="9_440yi"]
 [ext_resource type="Texture2D" uid="uid://bu0xuqyrl42vy" path="res://Art/UI/icons/grades/medaille_bronze_32.png" id="9_s7vys"]
+[ext_resource type="PackedScene" uid="uid://cu668q71moe74" path="res://Scenes/MenuPrincipal/Campagne/GamePlay/Classique/aide_classique.tscn" id="aide"]
 
 [node name="MenuPlateauClassique" type="Node" unique_id=561806520]
 script = ExtResource("1_cfw72")
@@ -219,9 +220,24 @@ texture_normal = ExtResource("9_440yi")
 ignore_texture_size = true
 stretch_mode = 5
 
+[node name="BoutonAide" type="Button" parent="BandeauMenu" unique_id=1063187098]
+layout_mode = 0
+offset_left = 421.0
+offset_top = 105.0
+offset_right = 466.0
+offset_bottom = 150.0
+tooltip_text = "Afficher l’aide"
+theme_override_font_sizes/font_size = 22
+text = "?"
+
+[node name="AideFixee" parent="." unique_id=332185002 instance=ExtResource("aide")]
+visible = false
+
 [connection signal="gui_input" from="Fond" to="." method="_on_fond_gui_input"]
 [connection signal="pressed" from="BandeauEnJeu/BoutonRecommencer" to="." method="_on_bouton_recommencer_pressed"]
 [connection signal="pressed" from="BandeauEnJeu/BoutonPasser" to="." method="_on_bouton_passer_pressed"]
 [connection signal="pressed" from="BandeauMenu/BoutonMenuPrincipal" to="." method="_on_bouton_menu_principal_pressed"]
 [connection signal="pressed" from="BandeauMenu/BoutonCommencer" to="." method="_on_bouton_commencer_pressed"]
 [connection signal="pressed" from="BandeauMenu/BoutonStatistiques" to="." method="_on_bouton_statistiques_pressed"]
+[connection signal="pressed" from="BandeauMenu/BoutonAide" to="." method="_ouvrir_aide"]
+[connection signal="fermee" from="AideFixee" to="." method="_fermer_aide"]
