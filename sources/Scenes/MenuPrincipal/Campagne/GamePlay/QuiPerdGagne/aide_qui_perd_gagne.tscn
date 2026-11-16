@@ -5,7 +5,7 @@
 [ext_resource type="FontFile" uid="uid://dbs77if6q2gtc" path="res://Art/UI/Fonts/TeXGyreAdventor/texgyreadventor-bold.otf" id="3_132dq"]
 [ext_resource type="Texture2D" uid="uid://2hfmlm702v5y" path="res://Art/UI/Gameplay/QuiPerdGagne/devil.png" id="4_f652o"]
 [ext_resource type="FontFile" uid="uid://8pcourumhksh" path="res://Art/UI/Fonts/TeXGyreAdventor/texgyreadventor-regular.otf" id="5_l84gd"]
-[ext_resource type="Texture2D" uid="uid://bhyphya3f8she" path="res://Art/UI/Gameplay/QuiPerdGagne/schema_qpg.png" id="6_ha3xa"]
+[ext_resource type="Texture2D" uid="uid://s2e1gndcq373" path="res://Art/UI/Gameplay/QuiPerdGagne/schema_qpg.png" id="6_ha3xa"]
 [ext_resource type="Texture2D" uid="uid://ct45vk1sy7j4j" path="res://Art/UI/Gameplay/QuiPerdGagne/button_play.svg" id="7_jaj0x"]
 [ext_resource type="Texture2D" uid="uid://3edjppndwue" path="res://Art/UI/Gameplay/QuiPerdGagne/button_restart.svg" id="8_ad0bm"]
 [ext_resource type="Texture2D" uid="uid://caedkte1ie6aq" path="res://Art/UI/Gameplay/QuiPerdGagne/button_pass.svg" id="9_utxa0"]

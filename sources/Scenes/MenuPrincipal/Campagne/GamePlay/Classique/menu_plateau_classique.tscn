@@ -230,7 +230,7 @@ tooltip_text = "Afficher l’aide"
 theme_override_font_sizes/font_size = 22
 text = "?"
 
-[node name="AideFixee" parent="." unique_id=332185002 instance=ExtResource("aide")]
+[node name="Aide" parent="." unique_id=332185002 instance=ExtResource("aide")]
 visible = false
 
 [connection signal="gui_input" from="Fond" to="." method="_on_fond_gui_input"]
@@ -239,5 +239,5 @@ visible = false
 [connection signal="pressed" from="BandeauMenu/BoutonMenuPrincipal" to="." method="_on_bouton_menu_principal_pressed"]
 [connection signal="pressed" from="BandeauMenu/BoutonCommencer" to="." method="_on_bouton_commencer_pressed"]
 [connection signal="pressed" from="BandeauMenu/BoutonStatistiques" to="." method="_on_bouton_statistiques_pressed"]
-[connection signal="pressed" from="BandeauMenu/BoutonAide" to="." method="_ouvrir_aide"]
-[connection signal="fermee" from="AideFixee" to="." method="_fermer_aide"]
+[connection signal="pressed" from="BandeauMenu/BoutonAide" to="." method="_on_bouton_aide_pressed"]
+[connection signal="fermee" from="Aide" to="." method="_on_bouton_compris_aide_pressed"]
