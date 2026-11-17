@@ -10,8 +10,9 @@
 [ext_resource type="Texture2D" uid="uid://bmephnpsiv1fb" path="res://Art/UI/Gameplay/QuiPerdGagne/base_before.svg" id="6_xu0gr"]
 [ext_resource type="Texture2D" uid="uid://cdofnpueweihn" path="res://Art/UI/Gameplay/QuiPerdGagne/button_home.svg" id="7_t8u56"]
 [ext_resource type="Texture2D" uid="uid://ct45vk1sy7j4j" path="res://Art/UI/Gameplay/QuiPerdGagne/button_play.svg" id="8_m5lak"]
-[ext_resource type="Texture2D" uid="uid://b6bel5tao173w" path="res://Art/UI/Gameplay/QuiPerdGagne/button_stats.svg" id="9_uo1c6"]
 [ext_resource type="Texture2D" uid="uid://bu0xuqyrl42vy" path="res://Art/UI/icons/grades/medaille_bronze_32.png" id="9_df1ic"]
+[ext_resource type="Texture2D" uid="uid://b6bel5tao173w" path="res://Art/UI/Gameplay/QuiPerdGagne/button_stats.svg" id="9_uo1c6"]
+[ext_resource type="Texture2D" uid="uid://cnvts6jyefeiy" path="res://Art/UI/Gameplay/QuiPerdGagne/button_help.svg" id="13_buq2f"]
 [ext_resource type="PackedScene" uid="uid://clivjrc0ilg21" path="res://Scenes/MenuPrincipal/Campagne/GamePlay/QuiPerdGagne/aide_qui_perd_gagne.tscn" id="aide"]
 
 [node name="MenuPlateauQuiPerdGagne" type="Node" unique_id=561806520]
@@ -233,6 +234,10 @@ offset_bottom = 150.0
 tooltip_text = "Afficher l’aide"
 theme_override_font_sizes/font_size = 22
 text = "?"
+icon = ExtResource("13_buq2f")
+flat = true
+icon_alignment = 1
+expand_icon = true
 
 [node name="Aide" parent="." unique_id=1288577212 instance=ExtResource("aide")]
 visible = false

@@ -12,6 +12,7 @@
 [ext_resource type="Texture2D" uid="uid://fnc6uki83sei" path="res://Art/UI/Gameplay/Classique/button_play.svg" id="8_tolx0"]
 [ext_resource type="Texture2D" uid="uid://y0x0sbnscxy4" path="res://Art/UI/Gameplay/Classique/button_stats.svg" id="9_440yi"]
 [ext_resource type="Texture2D" uid="uid://bu0xuqyrl42vy" path="res://Art/UI/icons/grades/medaille_bronze_32.png" id="9_s7vys"]
+[ext_resource type="Texture2D" uid="uid://7tmpkaakk8rj" path="res://Art/UI/Gameplay/Classique/button_help.svg" id="13_6g7oi"]
 [ext_resource type="PackedScene" uid="uid://cu668q71moe74" path="res://Scenes/MenuPrincipal/Campagne/GamePlay/Classique/aide_classique.tscn" id="aide"]
 
 [node name="MenuPlateauClassique" type="Node" unique_id=561806520]
@@ -229,6 +230,10 @@ offset_bottom = 150.0
 tooltip_text = "Afficher l’aide"
 theme_override_font_sizes/font_size = 22
 text = "?"
+icon = ExtResource("13_6g7oi")
+flat = true
+icon_alignment = 1
+expand_icon = true
 
 [node name="Aide" parent="." unique_id=332185002 instance=ExtResource("aide")]
 visible = false
