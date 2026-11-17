@@ -9,6 +9,12 @@ func _ready() -> void:
 	$MenuPlateau.enregistrer_gameplay("CLASSIQUE")
 	$MenuPlateau.enregistrer_sous_titre_gameplay("Range tes couleurs")
 
+# Surchargé pour gerer l'affichage de l'aide
+func afficher_aide() -> void:
+	if SauvegardeBddJoueursService.configuration_montrer_aide_classique():
+		SauvegardeBddJoueursService.configuration_desactiver_aide_classique()
+		$MenuPlateau.afficher_aide()
+
 # Callback pour "Plateau"
 func est_termine(liste_piles) -> bool:
 	# Vérifier si la partie est achevée

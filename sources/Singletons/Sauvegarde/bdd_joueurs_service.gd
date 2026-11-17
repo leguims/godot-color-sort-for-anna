@@ -1147,3 +1147,46 @@ func plateaux_libres_lire_liste_plateaux_de_difficulte(difficulte : int) -> Arra
 	if plateaux_libres_difficulte_existe(difficulte):
 		return plateaux_libres().get(str(difficulte))
 	return [] # Liste plateaux vide
+
+
+###############################################
+# Configuration du joueur
+#	"configuration": {
+#        	'montrer_aide_classique': true,
+#        	'montrer_aide_qui_perd_gagne': true
+#           }
+###############################################
+
+func configuration() -> Dictionary:
+	"Pointeur sur la sauvegarde de la configuration du joueur."
+	if le_joueur_existe():
+		return lire_sauvegarde().get('configuration', {})
+	return {} # Aucune configuration
+
+func configuration_existe() -> bool:
+	"Indique si une configuration existe"
+	return not configuration().is_empty()
+
+func configuration_montrer_aide_classique() -> bool:
+	"Indique s'il faut montrer l'aide automatiquement"
+	return configuration().get('montrer_aide_classique', true)
+
+func configuration_montrer_aide_qui_perd_gagne() -> bool:
+	"Indique s'il faut montrer l'aide automatiquement"
+	return configuration().get('montrer_aide_qui_perd_gagne', true)
+
+func configuration_desactiver_aide_classique() -> void:
+	"Désasctiver l'aide automatique du gameplay classique"
+	if le_joueur_existe():
+		if not configuration_existe():
+			lire_sauvegarde()['configuration'] = {}
+		configuration()['montrer_aide_classique'] = false
+		_enregistrer_sauvegarde_joueur()
+
+func configuration_desactiver_aide_qui_perd_gagne() -> void:
+	"Désasctiver l'aide automatique du gameplay qui_perd_gagne"
+	if le_joueur_existe():
+		if not configuration_existe():
+			lire_sauvegarde()['configuration'] = {}
+		configuration()['montrer_aide_qui_perd_gagne'] = false
+		_enregistrer_sauvegarde_joueur()

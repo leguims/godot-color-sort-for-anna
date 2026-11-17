@@ -30,6 +30,7 @@ func est_valide(plateau_texte : String) -> bool:
 func commencer_un_nouveau_gameplay() -> void:
 	maj_bandeau_menu()
 	$MenuPlateau.show_menu()
+	afficher_aide()
 
 func maj_bandeau_menu() -> void:
 	var medaille : String = StatsService.lire_medaille_joueur()
@@ -69,6 +70,10 @@ func show_fond():
 # Callback pour "Plateau"
 func est_termine(_liste_piles) -> bool:
 	return false
+
+# Surchargé par l'enfant
+func afficher_aide() -> void:
+	pass
 
 # Relais de signaux vers la campagne
 func _on_plateau_plateau_invalide() -> void:

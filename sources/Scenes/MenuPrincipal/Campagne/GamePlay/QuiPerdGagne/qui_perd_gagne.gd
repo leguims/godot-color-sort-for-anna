@@ -21,6 +21,12 @@ func _ready() -> void:
 	$MenuPlateau.enregistrer_gameplay("")
 	$MenuPlateau.enregistrer_sous_titre_gameplay("")
 
+# Surchargé pour gerer l'affichage de l'aide
+func afficher_aide() -> void:
+	if SauvegardeBddJoueursService.configuration_montrer_aide_qui_perd_gagne():
+		SauvegardeBddJoueursService.configuration_desactiver_aide_qui_perd_gagne()
+		$MenuPlateau.afficher_aide()
+
 func _physics_process(delta: float) -> void:
 	if diablotin_actif:
 		# Faire bouger le diablotin

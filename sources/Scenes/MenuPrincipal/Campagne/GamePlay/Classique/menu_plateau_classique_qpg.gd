@@ -20,6 +20,9 @@ func _process(_delta: float) -> void:
 # #############
 # API Gameplay
 # Bandeau en jeu
+func afficher_aide():
+	_on_bouton_aide_pressed()
+
 func enregistrer_gameplay(gameplay : String, font_size : int = 18):
 	$BandeauEnJeu/Gameplay.text = gameplay
 	$BandeauEnJeu/Gameplay.add_theme_font_size_override("font_size", font_size)
