@@ -10,8 +10,8 @@ const PREFIXE_CAMPAGNE_TEST := "[test]"
 
 # Dico : {'caracteristique': reglage}
 var configuration_du_jeu = {
-	'version': 'V1.0.0-rc21',
-	'date_debut_campagne': "2026-10-26 00:00:00",
+	'version': 'V1.0.0',
+	'date_debut_campagne': "2026-11-18 00:00:00",
 	'musiques': true,
 	'effets sonores': true,
 	'vibrations': true
@@ -30,22 +30,35 @@ func _initialiser_la_configuration() -> void:
 	if fichier_configuration_courant:
 		version_courante_disque = fichier_configuration_courant.get('version', '?')
 
-	# Changements majeurs (1er et 2ond digit de la version)
-	if version_courante_disque.split('.')[0] != version_courante_logicielle.split('.')[0] \
-		or version_courante_disque.split('.')[1] != version_courante_logicielle.split('.')[1]:
-		# Transcription des enregistrements des versions précédentes
-		_V0_2_X___V0_3_X()
-		_V0_3_X___V0_4_X()
-		_V0_4_X___V1_0_X()
+	if  version_courante_disque == version_courante_logicielle:
+		# Aucune mise à jour
+		return
 
-	# Changements mineurs (3eme digit de la version)
-	if version_courante_disque.split('.')[0] == version_courante_logicielle.split('.')[0] \
-		and version_courante_disque.split('.')[1] == version_courante_logicielle.split('.')[1] \
-		and version_courante_disque.split('.')[2] != version_courante_logicielle.split('.')[2]:
-		_V1_0_0_rcX___V1_0_X()
+	if version_courante_disque == '?':
+		# Machine sans configuration moderne
+		_V0_2_X___V0_3_X()
+
+	else:
+		if version_courante_disque.split('.')[0] != version_courante_logicielle.split('.')[0] \
+			or version_courante_disque.split('.')[1] != version_courante_logicielle.split('.')[1]:
+			# Changements majeurs (1er et 2ond digit de la version)
+			# Transcription des enregistrements des versions précédentes
+			_V0_3_X___V0_4_X()
+			_V0_4_X___V1_0_X()
+
+		if version_courante_disque.split('.')[0] == version_courante_logicielle.split('.')[0] \
+			and version_courante_disque.split('.')[1] == version_courante_logicielle.split('.')[1] \
+			and version_courante_disque.split('.')[2] != version_courante_logicielle.split('.')[2]:
+			# Changements mineurs (3eme digit de la version)
+			_V1_0_0_rcX___V1_0_X()
+
+		# Fin de campagne + Raz score
 		_V1_0_X()
 
+	# Enregistrer la configuration actuelle
+	configuration_du_jeu['version'] = version_courante_logicielle
 	synchronisation_avec_fichier_configuration_du_jeu()
+	_enregistrer_la_configuration()
 	LogService.log_debug("configuration_du_jeu = ", configuration_du_jeu)
 
 
@@ -178,8 +191,6 @@ func _V0_4_X___V1_0_X() -> void:
 	var fichier_configuration_courant = FichiersJsonService.read_json_file("configuration_du_jeu.json")
 	if fichier_configuration_courant:
 		version_courante_disque = fichier_configuration_courant.get('version', '?')
-	else:
-		version_courante_disque = 'V0.4.X' # Version par defaut si fichier absent
 
 	if version_courante_disque.begins_with('V0.4.'):
 		# ###################################
@@ -292,8 +303,6 @@ func _V0_3_X___V0_4_X() -> void:
 	var fichier_configuration_courant = FichiersJsonService.read_json_file("configuration_du_jeu.json")
 	if fichier_configuration_courant:
 		version_courante_disque = fichier_configuration_courant.get('version', '?')
-	else:
-		version_courante_disque = 'V0.3.X' # Version par defaut si fichier absent
 
 	if version_courante_disque.begins_with('V0.3.'):
 		# ###################################

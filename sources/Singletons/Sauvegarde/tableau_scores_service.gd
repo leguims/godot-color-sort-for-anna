@@ -3,7 +3,7 @@ extends Node
 var liste_des_scores = [
 	{
 		'nom': 'Alain Konu',
-		'rang': 1,
+		'rang': 0,
 		'score': 0,
 		'score_txt': "0"
 	}
