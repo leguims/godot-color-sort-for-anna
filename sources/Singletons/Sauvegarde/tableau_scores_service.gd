@@ -35,6 +35,7 @@ func _retourner_le_joueur(nom_joueur : String) -> Dictionary:
 
 func remise_a_zero():
 	for joueur in liste_des_scores:
+		joueur['rang'] = 0
 		joueur['score'] = 0
 		joueur['score_txt'] = "0"
 		LogService.log_debug("Remise à zéro du score de ", joueur)
@@ -54,7 +55,7 @@ func ajouter_un_nouveau_joueur(nom_nouveau_joueur : String) -> bool:
 	# Crée le score et l'enregistre
 	var score = {
 		'nom': nom_nouveau_joueur,
-		'rang': len(liste_des_scores)+1,
+		'rang': int(len(liste_des_scores)+1),
 		'score': 0,
 		'score_txt': "0"
 	}
@@ -65,7 +66,7 @@ func ajouter_un_nouveau_joueur(nom_nouveau_joueur : String) -> bool:
 func lire_rang_joueur(nom_joueur : String) -> int:
 	var joueur = _retourner_le_joueur(nom_joueur)
 	if joueur:
-		return joueur.get('rang')
+		return int(joueur.get('rang'))
 	return 0
 
 func lire_le_trophee_du_joueur(nom_joueur : String) -> String:
@@ -157,7 +158,7 @@ func _mettre_a_jour_les_rangs() -> void:
 	for score in liste_score_decroissant:
 		for joueur in liste_des_scores:
 			if joueur.get('score') == score:
-				joueur['rang'] = rang
+				joueur['rang'] = int(rang)
 		rang += len(dico_score_nom_joueur[score])
 	
 	_enregistrer_la_liste_des_scores()

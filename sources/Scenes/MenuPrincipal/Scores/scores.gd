@@ -81,7 +81,7 @@ func _build_row(parent: Control, index: int, row_y: float, rank: int, item: Dict
 
 	var player_name := Label.new()
 	player_name.name = "Nom"
-	var name : String = str(item.get("nom", "-"))
+	var name : String = str(item.get("nom", ""))
 	if len(name) > 8:
 		# Coupe le nom sur un espace, trait d'union ou souligné
 		var pos_space = name.rfind(' ', 9)
@@ -104,7 +104,7 @@ func _build_row(parent: Control, index: int, row_y: float, rank: int, item: Dict
 
 	var score := Label.new()
 	score.name = "Score"
-	score.text = "-" if item.is_empty() else _format_score_fr(int(item.get("score", 0)))
+	score.text = "" if item.is_empty() else _format_score_fr(int(item.get("score", 0)))
 	score.position = Vector2(200 if index == 0 else 232, 0)
 	score.size = Vector2(160 if index == 0 else 128, row.size.y)
 	score.horizontal_alignment = HORIZONTAL_ALIGNMENT_RIGHT
