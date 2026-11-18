@@ -65,8 +65,8 @@ func partager_campagne(share: Node, donnees: Dictionary) -> Dictionary:
 		chemin_fichier,
 		TYPE_MIME_JSON,
 		nom_joueur + " partage ses performances",
-		"Campagne " + nom_campagne_affiche,
-		"Campagne " + nom_campagne_affiche + " de " + nom_joueur
+		nom_campagne_affiche,
+		nom_campagne_affiche + " de " + nom_joueur
 	):
 		return {"succes": false, "erreur": "SHARE n'a pas pu transmettre le fichier JSON."}
 

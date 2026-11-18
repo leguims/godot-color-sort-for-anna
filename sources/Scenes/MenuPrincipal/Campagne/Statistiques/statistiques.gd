@@ -17,10 +17,19 @@ func _afficher_le_partage_si_necessaire() -> void:
 	var campagne: Dictionary = SauvegardeBddJoueursService.enregistrement_campagne_lire_derniere_campagne()
 	var nom_campagne: Variant = campagne.get("campagne", "")
 	var niveaux: Variant = campagne.get("niveaux", [])
+
+	# Vérifier si nous sommes sur ANDROID
+	if not OS.has_feature("android"):
+		return
+
+	# Vérifier si une beta-test de campagne est en cours
 	if not nom_campagne is String or not nom_campagne.begins_with(PREFIXE_CAMPAGNE_TEST) \
 		or not campagne.get("date_fin", 0) or not niveaux is Array or niveaux.is_empty():
 		return
 
+	_afficher_le_partage()
+
+func _afficher_le_partage() -> void:
 	var panneau: PartagePerformancesUI = $PanneauPartagePerformances
 	var api: PartagePerformancesAPI = panneau.get_node("PartagePerformancesAPI")
 	var donnees: Dictionary = api.lire_donnees_derniere_campagne()

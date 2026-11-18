@@ -30,7 +30,8 @@ func afficher_export(donnees: Dictionary) -> void:
 
 	$Panneau/Contenu/NomJoueur.text = "Joueur : " + nom_joueur
 	$Panneau/Contenu/NomCampagne.text = "Campagne : " + nom_campagne
-	$Panneau/Contenu/NomNiveau.text = "Dernier niveau : " + nom_niveau
+	# Inutile de préciser le niveau, car la campagne complete est sauvegardée.
+	# $Panneau/Contenu/NomNiveau.text = "Dernier niveau : " + nom_niveau
 	$Panneau/Contenu/AdresseCourriel.text = ADRESSE_COURRIEL_PARTAGE
 	$Panneau/Contenu/Message.visible = false
 	$Panneau/Contenu/BoutonPartagerFichier.disabled = not ShareService.is_available()
