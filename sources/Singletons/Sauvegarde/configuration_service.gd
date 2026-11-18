@@ -6,6 +6,8 @@ extends Node
 
 # class_name Configuration
 
+const PREFIXE_CAMPAGNE_TEST := "[test]"
+
 # Dico : {'caracteristique': reglage}
 var configuration_du_jeu = {
 	'version': 'V1.0.0-rc21',
@@ -22,17 +24,25 @@ func _ready() -> void:
 
 func _initialiser_la_configuration() -> void:
 	var version_courante_disque = '?'
+	var version_courante_logicielle = lire_la_version()
 	# Lire la configuration du jeu
 	var fichier_configuration_courant = FichiersJsonService.read_json_file("configuration_du_jeu.json")
 	if fichier_configuration_courant:
 		version_courante_disque = fichier_configuration_courant.get('version', '?')
 
-	if version_courante_disque.split('.')[0] != lire_la_version().split('.')[0] \
-		or version_courante_disque.split('.')[1] != lire_la_version().split('.')[1]:
+	# Changements majeurs (1er et 2ond digit de la version)
+	if version_courante_disque.split('.')[0] != version_courante_logicielle.split('.')[0] \
+		or version_courante_disque.split('.')[1] != version_courante_logicielle.split('.')[1]:
 		# Transcription des enregistrements des versions précédentes
 		_V0_2_X___V0_3_X()
 		_V0_3_X___V0_4_X()
 		_V0_4_X___V1_0_X()
+
+	# Changements mineurs (3eme digit de la version)
+	if version_courante_disque.split('.')[0] == version_courante_logicielle.split('.')[0] \
+		and version_courante_disque.split('.')[1] == version_courante_logicielle.split('.')[1] \
+		and version_courante_disque.split('.')[2] != version_courante_logicielle.split('.')[2]:
+		_V1_0_0_rcX___V1_0_X()
 		_V1_0_X()
 
 	synchronisation_avec_fichier_configuration_du_jeu()
@@ -116,6 +126,49 @@ func _V1_0_X() -> void:
 	SauvegardeBddJoueursService.remplacer_initier_campagne_des_joueurs()
 	# Enregistrement de la configuration sur le disque
 	_enregistrer_la_configuration()
+
+func _V1_0_0_rcX___V1_0_X() -> void:
+	# CONVERSION [V1.0.0-rcX -> V1.0.X]
+	var version_courante_disque = '?'
+
+	# Lire la configuration du jeu
+	var fichier_configuration_courant = FichiersJsonService.read_json_file("configuration_du_jeu.json")
+	if fichier_configuration_courant:
+		version_courante_disque = fichier_configuration_courant.get('version', '?')
+
+	if version_courante_disque.begins_with('V1.0.0-rc'):
+		# ###################################
+		# Fichier 'configuration_du_jeu.json'
+		# ###################################
+		# Conserver les réglages utilisateur avant d'enregistrer la nouvelle version.
+		synchronisation_avec_fichier_configuration_du_jeu()
+		# Enregistrer la transcription de configuration 'V1.0.0-rc'
+		var version_logicielle = lire_la_version()
+		configuration_du_jeu['version'] = 'V1_0_0_rc'
+		_enregistrer_la_configuration()
+		configuration_du_jeu['version'] = version_logicielle
+
+		# ###################################
+		# Fichier 'sauvegarde_joueur_XX.json'
+		# ###################################
+		# Pour chaque joueur:
+		#  1 - Effacer la campagne '[test] de 'enregistrement_campagne'
+		var ancien_fichier_sauvegarde_joueur = {}
+		for nom_joueur in SauvegardeListeJoueursService.retourner_la_liste_des_joueurs():
+			ancien_fichier_sauvegarde_joueur = SauvegardeListeJoueursService.retourner_le_fichier_de_sauvegarde(nom_joueur)
+			SauvegardeBddJoueursService.choisir_le_joueur(nom_joueur, ancien_fichier_sauvegarde_joueur)
+
+			var enregistrement_campagne = SauvegardeBddJoueursService.enregistrement_campagne()
+			if not enregistrement_campagne.is_empty():
+				for i in range(len(enregistrement_campagne)-1,-1,-1):
+					var nom_campagne = enregistrement_campagne[i].get('campagne', '')
+					if nom_campagne.begins_with(PREFIXE_CAMPAGNE_TEST):
+						LogService.log_debug("Effacement de la campagne de test '", nom_campagne ,"' pour le joueur :", nom_joueur)
+						enregistrement_campagne.remove_at(i)
+
+			# Enregistrer les changements
+			SauvegardeBddJoueursService._enregistrer_sauvegarde_joueur()
+			SauvegardeBddJoueursService.liberer_le_joueur()
 
 func _V0_4_X___V1_0_X() -> void:
 	# CONVERSION [V0.4.X -> V1.0.X]
