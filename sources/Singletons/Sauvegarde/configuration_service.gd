@@ -39,21 +39,28 @@ func _initialiser_la_configuration() -> void:
 		_V0_2_X___V0_3_X()
 
 	else:
-		if version_courante_disque.split('.')[0] != version_courante_logicielle.split('.')[0] \
-			or version_courante_disque.split('.')[1] != version_courante_logicielle.split('.')[1]:
+		var delta_majeur = version_courante_disque.split('.')[0] != version_courante_logicielle.split('.')[0] \
+							or version_courante_disque.split('.')[1] != version_courante_logicielle.split('.')[1]
+		if delta_majeur:
 			# Changements majeurs (1er et 2ond digit de la version)
 			# Transcription des enregistrements des versions précédentes
 			_V0_3_X___V0_4_X()
 			_V0_4_X___V1_0_X()
 
-		if version_courante_disque.split('.')[0] == version_courante_logicielle.split('.')[0] \
-			and version_courante_disque.split('.')[1] == version_courante_logicielle.split('.')[1] \
-			and version_courante_disque.split('.')[2] != version_courante_logicielle.split('.')[2]:
+		var delta_mineur = version_courante_disque.split('.')[0] == version_courante_logicielle.split('.')[0] \
+							and version_courante_disque.split('.')[1] == version_courante_logicielle.split('.')[1] \
+							and version_courante_disque.split('.')[2] != version_courante_logicielle.split('.')[2]
+		if delta_mineur:
 			# Changements mineurs (3eme digit de la version)
 			_V1_0_0_rcX___V1_0_X()
 
-		# Fin de campagne + Raz score
-		_V1_0_X()
+		if delta_majeur or \
+			delta_mineur and \
+			'-rc' in version_courante_disque \
+			and '-rc' not in version_courante_logicielle:
+			# Fin de campagne + Raz score
+			_raz_score()
+			_copie_campagne()
 
 	# Enregistrer la configuration actuelle
 	configuration_du_jeu['version'] = version_courante_logicielle
@@ -124,9 +131,7 @@ func synchronisation_avec_fichier_configuration_du_jeu() -> void:
 		if 'vibrations' in fichier_configuration_courant:
 			configuration_du_jeu['vibrations'] = fichier_configuration_courant.get('vibrations')
 
-func _V1_0_X() -> void:
-	# Traitement global [V1.0.X]
-
+func _raz_score() -> void:
 	# ###################################
 	# Fichier 'configuration_du_jeu.json'
 	# ###################################
@@ -135,6 +140,16 @@ func _V1_0_X() -> void:
 
 	# Remise à zéro des scores
 	SauvegardeTableauDesScoresService.remise_a_zero()
+	# Enregistrement de la configuration sur le disque
+	_enregistrer_la_configuration()
+
+func _copie_campagne() -> void:
+	# ###################################
+	# Fichier 'configuration_du_jeu.json'
+	# ###################################
+	# Conserver les réglages utilisateur avant d'enregistrer la nouvelle version.
+	synchronisation_avec_fichier_configuration_du_jeu()
+
 	# Copier nouvelle campagne pour les joueurs + l'initialiser
 	SauvegardeBddJoueursService.remplacer_initier_campagne_des_joueurs()
 	# Enregistrement de la configuration sur le disque
