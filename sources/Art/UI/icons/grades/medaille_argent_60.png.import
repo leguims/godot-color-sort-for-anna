@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://d3n7lray1yero"
-path="res://.godot/imported/MEDAILLE_DIAMANT_60.png-fee7ee0042340af4f65dc831b8d80a69.ctex"
+uid="uid://dvccq60qa2lq"
+path="res://.godot/imported/medaille_argent_60.png-b58be62a7d826ebacc88b0e57abf9ee8.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Art/UI/icons/grades/MEDAILLE_DIAMANT_60.png"
-dest_files=["res://.godot/imported/MEDAILLE_DIAMANT_60.png-fee7ee0042340af4f65dc831b8d80a69.ctex"]
+source_file="res://Art/UI/icons/grades/medaille_argent_60.png"
+dest_files=["res://.godot/imported/medaille_argent_60.png-b58be62a7d826ebacc88b0e57abf9ee8.ctex"]
 
 [params]
 
