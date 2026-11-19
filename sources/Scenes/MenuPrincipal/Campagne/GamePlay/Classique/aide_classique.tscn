@@ -134,7 +134,7 @@ layout_mode = 0
 offset_left = 67.0
 offset_top = 94.0
 offset_right = 413.0
-offset_bottom = 135.0
+offset_bottom = 123.0
 theme_override_colors/font_color = Color(0.03137255, 0.09803922, 0.32941177, 1)
 theme_override_constants/line_spacing = -1
 theme_override_fonts/font = ExtResource("3_pbwod")
@@ -148,7 +148,7 @@ layout_mode = 0
 offset_left = 72.0
 offset_top = 127.0
 offset_right = 408.0
-offset_bottom = 153.0
+offset_bottom = 144.0
 theme_override_colors/font_color = Color(0, 0.60784316, 0.74509805, 1)
 theme_override_constants/line_spacing = -1
 theme_override_fonts/font = ExtResource("4_v4tsd")
@@ -158,11 +158,12 @@ horizontal_alignment = 1
 vertical_alignment = 1
 
 [node name="Introduction" type="Label" parent="Surface/Zone" unique_id=1994830425]
+custom_maximum_size = Vector2(348, -1)
 layout_mode = 0
 offset_left = 68.0
 offset_top = 156.0
-offset_right = 412.0
-offset_bottom = 193.0
+offset_right = 416.0
+offset_bottom = 185.0
 theme_override_colors/font_color = Color(0.03137255, 0.09803922, 0.32941177, 1)
 theme_override_constants/line_spacing = -1
 theme_override_fonts/font = ExtResource("3_pbwod")
@@ -171,20 +172,23 @@ text = "Deux jetons de même couleur au sommet ?
 Ils voyagent ensemble."
 horizontal_alignment = 1
 vertical_alignment = 1
+autowrap_mode = 3
 
 [node name="Geste" type="Label" parent="Surface/Zone" unique_id=1513281672]
+custom_maximum_size = Vector2(348, -1)
 layout_mode = 0
-offset_left = 72.0
+offset_left = 68.0
 offset_top = 193.0
-offset_right = 408.0
-offset_bottom = 215.0
+offset_right = 413.0
+offset_bottom = 207.0
 theme_override_colors/font_color = Color(0.03137255, 0.09803922, 0.32941177, 1)
 theme_override_constants/line_spacing = -1
 theme_override_fonts/font = ExtResource("4_v4tsd")
-theme_override_font_sizes/font_size = 13
+theme_override_font_sizes/font_size = 14
 text = "Touche la colonne de départ, puis celle d’arrivée."
 horizontal_alignment = 1
 vertical_alignment = 1
+autowrap_mode = 3
 
 [node name="Schema" type="TextureRect" parent="Surface/Zone" unique_id=304531622]
 layout_mode = 0
@@ -198,20 +202,19 @@ expand_mode = 1
 stretch_mode = 5
 
 [node name="ExplicationSchema" type="Label" parent="Surface/Zone" unique_id=1262335881]
+custom_maximum_size = Vector2(318, -1)
 layout_mode = 0
-offset_left = 69.0
+offset_left = 82.0
 offset_top = 352.0
-offset_right = 411.0
-offset_bottom = 400.0
+offset_right = 400.0
+offset_bottom = 401.0
 theme_override_colors/font_color = Color(0.03137255, 0.09803922, 0.32941177, 1)
 theme_override_constants/line_spacing = -1
 theme_override_fonts/font = ExtResource("4_v4tsd")
-theme_override_font_sizes/font_size = 12
-text = "Déplace tout le groupe vers une colonne vide ou une
-colonne dont le sommet est de la même couleur,
-à condition qu’il y ait assez de place."
+theme_override_font_sizes/font_size = 14
+text = "Déplace tout le groupe vers une colonne vide ou une colonne dont le sommet est de la même couleur, à condition qu’il y ait assez de place."
 horizontal_alignment = 1
-vertical_alignment = 1
+autowrap_mode = 3
 
 [node name="FiletGagnerGauche" type="ColorRect" parent="Surface/Zone" unique_id=1200090556]
 layout_mode = 0
@@ -246,19 +249,19 @@ horizontal_alignment = 1
 vertical_alignment = 1
 
 [node name="ReglePourGagner" type="Label" parent="Surface/Zone" unique_id=1045151213]
+custom_maximum_size = Vector2(318, -1)
 layout_mode = 0
-offset_left = 70.0
+offset_left = 82.0
 offset_top = 423.0
-offset_right = 408.0
-offset_bottom = 455.0
+offset_right = 400.0
+offset_bottom = 460.0
 theme_override_colors/font_color = Color(0.03137255, 0.09803922, 0.32941177, 1)
 theme_override_constants/line_spacing = -1
 theme_override_fonts/font = ExtResource("4_v4tsd")
-theme_override_font_sizes/font_size = 11
-text = "Chaque colonne utilisée doit être complète et d’une seule
-couleur. Il est possible de laisser une colonne totalement vide."
+theme_override_font_sizes/font_size = 14
+text = "Chaque colonne utilisée doit être complète et d’une seule couleur. Il est possible de laisser une colonne totalement vide."
 horizontal_alignment = 1
-vertical_alignment = 1
+autowrap_mode = 3
 
 [node name="FiletCommandesGauche" type="ColorRect" parent="Surface/Zone" unique_id=1353393829]
 layout_mode = 0
@@ -294,9 +297,9 @@ vertical_alignment = 1
 
 [node name="Jouer" type="TextureRect" parent="Surface/Zone" unique_id=596085013]
 layout_mode = 0
-offset_left = 88.0
+offset_left = 78.0
 offset_top = 483.0
-offset_right = 124.0
+offset_right = 114.0
 offset_bottom = 515.0
 mouse_filter = 2
 texture = ExtResource("6_ec6j6")
@@ -305,35 +308,36 @@ stretch_mode = 5
 
 [node name="LibelleJouer" type="Label" parent="Surface/Zone" unique_id=1180627389]
 layout_mode = 0
-offset_left = 142.0
-offset_top = 482.0
-offset_right = 185.0
-offset_bottom = 508.0
+offset_left = 115.0
+offset_top = 485.0
+offset_right = 167.0
+offset_bottom = 511.0
 theme_override_colors/font_color = Color(0.03137255, 0.09803922, 0.32941177, 1)
 theme_override_constants/line_spacing = -1
 theme_override_fonts/font = ExtResource("3_pbwod")
-theme_override_font_sizes/font_size = 13
-text = "Jouer"
+theme_override_font_sizes/font_size = 14
+text = "Jouer - "
 vertical_alignment = 1
 
 [node name="DescriptionJouer" type="Label" parent="Surface/Zone" unique_id=1579412713]
 layout_mode = 0
-offset_left = 185.0
+offset_left = 165.0
 offset_top = 485.0
-offset_right = 361.0
+offset_right = 389.0
 offset_bottom = 511.0
 theme_override_colors/font_color = Color(0.03137255, 0.09803922, 0.32941177, 1)
 theme_override_constants/line_spacing = -1
 theme_override_fonts/font = ExtResource("4_v4tsd")
-theme_override_font_sizes/font_size = 11
-text = "— Lance le plateau et le chrono."
+theme_override_font_sizes/font_size = 14
+text = "Lance le plateau et le chrono."
 vertical_alignment = 1
+autowrap_mode = 3
 
 [node name="Recommencer" type="TextureRect" parent="Surface/Zone" unique_id=2099720527]
 layout_mode = 0
-offset_left = 88.0
+offset_left = 78.0
 offset_top = 518.0
-offset_right = 124.0
+offset_right = 114.0
 offset_bottom = 550.0
 mouse_filter = 2
 texture = ExtResource("7_7mg4c")
@@ -342,35 +346,36 @@ stretch_mode = 5
 
 [node name="LibelleRecommencer" type="Label" parent="Surface/Zone" unique_id=753557323]
 layout_mode = 0
-offset_left = 142.0
-offset_top = 517.0
-offset_right = 240.0
-offset_bottom = 543.0
+offset_left = 115.0
+offset_top = 520.0
+offset_right = 230.0
+offset_bottom = 546.0
 theme_override_colors/font_color = Color(0.03137255, 0.09803922, 0.32941177, 1)
 theme_override_constants/line_spacing = -1
 theme_override_fonts/font = ExtResource("3_pbwod")
-theme_override_font_sizes/font_size = 13
-text = "Recommencer"
+theme_override_font_sizes/font_size = 14
+text = "Recommencer - "
 vertical_alignment = 1
 
 [node name="DescriptionRecommencer" type="Label" parent="Surface/Zone" unique_id=2032135222]
 layout_mode = 0
-offset_left = 240.0
+offset_left = 228.0
 offset_top = 520.0
-offset_right = 400.0
-offset_bottom = 546.0
+offset_right = 416.0
+offset_bottom = 547.0
 theme_override_colors/font_color = Color(0.03137255, 0.09803922, 0.32941177, 1)
 theme_override_constants/line_spacing = -1
 theme_override_fonts/font = ExtResource("4_v4tsd")
-theme_override_font_sizes/font_size = 11
-text = "— Relance ce plateau à zéro."
+theme_override_font_sizes/font_size = 14
+text = "Relance ce plateau à zéro."
 vertical_alignment = 1
+autowrap_mode = 3
 
 [node name="Passer" type="TextureRect" parent="Surface/Zone" unique_id=1232325612]
 layout_mode = 0
-offset_left = 88.0
+offset_left = 78.0
 offset_top = 553.0
-offset_right = 124.0
+offset_right = 114.0
 offset_bottom = 585.0
 mouse_filter = 2
 texture = ExtResource("8_nmeec")
@@ -379,30 +384,30 @@ stretch_mode = 5
 
 [node name="LibellePasser" type="Label" parent="Surface/Zone" unique_id=1434207157]
 layout_mode = 0
-offset_left = 142.0
-offset_top = 552.0
-offset_right = 193.0
-offset_bottom = 578.0
+offset_left = 115.0
+offset_top = 555.0
+offset_right = 172.0
+offset_bottom = 581.0
 theme_override_colors/font_color = Color(0.03137255, 0.09803922, 0.32941177, 1)
 theme_override_constants/line_spacing = -1
 theme_override_fonts/font = ExtResource("3_pbwod")
-theme_override_font_sizes/font_size = 13
-text = "Passer"
+theme_override_font_sizes/font_size = 14
+text = "Passer - "
 vertical_alignment = 1
 
 [node name="DescriptionPasser" type="Label" parent="Surface/Zone" unique_id=650671177]
 layout_mode = 0
-offset_left = 193.0
+offset_left = 171.0
 offset_top = 555.0
-offset_right = 388.0
-offset_bottom = 581.0
+offset_right = 412.0
+offset_bottom = 582.0
 theme_override_colors/font_color = Color(0.03137255, 0.09803922, 0.32941177, 1)
 theme_override_constants/line_spacing = -1
 theme_override_fonts/font = ExtResource("4_v4tsd")
-theme_override_font_sizes/font_size = 11
-text = "— Va au plateau suivant. Le plateau
-quitté est considéré comme perdu."
+theme_override_font_sizes/font_size = 14
+text = "Va au plateau suivant. Le plateau quitté est considéré comme perdu."
 vertical_alignment = 1
+autowrap_mode = 3
 
 [node name="Compris" type="Button" parent="Surface/Zone" unique_id=1777069909]
 layout_mode = 0
