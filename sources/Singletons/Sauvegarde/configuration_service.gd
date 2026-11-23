@@ -32,6 +32,7 @@ func _initialiser_la_configuration() -> void:
 
 	if  version_courante_disque == version_courante_logicielle:
 		# Aucune mise à jour
+		synchronisation_avec_fichier_configuration_du_jeu()
 		return
 
 	if version_courante_disque == '?':
