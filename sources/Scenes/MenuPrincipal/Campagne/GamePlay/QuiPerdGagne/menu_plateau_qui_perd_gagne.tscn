@@ -15,6 +15,8 @@
 [ext_resource type="Texture2D" uid="uid://cnvts6jyefeiy" path="res://Art/UI/Gameplay/QuiPerdGagne/button_help.svg" id="13_buq2f"]
 [ext_resource type="PackedScene" uid="uid://clivjrc0ilg21" path="res://Scenes/MenuPrincipal/Campagne/GamePlay/QuiPerdGagne/aide_qui_perd_gagne.tscn" id="aide"]
 
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_buq2f"]
+
 [node name="MenuPlateauQuiPerdGagne" type="Node" unique_id=561806520]
 script = ExtResource("1_aq6n0")
 
@@ -233,6 +235,7 @@ offset_right = 466.0
 offset_bottom = 150.0
 tooltip_text = "Afficher l’aide"
 theme_override_font_sizes/font_size = 22
+theme_override_styles/focus = SubResource("StyleBoxEmpty_buq2f")
 text = "?"
 icon = ExtResource("13_buq2f")
 flat = true

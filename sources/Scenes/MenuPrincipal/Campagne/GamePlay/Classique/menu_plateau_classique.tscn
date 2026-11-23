@@ -15,6 +15,8 @@
 [ext_resource type="Texture2D" uid="uid://7tmpkaakk8rj" path="res://Art/UI/Gameplay/Classique/button_help.svg" id="13_6g7oi"]
 [ext_resource type="PackedScene" uid="uid://cu668q71moe74" path="res://Scenes/MenuPrincipal/Campagne/GamePlay/Classique/aide_classique.tscn" id="aide"]
 
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_buq2f"]
+
 [node name="MenuPlateauClassique" type="Node" unique_id=561806520]
 script = ExtResource("1_cfw72")
 
@@ -229,6 +231,7 @@ offset_right = 466.0
 offset_bottom = 150.0
 tooltip_text = "Afficher l’aide"
 theme_override_font_sizes/font_size = 22
+theme_override_styles/focus = SubResource("StyleBoxEmpty_buq2f")
 text = "?"
 icon = ExtResource("13_6g7oi")
 flat = true
