@@ -866,20 +866,31 @@ func test_plateau_plus_rapide_et_plus_lent_cumulent_les_essais_jusquau_plateau_r
 	assert_eq(service.plateau_plus_lent_infos(), {"temps_en_s": 50.0, "difficulte": 6})
 
 func test_plateau_plus_rapide_ex_aequo_retient_la_difficulte_la_plus_elevee_quelque_soit_lordre():
-	_definir_niveaux([_niveau("niveau_1", [
-		_plateau("A", "reussi", 10, 5),
-		_plateau("B", "reussi", 10, 2)
-	])])
-	assert_eq(service.plateau_le_plus_rapide_les_infos().get("temps_en_s"), 10.0)
-	assert_eq(service.plateau_le_plus_rapide_les_infos().get("difficulte"), 5)
+	for difficultes in [[5, 2], [2, 5]]:
+		_definir_niveaux([
+			_niveau("niveau_1", [_plateau("A", "reussi", 10, difficultes[0], "CLASSIQUE")]),
+			_niveau("niveau_2", [_plateau("B", "reussi", 10, difficultes[1], "QUI_PERD_GAGNE")])
+		])
+		var attendu = {"temps_en_s": 10.0, "niveau": 1 if difficultes[0] == 5 else 2, "difficulte": 5}
+		assert_eq(service.plateau_le_plus_rapide_les_infos(), attendu)
+		assert_eq(service.plateau_plus_rapide_infos(), attendu)
 
-func test_plateau_plus_lent_ex_aequo_retient_la_difficulte_la_plus_elevee_quelque_soit_lordre():
+func test_plateau_plus_lent_ex_aequo_retient_la_difficulte_la_plus_basse_quelque_soit_lordre():
+	for difficultes in [[5, 2], [2, 5]]:
+		_definir_niveaux([
+			_niveau("niveau_1", [_plateau("A", "reussi", 10, difficultes[0], "CLASSIQUE")]),
+			_niveau("niveau_2", [_plateau("B", "reussi", 10, difficultes[1], "QUI_PERD_GAGNE")])
+		])
+		var attendu = {"temps_en_s": 10.0, "niveau": 1 if difficultes[0] == 2 else 2, "difficulte": 2}
+		assert_eq(service.plateau_le_plus_lent_les_infos(), attendu)
+		assert_eq(service.plateau_plus_lent_infos(), attendu)
+
+func test_plateau_plus_lent_retient_le_temps_avant_la_difficulte():
 	_definir_niveaux([_niveau("niveau_1", [
-		_plateau("A", "reussi", 10, 5),
-		_plateau("B", "reussi", 10, 2)
+		_plateau("A", "reussi", 10, 2),
+		_plateau("B", "reussi", 11, 5)
 	])])
-	assert_eq(service.plateau_le_plus_lent_les_infos().get("temps_en_s"), 10.0)
-	assert_eq(service.plateau_le_plus_lent_les_infos().get("difficulte"), 5)
+	assert_eq(service.plateau_le_plus_lent_les_infos(), {"temps_en_s": 11.0, "niveau": 1, "difficulte": 5})
 
 func test_plateau_plus_galere_premier_ex_aequo_conserve():
 	_definir_niveaux([_niveau("niveau_1", [
@@ -1048,13 +1059,15 @@ func test_gameplay_plus_galere_compte_tous_les_statuts_du_gameplay():
 	assert_eq(service.classique_plus_galere_infos(), {"nom": "a", "essais": 1, "difficulte": 2})
 	assert_eq(service.qui_perd_gagne_plus_galere_infos(), {"nom": "e", "essais": 1, "difficulte": 4})
 
-func test_gameplay_plus_rapide_et_plus_lent_ex_aequo_retiennent_la_difficulte_la_plus_elevee_quelque_soit_lordre():
-	_definir_niveaux([_niveau("niveau_1", [
-		_plateau("A", "reussi", 10, 5, "CLASSIQUE"),
-		_plateau("B", "reussi", 10, 2, "CLASSIQUE")
-	])])
-	assert_eq(service.gameplay_le_plus_rapide_les_infos("CLASSIQUE").get("difficulte"), 5)
-	assert_eq(service.gameplay_le_plus_lent_les_infos("CLASSIQUE").get("difficulte"), 5)
+func test_gameplay_ex_aequo_retient_la_difficulte_adaptee_quel_que_soit_l_ordre():
+	for gameplay in ["CLASSIQUE", "QUI_PERD_GAGNE"]:
+		for difficultes in [[5, 2], [2, 5]]:
+			_definir_niveaux([_niveau("niveau_1", [
+				_plateau("A", "reussi", 10, difficultes[0], gameplay),
+				_plateau("B", "reussi", 10, difficultes[1], gameplay)
+			])])
+			assert_eq(service.gameplay_le_plus_rapide_les_infos(gameplay), {"temps_en_s": 10.0, "niveau": 1, "difficulte": 5})
+			assert_eq(service.gameplay_le_plus_lent_les_infos(gameplay), {"temps_en_s": 10.0, "niveau": 1, "difficulte": 2})
 
 func test_gameplay_temps_moyen_ne_filtre_pas_les_plateaux_par_date_contrairement_aux_comptes():
 	var date_debut = SauvegardeConfigurationService.lire_la_date_debut_campagne_timestamp()

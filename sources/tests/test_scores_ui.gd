@@ -54,12 +54,12 @@ func test_l_ecran_construit_un_classement_de_cinq_lignes() -> void:
 	for rang in range(1, 6):
 		assert_not_null(_ligne(ecran, rang), "Rang%d" % rang)
 
-func test_un_classement_vide_affiche_des_tirets() -> void:
+func test_un_classement_vide_affiche_des_champs_vides() -> void:
 	var ecran := _ecran_avec([])
 
 	for rang in range(1, 6):
-		assert_eq(_nom(ecran, rang), "-")
-		assert_eq(_score(ecran, rang), "-")
+		assert_eq(_nom(ecran, rang), "")
+		assert_eq(_score(ecran, rang), "")
 
 func test_les_joueurs_sont_affiches_dans_l_ordre_du_classement() -> void:
 	var ecran := _ecran_avec([
@@ -75,13 +75,13 @@ func test_les_joueurs_sont_affiches_dans_l_ordre_du_classement() -> void:
 	assert_eq(_nom(ecran, 3), "Charlie")
 	assert_eq(_score(ecran, 3), "300")
 
-func test_les_places_vides_sont_completees_par_des_tirets() -> void:
+func test_les_places_vides_affichent_des_champs_vides() -> void:
 	var ecran := _ecran_avec([_joueur("Alice", 1, 10), _joueur("Bob", 2, 5)])
 
 	assert_eq(_nom(ecran, 2), "Bob")
-	assert_eq(_nom(ecran, 3), "-")
-	assert_eq(_score(ecran, 3), "-")
-	assert_eq(_nom(ecran, 5), "-")
+	for rang in range(3, 6):
+		assert_eq(_nom(ecran, rang), "")
+		assert_eq(_score(ecran, rang), "")
 
 func test_seuls_les_cinq_meilleurs_sont_affiches() -> void:
 	var scores: Array = []

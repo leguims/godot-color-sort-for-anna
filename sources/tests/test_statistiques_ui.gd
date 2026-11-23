@@ -148,7 +148,10 @@ func test_temps_en_heures_et_minutes_a_partir_d_une_heure() -> void:
 func test_temps_arrondi_ne_deborde_pas_sur_soixante_secondes() -> void:
 	var ecran := _ecran()
 
+	assert_eq(ecran.str_arrondir_temps_en_s(119.4), "1min 59s")
+	assert_eq(ecran.str_arrondir_temps_en_s(119.5), "2min 0s")
 	assert_eq(ecran.str_arrondir_temps_en_s(119.6), "2min 0s")
+	assert_eq(ecran.str_arrondir_temps_en_s(3599.4), "59min 59s")
 	assert_eq(ecran.str_arrondir_temps_en_s(3599.6), "1h 0min")
 
 # ------------------------------------------------------------------

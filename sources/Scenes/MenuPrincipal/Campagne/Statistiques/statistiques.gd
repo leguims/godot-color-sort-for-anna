@@ -359,8 +359,11 @@ func str_arrondir_temps_en_s(temps: float) -> String:
 		return str(roundi(temps)) + 's'
 	elif temps < (60. * 60.): # < 1 h
 		# En minutes + secondes (arrondi)
-		var mins = floori(temps/60.)
-		var sec = roundi(fmod(temps, 60.))
+		var secondes = roundi(temps)
+		if secondes == 3600:
+			return '1h 0min'
+		var mins = floori(secondes / 60.)
+		var sec = secondes % 60
 		return str(mins) + 'min ' + str(sec) + 's'
 	else:
 		# En heure + minutes + secondes (arrondi)

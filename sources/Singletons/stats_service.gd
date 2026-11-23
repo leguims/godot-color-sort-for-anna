@@ -624,7 +624,7 @@ func plateau_le_plus_lent_les_infos() -> Dictionary:
 								plus_lent_temps = temps_plateau_en_s
 								plus_lent_difficulte = difficulte
 								plus_lent_niveau = valeur_niveau
-							elif difficulte > plus_lent_difficulte:
+							elif difficulte < plus_lent_difficulte:
 								plus_lent_difficulte = difficulte
 								plus_lent_niveau = valeur_niveau
 					if status == 'reussi' or status == 'passé':
