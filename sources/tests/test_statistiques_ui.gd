@@ -97,7 +97,7 @@ func _valeur(ecran: Node, chemin: String) -> String:
 func test_pourcentage_une_decimale_sous_dix_pour_cent() -> void:
 	var ecran := _ecran()
 
-	assert_eq(ecran.str_arrondir_pourcentage(0.0), "0.0%")
+	assert_eq(ecran.str_arrondir_pourcentage(0.0), "0%")
 	assert_eq(ecran.str_arrondir_pourcentage(0.05), "5.0%")
 	assert_eq(ecran.str_arrondir_pourcentage(0.034), "3.4%")
 
@@ -160,7 +160,7 @@ func test_temps_arrondi_ne_deborde_pas_sur_soixante_secondes() -> void:
 func test_carte_score_ecrit_chaque_indicateur() -> void:
 	var carte: Control = add_child_autofree(SCENE_CARTE_SCORE.instantiate())
 
-	carte.nom_grade("Bronze")
+	carte.medaille("Bronze")
 	carte.nom_joueur("Alice")
 	carte.score("1 234")
 	carte.rapidite("12%")
@@ -183,14 +183,16 @@ func test_carte_score_choisit_la_medaille_selon_le_grade() -> void:
 
 	for grade in ["bronze", "argent", "or", "diamant"]:
 		carte.medaille(grade)
-		assert_eq(carte.get_node("GradeIdentite/Medaille").texture.resource_path, ICONES + "medaille_%s_48.png" % grade)
+		assert_eq(carte.get_node("GradeIdentite/Medaille").texture.resource_path, ICONES + "medaille_%s_60.png" % grade)
+		assert_eq(carte.get_node("GradeIdentite/NomGrade").text, grade.capitalize())
 
 func test_carte_score_ignore_la_casse_du_grade() -> void:
 	var carte: Control = add_child_autofree(SCENE_CARTE_SCORE.instantiate())
 
 	carte.medaille("DIAMANT")
 
-	assert_eq(carte.get_node("GradeIdentite/Medaille").texture.resource_path, ICONES + "medaille_diamant_48.png")
+	assert_eq(carte.get_node("GradeIdentite/Medaille").texture.resource_path, ICONES + "medaille_diamant_60.png")
+	assert_eq(carte.get_node("GradeIdentite/NomGrade").text, "Diamant")
 
 func test_carte_score_conserve_la_medaille_pour_un_grade_inconnu() -> void:
 	var carte: Control = add_child_autofree(SCENE_CARTE_SCORE.instantiate())
@@ -237,22 +239,22 @@ func _verifier_carte_de_plateaux(carte: Control) -> void:
 	carte.temps_moyen("11s")
 	carte.taux_reussite("83%")
 	carte.plus_rapide_temps("8.0s")
-	carte.plus_rapide_difficulte("4")
+	carte.plus_rapide_niveau("4")
 	carte.plus_lent_temps("15s")
-	carte.plus_lent_difficulte("2")
+	carte.plus_lent_niveau("2")
 	carte.plus_galere_essais("3")
-	carte.plus_galere_difficulte("5")
+	carte.plus_galere_niveau("5")
 
 	assert_eq(carte.get_node("Nombre/Valeur").text, "6")
 	assert_eq(carte.get_node("Essais/Valeur").text, "8")
 	assert_eq(carte.get_node("TempsMoyen/Valeur").text, "11s")
 	assert_eq(carte.get_node("Reussite/Valeur").text, "83%")
 	assert_eq(carte.get_node("Tableau/PlusRapide/Temps").text, "8.0s")
-	assert_eq(carte.get_node("Tableau/PlusRapide/Difficulte").text, "4")
+	assert_eq(carte.get_node("Tableau/PlusRapide/Niveau").text, "4")
 	assert_eq(carte.get_node("Tableau/PlusLent/Temps").text, "15s")
-	assert_eq(carte.get_node("Tableau/PlusLent/Difficulte").text, "2")
+	assert_eq(carte.get_node("Tableau/PlusLent/Niveau").text, "2")
 	assert_eq(carte.get_node("Tableau/PlusGalere/Essais").text, "3")
-	assert_eq(carte.get_node("Tableau/PlusGalere/Difficulte").text, "5")
+	assert_eq(carte.get_node("Tableau/PlusGalere/Niveau").text, "5")
 
 func test_carte_plateau_ecrit_chaque_indicateur() -> void:
 	_verifier_carte_de_plateaux(add_child_autofree(SCENE_CARTE_PLATEAU.instantiate()))
@@ -277,7 +279,7 @@ func test_l_ecran_affiche_le_score_du_joueur() -> void:
 	var ecran := _ecran()
 
 	assert_eq(_valeur(ecran, "Score/GradeIdentite/PlayerName"), "Joueur Test")
-	assert_eq(_valeur(ecran, "Score/GradeIdentite/NomGrade"), "bronze")
+	assert_eq(_valeur(ecran, "Score/GradeIdentite/NomGrade"), "Bronze")
 	assert_eq(_valeur(ecran, "Score/Score/Valeur"), "735")
 
 func test_l_ecran_separe_les_milliers_du_score_par_une_espace() -> void:
@@ -313,6 +315,9 @@ func test_l_ecran_propose_le_partage_d_une_campagne_terminee_non_partagee() -> v
 	_activer_joueur(donnees)
 	var ecran := _ecran()
 
+	if not OS.has_feature("android"):
+		assert_false(ecran.get_node("PanneauPartagePerformances").visible)
+		ecran._afficher_le_partage()
 	assert_true(ecran.get_node("PanneauPartagePerformances").visible)
 	ecran.get_node("PanneauPartagePerformances/Panneau/Contenu/BoutonRetourStatistiques").emit_signal("pressed")
 	assert_false(ecran.get_node("PanneauPartagePerformances").visible)
@@ -363,11 +368,11 @@ func test_l_ecran_affiche_les_statistiques_de_tous_les_plateaux() -> void:
 	assert_eq(_valeur(ecran, "Plateau/TempsMoyen/Valeur"), "14s")
 	assert_eq(_valeur(ecran, "Plateau/Reussite/Valeur"), "83%")
 	assert_eq(_valeur(ecran, "Plateau/Tableau/PlusRapide/Temps"), "8.0s")
-	assert_eq(_valeur(ecran, "Plateau/Tableau/PlusRapide/Difficulte"), "4")
+	assert_eq(_valeur(ecran, "Plateau/Tableau/PlusRapide/Niveau"), "2")
 	assert_eq(_valeur(ecran, "Plateau/Tableau/PlusLent/Temps"), "26s")
-	assert_eq(_valeur(ecran, "Plateau/Tableau/PlusLent/Difficulte"), "2")
+	assert_eq(_valeur(ecran, "Plateau/Tableau/PlusLent/Niveau"), "1")
 	assert_eq(_valeur(ecran, "Plateau/Tableau/PlusGalere/Essais"), "2 essais")
-	assert_eq(_valeur(ecran, "Plateau/Tableau/PlusGalere/Difficulte"), "2")
+	assert_eq(_valeur(ecran, "Plateau/Tableau/PlusGalere/Niveau"), "1")
 
 func test_l_ecran_affiche_les_statistiques_du_gameplay_classique() -> void:
 	var ecran := _ecran()
@@ -377,11 +382,11 @@ func test_l_ecran_affiche_les_statistiques_du_gameplay_classique() -> void:
 	assert_eq(_valeur(ecran, "Classique/TempsMoyen/Valeur"), "11s")
 	assert_eq(_valeur(ecran, "Classique/Reussite/Valeur"), "100%")
 	assert_eq(_valeur(ecran, "Classique/Tableau/PlusRapide/Temps"), "9.0s")
-	assert_eq(_valeur(ecran, "Classique/Tableau/PlusRapide/Difficulte"), "3")
+	assert_eq(_valeur(ecran, "Classique/Tableau/PlusRapide/Niveau"), "1")
 	assert_eq(_valeur(ecran, "Classique/Tableau/PlusLent/Temps"), "15s")
-	assert_eq(_valeur(ecran, "Classique/Tableau/PlusLent/Difficulte"), "2")
+	assert_eq(_valeur(ecran, "Classique/Tableau/PlusLent/Niveau"), "2")
 	assert_eq(_valeur(ecran, "Classique/Tableau/PlusGalere/Essais"), "1 essai")
-	assert_eq(_valeur(ecran, "Classique/Tableau/PlusGalere/Difficulte"), "1")
+	assert_eq(_valeur(ecran, "Classique/Tableau/PlusGalere/Niveau"), "1")
 
 func test_l_ecran_affiche_les_statistiques_du_gameplay_qui_perd_gagne() -> void:
 	var ecran := _ecran()
@@ -391,11 +396,11 @@ func test_l_ecran_affiche_les_statistiques_du_gameplay_qui_perd_gagne() -> void:
 	assert_eq(_valeur(ecran, "QuiPerdGagne/TempsMoyen/Valeur"), "17s")
 	assert_eq(_valeur(ecran, "QuiPerdGagne/Reussite/Valeur"), "67%")
 	assert_eq(_valeur(ecran, "QuiPerdGagne/Tableau/PlusRapide/Temps"), "8.0s")
-	assert_eq(_valeur(ecran, "QuiPerdGagne/Tableau/PlusRapide/Difficulte"), "4")
+	assert_eq(_valeur(ecran, "QuiPerdGagne/Tableau/PlusRapide/Niveau"), "2")
 	assert_eq(_valeur(ecran, "QuiPerdGagne/Tableau/PlusLent/Temps"), "26s")
-	assert_eq(_valeur(ecran, "QuiPerdGagne/Tableau/PlusLent/Difficulte"), "2")
+	assert_eq(_valeur(ecran, "QuiPerdGagne/Tableau/PlusLent/Niveau"), "1")
 	assert_eq(_valeur(ecran, "QuiPerdGagne/Tableau/PlusGalere/Essais"), "2 essais")
-	assert_eq(_valeur(ecran, "QuiPerdGagne/Tableau/PlusGalere/Difficulte"), "2")
+	assert_eq(_valeur(ecran, "QuiPerdGagne/Tableau/PlusGalere/Niveau"), "1")
 
 func test_l_ecran_s_affiche_sans_enregistrement_de_campagne() -> void:
 	var donnees := _donnees_joueur()
@@ -407,7 +412,7 @@ func test_l_ecran_s_affiche_sans_enregistrement_de_campagne() -> void:
 	assert_eq(_valeur(ecran, "Niveau/EnCours/Valeur"), "0")
 	assert_eq(_valeur(ecran, "Plateau/Nombre/Valeur"), "0")
 	assert_eq(_valeur(ecran, "Plateau/Essais/Valeur"), "0")
-	assert_eq(_valeur(ecran, "Plateau/Reussite/Valeur"), "0.0%")
+	assert_eq(_valeur(ecran, "Plateau/Reussite/Valeur"), "0%")
 	assert_eq(_valeur(ecran, "Campagne/SerieMax/Valeur"), "0")
 	assert_eq(_valeur(ecran, "Classique/Nombre/Valeur"), "0")
 	assert_eq(_valeur(ecran, "Classique/Essais/Valeur"), "0")
@@ -418,7 +423,7 @@ func test_retour_ramene_au_menu_de_campagne_tant_que_la_campagne_n_est_pas_termi
 	var ecran := _ecran()
 	assert_false(ProgressionCampagneService.la_campagne_est_terminee())
 
-	ecran.get_node("Scroll/Content/Retour").emit_signal("pressed")
+	ecran.get_node("Scroll/Content/BoutonRetour").emit_signal("pressed")
 	await wait_process_frames(3)
 
 	assert_not_null(get_tree().current_scene)
@@ -431,7 +436,7 @@ func test_retour_ramene_au_menu_principal_quand_la_campagne_est_terminee() -> vo
 	var ecran := _ecran()
 	assert_true(ProgressionCampagneService.la_campagne_est_terminee())
 
-	ecran.get_node("Scroll/Content/Retour").emit_signal("pressed")
+	ecran.get_node("Scroll/Content/BoutonRetour").emit_signal("pressed")
 	await wait_process_frames(3)
 
 	assert_not_null(get_tree().current_scene)

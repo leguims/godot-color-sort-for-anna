@@ -40,7 +40,7 @@ func before_each():
 		{"nom": "Q1", "date_debut": 110, "duree": 1000, "difficulte": 1, "statut": "reussi"}
 	]
 	var plateaux_niveau_2 = [
-		{"nom": "Q2", "date_debut": 510, "duree": 1500, "difficulte": 2, "statut": "en_cours"}
+		{"nom": "Q2", "date_debut": 510, "duree": 1500, "difficulte": 2, "statut": "en_cours", "gameplay": "CLASSIQUE"}
 	]
 	FichiersJsonService.write_json_file("sauvegarde_joueur_alpha.json", {
 		"nom": "Alpha",

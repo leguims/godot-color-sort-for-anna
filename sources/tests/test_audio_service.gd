@@ -101,7 +101,7 @@ func test_jouer_la_musique_choisit_la_bonne_piste_selon_la_progression_du_niveau
 	for cas_de_test in cas:
 		_activer_joueur_test(cas_de_test.get("reussis"), cas_de_test.get("restants"))
 		service.jouer_la_musique()
-		assert_eq(service.musique.stream, cas_de_test.get("musique"))
+		assert_eq(service.musique.stream.resource_path, cas_de_test.get("musique"))
 
 func test_arreter_la_musique_stoppe_la_lecture_si_les_musiques_sont_actives():
 	SauvegardeConfigurationService.configuration_du_jeu["musiques"] = true
@@ -196,16 +196,17 @@ func test_effet_sonore_play_avec_stream_nul_ne_plante_pas():
 
 func test_musique_play_remplace_le_stream_et_lance_la_lecture():
 	service._musique_play(service.MUSIQUE_DREAMING)
-	assert_eq(service.musique.stream, service.MUSIQUE_DREAMING)
+	assert_eq(service.musique.stream.resource_path, service.MUSIQUE_DREAMING)
 	assert_true(service.musique.playing)
 	service._musique_play(service.MUSIQUE_SU_TURNO)
-	assert_eq(service.musique.stream, service.MUSIQUE_SU_TURNO)
+	assert_eq(service.musique.stream.resource_path, service.MUSIQUE_SU_TURNO)
 
-func test_musique_stop_arrete_la_lecture_et_garde_le_stream():
+func test_musique_stop_arrete_la_lecture_et_libere_le_stream():
 	service._musique_play(service.MUSIQUE_DREAMING)
 	service._musique_stop()
 	assert_false(service.musique.playing)
-	assert_eq(service.musique.stream, service.MUSIQUE_DREAMING)
+	assert_null(service.musique.stream)
+	assert_eq(service.chemin_musique_actuelle, "")
 
 func test_musique_stop_sans_lecture_ne_plante_pas():
 	service._musique_stop()
@@ -239,20 +240,20 @@ func test_arreter_la_musique_laisse_jouer_si_musiques_desactivees_en_cours_de_le
 func test_jouer_la_musique_sans_joueur_ni_donnees_joue_dreaming():
 	SauvegardeBddJoueursService.liberer_le_joueur()
 	service.jouer_la_musique()
-	assert_eq(service.musique.stream, service.MUSIQUE_DREAMING)
+	assert_eq(service.musique.stream.resource_path, service.MUSIQUE_DREAMING)
 
 func test_jouer_la_musique_sans_plateau_restant_joue_la_derniere_piste():
 	_activer_joueur_test(3, 0)
 	service.jouer_la_musique()
-	assert_eq(service.musique.stream, service.MUSIQUE_GREAT_LITTLE_CHALLENGE)
+	assert_eq(service.musique.stream.resource_path, service.MUSIQUE_GREAT_LITTLE_CHALLENGE)
 
 func test_jouer_la_musique_remplace_la_piste_en_cours():
 	_activer_joueur_test(0, 6)
 	service.jouer_la_musique()
-	assert_eq(service.musique.stream, service.MUSIQUE_DREAMING)
+	assert_eq(service.musique.stream.resource_path, service.MUSIQUE_DREAMING)
 	_activer_joueur_test(6, 0)
 	service.jouer_la_musique()
-	assert_eq(service.musique.stream, service.MUSIQUE_GREAT_LITTLE_CHALLENGE)
+	assert_eq(service.musique.stream.resource_path, service.MUSIQUE_GREAT_LITTLE_CHALLENGE)
 	assert_true(service.musique.playing)
 
 func test_jouer_la_musique_desactivee_ne_lance_pas_la_lecture():

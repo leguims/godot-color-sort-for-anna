@@ -40,7 +40,7 @@ func test_ready_cree_le_fichier_initial_si_absent():
 
 	var score_initial = {
 		"nom": "Alain Konu",
-		"rang": 1,
+		"rang": 0,
 		"score": 0,
 		"score_txt": "0"
 	}

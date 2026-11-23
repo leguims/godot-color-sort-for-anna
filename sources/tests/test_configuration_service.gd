@@ -184,18 +184,18 @@ func test_premiere_installation_sans_joueur_ni_fichier_ne_cree_rien_d_autre():
 	assert_false(FichiersJsonService.json_file_exists("scores.json") and SauvegardeTableauDesScoresService.liste_des_scores.size() > 0)
 	assert_false(SauvegardeBddJoueursService.le_joueur_existe())
 
-func test_premiere_installation_remet_les_scores_a_zero_et_cree_la_campagne_du_joueur():
+func test_configuration_absente_conserve_la_sauvegarde_et_le_score_existants():
+	var sauvegarde_initiale = SauvegardeBddJoueursService.sauvegarde_vierge("Alice")
 	_declarer_joueurs([{
 		"nom": "Alice", "fichier": "joueur_alice.json", "score": 999,
-		"contenu": SauvegardeBddJoueursService.sauvegarde_vierge("Alice")
+		"contenu": sauvegarde_initiale
 	}])
 
 	_lancer_service()
 
-	assert_eq(int(SauvegardeTableauDesScoresService.lire_score_joueur("Alice")), 0)
-	var sauvegarde = _relire_joueur("joueur_alice.json")
-	assert_eq(sauvegarde.get("enregistrement_campagne").size(), 1)
-	assert_eq(float(sauvegarde.get("enregistrement_campagne")[0].get("date_fin")), 0.0)
+	assert_true(FichiersJsonService.json_file_exists(FICHIER_CONFIGURATION))
+	assert_eq(int(SauvegardeTableauDesScoresService.lire_score_joueur("Alice")), 999)
+	assert_eq(_relire_joueur("joueur_alice.json"), sauvegarde_initiale)
 
 ###############################################
 # Démarrage avec une configuration à la version courante
@@ -837,7 +837,10 @@ func test_reel_v1_0_redemarrage_sans_changement_de_version_conserve_tout():
 	for indice in range(3):
 		anciens.append(_lire_fixture("v1_0_0", _fichier_joueur(indice)))
 
-	_demarrer_avec_fixture("v1_0_0")
+	_installer_fixture("v1_0_0")
+	configuration_reference["version"] = _version_courante()
+	FichiersJsonService.write_json_file(FICHIER_CONFIGURATION, configuration_reference)
+	_lancer_service()
 
 	for indice in range(3):
 		assert_eq(_relire_joueur(_fichier_joueur(indice)), anciens[indice], "joueur " + str(indice))

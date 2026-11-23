@@ -13,11 +13,11 @@ const CHAMPS_PLATEAUX := {
 	"temps_moyen": "TempsMoyen/Valeur",
 	"taux_reussite": "Reussite/Valeur",
 	"plus_rapide_temps": "Tableau/PlusRapide/Temps",
-	"plus_rapide_difficulte": "Tableau/PlusRapide/Difficulte",
+	"plus_rapide_niveau": "Tableau/PlusRapide/Niveau",
 	"plus_lent_temps": "Tableau/PlusLent/Temps",
-	"plus_lent_difficulte": "Tableau/PlusLent/Difficulte",
+	"plus_lent_niveau": "Tableau/PlusLent/Niveau",
 	"plus_galere_essais": "Tableau/PlusGalere/Essais",
-	"plus_galere_difficulte": "Tableau/PlusGalere/Difficulte"
+	"plus_galere_niveau": "Tableau/PlusGalere/Niveau"
 }
 
 const CHAMPS_CAMPAGNE := {
@@ -37,7 +37,6 @@ const CHAMPS_NIVEAU := {
 }
 
 const CHAMPS_SCORE := {
-	"nom_grade": "GradeIdentite/NomGrade",
 	"nom_joueur": "GradeIdentite/PlayerName",
 	"score": "Score/Valeur",
 	"rapidite": "Rapidite/Valeur",

@@ -2,7 +2,7 @@ extends GutTest
 
 const SCENE_PARTAGE = preload("res://Scenes/MenuPrincipal/Campagne/PartagePerformances/partage_performances_ui.tscn")
 
-func test_afficher_export_presente_le_joueur_la_campagne_et_le_dernier_niveau() -> void:
+func test_afficher_export_presente_le_joueur_et_la_campagne_complete() -> void:
 	var panneau: PartagePerformancesUI = add_child_autofree(SCENE_PARTAGE.instantiate())
 	var sauvegarde_initiale: Dictionary = SauvegardeBddJoueursService._sauvegarde_joueur.duplicate(true)
 	var fichier_initial: String = SauvegardeBddJoueursService.fichier_sauvegarde
@@ -23,7 +23,7 @@ func test_afficher_export_presente_le_joueur_la_campagne_et_le_dernier_niveau() 
 	assert_true(panneau.visible)
 	assert_eq(panneau.get_node("Panneau/Contenu/NomJoueur").text, "Joueur : Joueuse")
 	assert_eq(panneau.get_node("Panneau/Contenu/NomCampagne").text, "Campagne : Campagne Test")
-	assert_eq(panneau.get_node("Panneau/Contenu/NomNiveau").text, "Dernier niveau : Niveau 3")
+	assert_eq(panneau.get_node("Panneau/Contenu/NomNiveau").text, "")
 	assert_eq(panneau.get_node("Panneau/Contenu/AdresseCourriel").text, "rangelescouleurspouranna@gmail.com")
 	assert_false(panneau.get_node("Panneau/Contenu/Message").visible)
 	SauvegardeBddJoueursService._sauvegarde_joueur = sauvegarde_initiale

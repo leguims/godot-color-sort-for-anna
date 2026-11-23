@@ -7,6 +7,22 @@ var configuration_initiale
 var tableau_scores_initial
 const RACINE_TEST = "tests/test_score_service"
 
+class CaptureErreurs extends Logger:
+	var messages: Array[String] = []
+	var mutex := Mutex.new()
+
+	func _log_message(message: String, erreur: bool) -> void:
+		if erreur:
+			mutex.lock()
+			messages.append(message)
+			mutex.unlock()
+
+	func lire_messages() -> String:
+		mutex.lock()
+		var texte := "".join(messages)
+		mutex.unlock()
+		return texte
+
 func _nettoyer_fichiers_utilisateur():
 	FichiersJsonService.effacer_racine_utilisateur()
 
@@ -62,7 +78,7 @@ func before_each():
 						"score": {},
 						"plateaux": [
 							{"nom": "D", "date_debut": 1700002010, "date_fin": 1700017010, "duree": 15000, "difficulte": 2, "statut": "reussi"},
-							{"nom": "A2", "date_debut": 1700002020, "date_fin": 0, "duree": 8000, "difficulte": 4, "statut": "en_cours"}
+							{"nom": "A2", "date_debut": 1700002020, "date_fin": 0, "duree": 8000, "difficulte": 4, "statut": "en_cours", "gameplay": "CLASSIQUE"}
 						]
 					}
 				]
@@ -257,7 +273,7 @@ func _level_finishes_current_level_as_won():
 	var niveau = SauvegardeBddJoueursService._sauvegarde_joueur.get("enregistrement_campagne")[0].get("niveaux").back()
 	niveau["plateaux"] = [
 		{"nom": "D", "date_debut": 1700002010, "duree": 15000, "difficulte": 2, "statut": "reussi"},
-		{"nom": "A2", "date_debut": 1700002020, "duree": 8000, "difficulte": 4, "statut": "reussi"}
+		{"nom": "A2", "date_debut": 1700002020, "duree": 8000, "difficulte": 4, "statut": "reussi", "gameplay": "CLASSIQUE"}
 	]
 	niveau["date_fin"] = 1700003000
 	SauvegardeBddJoueursService._sauvegarde_joueur["campagne"].erase("niveau_2")
@@ -362,7 +378,7 @@ func test_passer_plateau_milieu_de_niveau_ne_laisse_aucun_point():
 	var niveau = SauvegardeBddJoueursService._sauvegarde_joueur.get("enregistrement_campagne")[0].get("niveaux").back()
 	niveau["plateaux"] = [
 		{"nom": "D", "date_debut": 1700002010, "date_fin": 1700002030, "duree": 20, "difficulte": 2, "statut": "reussi"},
-		{"nom": "A2", "date_debut": 1700002020, "date_fin": 1700002050, "duree": 30, "difficulte": 4, "statut": "reussi"}
+		{"nom": "A2", "date_debut": 1700002020, "date_fin": 1700002050, "duree": 30, "difficulte": 4, "statut": "reussi", "gameplay": "CLASSIQUE"}
 	]
 	niveau["date_fin"] = 0
 	SauvegardeBddJoueursService._enregistrer_sauvegarde_joueur()
@@ -401,7 +417,7 @@ func test_passer_avec_bonus_anna_hors_fin_de_niveau_donne_un_bonus_nul():
 	var niveau = SauvegardeBddJoueursService._sauvegarde_joueur.get("enregistrement_campagne")[0].get("niveaux").back()
 	niveau["plateaux"] = [
 		{"nom": "D", "date_debut": 1700002010, "date_fin": 1700002030, "duree": 20, "difficulte": 2, "statut": "reussi"},
-		{"nom": "A2", "date_debut": 1700002020, "date_fin": 1700002050, "duree": 30, "difficulte": 4, "statut": "reussi"}
+		{"nom": "A2", "date_debut": 1700002020, "date_fin": 1700002050, "duree": 30, "difficulte": 4, "statut": "reussi", "gameplay": "CLASSIQUE"}
 	]
 	SauvegardeBddJoueursService._enregistrer_sauvegarde_joueur()
 	var avant = _score(nom_anna)
@@ -443,14 +459,29 @@ func test_passer_joueur_absent_du_tableau_des_scores_ne_plante_pas():
 # Cas limites complémentaires
 # ---------------------------------------------------------
 
-func test_score_duree_difficulte_superieure_a_cent_reste_calcule():
+func test_score_duree_signale_une_difficulte_superieure_a_cent():
+	if not OS.is_debug_build():
+		pending("Le journal d'erreurs n'est actif que dans les versions de débogage")
+		return
 	_set_last_plateau_difficulte(150)
+	var journal := CaptureErreurs.new()
+	OS.add_logger(journal)
 	var score = service.mettre_a_jour_score_duree()
+	OS.remove_logger(journal)
 	assert_eq(score.get("type"), "duree")
-	assert_eq(score.get("reference"), 9.0)
+	assert_eq(score.get("reference"), 0)
+	assert_eq(score.get("points"), 0)
+	assert_string_contains(journal.lire_messages(), "Erreur : Difficulté inattendue pour le score !")
 
 func test_score_duree_reference_par_difficulte():
-	var cas = {1: 9.0, 9: 9.0, 10: 12.0, 20: 14.0, 30: 16.0, 40: 18.0, 50: 20.0, 60: 25.0, 71: 30.0, 81: 60.0, 100: 120.0}
+	var cas = {1: 22, 9: 22, 10: 30, 20: 30, 30: 38, 40: 40, 50: 93, 60: 322, 71: 322, 81: 381, 100: 400}
+	for difficulte in cas:
+		_set_last_plateau_difficulte(difficulte)
+		assert_eq(service.mettre_a_jour_score_duree().get("reference"), cas[difficulte], "difficulté %d" % difficulte)
+
+func test_score_duree_reference_qui_perd_gagne_par_difficulte():
+	_dernier_plateau()["gameplay"] = "QUI_PERD_GAGNE"
+	var cas = {1: 37, 20: 37, 21: 40, 29: 40, 30: 42, 60: 60, 100: 100}
 	for difficulte in cas:
 		_set_last_plateau_difficulte(difficulte)
 		assert_eq(service.mettre_a_jour_score_duree().get("reference"), cas[difficulte], "difficulté %d" % difficulte)
@@ -459,7 +490,7 @@ func test_score_duree_points_exacts():
 	_preparer_plateau_a_passer(18., 4)
 	var avant = _score()
 	var score = service.mettre_a_jour_score_duree()
-	assert_eq(score.get("points"), roundi(100 * 4 * 9. / 18.))
+	assert_eq(score.get("points"), roundi(100 * 4 * 22. / 18.))
 	assert_eq(_score(), avant + score.get("points"))
 	assert_eq(_dernier_plateau().get("score").get("duree"), score.get("points"))
 

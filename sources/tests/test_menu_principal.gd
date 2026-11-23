@@ -11,6 +11,8 @@ var fichier_sauvegarde_initial: String
 var configuration_initiale: Dictionary
 var liste_des_scores_initiale: Array
 var liste_des_joueurs_initiale: Array
+var delai_initial: int
+var derniers_clics_initiaux: Dictionary
 
 func _donnees_joueur(nom: String, campagne_terminee: bool) -> Dictionary:
 	return {
@@ -34,6 +36,10 @@ func before_each() -> void:
 	configuration_initiale = SauvegardeConfigurationService.configuration_du_jeu.duplicate(true)
 	liste_des_scores_initiale = SauvegardeTableauDesScoresService.liste_des_scores.duplicate(true)
 	liste_des_joueurs_initiale = SauvegardeListeJoueursService.liste_des_joueurs.duplicate(true)
+	delai_initial = BoutonDelai.delay_ms
+	derniers_clics_initiaux = BoutonDelai.last_click_time.duplicate(true)
+	BoutonDelai.delay_ms = -1
+	BoutonDelai.last_click_time = {}
 	SauvegardeListeJoueursService.liste_des_joueurs = []
 	SauvegardeTableauDesScoresService.liste_des_scores = []
 
@@ -46,12 +52,13 @@ func after_each() -> void:
 	SauvegardeConfigurationService.configuration_du_jeu = configuration_initiale
 	SauvegardeTableauDesScoresService.liste_des_scores = liste_des_scores_initiale
 	SauvegardeListeJoueursService.liste_des_joueurs = liste_des_joueurs_initiale
+	BoutonDelai.delay_ms = delai_initial
+	BoutonDelai.last_click_time = derniers_clics_initiaux
 	FichiersJsonService.effacer_racine_utilisateur()
 	FichiersJsonService.reinitialiser_racine_utilisateur()
 
 func _menu() -> Control:
 	var menu: Control = add_child_autofree(SCENE_MENU.instantiate())
-	menu.delay_ms = 0
 	return menu
 
 func _bouton_joueur(menu: Node, nom: String) -> Button:
@@ -67,6 +74,12 @@ func _noms_affiches(menu: Node) -> Array:
 func _scene_apres_changement() -> String:
 	await wait_process_frames(3)
 	return get_tree().current_scene.scene_file_path
+
+func _scene_temoin() -> Node:
+	var scene := Node.new()
+	get_tree().root.add_child(scene)
+	get_tree().current_scene = scene
+	return scene
 
 # ------------------------------------------------------------------
 # Construction
@@ -174,27 +187,27 @@ func test_le_fond_du_curseur_change_de_couleur_selon_l_etat() -> void:
 	assert_eq(pilule.get_theme_stylebox("panel").bg_color, Color("566878"))
 
 func test_filtrer_click_absorbe_les_clics_rapproches() -> void:
-	var menu := _menu()
-	menu.delay_ms = 100000
-	menu.last_click_time = -100000
+	BoutonDelai.delay_ms = 100000
+	BoutonDelai.last_click_time["Musique"] = -100000
 
-	assert_false(menu.filtrer_click())
-	assert_true(menu.filtrer_click())
-	assert_true(menu.filtrer_click())
+	assert_false(BoutonDelai.clic_est_pas_valable("Musique"))
+	assert_true(BoutonDelai.clic_est_pas_valable("Musique"))
+	assert_true(BoutonDelai.clic_est_pas_valable("Musique"))
 
 func test_filtrer_click_laisse_passer_apres_le_delai() -> void:
-	var menu := _menu()
-	menu.delay_ms = 0
+	BoutonDelai.delay_ms = 100
+	BoutonDelai.last_click_time["Musique"] = Time.get_ticks_msec() - 101
 
-	assert_false(menu.filtrer_click())
-	assert_false(menu.filtrer_click())
+	assert_false(BoutonDelai.clic_est_pas_valable("Musique"))
+	BoutonDelai.last_click_time["Musique"] = Time.get_ticks_msec() - 101
+	assert_false(BoutonDelai.clic_est_pas_valable("Musique"))
 
 func test_un_clic_filtre_n_est_pas_applique_et_retablit_l_etat_reel() -> void:
 	SauvegardeConfigurationService.activer_musiques()
 	var menu := _menu()
 	var bouton: Button = menu.get_node(LIGNES + "Musique/Button")
-	menu.delay_ms = 100000
-	menu.last_click_time = Time.get_ticks_msec()
+	BoutonDelai.delay_ms = 100000
+	BoutonDelai.last_click_time["Musique"] = Time.get_ticks_msec()
 
 	bouton.button_pressed = true
 	bouton.button_pressed = false
@@ -206,8 +219,8 @@ func test_un_clic_filtre_sur_effets_sonores_retablit_l_etat_reel() -> void:
 	SauvegardeConfigurationService.desactiver_effets_sonores()
 	var menu := _menu()
 	var bouton: Button = menu.get_node(LIGNES + "EffetsSonores/Button")
-	menu.delay_ms = 100000
-	menu.last_click_time = Time.get_ticks_msec()
+	BoutonDelai.delay_ms = 100000
+	BoutonDelai.last_click_time["EffetsSonores"] = Time.get_ticks_msec()
 
 	bouton.button_pressed = true
 
@@ -217,8 +230,8 @@ func test_un_clic_filtre_sur_vibration_retablit_l_etat_reel() -> void:
 	SauvegardeConfigurationService.activer_vibrations()
 	var menu := _menu()
 	var bouton: Button = menu.get_node(LIGNES + "Vibration/Button")
-	menu.delay_ms = 100000
-	menu.last_click_time = Time.get_ticks_msec()
+	BoutonDelai.delay_ms = 100000
+	BoutonDelai.last_click_time["Vibration"] = Time.get_ticks_msec()
 
 	bouton.button_pressed = true
 	bouton.button_pressed = false
@@ -407,7 +420,7 @@ func test_joueur_avec_campagne_terminee_ouvre_les_statistiques() -> void:
 
 func test_joueur_inconnu_ne_change_pas_de_scene() -> void:
 	var menu := _menu()
-	var scene_avant := get_tree().current_scene
+	var scene_avant := _scene_temoin()
 
 	menu._on_joueurs_campagne_pressed("Fantome")
 	await wait_process_frames(3)
@@ -417,7 +430,7 @@ func test_joueur_inconnu_ne_change_pas_de_scene() -> void:
 func test_joueur_dont_la_sauvegarde_est_illisible_est_retire_de_la_liste() -> void:
 	SauvegardeListeJoueursService.liste_des_joueurs.append({"indice": 0, "nom": "Orphelin", "fichier_sauvegarde": "inexistant.json"})
 	var menu := _menu()
-	var scene_avant := get_tree().current_scene
+	var scene_avant := _scene_temoin()
 
 	menu._on_joueurs_campagne_pressed("Orphelin")
 	await wait_process_frames(3)
@@ -483,7 +496,7 @@ func test_refuser_l_import_ferme_le_panneau() -> void:
 func test_accepter_sans_import_en_attente_ne_change_rien() -> void:
 	var menu := _menu()
 	menu.afficher_import_fichier(_donnees_import())
-	var scene_avant := get_tree().current_scene
+	var scene_avant := _scene_temoin()
 
 	menu.get_node("PanneauImportFichier/Fond/Panel/Contenu/Boutons/BoutonAccepter").emit_signal("pressed")
 	await wait_process_frames(3)

@@ -12,8 +12,8 @@ func before_each():
 	sauvegarde_joueur_initiale = SauvegardeBddJoueursService._sauvegarde_joueur.duplicate(true)
 	fichier_sauvegarde_initial = SauvegardeBddJoueursService.fichier_sauvegarde
 	configuration_initiale = SauvegardeConfigurationService.configuration_du_jeu.duplicate(true)
-	FichiersJsonService.effacer_racine_utilisateur()
 	FichiersJsonService.definir_racine_utilisateur(RACINE_TEST)
+	FichiersJsonService.effacer_racine_utilisateur()
 
 	_definir_sauvegarde([])
 	SauvegardeBddJoueursService.fichier_sauvegarde = "joueuse_classique.json"
@@ -34,6 +34,7 @@ func _definir_sauvegarde(enregistrement_campagne: Array) -> void:
 			"niveau_1": [{"nom": "AAA.BBB.CCC", "gameplay": "CLASSIQUE", "difficulte": 1}]
 		},
 		"nombre_de_parties": {},
+		"configuration": {"montrer_aide_classique": false},
 		"enregistrement_campagne": enregistrement_campagne,
 		"plateaux_libres": {}
 	}

@@ -21,6 +21,7 @@ func _definir_campagne(plateaux: Array) -> void:
 		"nom": "Joueuse test",
 		"campagne": {"niveau_1": plateaux},
 		"nombre_de_parties": {},
+		"configuration": {"montrer_aide_classique": false, "montrer_aide_qui_perd_gagne": false},
 		"enregistrement_campagne": [],
 		"plateaux_libres": {}
 	}
@@ -96,6 +97,20 @@ func test_au_demarrage_un_premier_plateau_qui_perd_gagne_masque_classique() -> v
 	assert_false(campagne.get_node("Classique/MenuPlateau/Fond").visible)
 	assert_false(campagne.get_node("Classique/MenuPlateau/BandeauMenu").visible)
 	assert_false(campagne.get_node("MessagesCampagne").visible)
+
+func test_aide_automatique_masque_le_menu_jusqu_a_sa_fermeture() -> void:
+	for index in range(2):
+		_definir_campagne([_plateaux_classique_puis_qpg()[index]])
+		var cle := "montrer_aide_classique" if index == 0 else "montrer_aide_qui_perd_gagne"
+		SauvegardeBddJoueursService._sauvegarde_joueur["configuration"][cle] = true
+		var campagne := _campagne()
+		var menu = campagne.gameplay_courant.get_node("MenuPlateau")
+		assert_true(menu.get_node("Aide").visible)
+		assert_false(menu.get_node("BandeauMenu").visible)
+		assert_false(SauvegardeBddJoueursService._sauvegarde_joueur["configuration"][cle])
+		menu._on_bouton_compris_aide_pressed()
+		assert_false(menu.get_node("Aide").visible)
+		assert_true(menu.get_node("BandeauMenu").visible)
 
 func test_cacher_les_gameplays_masque_classique_et_qui_perd_gagne() -> void:
 	var campagne := _campagne()

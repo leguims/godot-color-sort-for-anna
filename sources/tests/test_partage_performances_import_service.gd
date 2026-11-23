@@ -64,9 +64,10 @@ func test_import_refuse_efface_les_donnees_en_attente() -> void:
 	assert_false(service._import_en_cours)
 
 func test_accepter_import_cree_un_joueur_avec_toute_la_campagne() -> void:
-	var nom_joueur := "Joueuse importee"
+	var nom_original := "Joueuse importee"
+	var nom_joueur := String.chr(0x1F4BE) + " " + nom_original
 	var campagne := _campagne()
-	service._import_en_attente = {"joueur": nom_joueur, "campagne": campagne}
+	service._import_en_attente = {"joueur": nom_original, "campagne": campagne}
 	SauvegardeListeJoueursService.liste_des_joueurs = []
 	SauvegardeTableauDesScoresService.liste_des_scores = []
 
