@@ -142,7 +142,7 @@ func remplacer_initier_campagne_des_joueurs():
 		fichier_sauvegarde = SauvegardeListeJoueursService.retourner_le_fichier_de_sauvegarde(nom_joueur)
 		choisir_le_joueur(nom_joueur, fichier_sauvegarde)
 		# Cloturer tout plateau, niveau et campagne en cours.
-		enregistrement_campagne_terminer_plateau()
+		enregistrement_campagne_terminer_plateau('passé')
 		enregistrement_campagne_terminer_niveau()
 		enregistrement_campagne_terminer_campagne()
 		# Remplacer les plateaux residuels d'une ancienne campagne.
@@ -160,32 +160,31 @@ func gagner_un_plateau() -> void:
 	# Valider le plateau courant (effacer de la liste des plateaux jouables)
 	campagne_supprimer_et_memoriser_plateau_courant()
 
-	enregistrement_campagne_modifier_statut_plateau('reussi')
-	enregistrement_campagne_terminer_plateau()
+	enregistrement_campagne_terminer_plateau('reussi', true)
 
-func abandonner_un_plateau() -> void:
-	enregistrement_campagne_modifier_statut_plateau('abandonné')
-	enregistrement_campagne_terminer_plateau()
+func abandonner_un_plateau(fin_normale: bool = true) -> void:
+	enregistrement_campagne_terminer_plateau('abandonné', fin_normale)
 
 func passer_un_plateau() -> void:
 	# Effacer de la liste des plateaux jouables
 	campagne_supprimer_et_oublier_plateau_courant()
 
-	enregistrement_campagne_modifier_statut_plateau('passé')
-	enregistrement_campagne_terminer_plateau()
+	enregistrement_campagne_terminer_plateau('passé', true)
 
 func commencer_un_plateau() -> void:
 	# Ajouter le nouveau plateau
 	var prochain_plateau = campagne_lire_prochain_plateau_pour_niveau_courant()
 	if prochain_plateau:
-		enregistrement_campagne_initialiser_un_nouveau_plateau(
+		var initialise = enregistrement_campagne_initialiser_un_nouveau_plateau(
 					prochain_plateau.get('nom'),
 					prochain_plateau.get('gameplay'),
 					prochain_plateau.get('difficulte')
 					)
-
-		# Incrémenter le compteur de parties de la difficulte courante
-		nombre_de_parties_incrementer_pour_difficulte_courante()
+		if initialise:
+			# Incrémenter le compteur de parties de la difficulte courante
+			nombre_de_parties_incrementer_pour_difficulte_courante()
+		else:
+			LogService.log_erreur("Impossible d'initialiser le prochain plateau de campagne")
 	else:
 		LogService.log_erreur("Pas de prochain plateau pour le niveau courant")
 # >>> API externe
@@ -864,9 +863,8 @@ func enregistrement_campagne_plateau_existe() -> bool:
 func enregistrement_campagne_plateau_en_cours() -> bool:
 	"Indique si un plateau est en cours de réalisation"
 	if enregistrement_campagne_plateau_existe():
-		var niveau_courant = enregistrement_campagne_lire_dernier_niveau()
-		var plateau = niveau_courant.get('plateaux').back()
-		return not plateau.get('date_fin')
+		var plateau = enregistrement_campagne_lire_dernier_plateau()
+		return plateau.get('statut', '') == 'en cours'
 	return false
 
 func enregistrement_campagne_initialiser_un_nouveau_plateau(nom : String,
@@ -896,21 +894,16 @@ func enregistrement_campagne_initialiser_un_nouveau_plateau(nom : String,
 			return true
 	return false
 
-func enregistrement_campagne_terminer_plateau() -> void:
+func enregistrement_campagne_terminer_plateau(statut: String, fin_normale: bool = false) -> void:
 	"Enregistre la date de fin d'un plateau"
 	if enregistrement_campagne_plateau_en_cours():
-		var niveau_courant = enregistrement_campagne_lire_dernier_niveau()
-		var plateau = niveau_courant.get('plateaux').back()
-		if plateau.get('statut') == 'en cours':
-			# Reprise avec un plateau inachevé => durée nulle + statut 'passé'
-			plateau['date_fin'] = plateau['date_debut'] # Timestamp
-			plateau['duree'] = 0.
-			plateau['statut'] = 'passé'
+		var plateau = enregistrement_campagne_lire_dernier_plateau()
+		if fin_normale:
+			plateau['date_fin'] = Time.get_unix_time_from_system()
+			plateau['duree'] = plateau['date_fin'] - plateau['date_debut']
 		else:
-			# Fin du plateau courant
-			plateau['date_fin'] = Time.get_unix_time_from_system() # Timestamp
-			plateau['duree'] = plateau.get('date_fin') - plateau.get('date_debut')
-		_enregistrer_sauvegarde_joueur()
+			plateau['date_fin'] = plateau['date_debut'] + plateau.get('duree', 0.0)
+		enregistrement_campagne_modifier_statut_plateau(statut)
 
 func enregistrement_campagne_lire_nombre_plateaux_acheves() -> int:
 	"Retourne le nombre de plateaux achevées"
@@ -971,13 +964,20 @@ func enregistrement_campagne_lire_gameplay_plateau() -> String:
 func enregistrement_campagne_lire_duree_plateau() -> float:
 	var plateau = enregistrement_campagne_lire_dernier_plateau()
 	if plateau:
-		if not plateau.get('date_fin'):
+		if enregistrement_campagne_plateau_en_cours():
 			# Plateau en cours
 			var now = Time.get_unix_time_from_system() # Timestamp
-			plateau['duree'] = now - plateau.get('date_debut')
+			return now - plateau.get('date_debut')
 		return plateau.get('duree')
 	return 0.
-	
+
+func enregistrement_campagne_incrementer_duree_plateau(duree : float):
+	var plateau = enregistrement_campagne_lire_dernier_plateau()
+	if plateau:
+		if enregistrement_campagne_plateau_en_cours():
+			plateau['duree'] = plateau.get('duree', 0.0) + duree
+			_enregistrer_sauvegarde_joueur()
+
 func enregistrement_campagne_lire_duree_plateau_recommence() -> float:
 	var duree_recommence_en_s : float = 0.
 	var plateau_ref = enregistrement_campagne_lire_dernier_plateau()
@@ -1041,8 +1041,16 @@ func enregistrement_campagne_lire_difficulte_plateau() -> int:
 func enregistrement_campagne_modifier_statut_plateau(statut : String) -> void:
 	var plateau = enregistrement_campagne_lire_dernier_plateau()
 	if plateau:
-		plateau['statut'] = statut # 'en cours', 'abandonné', 'passé', 'reussi'
-		_enregistrer_sauvegarde_joueur()
+		# Cycle de vie de 'statut' :
+		# '' => 'en cours'
+		# 'en cours' => 'abandonné', 'passé', 'reussi'
+		# 'abandonné', 'passé', 'reussi' sont immuables
+		if statut == 'en cours' and not plateau.get('statut', ''):
+			plateau['statut'] = statut  # 'en cours'
+			_enregistrer_sauvegarde_joueur()
+		elif statut != 'en cours' and plateau.get('statut') == 'en cours':
+			plateau['statut'] = statut  # 'abandonné', 'passé', 'reussi'
+			_enregistrer_sauvegarde_joueur()
 
 func enregistrement_campagne_lire_statut_dernier_plateau() -> String:
 	var plateau = enregistrement_campagne_lire_dernier_plateau()
@@ -1109,11 +1117,12 @@ func enregistrement_campagne_coups_joues_ajouter_un_nouveau_coup(depart : int,
 	"Ajouter un nouveau coup à coups_joues"
 	if enregistrement_campagne_plateau_en_cours():
 		var nouveau_coup = {'depart': roundi(depart), 'arrivee': roundi(arrivee)}
+		if 'coups joués' not in enregistrement_campagne_lire_dernier_plateau():
+			enregistrement_campagne_lire_dernier_plateau()['coups joués'] = []
 		var coups_joues = enregistrement_campagne_coups_joues()
-		if coups_joues != null:
-			coups_joues.append(nouveau_coup)
-			_enregistrer_sauvegarde_joueur()
-			return true
+		coups_joues.append(nouveau_coup)
+		_enregistrer_sauvegarde_joueur()
+		return true
 	return false
 
 func enregistrement_campagne_lire_nombre_coups() -> int:

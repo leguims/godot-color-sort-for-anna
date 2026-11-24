@@ -102,7 +102,7 @@ func la_campagne_est_terminee() -> bool:
 func commencer_un_plateau() -> void:
 	# Si un plateau était en cours, l'abandonner.
 	if SauvegardeBddJoueursService.enregistrement_campagne_plateau_en_cours():
-		abandonner_un_plateau()
+		abandonner_un_plateau(false)
 
 	# Premier niveau sans enregistrement => Initialiser une nouvelle campagne
 	if not SauvegardeBddJoueursService.enregistrement_campagne_niveau_existe():
@@ -139,14 +139,12 @@ func gagner_un_plateau() -> void:
 	# progression_niveau.emit() # Pour mise à jour des BandeauEnJeux d'infos
 	afficher_niveau_plateau_parties()
 
-func abandonner_un_plateau() -> void:
-	# En cas d'abandon, pas d'enrgistrement du temps.
-	SauvegardeBddJoueursService.abandonner_un_plateau()
+func abandonner_un_plateau(fin_normale: bool = true) -> void:
+	SauvegardeBddJoueursService.abandonner_un_plateau(fin_normale)
 	# On reste sur le même plateau
 	# La campagne et le niveaux sont inchangés
 
 func passer_un_plateau() -> void:
-	# En cas de passage, pas d'enrgistrement du temps.
 	SauvegardeBddJoueursService.passer_un_plateau()
 
 	# Déterminer si le niveau est achevé (pas de plateau suivant)

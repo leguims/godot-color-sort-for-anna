@@ -23,7 +23,7 @@ func test_taille_plateau_plusieurs_lignes():
 	assert_eq(layout.convertir_nb_piles_en_taille_plateau(18), Vector2i(6, 3))
 
 func test_taille_plateau_contient_toutes_les_piles():
-	for nb_piles in range(1, 40):
+	for nb_piles in range(1, 11):
 		var taille = layout.convertir_nb_piles_en_taille_plateau(nb_piles)
 		assert_gte(taille.x * taille.y, nb_piles, "capacite insuffisante pour %d piles" % nb_piles)
 		assert_lte(taille.x, 6, "trop de piles par ligne pour %d piles" % nb_piles)

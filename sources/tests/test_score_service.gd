@@ -78,7 +78,7 @@ func before_each():
 						"score": {},
 						"plateaux": [
 							{"nom": "D", "date_debut": 1700002010, "date_fin": 1700017010, "duree": 15000, "difficulte": 2, "statut": "reussi"},
-							{"nom": "A2", "date_debut": 1700002020, "date_fin": 0, "duree": 8000, "difficulte": 4, "statut": "en_cours", "gameplay": "CLASSIQUE"}
+							{"nom": "A2", "date_debut": 1700002020, "date_fin": 0, "duree": 8000, "difficulte": 4, "statut": "en cours", "gameplay": "CLASSIQUE"}
 						]
 					}
 				]
@@ -104,7 +104,7 @@ func after_each():
 func _niveau_en_cours_avec_plateau_actif() -> void:
 	var niveau = SauvegardeBddJoueursService._sauvegarde_joueur.get("enregistrement_campagne")[0].get("niveaux").back()
 	var dernier_plateau = niveau.get("plateaux").back()
-	dernier_plateau["statut"] = "en_cours"
+	dernier_plateau["statut"] = "en cours"
 	dernier_plateau["duree"] = 8000
 	dernier_plateau["difficulte"] = 4
 	SauvegardeBddJoueursService._enregistrer_sauvegarde_joueur()
@@ -139,6 +139,7 @@ func test_mettre_a_jour_score_duree_avec_duree_totale_nulle_ne_rapporte_aucun_po
 	var niveau = SauvegardeBddJoueursService._sauvegarde_joueur.get("enregistrement_campagne")[0].get("niveaux").back()
 	var plateau_courant = niveau.get("plateaux").back()
 	plateau_courant["date_fin"] = 1700010020
+	plateau_courant["statut"] = "reussi"
 	plateau_courant["duree"] = 0
 
 	var score_duree = service.mettre_a_jour_score_duree()

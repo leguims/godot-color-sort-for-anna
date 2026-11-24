@@ -339,7 +339,7 @@ func test_coups_joues_et_plateau_courant_couvrent_les_branches():
 	assert_eq(singleton.enregistrement_campagne_lire_nombre_coups(), 2)
 
 	var niveau_courant = singleton.enregistrement_campagne_lire_dernier_niveau()
-	niveau_courant["plateaux"].back()["date_fin"] = 10
+	niveau_courant["plateaux"].back()["statut"] = "reussi"
 	assert_false(singleton.enregistrement_campagne_coups_joues_ajouter_un_nouveau_coup(3, 4))
 
 func test_sauvegarde_vierge_retourne_la_structure_par_defaut():
@@ -364,11 +364,12 @@ func test_duree_du_plateau_est_calculee_en_direct_ou_lue_si_termine():
 	var sauvegarde = _sauvegarde_joueur_de_test()
 	_charger_joueur_test("joueur_test.json", sauvegarde)
 
-	# Plateau "en cours" ("date_fin" == 0) : la durée est calculée en direct.
+	# Plateau en cours : la durée est calculée en direct.
 	assert_true(singleton.enregistrement_campagne_lire_duree_plateau() >= 0.0)
 
 	var plateau_courant = singleton.enregistrement_campagne_lire_dernier_plateau()
 	plateau_courant["date_fin"] = plateau_courant.get("date_debut") + 42
+	plateau_courant["statut"] = "reussi"
 	plateau_courant["duree"] = 42.0
 	# Plateau terminé : la durée enregistrée est retournée telle quelle.
 	assert_eq(singleton.enregistrement_campagne_lire_duree_plateau(), 42.0)
@@ -397,6 +398,7 @@ func test_modifier_le_score_duree_et_ratio_reussite_du_plateau_courant():
 func test_lire_le_temps_du_joueur_formate_les_durees():
 	var sauvegarde = _sauvegarde_joueur_de_test()
 	sauvegarde["enregistrement_campagne"][0]["plateaux"][0]["date_fin"] = 999
+	sauvegarde["enregistrement_campagne"][0]["plateaux"][0]["statut"] = "reussi"
 	sauvegarde["enregistrement_campagne"][0]["plateaux"][0]["duree"] = 45.0
 	_charger_joueur_test("joueur_test.json", sauvegarde)
 
@@ -503,7 +505,10 @@ func test_remplacer_initier_campagne_des_joueurs_cloture_et_renouvelle_la_campag
 	SauvegardeListeJoueursService.liste_des_joueurs = [
 		{"indice": 0, "nom": "Joueur C", "fichier_sauvegarde": "joueur_c.json"}
 	]
-	_ecrire_sauvegarde_test("joueur_c.json", _sauvegarde_joueur_de_test())
+	var sauvegarde = _sauvegarde_joueur_de_test()
+	sauvegarde["nom"] = "Joueur C"
+	sauvegarde["enregistrement_campagne"][0]["plateaux"][0]["duree"] = 120.0
+	_ecrire_sauvegarde_test("joueur_c.json", sauvegarde)
 
 	singleton.remplacer_initier_campagne_des_joueurs()
 
@@ -516,7 +521,13 @@ func test_remplacer_initier_campagne_des_joueurs_cloture_et_renouvelle_la_campag
 	assert_true(ancienne_campagne.get("date_fin") > 0)
 	var dernier_niveau = ancienne_campagne.get("niveaux")[0]
 	assert_true(dernier_niveau.get("date_fin") > 0)
-	assert_true(dernier_niveau.get("plateaux")[0].get("date_fin") > 0)
+	var plateau = dernier_niveau.get("plateaux")[0]
+	assert_eq(plateau.get("statut"), "passé")
+	assert_eq(plateau.get("duree"), 120.0)
+	assert_eq(plateau.get("date_fin"), 230.0)
+	assert_eq(sauvegarde_c.get("plateaux_libres").size(), 1)
+	assert_eq(sauvegarde_c.get("plateaux_libres").get("1").size(), 1)
+	assert_eq(sauvegarde_c.get("plateaux_libres").get("1")[0].get("nom"), "libre1")
 	assert_eq(campagnes[1].get("date_fin"), 0)
 	assert_false(singleton.le_joueur_existe())
 

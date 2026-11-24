@@ -11,6 +11,8 @@ signal deselection_pile
 # Notifie la scene `campagne` que le bouton est pressé
 signal commencer_plateau
 
+var _plateau_chronometre = null
+
 func _process(_delta: float) -> void:
 	# Afficher le temps
 	_maj_chrono()
@@ -79,6 +81,9 @@ func show_jeu():
 	hide_bandeau_menu()
 
 func show_bandeau_en_jeu():
+	# Gestion de durée pour la fermeture de l'application
+	_start_sauvegarde_duree()
+
 	$BandeauEnJeu.show()
 	$BandeauEnJeu/Fond.show()
 	$BandeauEnJeu/Gameplay.show()
@@ -104,6 +109,9 @@ func hide():
 	hide_bandeau_menu()
 
 func hide_bandeau_en_jeu():
+	# Gestion de durée pour la fermeture de l'application
+	_stop_sauvegarde_duree()
+
 	$BandeauEnJeu.hide()
 	$BandeauEnJeu/Fond.hide()
 	$BandeauEnJeu/Gameplay.hide()
@@ -126,6 +134,27 @@ func hide_bandeau_menu():
 
 # ########
 # Interne
+func _start_sauvegarde_duree() -> void:
+	if SauvegardeBddJoueursService.enregistrement_campagne_plateau_en_cours():
+		var plateau = SauvegardeBddJoueursService.enregistrement_campagne_lire_dernier_plateau()
+		if not is_same(_plateau_chronometre, plateau):
+			_plateau_chronometre = plateau
+			_on_sauvegarde_duree_timeout()
+
+func _stop_sauvegarde_duree() -> void:
+	$SauvegardeDuree.stop()
+	_plateau_chronometre = null
+
+func _on_sauvegarde_duree_timeout() -> void:
+	if _plateau_chronometre != null \
+			and SauvegardeBddJoueursService.le_joueur_existe() \
+			and is_same(_plateau_chronometre, SauvegardeBddJoueursService.enregistrement_campagne_lire_dernier_plateau()) \
+			and SauvegardeBddJoueursService.enregistrement_campagne_plateau_en_cours():
+		SauvegardeBddJoueursService.enregistrement_campagne_incrementer_duree_plateau(60.0)
+		$SauvegardeDuree.start()
+	else:
+		_stop_sauvegarde_duree()
+
 func _maj_chrono() -> void:
 	"Met à jour le temps du plateau en direct"
 	var temps_ecoule_en_s : float = SauvegardeBddJoueursService.enregistrement_campagne_lire_duree_plateau()

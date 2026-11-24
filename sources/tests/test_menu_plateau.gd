@@ -1,6 +1,7 @@
 extends GutTest
 
 const SCENE_MENU_PLATEAU = preload("res://Scenes/MenuPrincipal/Campagne/GamePlay/Classique/menu_plateau_classique.tscn")
+const SCENE_MENU_QPG = preload("res://Scenes/MenuPrincipal/Campagne/GamePlay/QuiPerdGagne/menu_plateau_qui_perd_gagne.tscn")
 const RACINE_TEST := "tests/test_menu_plateau"
 
 var sauvegarde_joueur_initiale: Dictionary
@@ -16,7 +17,7 @@ func _plateau(duree: float, date_fin: float, coups: Array) -> Dictionary:
 		"date_debut": Time.get_unix_time_from_system() - 5.0,
 		"date_fin": date_fin,
 		"duree": duree,
-		"statut": "en_cours" if date_fin == 0.0 else "reussi",
+		"statut": "en cours" if date_fin == 0.0 else "reussi",
 		"coups joués": coups
 	}
 
@@ -177,6 +178,68 @@ func test_le_chrono_d_un_plateau_en_cours_suit_l_horloge() -> void:
 	menu._maj_chrono()
 
 	assert_true(menu.get_node("BandeauEnJeu/Chrono").text.begins_with("00:05."), menu.get_node("BandeauEnJeu/Chrono").text)
+
+func test_chrono_sauvegarde_chaque_minute_commencee() -> void:
+	var menu_qpg = add_child_autofree(SCENE_MENU_QPG.instantiate())
+	for bandeau in [menu, menu_qpg]:
+		var plateau = _plateau(0.0, 0.0, [])
+		_definir_plateau(plateau)
+		var timer: Timer = bandeau.get_node("SauvegardeDuree")
+		assert_eq(timer.wait_time, 60.0)
+		bandeau.show_jeu()
+		assert_eq(plateau["duree"], 60.0)
+		assert_eq(FichiersJsonService.read_json_file("joueuse_menu_plateau.json")["enregistrement_campagne"][0]["niveaux"][0]["plateaux"][0]["duree"], 60.0)
+		assert_lt(SauvegardeBddJoueursService.enregistrement_campagne_lire_duree_plateau(), 10.0)
+		bandeau.show_jeu()
+		assert_eq(plateau["duree"], 60.0)
+
+		timer.start(0.01)
+		timer.wait_time = 60.0
+		await get_tree().create_timer(0.1).timeout
+		assert_eq(plateau["duree"], 120.0)
+		assert_eq(FichiersJsonService.read_json_file("joueuse_menu_plateau.json")["enregistrement_campagne"][0]["niveaux"][0]["plateaux"][0]["duree"], 120.0)
+		assert_false(timer.is_stopped())
+
+		timer.start(0.01)
+		timer.wait_time = 60.0
+		await get_tree().create_timer(0.1).timeout
+		assert_eq(plateau["duree"], 180.0)
+		bandeau.show_menu()
+		assert_true(timer.is_stopped())
+
+func test_chrono_ne_sauvegarde_plus_apres_fin_ou_changement_de_plateau() -> void:
+	var plateau = _plateau(0.0, 0.0, [])
+	_definir_plateau(plateau)
+	menu.show_jeu()
+	SauvegardeBddJoueursService.abandonner_un_plateau()
+	var duree_fin = plateau["duree"]
+	var timer: Timer = menu.get_node("SauvegardeDuree")
+	timer.emit_signal("timeout")
+	assert_eq(plateau["duree"], duree_fin)
+	assert_true(timer.is_stopped())
+
+	var premier = _plateau(0.0, 0.0, [])
+	_definir_plateau(premier)
+	menu.show_jeu()
+	var autre = _plateau(0.0, 0.0, [])
+	_definir_plateau(autre)
+	timer.emit_signal("timeout")
+	assert_eq(autre["duree"], 0.0)
+	assert_true(timer.is_stopped())
+
+func test_chrono_masque_arrete_la_sauvegarde_periodique() -> void:
+	var plateau = _plateau(0.0, 0.0, [])
+	_definir_plateau(plateau)
+	var timer: Timer = menu.get_node("SauvegardeDuree")
+	menu.show_bandeau_en_jeu()
+	assert_eq(plateau["duree"], 60.0)
+	assert_false(timer.is_stopped())
+
+	menu.hide_bandeau_en_jeu()
+	assert_true(timer.is_stopped())
+	timer.emit_signal("timeout")
+
+	assert_eq(plateau["duree"], 60.0)
 
 func test_les_coups_sont_comptes_avec_pluriel() -> void:
 	menu._maj_coups()

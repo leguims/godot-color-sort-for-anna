@@ -241,6 +241,11 @@ expand_icon = true
 [node name="Aide" parent="." unique_id=332185002 instance=ExtResource("aide")]
 visible = false
 
+[node name="SauvegardeDuree" type="Timer" parent="."]
+wait_time = 60.0
+one_shot = true
+ignore_time_scale = true
+
 [connection signal="gui_input" from="Fond" to="." method="_on_fond_gui_input"]
 [connection signal="pressed" from="BandeauEnJeu/BoutonRecommencer" to="." method="_on_bouton_recommencer_pressed"]
 [connection signal="pressed" from="BandeauEnJeu/BoutonPasser" to="." method="_on_bouton_passer_pressed"]
@@ -249,3 +254,4 @@ visible = false
 [connection signal="pressed" from="BandeauMenu/BoutonStatistiques" to="." method="_on_bouton_statistiques_pressed"]
 [connection signal="pressed" from="BandeauMenu/BoutonAide" to="." method="_on_bouton_aide_pressed"]
 [connection signal="fermee" from="Aide" to="." method="_on_bouton_compris_aide_pressed"]
+[connection signal="timeout" from="SauvegardeDuree" to="." method="_on_sauvegarde_duree_timeout"]

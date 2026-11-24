@@ -130,17 +130,30 @@ func test_commencer_un_plateau_initialise_l_enregistrement_et_lance_le_jeu() -> 
 	assert_true(SauvegardeBddJoueursService.enregistrement_campagne_plateau_en_cours())
 	assert_eq(SauvegardeBddJoueursService.enregistrement_campagne_lire_nom_plateau(), PLATEAU_CLASSIQUE)
 	assert_eq(SauvegardeBddJoueursService.enregistrement_campagne_lire_gameplay_plateau(), "CLASSIQUE")
+	assert_eq(SauvegardeBddJoueursService.enregistrement_campagne_lire_dernier_plateau().get("duree"), 60.0)
 	assert_true(campagne.get_node("Classique/MenuPlateau/BandeauEnJeu").visible)
 	assert_false(campagne.get_node("Classique/MenuPlateau/BandeauMenu").visible)
 	assert_false(campagne.get_node("MessagesCampagne").visible)
 
-func test_abandon_affiche_le_panneau_de_defaite_et_conserve_le_plateau() -> void:
+func test_le_chrono_qui_perd_gagne_sauvegarde_au_debut_du_plateau() -> void:
+	_definir_campagne([_plateaux_classique_puis_qpg()[1]])
 	var campagne := _campagne()
 	_commencer_le_plateau(campagne)
 
-	campagne.get_node("Classique").abandon.emit()
+	assert_eq(SauvegardeBddJoueursService.enregistrement_campagne_lire_dernier_plateau().get("duree"), 60.0)
+	assert_null(campagne.get_node("Classique/MenuPlateau")._plateau_chronometre)
+
+func test_abandon_affiche_le_panneau_de_defaite_et_conserve_le_plateau() -> void:
+	var campagne := _campagne()
+	_commencer_le_plateau(campagne)
+	var plateau = SauvegardeBddJoueursService.enregistrement_campagne_lire_dernier_plateau()
+	plateau["date_debut"] = Time.get_unix_time_from_system() - 10.0
+
+	campagne.get_node("Classique/MenuPlateau/BandeauEnJeu/BoutonRecommencer").emit_signal("pressed")
 
 	var messages: MessagesCampagne = campagne.get_node("MessagesCampagne")
+	assert_eq(plateau.get("statut"), "abandonné")
+	assert_almost_eq(plateau.get("duree"), 10.0, 5.0)
 	assert_true(messages.visible)
 	assert_true(messages.get_node("Centrer").visible)
 	assert_true(messages.get_node("Centrer/PanneauDefaite").visible)
@@ -164,12 +177,13 @@ func test_victoire_affiche_le_detail_du_score_du_plateau() -> void:
 	var campagne := _campagne()
 	_commencer_le_plateau(campagne)
 
-	campagne.get_node("Classique").victoire.emit()
+	campagne.get_node("Classique").est_termine([])
 
 	var messages: MessagesCampagne = campagne.get_node("MessagesCampagne")
 	assert_true(messages.visible)
 	assert_true(messages.get_node("Centrer").visible)
 	assert_true(messages.get_node("Centrer/PanneauVictoirePlateau").visible)
+	assert_true(campagne.get_node("Classique/MenuPlateau/SauvegardeDuree").is_stopped())
 	assert_false(messages.get_node("Centrer/PanneauVictoireNiveau").visible)
 	assert_eq(SauvegardeBddJoueursService.campagne_lire_prochain_gameplay(), "QUI_PERD_GAGNE")
 
@@ -191,9 +205,12 @@ func test_victoire_qui_perd_gagne_suit_le_meme_parcours_que_classique() -> void:
 	_commencer_le_plateau(campagne)
 	assert_eq(SauvegardeBddJoueursService.enregistrement_campagne_lire_gameplay_plateau(), "QUI_PERD_GAGNE")
 
-	campagne.get_node("QuiPerdGagne").victoire.emit()
+	var gameplay = campagne.get_node("QuiPerdGagne")
+	gameplay.get_node("Plateau").commencer_un_nouveau_plateau("AB.BA")
+	gameplay.est_termine(gameplay.get_node("Plateau").liste_piles)
 
 	assert_true(campagne.get_node("MessagesCampagne/Centrer/PanneauVictoirePlateau").visible)
+	assert_true(campagne.get_node("QuiPerdGagne/MenuPlateau/SauvegardeDuree").is_stopped())
 	assert_eq(SauvegardeBddJoueursService.campagne_lire_prochain_gameplay(), "CLASSIQUE")
 
 func test_abandon_qui_perd_gagne_suit_le_meme_parcours_que_classique() -> void:

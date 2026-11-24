@@ -40,7 +40,7 @@ func before_each():
 		{"nom": "Q1", "date_debut": 110, "duree": 1000, "difficulte": 1, "statut": "reussi"}
 	]
 	var plateaux_niveau_2 = [
-		{"nom": "Q2", "date_debut": 510, "duree": 1500, "difficulte": 2, "statut": "en_cours", "gameplay": "CLASSIQUE"}
+		{"nom": "Q2", "date_debut": 510, "duree": 1500, "difficulte": 2, "statut": "en cours", "gameplay": "CLASSIQUE"}
 	]
 	FichiersJsonService.write_json_file("sauvegarde_joueur_alpha.json", {
 		"nom": "Alpha",
@@ -364,10 +364,32 @@ func test_passer_un_plateau_enregistre_le_statut_passe_et_termine_le_plateau():
 	assert_gt(plateau.get("date_fin"), 0)
 	assert_false(SauvegardeBddJoueursService.enregistrement_campagne_plateau_en_cours())
 
-func test_passer_un_plateau_n_enregistre_pas_de_temps_de_jeu_pour_un_plateau_passe():
+func test_passer_un_plateau_enregistre_la_duree_ecoulee():
 	_ecrire_alpha(_plateau_p1(2), [_plateau_en_cours("P1")])
 	service.passer_un_plateau()
-	assert_eq(_dernier_plateau_enregistre().get("duree"), 0.0)
+	var plateau = _dernier_plateau_enregistre()
+	assert_eq(plateau.get("statut"), "passé")
+	assert_gt(float(plateau.get("duree")), 0.0)
+	assert_eq(float(plateau.get("duree")), float(plateau.get("date_fin")) - float(plateau.get("date_debut")))
+
+func test_reprendre_apres_un_plateau_interrompu_l_abandonne_et_le_rejoue():
+	var plateau_interrompu = _plateau_en_cours("P1")
+	plateau_interrompu["duree"] = 120.0
+	_ecrire_alpha(_plateau_p1(2), [plateau_interrompu])
+	service.liberer_le_joueur_pour_la_campagne()
+	assert_true(service.choisir_le_joueur_pour_la_campagne("Alpha"))
+	service.commencer_un_plateau()
+
+	var plateaux = SauvegardeBddJoueursService.enregistrement_campagne_lire_dernier_niveau().get("plateaux")
+	assert_eq(plateaux.size(), 2)
+	assert_eq(plateaux[0].get("nom"), "P1")
+	assert_eq(plateaux[0].get("statut"), "abandonné")
+	assert_eq(plateaux[0].get("duree"), 120.0)
+	assert_eq(plateaux[0].get("date_fin"), plateaux[0].get("date_debut") + 120.0)
+	assert_eq(plateaux[1].get("nom"), "P1")
+	assert_eq(plateaux[1].get("statut"), "en cours")
+	assert_eq(SauvegardeBddJoueursService.enregistrement_campagne_lire_duree_plateau_recommence(), 120.0)
+	assert_eq(SauvegardeBddJoueursService._sauvegarde_joueur.get("plateaux_libres"), {})
 
 func test_passer_un_plateau_ne_memorise_pas_le_plateau_dans_les_plateaux_libres():
 	_ecrire_alpha(_plateau_p1(2), [_plateau_en_cours("P1")], {"1": [{"nom": "Externe"}]})

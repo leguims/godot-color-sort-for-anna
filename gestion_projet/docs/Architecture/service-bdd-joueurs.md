@@ -26,6 +26,12 @@ Sauvegarde du profil et de la progression du joueur. Il garde l’état du compt
 - Gère les plateaux non joués et les plateaux en cours
 - Termine ou abandonne un plateau/ascension
 
+## Durée des plateaux
+
+- Pendant le jeu, un Timer du bandeau enregistre la durée majorée : 60 secondes dès le début, puis 60 secondes supplémentaires chaque minute. Le chronomètre affiche le temps réel.
+- Une fin normale enregistre le temps réel. Après une interruption, la dernière durée sauvegardée est conservée et la date de fin est estimée par `date_debut + duree` ; le plateau est abandonné pour être rejoué, ou passé lors d'un remplacement de campagne.
+- Une fermeture brutale pendant une écriture ou avant la mise à jour périodique peut empêcher la sauvegarde de la dernière valeur. Si le jeu est suspendu, le Timer ne rattrape pas automatiquement les minutes écoulées pendant la suspension.
+
 ## Points de vigilance
 
 - L'écran ne doit pas écrire directement la sauvegarde si la logique de persistance est déjà dans un service.

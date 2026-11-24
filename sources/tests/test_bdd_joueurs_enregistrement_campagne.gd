@@ -182,7 +182,7 @@ func test_les_modificateurs_sans_joueur_ne_plantent_pas_et_ne_creent_aucun_fichi
 	singleton.campagne_supprimer_les_plateaux()
 	singleton.enregistrement_campagne_terminer_campagne()
 	singleton.enregistrement_campagne_terminer_niveau()
-	singleton.enregistrement_campagne_terminer_plateau()
+	singleton.enregistrement_campagne_terminer_plateau("passé")
 	singleton.enregistrement_campagne_modifier_score_fin_campagne(10)
 	singleton.enregistrement_campagne_modifier_score_niveau(10)
 	singleton.enregistrement_campagne_modifier_score_niveau_parfait(10)
@@ -402,7 +402,7 @@ func test_passer_un_plateau_sans_plateau_en_cours_ne_modifie_pas_la_campagne():
 	singleton.lire_sauvegarde()["campagne"]["niveau_1"] = [_entree("P1"), _entree("P2")]
 	singleton.passer_un_plateau()
 	assert_eq(singleton.campagne_nombre_plateaux_pour_le_niveau(1), 2)
-	assert_eq(singleton.enregistrement_campagne_lire_statut_dernier_plateau(), "passé")
+	assert_eq(singleton.enregistrement_campagne_lire_statut_dernier_plateau(), "reussi")
 
 func test_les_signaux_de_progression_sont_connectes_aux_gestionnaires():
 	assert_true(ProgressionCampagneService.fin_niveau.is_connected(singleton._on_progression_campagne_service_fin_niveau))
@@ -958,6 +958,18 @@ func test_plateau_existe_et_en_cours():
 	assert_true(singleton.enregistrement_campagne_plateau_existe())
 	assert_true(singleton.enregistrement_campagne_plateau_en_cours())
 
+func test_etat_et_duree_du_plateau_dependent_du_statut():
+	var debut = Time.get_unix_time_from_system() - 12.0
+	_charger_niveau_avec_plateaux([_plateau("P1", "en cours", debut, 1.0)])
+	assert_true(singleton.enregistrement_campagne_plateau_en_cours())
+	assert_almost_eq(singleton.enregistrement_campagne_lire_duree_plateau(), 12.0, 5.0)
+
+	_charger_niveau_avec_plateaux([_plateau("P1", "reussi", debut, 0.0)])
+	var plateau = singleton.enregistrement_campagne_lire_dernier_plateau()
+	plateau["duree"] = 42.0
+	assert_false(singleton.enregistrement_campagne_plateau_en_cours())
+	assert_eq(singleton.enregistrement_campagne_lire_duree_plateau(), 42.0)
+
 func test_plateau_existe_sans_campagne_ni_niveau():
 	_charger()
 	assert_false(singleton.enregistrement_campagne_plateau_existe())
@@ -1000,9 +1012,39 @@ func test_initialiser_un_nouveau_plateau_sans_niveau_ne_plante_pas_et_retourne_f
 	var resultat = singleton.enregistrement_campagne_initialiser_un_nouveau_plateau("P1", "CLASSIQUE", 1)
 	assert_false(resultat)
 
+func test_incrementer_duree_plateau_ajoute_et_sauvegarde_la_duree():
+	_charger_plateau_en_cours()
+	singleton.enregistrement_campagne_incrementer_duree_plateau(60.0)
+	singleton.enregistrement_campagne_incrementer_duree_plateau(60.0)
+	var plateau = singleton.enregistrement_campagne_lire_dernier_plateau()
+	assert_eq(plateau.get("duree"), 120.0)
+	assert_eq(_derniere_campagne_relue()["niveaux"][0]["plateaux"][0]["duree"], 120.0)
+	assert_eq(plateau.get("statut"), "en cours")
+	assert_eq(plateau.get("date_fin"), 0.0)
+	singleton.enregistrement_campagne_terminer_plateau("abandonné")
+	singleton.enregistrement_campagne_incrementer_duree_plateau(60.0)
+	assert_eq(plateau.get("duree"), 120.0)
+
+func test_fin_normale_conserve_le_temps_reel_et_refuse_la_modification_de_duree():
+	for statut in ["reussi", "abandonné", "passé"]:
+		_charger([_campagne_enreg("campagne_a", [_niveau("niveau_1", [], 1000.0)])],
+			{"niveau_1": [_entree("P1")]})
+		singleton.commencer_un_plateau()
+		var plateau = singleton.enregistrement_campagne_lire_dernier_plateau()
+		plateau["date_debut"] = Time.get_unix_time_from_system() - 10.0
+		match statut:
+			"reussi": singleton.gagner_un_plateau()
+			"abandonné": singleton.abandonner_un_plateau()
+			"passé": singleton.passer_un_plateau()
+		assert_eq(plateau.get("statut"), statut)
+		assert_almost_eq(plateau.get("duree"), 10.0, 5.0)
+		assert_eq(plateau.get("duree"), plateau.get("date_fin") - plateau.get("date_debut"))
+		singleton.enregistrement_campagne_incrementer_duree_plateau(180.0)
+		assert_almost_eq(_derniere_campagne_relue()["niveaux"][0]["plateaux"][0]["duree"], plateau.get("duree"), 0.0001)
+
 func test_terminer_plateau_en_cours_sans_progression_le_marque_passe():
 	_charger_plateau_en_cours(500.0)
-	singleton.enregistrement_campagne_terminer_plateau()
+	singleton.enregistrement_campagne_terminer_plateau("passé")
 	var plateau = singleton.enregistrement_campagne_lire_dernier_plateau()
 	assert_eq(plateau.get("statut"), "passé")
 	assert_eq(plateau.get("date_fin"), 500.0)
@@ -1010,29 +1052,36 @@ func test_terminer_plateau_en_cours_sans_progression_le_marque_passe():
 	assert_false(singleton.enregistrement_campagne_plateau_en_cours())
 	assert_eq(_derniere_campagne_relue()["niveaux"][0]["plateaux"][0]["statut"], "passé")
 
-func test_terminer_plateau_avec_statut_modifie_calcule_la_duree():
-	var debut = Time.get_unix_time_from_system() - 30.0
-	_charger_plateau_en_cours(debut)
-	singleton.enregistrement_campagne_modifier_statut_plateau("reussi")
-	singleton.enregistrement_campagne_terminer_plateau()
-	var plateau = singleton.enregistrement_campagne_lire_dernier_plateau()
-	assert_eq(plateau.get("statut"), "reussi")
-	assert_gt(plateau.get("date_fin"), debut)
-	assert_almost_eq(plateau.get("duree"), 30.0, 5.0)
-	assert_false(singleton.enregistrement_campagne_plateau_en_cours())
-	assert_almost_eq(_derniere_campagne_relue()["niveaux"][0]["plateaux"][0]["duree"], 30.0, 5.0)
+func test_terminer_plateau_interrompu_conserve_la_duree_majoree():
+	var plateau_interrompu = _plateau_en_cours("P1", 500.0)
+	plateau_interrompu["duree"] = 120.0
+	_charger_niveau_avec_plateaux([plateau_interrompu])
+	singleton.enregistrement_campagne_terminer_plateau("passé")
+	var plateau = _derniere_campagne_relue()["niveaux"][0]["plateaux"][0]
+	assert_eq(plateau.get("statut"), "passé")
+	assert_eq(plateau.get("duree"), 120.0)
+	assert_eq(plateau.get("date_fin"), 620.0)
 
 func test_terminer_plateau_deja_termine_ne_le_modifie_pas():
 	_charger_niveau_avec_plateaux([_plateau("P1", "abandonné", 100.0, 130.0)])
-	singleton.enregistrement_campagne_terminer_plateau()
+	singleton.enregistrement_campagne_terminer_plateau("passé")
 	var plateau = singleton.enregistrement_campagne_lire_dernier_plateau()
 	assert_eq(plateau.get("date_fin"), 130.0)
 	assert_eq(plateau.get("duree"), 30.0)
 	assert_eq(plateau.get("statut"), "abandonné")
 
+func test_statuts_terminaux_sont_immuables():
+	for statut in ["abandonné", "passé", "reussi"]:
+		for nouveau_statut in ["en cours", "abandonné", "passé", "reussi"]:
+			_charger_niveau_avec_plateaux([_plateau("P1", statut)])
+			singleton.enregistrement_campagne_modifier_statut_plateau(nouveau_statut)
+			assert_eq(singleton.enregistrement_campagne_lire_statut_dernier_plateau(), statut,
+				"%s ne doit pas devenir %s" % [statut, nouveau_statut])
+			assert_eq(_derniere_campagne_relue()["niveaux"][0]["plateaux"][0]["statut"], statut)
+
 func test_terminer_plateau_sans_plateau_ne_fait_rien():
 	_charger([_campagne_enreg("campagne_a", [_niveau("niveau_1")])])
-	singleton.enregistrement_campagne_terminer_plateau()
+	singleton.enregistrement_campagne_terminer_plateau("passé")
 	assert_false(singleton.enregistrement_campagne_plateau_existe())
 
 func test_lire_nombre_plateaux_acheves():
