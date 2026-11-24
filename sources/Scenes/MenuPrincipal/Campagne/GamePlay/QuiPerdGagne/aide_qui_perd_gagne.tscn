@@ -219,7 +219,7 @@ expand_mode = 1
 stretch_mode = 5
 
 [node name="ExplicationSchema" type="Label" parent="Surface/Zone" unique_id=1816083175]
-custom_maximum_size = Vector2(400, -1)
+custom_maximum_size = Vector2(370, -1)
 layout_mode = 0
 offset_left = 53.0
 offset_top = 304.0
