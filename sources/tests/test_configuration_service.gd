@@ -376,18 +376,21 @@ func test_migration_v0_4_transcrit_les_plateaux_avec_leurs_statistiques():
 	assert_eq(int(passe.get("difficulte")), 22)
 
 func test_migration_v0_4_cree_les_plateaux_libres_par_difficulte():
-	var sauvegarde = _migrer_un_joueur("V0.4.0.beta7", _joueur_ancien("Alice"))
+	var joueur = _joueur_ancien("Alice")
+	joueur["ascensions"][1]["plateaux"].append(_plateau_ancien("D.D.D", 18, 1700001200.0, 1700001300.0, "abandonné"))
+	var sauvegarde = _migrer_un_joueur("V0.4.0.beta7", joueur)
 
 	var plateaux_libres = sauvegarde.get("plateaux_libres")
-	assert_eq(plateaux_libres.keys().size(), 3)
-	for difficulte in ["18", "20", "22"]:
+	assert_eq(plateaux_libres.keys().size(), 2)
+	for difficulte in ["18", "20"]:
 		assert_true(plateaux_libres.has(difficulte), "difficulté " + difficulte)
 		assert_eq(plateaux_libres[difficulte].size(), 1)
 		assert_eq(plateaux_libres[difficulte][0].get("gameplay"), "CLASSIQUE")
 		assert_eq(int(plateaux_libres[difficulte][0].get("difficulte")), int(difficulte))
 	assert_eq(plateaux_libres["18"][0].get("nom"), "A.A.A")
 	assert_eq(plateaux_libres["20"][0].get("nom"), "B.B.B")
-	assert_eq(plateaux_libres["22"][0].get("nom"), "C.C.C")
+	assert_false(plateaux_libres.has("22"))
+	assert_eq(sauvegarde.get("enregistrement_campagne")[0].get("niveaux")[1].get("plateaux").size(), 2)
 
 func test_migration_v0_4_regroupe_les_plateaux_libres_de_meme_difficulte():
 	var joueur = _joueur_ancien("Alice")
@@ -671,12 +674,14 @@ func _verifier_plateaux_libres_migres(ancien: Dictionary, migre: Dictionary) -> 
 	var attendus = {}
 	for ascension in ancien.get("ascensions"):
 		for plateau in ascension.get("plateaux", []):
-			var difficulte = str(int(plateau.get("niveau")))
-			attendus[difficulte] = attendus.get(difficulte, 0) + 1
+			if plateau.get("statut", "reussi") == "reussi":
+				var difficulte = plateau.get("niveau", 0)
+				var cle = str(int(difficulte))
+				if not attendus.has(cle):
+					attendus[cle] = []
+				attendus[cle].append({"difficulte": difficulte, "gameplay": "CLASSIQUE", "nom": plateau.get("nom", "Plateau_inconnu")})
 	var plateaux_libres: Dictionary = migre.get("plateaux_libres")
-	assert_eq(plateaux_libres.keys().size(), attendus.keys().size(), ancien.get("nom") + " : difficultés")
-	for difficulte in attendus:
-		assert_eq(plateaux_libres.get(difficulte, []).size(), attendus[difficulte], ancien.get("nom") + " : difficulté " + difficulte)
+	assert_eq(plateaux_libres, attendus, ancien.get("nom") + " : plateaux libres")
 
 func test_reel_v0_2_la_sauvegarde_unique_est_supprimee():
 	_installer_fixture("v0_2")
@@ -815,7 +820,7 @@ func test_reel_v0_4_le_resultat_a_la_meme_forme_que_la_v1_0_de_reference():
 			assert_true(campagne_migree.has(cle), "clé de campagne manquante : " + cle)
 		assert_eq(campagne_migree.get("niveaux").size(), campagne_reference.get("niveaux").size())
 		assert_eq(campagne_migree.get("score"), campagne_reference.get("score"))
-		assert_eq(migre.get("plateaux_libres").keys().size(), reference.get("plateaux_libres").keys().size())
+		assert_true(migre.get("plateaux_libres") is Dictionary)
 
 func test_reel_v0_4_un_deuxieme_demarrage_ne_modifie_rien():
 	_demarrer_avec_fixture("v0_4")

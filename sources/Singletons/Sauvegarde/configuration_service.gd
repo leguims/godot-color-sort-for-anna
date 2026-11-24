@@ -269,7 +269,6 @@ func _V0_4_X___V1_0_X() -> void:
 				var dernier_niveau = SauvegardeBddJoueursService.enregistrement_campagne_lire_dernier_niveau()
 				dernier_niveau['niveau'] = SauvegardeBddJoueursService.nom_niveau(valeur_niveau)
 				dernier_niveau['date_debut'] = ascension.get('date_debut', 0.0)
-				dernier_niveau['date_fin'] = ascension.get('date_fin', 0.0)
 				if ascension.has('score'):
 					if  ascension.get('score') and ascension.get('score').has('ascension'):
 						dernier_niveau['score']['niveau'] = ascension.get('score').get('ascension')
@@ -298,11 +297,18 @@ func _V0_4_X___V1_0_X() -> void:
 						dernier_plateau['score'] = score
 						dernier_plateau['coups joués'] = coups_joues
 						#  4 - Transcrire 'plateaux_libres'
-						var plateau_libre = {'difficulte': difficulte, 'gameplay': gameplay, 'nom': nom}
-						var difficulte_str_int =  str( int(difficulte) )
-						if not plateaux_libres.has(difficulte_str_int):
-							plateaux_libres[difficulte_str_int] = []
-						plateaux_libres[difficulte_str_int].append(plateau_libre)
+						if statut == 'reussi':
+							var plateau_libre = {'difficulte': difficulte, 'gameplay': gameplay, 'nom': nom}
+							var difficulte_str_int =  str( int(difficulte) )
+							if not plateaux_libres.has(difficulte_str_int):
+								plateaux_libres[difficulte_str_int] = []
+							plateaux_libres[difficulte_str_int].append(plateau_libre)
+				# Corriger la date de fin apres l'ajout des plateaux pour la terminer 
+				dernier_niveau['date_fin'] = ascension.get('date_fin', 0.0)
+			if liste_ascensions:
+				# Corriger la fin de campagne
+				var derniere_campagne = SauvegardeBddJoueursService.enregistrement_campagne_lire_derniere_campagne()
+				derniere_campagne['date_fin'] = liste_ascensions[-1].get('date_fin', 0.0)
 			# Effacer l'ancienne clé
 			SauvegardeBddJoueursService._sauvegarde_joueur.erase('ascensions')
 

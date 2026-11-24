@@ -361,7 +361,7 @@ func test_passer_un_plateau_enregistre_le_statut_passe_et_termine_le_plateau():
 	service.passer_un_plateau()
 	var plateau = _dernier_plateau_enregistre()
 	assert_eq(plateau.get("statut"), "passé")
-	assert_gt(plateau.get("date_fin"), 0)
+	assert_gt(plateau.get("date_fin"), 0.0)
 	assert_false(SauvegardeBddJoueursService.enregistrement_campagne_plateau_en_cours())
 
 func test_passer_un_plateau_enregistre_la_duree_ecoulee():

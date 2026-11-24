@@ -64,7 +64,7 @@ func test_vibration_click_utilise_la_constante_click():
 
 func test_chaque_vibration_n_appelle_qu_une_fois_vibration():
 	service.vibration_fin_de_pile()
-	assert_call_count(service, "_vibration", 1)
+	assert_called_count(service._vibration, 1)
 
 func test_vibrations_desactivees_toutes_les_fonctions_publiques_sans_crash():
 	SauvegardeConfigurationService.configuration_du_jeu["vibrations"] = false
@@ -73,4 +73,4 @@ func test_vibrations_desactivees_toutes_les_fonctions_publiques_sans_crash():
 	service.vibration_de_jeton()
 	service.vibration_echec()
 	service.vibration_click()
-	assert_call_count(service, "_vibration", 5)
+	assert_called_count(service._vibration, 5)

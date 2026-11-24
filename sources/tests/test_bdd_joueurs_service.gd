@@ -528,7 +528,7 @@ func test_remplacer_initier_campagne_des_joueurs_cloture_et_renouvelle_la_campag
 	assert_eq(sauvegarde_c.get("plateaux_libres").size(), 1)
 	assert_eq(sauvegarde_c.get("plateaux_libres").get("1").size(), 1)
 	assert_eq(sauvegarde_c.get("plateaux_libres").get("1")[0].get("nom"), "libre1")
-	assert_eq(campagnes[1].get("date_fin"), 0)
+	assert_eq(campagnes[1].get("date_fin"), 0.0)
 	assert_false(singleton.le_joueur_existe())
 
 	SauvegardeListeJoueursService.liste_des_joueurs = initial_liste_joueurs

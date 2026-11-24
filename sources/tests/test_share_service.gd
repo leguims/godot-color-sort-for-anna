@@ -132,5 +132,5 @@ func test_noeud_en_attente_de_liberation_reste_disponible_jusqu_a_la_liberation(
 	var faux = _installer_faux_partage()
 	faux.queue_free()
 	assert_true(service.is_available())
-	await wait_frames(2)
+	await wait_physics_frames(2)
 	assert_false(service.is_available())
