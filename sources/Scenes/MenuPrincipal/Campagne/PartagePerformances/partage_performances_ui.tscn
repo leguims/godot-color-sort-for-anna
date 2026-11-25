@@ -82,20 +82,20 @@ theme_override_colors/font_color = Color(0.0392157, 0.105882, 0.176471, 1)
 horizontal_alignment = 1
 autowrap_mode = 2
 
-[node name="InstructionCourriel" type="Label" parent="Panneau/Contenu"]
+[node name="InstructionCourriel" type="Label" parent="Panneau/Contenu" unique_id=1008247649]
 layout_mode = 2
 theme_override_colors/font_color = Color(0.0392157, 0.105882, 0.176471, 1)
 text = "Pour envoyer la campagne par courriel :"
 horizontal_alignment = 1
 autowrap_mode = 2
 
-[node name="AdresseCourriel" type="Label" parent="Panneau/Contenu"]
+[node name="AdresseCourriel" type="Label" parent="Panneau/Contenu" unique_id=16169126]
 layout_mode = 2
 theme_override_colors/font_color = Color(0.0392157, 0.105882, 0.176471, 1)
 horizontal_alignment = 1
 autowrap_mode = 2
 
-[node name="BoutonCopierCourriel" type="Button" parent="Panneau/Contenu"]
+[node name="BoutonCopierCourriel" type="Button" parent="Panneau/Contenu" unique_id=1542937797]
 custom_minimum_size = Vector2(280, 48)
 layout_mode = 2
 theme_override_fonts/font = ExtResource("3_font")
@@ -126,6 +126,6 @@ text = "Retour aux statistiques"
 [node name="PartagePerformancesAPI" type="Node" parent="." unique_id=1604442838]
 script = ExtResource("2_api")
 
-[connection signal="pressed" from="Panneau/Contenu/BoutonPartagerFichier" to="." method="_on_bouton_partager_fichier_pressed"]
 [connection signal="pressed" from="Panneau/Contenu/BoutonCopierCourriel" to="." method="_on_bouton_copier_courriel_pressed"]
+[connection signal="pressed" from="Panneau/Contenu/BoutonPartagerFichier" to="." method="_on_bouton_partager_fichier_pressed"]
 [connection signal="pressed" from="Panneau/Contenu/BoutonRetourStatistiques" to="." method="_on_bouton_retour_statistiques_pressed"]

@@ -245,7 +245,7 @@ expand_icon = true
 [node name="Aide" parent="." unique_id=1288577212 instance=ExtResource("aide")]
 visible = false
 
-[node name="SauvegardeDuree" type="Timer" parent="."]
+[node name="SauvegardeDuree" type="Timer" parent="." unique_id=1620698671]
 wait_time = 60.0
 one_shot = true
 ignore_time_scale = true
