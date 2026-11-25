@@ -3,6 +3,7 @@ extends Control
 const PREFIXE_CAMPAGNE_TEST := "[test]"
 
 func _ready():
+	$PanneauPartagePerformances/PartagePerformancesAPI.partage_echoue.connect(_on_partage_echoue)
 	theme_medaille()
 	score()
 	campagne()
@@ -50,9 +51,23 @@ func _on_bouton_retour_pressed() -> void:
 		get_tree().change_scene_to_file("res://Scenes/MenuPrincipal/Campagne/campagne.tscn")
 
 func _on_bouton_partager_pressed() -> void:
-	if OS.has_feature("android") and ShareService.is_available():
-		# Partager la derniere campagne
-		pass
+	if OS.has_feature("android"):
+		_partager_derniere_campagne(ShareService)
+
+func _partager_derniere_campagne(share: Node) -> void:
+	var api: PartagePerformancesAPI = $PanneauPartagePerformances/PartagePerformancesAPI
+	var resultat := api.partager_campagne(share, api.lire_donnees_derniere_campagne(), true)
+	if not resultat.get("succes", false):
+		_afficher_erreur_partage(resultat.get("erreur", "Impossible de partager le fichier JSON."))
+
+func _on_partage_echoue(message: String, manuel: bool) -> void:
+	if manuel:
+		_afficher_erreur_partage("Le partage du fichier a échoué : %s" % message)
+
+func _afficher_erreur_partage(message: String) -> void:
+	LogService.log_erreur(message)
+	$DialogueErreurPartage.dialog_text = message
+	$DialogueErreurPartage.popup_centered()
 
 func theme_medaille():
 	# Identifier la medaille et charger le theme_medaille associé

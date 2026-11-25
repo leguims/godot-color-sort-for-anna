@@ -2,11 +2,15 @@ extends Node
 
 class_name PartagePerformancesAPI
 
+signal partage_echoue(message: String, manuel: bool)
+
 const LOGIQUE := preload("res://Scenes/MenuPrincipal/Campagne/PartagePerformances/partage_performances_logic.gd")
 const TYPE_MIME_JSON := "application/json"
 
 var _logique: PartagePerformancesLogic = LOGIQUE.new()
 var _empreinte_partage_en_attente := ""
+var _partage_en_attente := false
+var _partage_manuel_en_attente := false
 
 func _ready() -> void:
 	if not ShareService.share_completed.is_connected(_on_share_completed):
@@ -33,18 +37,22 @@ func decoder_fichier_signe(contenu_fichier: String) -> Dictionary:
 	var cle_hmac: String = ProjectSettings.get_setting("partage_performances/cle_hmac", "")
 	return _logique.decoder_fichier_signe(contenu_fichier, cle_hmac)
 
-## Signe et transmet les données de campagne comme fichier JSON via SHARE.
-func partager_campagne(share: Node, donnees: Dictionary) -> Dictionary:
+## Signe et transmet la campagne via SHARE ; le partage manuel ne modifie pas le suivi de test.
+func partager_campagne(share: Node, donnees: Dictionary, manuel: bool = false) -> Dictionary:
+	if _partage_en_attente:
+		return {"succes": false, "erreur": "Un partage est déjà en cours."}
 	if not is_instance_valid(share) or not share.has_method("is_available") \
 		or not share.call("is_available") or not share.has_method("share_file"):
 		return {"succes": false, "erreur": "Le partage natif Android n'est pas disponible."}
+	var campagne: Variant = donnees.get("campagne")
+	if not campagne is Dictionary or campagne.is_empty():
+		return {"succes": false, "erreur": "Aucune campagne à partager."}
 
 	var enveloppe: Dictionary = preparer_partage(donnees)
 	if not enveloppe.get("succes", false):
 		return enveloppe
 
 	var nom_joueur := str(donnees.get("joueur", "inconnue"))
-	var campagne: Dictionary = donnees.get("campagne", {})
 	var nom_campagne := str(campagne.get("campagne", "inconnue"))
 	var chemin_fichier := OS.get_user_data_dir().path_join(
 		_construire_nom_fichier_partage(nom_campagne, nom_joueur)
@@ -60,6 +68,9 @@ func partager_campagne(share: Node, donnees: Dictionary) -> Dictionary:
 		return {"succes": false, "erreur": "Impossible d'écrire le fichier de partage JSON."}
 
 	var nom_campagne_affiche := nom_campagne.capitalize()
+	_partage_en_attente = true
+	_partage_manuel_en_attente = manuel
+	_empreinte_partage_en_attente = "" if manuel else _calculer_empreinte_campagne(campagne)
 	if not share.call(
 		"share_file",
 		chemin_fichier,
@@ -68,9 +79,9 @@ func partager_campagne(share: Node, donnees: Dictionary) -> Dictionary:
 		nom_campagne_affiche,
 		nom_campagne_affiche + " de " + nom_joueur
 	):
+		_reinitialiser_partage_en_attente()
 		return {"succes": false, "erreur": "SHARE n'a pas pu transmettre le fichier JSON."}
 
-	_empreinte_partage_en_attente = _calculer_empreinte_campagne(campagne)
 	return {"succes": true, "chemin": chemin_fichier}
 
 func _construire_nom_fichier_partage(nom_campagne: String, nom_joueur: String) -> String:
@@ -126,14 +137,24 @@ func _normaliser_valeur_pour_empreinte(valeur: Variant) -> Variant:
 	return valeur
 
 func _on_share_completed(_activity_type: String) -> void:
-	if _empreinte_partage_en_attente.is_empty():
+	if not _partage_en_attente:
 		return
-	if not SauvegardeBddJoueursService.enregistrement_campagne_marquer_fichier_partage(_empreinte_partage_en_attente):
+	if not _partage_manuel_en_attente and not _empreinte_partage_en_attente.is_empty() \
+		and not SauvegardeBddJoueursService.enregistrement_campagne_marquer_fichier_partage(_empreinte_partage_en_attente):
 		LogService.log_erreur("Impossible d'enregistrer le partage de la campagne.")
-	_empreinte_partage_en_attente = ""
+	_reinitialiser_partage_en_attente()
 
 func _on_share_canceled() -> void:
-	_empreinte_partage_en_attente = ""
+	_reinitialiser_partage_en_attente()
 
-func _on_share_failed(_message: String) -> void:
+func _on_share_failed(message: String) -> void:
+	if not _partage_en_attente:
+		return
+	var manuel := _partage_manuel_en_attente
+	_reinitialiser_partage_en_attente()
+	partage_echoue.emit(message, manuel)
+
+func _reinitialiser_partage_en_attente() -> void:
 	_empreinte_partage_en_attente = ""
+	_partage_en_attente = false
+	_partage_manuel_en_attente = false

@@ -1,6 +1,6 @@
 # Module de partage des performances
 
-Le module `PartagePerformances` exporte la dernière campagne complète du joueur dans un fichier JSON signé. Il utilise le dialogue natif du plugin SHARE sur Android pour l'export et l'import. La collecte des enregistrements reste gérée par le jeu.
+Le module `PartagePerformances` exporte l'enregistrement complet de la dernière campagne du joueur dans un fichier JSON signé, même si cette campagne est en cours. Il utilise le dialogue natif du plugin SHARE sur Android pour l'export et l'import. La collecte des enregistrements reste gérée par le jeu.
 
 ## Données exportées
 
@@ -29,9 +29,11 @@ Le fichier transmis est une enveloppe JSON contenant `version`, `algorithme`, `d
 
 ## Export et rattrapage
 
-Après la fin d'une campagne, l'écran des statistiques affiche le panneau de partage si cette campagne n'a pas déjà été partagée. Il indique le joueur, le nom de la campagne et le dernier niveau. « Retour aux statistiques » masque le panneau et laisse les statistiques accessibles.
+Sur Android, après la fin d'une campagne dont le nom commence par `[test]`, l'écran des statistiques affiche le panneau de partage si la campagne contient des niveaux et n'a pas déjà été partagée par ce parcours. Il indique le joueur et le nom de la campagne. « Retour aux statistiques » masque le panneau et laisse les statistiques accessibles. Aucune invitation automatique n'est affichée pour les autres campagnes.
 
 Sur Android, « Partager le fichier JSON » ouvre le dialogue SHARE. Le fichier porte le nom `rtc_[nom_campagne]_[nom_joueur].json`; les caractères interdits dans les noms de fichier sont remplacés par des `_`. Le panneau affiche aussi l'adresse `rangelescouleurspouranna@gmail.com` et permet de la copier dans le presse-papiers, afin que le joueur puisse joindre le fichier JSON à un courriel. Une campagne n'est marquée comme partagée qu'après le signal `share_completed`; une annulation ou un échec ne la marque pas comme telle. Le suivi est stocké dans la sauvegarde du joueur à partir d'une empreinte SHA-256 de la campagne, sans ajouter de métadonnée interne aux données exportées.
+
+Le bouton de partage des statistiques lance directement l'export de la dernière campagne enregistrée, terminée ou en cours, sans panneau de confirmation du jeu. Le sélecteur Android permet au joueur de choisir l'application et le destinataire. Ce partage manuel ne modifie pas le suivi de l'invitation de test. Une erreur est journalisée et affichée dans un dialogue ; une annulation n'affiche aucun message. Le signal `share_completed` indique le choix d'une application, mais ne garantit pas la livraison effective du fichier.
 
 ## Import
 

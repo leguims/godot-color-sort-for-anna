@@ -10,6 +10,21 @@ const SCENE_CARTE_PLATEAU = preload(DOSSIER + "carte_plateau.tscn")
 const RACINE_TEST := "tests/test_statistiques_ui"
 const ICONES := "res://Art/UI/icons/grades/"
 
+class FauxPartage:
+	extends Node
+	var disponible := true
+	var accepte := true
+	var chemins: Array[String] = []
+	var type_mime := ""
+
+	func is_available() -> bool:
+		return disponible
+
+	func share_file(chemin: String, mime: String, _titre: String, _sujet: String, _contenu: String) -> bool:
+		chemins.append(chemin)
+		type_mime = mime
+		return accepte
+
 var sauvegarde_joueur_initiale: Dictionary
 var fichier_sauvegarde_initial: String
 var configuration_initiale: Dictionary
@@ -347,6 +362,144 @@ func test_l_ecran_ne_propose_pas_le_partage_hors_de_la_campagne_de_test() -> voi
 	var ecran := _ecran()
 
 	assert_false(ecran.get_node("PanneauPartagePerformances").visible)
+
+func test_partage_manuel_transmet_la_derniere_campagne_en_cours_sans_modifier_le_suivi() -> void:
+	var donnees := _donnees_joueur()
+	donnees["enregistrement_campagne"][0]["campagne"] = "[test]partage_%s" % Time.get_ticks_usec()
+	var ancienne: Dictionary = donnees["enregistrement_campagne"][0].duplicate(true)
+	ancienne["campagne"] = "ancienne"
+	donnees["enregistrement_campagne"].push_front(ancienne)
+	_activer_joueur(donnees)
+	var ecran := _ecran()
+	var share: FauxPartage = add_child_autofree(FauxPartage.new())
+	var api: PartagePerformancesAPI = ecran.get_node("PanneauPartagePerformances/PartagePerformancesAPI")
+	var campagne_attendue: Dictionary = api.lire_donnees_derniere_campagne()["campagne"]
+
+	ecran._partager_derniere_campagne(share)
+
+	assert_eq(share.chemins.size(), 1)
+	assert_eq(share.type_mime, "application/json")
+	assert_false(ecran.get_node("PanneauPartagePerformances").visible)
+	assert_false(ecran.get_node("DialogueErreurPartage").visible)
+	if not share.chemins.is_empty():
+		var contenu := FileAccess.get_file_as_string(share.chemins[0])
+		var resultat := api.decoder_fichier_signe(contenu)
+		assert_true(resultat.get("succes", false))
+		assert_eq(resultat.get("donnees", {}).get("campagne"), JSON.parse_string(JSON.stringify(campagne_attendue)))
+		assert_eq(resultat.get("donnees", {}).get("campagne", {}).get("date_fin"), 0.0)
+		DirAccess.remove_absolute(share.chemins[0])
+	ShareService.share_completed.emit("test")
+	assert_false(api.campagne_a_deja_ete_partagee(api.lire_donnees_derniere_campagne()))
+
+func test_partage_manuel_affiche_uniquement_les_erreurs_et_pas_l_annulation() -> void:
+	var donnees := _donnees_joueur()
+	donnees["enregistrement_campagne"][0]["campagne"] = "partage_%s" % Time.get_ticks_usec()
+	_activer_joueur(donnees)
+	var ecran := _ecran()
+	var share: FauxPartage = add_child_autofree(FauxPartage.new())
+	var dialogue: AcceptDialog = ecran.get_node("DialogueErreurPartage")
+	var panneau: Control = ecran.get_node("PanneauPartagePerformances")
+
+	share.disponible = false
+	ecran._partager_derniere_campagne(share)
+	assert_true(dialogue.visible)
+	assert_false(panneau.visible)
+	dialogue.hide()
+
+	share.disponible = true
+	ecran._partager_derniere_campagne(share)
+	ShareService.share_canceled.emit()
+	assert_false(dialogue.visible)
+	ecran._partager_derniere_campagne(share)
+	ShareService.share_failed.emit("Erreur Android")
+	assert_true(dialogue.visible)
+	assert_true(dialogue.dialog_text.contains("Erreur Android"))
+	assert_false(panneau.visible)
+	assert_false(panneau.get_node("Panneau/Contenu/Message").visible)
+	for chemin in share.chemins:
+		DirAccess.remove_absolute(chemin)
+
+func test_partage_manuel_ne_supprime_pas_l_invitation_de_test() -> void:
+	var donnees := _donnees_joueur()
+	donnees["enregistrement_campagne"][0]["campagne"] = "[test]partage_%s" % Time.get_ticks_usec()
+	donnees["enregistrement_campagne"][0]["date_fin"] = 1700003000
+	_activer_joueur(donnees)
+	var ecran := _ecran()
+	var share: FauxPartage = add_child_autofree(FauxPartage.new())
+	ecran.get_node("PanneauPartagePerformances").hide()
+
+	ecran._partager_derniere_campagne(share)
+	ShareService.share_completed.emit("test")
+	ecran._afficher_le_partage()
+
+	assert_true(ecran.get_node("PanneauPartagePerformances").visible)
+	for chemin in share.chemins:
+		DirAccess.remove_absolute(chemin)
+
+func test_partage_manuel_sans_campagne_affiche_une_erreur() -> void:
+	var ecran := _ecran()
+	var share: FauxPartage = add_child_autofree(FauxPartage.new())
+	SauvegardeBddJoueursService._sauvegarde_joueur["enregistrement_campagne"] = []
+
+	ecran._partager_derniere_campagne(share)
+
+	assert_true(ecran.get_node("DialogueErreurPartage").visible)
+	assert_eq(ecran.get_node("DialogueErreurPartage").dialog_text, "Aucune campagne à partager.")
+	assert_true(share.chemins.is_empty())
+
+func test_partage_manuel_refuse_un_second_partage_et_signale_un_echec_immediat() -> void:
+	var donnees := _donnees_joueur()
+	donnees["enregistrement_campagne"][0]["campagne"] = "partage_%s" % Time.get_ticks_usec()
+	_activer_joueur(donnees)
+	var ecran := _ecran()
+	var share: FauxPartage = add_child_autofree(FauxPartage.new())
+	var dialogue: AcceptDialog = ecran.get_node("DialogueErreurPartage")
+
+	ecran._partager_derniere_campagne(share)
+	ecran._partager_derniere_campagne(share)
+	assert_eq(share.chemins.size(), 1)
+	assert_true(dialogue.dialog_text.contains("déjà en cours"))
+	ShareService.share_canceled.emit()
+	dialogue.hide()
+	share.accepte = false
+	ecran._partager_derniere_campagne(share)
+	assert_true(dialogue.visible)
+	assert_true(dialogue.dialog_text.contains("SHARE"))
+	for chemin in share.chemins:
+		if FileAccess.file_exists(chemin):
+			DirAccess.remove_absolute(chemin)
+
+func test_bouton_partager_hors_android_ne_fait_rien() -> void:
+	if OS.has_feature("android"):
+		return
+	var ecran := _ecran()
+	ecran.get_node("Scroll/Content/BoutonPartager").pressed.emit()
+	assert_false(ecran.get_node("PanneauPartagePerformances").visible)
+	assert_false(ecran.get_node("DialogueErreurPartage").visible)
+
+func test_partage_test_conserve_son_suivi_et_ses_erreurs_dans_le_panneau() -> void:
+	var donnees := _donnees_joueur()
+	donnees["enregistrement_campagne"][0]["campagne"] = "[test]partage_%s" % Time.get_ticks_usec()
+	_activer_joueur(donnees)
+	var ecran := _ecran()
+	var share: FauxPartage = add_child_autofree(FauxPartage.new())
+	var api: PartagePerformancesAPI = ecran.get_node("PanneauPartagePerformances/PartagePerformancesAPI")
+	var campagne := api.lire_donnees_derniere_campagne()
+	ecran._afficher_le_partage()
+
+	assert_true(api.partager_campagne(share, campagne).get("succes", false))
+	ShareService.share_failed.emit("Erreur test")
+	assert_true(ecran.get_node("PanneauPartagePerformances/Panneau/Contenu/Message").visible)
+	assert_false(ecran.get_node("DialogueErreurPartage").visible)
+	assert_false(api.campagne_a_deja_ete_partagee(campagne))
+	assert_true(api.partager_campagne(share, campagne).get("succes", false))
+	ShareService.share_canceled.emit()
+	assert_false(api.campagne_a_deja_ete_partagee(campagne))
+	assert_true(api.partager_campagne(share, campagne).get("succes", false))
+	ShareService.share_completed.emit("test")
+	assert_true(api.campagne_a_deja_ete_partagee(campagne))
+	for chemin in share.chemins:
+		DirAccess.remove_absolute(chemin)
 
 func test_l_ecran_affiche_les_statistiques_de_niveau() -> void:
 	var ecran := _ecran()

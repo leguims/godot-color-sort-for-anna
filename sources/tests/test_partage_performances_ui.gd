@@ -23,7 +23,7 @@ func test_afficher_export_presente_le_joueur_et_la_campagne_complete() -> void:
 	assert_true(panneau.visible)
 	assert_eq(panneau.get_node("Panneau/Contenu/NomJoueur").text, "Joueur : Joueuse")
 	assert_eq(panneau.get_node("Panneau/Contenu/NomCampagne").text, "Campagne : Campagne Test")
-	assert_eq(panneau.get_node("Panneau/Contenu/NomNiveau").text, "")
+	assert_false(panneau.has_node("Panneau/Contenu/NomNiveau"))
 	assert_eq(panneau.get_node("Panneau/Contenu/AdresseCourriel").text, "rangelescouleurspouranna@gmail.com")
 	assert_false(panneau.get_node("Panneau/Contenu/Message").visible)
 	SauvegardeBddJoueursService._sauvegarde_joueur = sauvegarde_initiale

@@ -9,10 +9,7 @@ signal fermer
 var _donnees_a_partager: Dictionary = {}
 
 func _ready() -> void:
-	if not ShareService.share_failed.is_connected(_on_partage_echoue):
-		ShareService.share_failed.connect(_on_partage_echoue)
-	if not ShareService.share_canceled.is_connected(_on_partage_annule):
-		ShareService.share_canceled.connect(_on_partage_annule)
+	$PartagePerformancesAPI.partage_echoue.connect(_on_partage_echoue)
 	$Panneau/Contenu/BoutonPartagerFichier.visible = OS.has_feature("android")
 	$Panneau/Contenu/BoutonPartagerFichier.disabled = not ShareService.is_available()
 
@@ -22,16 +19,11 @@ func afficher_export(donnees: Dictionary) -> void:
 	var campagne: Dictionary = donnees.get("campagne", {})
 	var nom_joueur := str(donnees.get("joueur", "inconnue"))
 	var nom_campagne := SauvegardeBddJoueursService.enregistrement_campagne_lire_nom_derniere_campagne().capitalize()
-	var nom_niveau := SauvegardeBddJoueursService.enregistrement_campagne_lire_nom_dernier_niveau().capitalize()
 	if campagne.is_empty():
 		nom_campagne = "Inconnue"
-	if nom_niveau.is_empty():
-		nom_niveau = "Inconnu"
 
 	$Panneau/Contenu/NomJoueur.text = "Joueur : " + nom_joueur
 	$Panneau/Contenu/NomCampagne.text = "Campagne : " + nom_campagne
-	# Inutile de préciser le niveau, car la campagne complete est sauvegardée.
-	# $Panneau/Contenu/NomNiveau.text = "Dernier niveau : " + nom_niveau
 	$Panneau/Contenu/AdresseCourriel.text = ADRESSE_COURRIEL_PARTAGE
 	$Panneau/Contenu/Message.visible = false
 	$Panneau/Contenu/BoutonPartagerFichier.disabled = not ShareService.is_available()
@@ -54,18 +46,19 @@ func _on_bouton_partager_fichier_pressed() -> void:
 		_donnees_a_partager
 	)
 	if not resultat.get("succes", false):
-		_afficher_message(resultat.get("erreur", "Impossible de partager le fichier JSON."))
+		var message: String = resultat.get("erreur", "Impossible de partager le fichier JSON.")
+		LogService.log_erreur(message)
+		_afficher_message(message)
 	$Panneau/Contenu/BoutonPartagerFichier.disabled = not ShareService.is_available()
 
 func _on_bouton_retour_statistiques_pressed() -> void:
 	hide()
 	fermer.emit()
 
-func _on_partage_echoue(message: String) -> void:
-	_afficher_message("Le partage du fichier a échoué : %s" % message)
-
-func _on_partage_annule() -> void:
-	$Panneau/Contenu/BoutonPartagerFichier.disabled = not ShareService.is_available()
+func _on_partage_echoue(message: String, manuel: bool) -> void:
+	if not manuel:
+		LogService.log_erreur("Le partage du fichier a échoué : ", message)
+		_afficher_message("Le partage du fichier a échoué : %s" % message)
 
 func _afficher_message(message: String) -> void:
 	$Panneau/Contenu/Message.text = message

@@ -191,6 +191,9 @@ offset_bottom = 1266.0
 _titre = "Qui Perd Gagne"
 
 [node name="PanneauPartagePerformances" parent="." unique_id=1005821048 instance=ExtResource("partage")]
+
+[node name="DialogueErreurPartage" type="AcceptDialog" parent="."]
+title = "Partage impossible"
 layout_mode = 1
 
 [connection signal="pressed" from="Scroll/Content/BoutonRetour" to="." method="_on_bouton_retour_pressed"]
