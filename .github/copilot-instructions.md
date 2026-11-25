@@ -13,7 +13,7 @@ Infos Godot:
 
 Infos Git:
 - Chemin du depot : C:\Users\legui\Documents\Sources\godot\godot-csfa_next
-- Branche de travail actuelle : multi_gameplay
+- Branche de travail actuelle : main
 
 Infos de conceptions :
 - C:\Users\legui\Documents\Sources\godot\godot-csfa_next\gestion_projet\docs\Architecture
@@ -33,6 +33,8 @@ Infos de conceptions :
 - Documenter les méthodes publiques.
 - Ne jamais utiliser `get_node()` dans la logique métier.
 - Ne jamais faire de logique métier dans les scripts UI.
+- Toujours ajouter dans les scenes les outils GODOT qui existent.
+- Ne pas realiser une UI en lancant un script, utiliser le fichier "*.tscn" avec tous les objet GODOT necessaires.
 
 ### Langue
 

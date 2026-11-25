@@ -14,13 +14,13 @@ func _ready():
 	_afficher_le_partage_si_necessaire()
 
 func _afficher_le_partage_si_necessaire() -> void:
-	var campagne: Dictionary = SauvegardeBddJoueursService.enregistrement_campagne_lire_derniere_campagne()
-	var nom_campagne: Variant = campagne.get("campagne", "")
-	var niveaux: Variant = campagne.get("niveaux", [])
-
 	# Vérifier si nous sommes sur ANDROID
 	if not OS.has_feature("android"):
 		return
+
+	var campagne: Dictionary = SauvegardeBddJoueursService.enregistrement_campagne_lire_derniere_campagne()
+	var nom_campagne: Variant = campagne.get("campagne", "")
+	var niveaux: Variant = campagne.get("niveaux", [])
 
 	# Vérifier si une beta-test de campagne est en cours
 	if not nom_campagne is String or not nom_campagne.begins_with(PREFIXE_CAMPAGNE_TEST) \
@@ -48,6 +48,11 @@ func _on_bouton_retour_pressed() -> void:
 	else:
 		# Retour au menu de campagne
 		get_tree().change_scene_to_file("res://Scenes/MenuPrincipal/Campagne/campagne.tscn")
+
+func _on_bouton_partager_pressed() -> void:
+	if OS.has_feature("android") and ShareService.is_available():
+		# Partager la derniere campagne
+		pass
 
 func theme_medaille():
 	# Identifier la medaille et charger le theme_medaille associé
@@ -83,6 +88,13 @@ func theme_medaille():
 
 	# Bouton retour
 	$Scroll/Content/BoutonRetour.medaille(medaille)
+
+	# Bouton partager (android)
+	if OS.has_feature("android"):
+		$Scroll/Content/BoutonPartager.show()
+		$Scroll/Content/BoutonPartager.medaille(medaille)
+	else:
+		$Scroll/Content/BoutonPartager.hide()
 
 	# Modes de jeu
 	$Scroll/Content/BanniereMode/Fond.get("theme_override_styles/panel").bg_color = Color('102b50')

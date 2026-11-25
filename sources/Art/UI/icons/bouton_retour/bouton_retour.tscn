@@ -1,7 +1,7 @@
 [gd_scene format=3 uid="uid://w107yrff5att"]
 
 [ext_resource type="Script" uid="uid://csrhrxv0rp8xs" path="res://Art/UI/icons/bouton_retour/bouton_retour.gd" id="1_ru35t"]
-[ext_resource type="Texture2D" uid="uid://bgyrgpm2kf6a2" path="res://Art/UI/icons/bouton_retour/retour.png" id="1_tqm7m"]
+[ext_resource type="Texture2D" uid="uid://rmu2bxeew7db" path="res://Art/UI/icons/bouton_retour/retour.png" id="1_tqm7m"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ru35t"]
 bg_color = Color(0.0627451, 0.16862746, 0.3137255, 1)

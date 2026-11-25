@@ -1,6 +1,7 @@
 [gd_scene format=3 uid="uid://di47taepknkbv"]
 
-[ext_resource type="PackedScene" uid="uid://w107yrff5att" path="res://Art/UI/icons/bouton_retour/bouton_retour.tscn" id="4_6o1wl"]
+[ext_resource type="PackedScene" uid="uid://w107yrff5att" path="res://Art/UI/icons/bouton_retour/bouton_retour.tscn" id="5_6o1wl"]
+[ext_resource type="PackedScene" uid="uid://b7yxv3bgayos0" path="res://Art/UI/icons/bouton_partager/bouton_partager.tscn" id="5_ylcsm"]
 [ext_resource type="PackedScene" uid="uid://bwafrdrv423al" path="res://Scenes/MenuPrincipal/Campagne/Statistiques/carte_score.tscn" id="5_babj6"]
 [ext_resource type="PackedScene" uid="uid://c5m7n5xqwj5kb" path="res://Scenes/MenuPrincipal/Campagne/Statistiques/carte_campagne.tscn" id="7_babj6"]
 [ext_resource type="PackedScene" uid="uid://bd6cjm57d1tvg" path="res://Scenes/MenuPrincipal/Campagne/Statistiques/carte_niveau.tscn" id="8_4sqo1"]
@@ -93,11 +94,17 @@ horizontal_alignment = 1
 vertical_alignment = 1
 clip_text = true
 
-[node name="BoutonRetour" parent="Scroll/Content" unique_id=316379464 instance=ExtResource("4_6o1wl")]
+[node name="BoutonRetour" parent="Scroll/Content" unique_id=316379464 instance=ExtResource("5_6o1wl")]
 layout_mode = 0
 offset_left = 20.0
 offset_top = 10.0
 offset_right = 70.0
+
+[node name="BoutonPartager" parent="Scroll/Content" unique_id=890106093 instance=ExtResource("5_ylcsm")]
+layout_mode = 0
+offset_left = 410.0
+offset_top = 10.0
+offset_right = 460.0
 
 [node name="Score" parent="Scroll/Content" unique_id=198575893 instance=ExtResource("5_babj6")]
 layout_mode = 0
@@ -187,4 +194,5 @@ _titre = "Qui Perd Gagne"
 layout_mode = 1
 
 [connection signal="pressed" from="Scroll/Content/BoutonRetour" to="." method="_on_bouton_retour_pressed"]
+[connection signal="pressed" from="Scroll/Content/BoutonPartager" to="." method="_on_bouton_partager_pressed"]
 [connection signal="fermer" from="PanneauPartagePerformances" to="." method="_on_panneau_partage_performances_fermer"]
