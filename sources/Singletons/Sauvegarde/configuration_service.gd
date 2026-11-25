@@ -10,7 +10,7 @@ const PREFIXE_CAMPAGNE_TEST := "[test]"
 
 # Dico : {'caracteristique': reglage}
 var configuration_du_jeu = {
-	'version': 'V1.0.3',
+	'version': 'V1.0.4',
 	'date_debut_campagne': "2026-11-18 00:00:00",
 	'musiques': true,
 	'effets sonores': true,
