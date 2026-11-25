@@ -1199,3 +1199,19 @@ func configuration_desactiver_aide_qui_perd_gagne() -> void:
 			lire_sauvegarde()['configuration'] = {}
 		configuration()['montrer_aide_qui_perd_gagne'] = false
 		_enregistrer_sauvegarde_joueur()
+
+func configuration_activer_aide_classique() -> void:
+	"Activer l'aide automatique du gameplay classique"
+	if le_joueur_existe():
+		if not configuration_existe():
+			lire_sauvegarde()['configuration'] = {}
+		configuration()['montrer_aide_classique'] = true
+		_enregistrer_sauvegarde_joueur()
+
+func configuration_activer_aide_qui_perd_gagne() -> void:
+	"Activer l'aide automatique du gameplay qui_perd_gagne"
+	if le_joueur_existe():
+		if not configuration_existe():
+			lire_sauvegarde()['configuration'] = {}
+		configuration()['montrer_aide_qui_perd_gagne'] = true
+		_enregistrer_sauvegarde_joueur()

@@ -62,6 +62,7 @@ func _initialiser_la_configuration() -> void:
 			# Fin de campagne + Raz score
 			_raz_score()
 			_copie_campagne()
+			_raz_aide_gameplay()
 
 	# Enregistrer la configuration actuelle
 	configuration_du_jeu['version'] = version_courante_logicielle
@@ -155,6 +156,14 @@ func _copie_campagne() -> void:
 	SauvegardeBddJoueursService.remplacer_initier_campagne_des_joueurs()
 	# Enregistrement de la configuration sur le disque
 	_enregistrer_la_configuration()
+
+func _raz_aide_gameplay() -> void:
+	# ###################################
+	# Fichier 'sauvegarde_joueur_XX.json'
+	# ###################################
+	# Reactiver l'aide des gameplay
+	SauvegardeBddJoueursService.configuration_activer_aide_classique()
+	SauvegardeBddJoueursService.configuration_activer_aide_qui_perd_gagne()
 
 func _V1_0_0_rcX___V1_0_X() -> void:
 	# CONVERSION [V1.0.0-rcX -> V1.0.X]
