@@ -94,8 +94,16 @@ func ajouter_un_nouveau_joueur(nom_nouveau_joueur : String) -> bool:
 	_enregistrer_la_liste_des_joueurs()
 	return true
 
-func supprimer_un_joueur(nom_joueur : String, fichier_joueur : String) -> bool:
+func supprimer_le_joueur(nom_joueur : String) -> bool:
 	"""Supprime un joueur"""
+	# Effacer le joueur
+	if not le_joueur_existe(nom_joueur):
+		return false
+	var fichier_joueur := retourner_le_fichier_de_sauvegarde(nom_joueur)
+	return supprimer_le_joueur_et_sa_sauvegarde(nom_joueur, fichier_joueur)
+
+func supprimer_le_joueur_et_sa_sauvegarde(nom_joueur : String, fichier_joueur : String) -> bool:
+	"""Supprime un joueur et sa sauvegarde"""
 	# Effacer le joueur
 	var succes: bool = supprimer_un_joueur_orphelin_de_sauvegarde(nom_joueur, fichier_joueur)
 	if succes:

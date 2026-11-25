@@ -84,13 +84,20 @@ func _reload_players() -> void:
 	player_buttons.clear()
 	var names: Array = SauvegardeListeJoueursService.retourner_la_liste_des_joueurs()
 	for nom in names:
+		var joueur := HBoxContainer.new()
+		var effacer := Button.new()
+		effacer.icon = load("res://Art/UI/MenuPrincipal/poubelle.svg")
+		effacer.custom_minimum_size = Vector2(37, 37)
+		effacer.pressed.connect(_on_effacer_joueurs_campagne_pressed.bind(str(nom)))
+		joueur.add_child(effacer)
 		var button := Button.new()
 		button.text = "           " + str(nom)
 		button.alignment = HORIZONTAL_ALIGNMENT_LEFT
 		button.custom_minimum_size = Vector2(260,37)
 		button.add_theme_font_size_override("font_size", 17)
 		button.pressed.connect(_on_joueurs_campagne_pressed.bind(str(nom)))
-		$LowerFlow/PlayerSection/PlayerScroll/PlayersCenter/PlayerArea.add_child(button)
+		joueur.add_child(button)
+		$LowerFlow/PlayerSection/PlayerScroll/PlayersCenter/PlayerArea.add_child(joueur)
 
 		_add_player_avatar(button, str(nom))
 		_add_player_theme(button)
@@ -190,6 +197,14 @@ func _on_joueurs_campagne_pressed(nom_joueur: String) -> void:
 		AudioService.son_menu_click()
 		VibrationService.vibration_click()
 		get_tree().change_scene_to_file("res://Scenes/MenuPrincipal/Campagne/Statistiques/statistiques.tscn")
+
+func _on_effacer_joueurs_campagne_pressed(nom_joueur: String) -> void:
+	if not SauvegardeListeJoueursService.le_joueur_existe(nom_joueur):
+		LogService.log_erreur("Erreur : Le nom *" + nom_joueur + "* n'existe pas")
+		return
+	# TODO : Demander confirmation avant de supprimer le joueur
+	# SauvegardeListeJoueursService.supprimer_le_joueur(nom_joueur)
+	# _reload_players()
 
 func _on_nouveau_joueur_text_submitted(nom_nouveau_joueur: String):
 	if ScoreService.nouveau_joueur_est_nom_anna_triche(nom_nouveau_joueur):
