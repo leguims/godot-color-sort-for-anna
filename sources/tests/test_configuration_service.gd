@@ -219,7 +219,28 @@ func test_meme_version_conserve_les_preferences_utilisateur():
 	assert_false(service.effets_sonores_sont_actifs())
 	assert_false(service.vibrations_sont_actives())
 
-func test_meme_mineure_build_different_ne_reinitialise_ni_campagne_ni_scores():
+func test_migration_v1_0_5_n_est_pas_rejouee_a_la_version_suivante():
+	var contenu = SauvegardeBddJoueursService.sauvegarde_vierge("Alice")
+	_declarer_joueurs([{"nom": "Alice", "fichier": "joueur_alice.json", "score": 999, "contenu": contenu}])
+	FichiersJsonService.write_json_file(FICHIER_CONFIGURATION, _configuration_disque("V1.0.5"))
+	var instance = load(SCRIPT_SERVICE).new()
+	instance.configuration_du_jeu["version"] = "V1.0.6"
+	service = add_child_autofree(instance)
+
+	assert_eq(SauvegardeTableauDesScoresService.lire_score_joueur("Alice"), 999)
+	assert_eq(_lire_configuration_fichier().get("version"), "V1.0.6")
+
+func test_migration_v1_0_5_verifie_elle_meme_la_version():
+	var contenu = SauvegardeBddJoueursService.sauvegarde_vierge("Alice")
+	_declarer_joueurs([{"nom": "Alice", "fichier": "joueur_alice.json", "score": 999, "contenu": contenu}])
+	_creer_service_sans_nettoyage(_configuration_disque("V1.0.5"))
+
+	service._V1_0_X___V1_0_5("V1.0.5")
+	assert_eq(SauvegardeTableauDesScoresService.lire_score_joueur("Alice"), 999)
+	service._V1_0_X___V1_0_5("V1.0.4")
+	assert_eq(SauvegardeTableauDesScoresService.lire_score_joueur("Alice"), 0)
+
+func test_changement_de_version_mineure_reconstruit_le_score_sans_modifier_la_campagne_a_jouer():
 	var contenu = SauvegardeBddJoueursService.sauvegarde_vierge("Alice")
 	contenu["campagne"] = {"niveau_99": [{"nom": "Ancien", "difficulte": 9, "gameplay": "CLASSIQUE"}]}
 	_declarer_joueurs([{"nom": "Alice", "fichier": "joueur_alice.json", "score": 999, "contenu": contenu}])
@@ -233,7 +254,7 @@ func test_meme_mineure_build_different_ne_reinitialise_ni_campagne_ni_scores():
 	assert_eq(niveau_99[0].get("nom"), "Ancien")
 	assert_eq(int(niveau_99[0].get("difficulte")), 9)
 	assert_eq(sauvegarde.get("enregistrement_campagne"), [])
-	assert_eq(int(SauvegardeTableauDesScoresService.lire_score_joueur("Alice")), 999)
+	assert_eq(int(SauvegardeTableauDesScoresService.lire_score_joueur("Alice")), 0)
 
 func test_meme_mineure_conserve_les_preferences_utilisateur():
 	_creer_service(_configuration_disque(_version_meme_mineure(), true, false, false))
@@ -241,6 +262,207 @@ func test_meme_mineure_conserve_les_preferences_utilisateur():
 	assert_true(service.musiques_sont_actives())
 	assert_false(service.effets_sonores_sont_actifs())
 	assert_false(service.vibrations_sont_actives())
+
+func test_migration_v1_0_5_recalcule_toutes_les_campagnes_et_le_classement():
+	var nom_anna = ScoreService.lire_nom_anna_triche()
+	var sauvegarde_alice = SauvegardeBddJoueursService.sauvegarde_vierge("Alice")
+	sauvegarde_alice["enregistrement_campagne"] = [
+		{
+			"campagne": "campagne_1",
+			"score": {"fin_campagne": 100},
+			"niveaux": [
+				{
+					"niveau": "niveau_1",
+					"score": {"niveau": 50},
+					"plateaux": [
+						{"nom": "R1", "gameplay": "CLASSIQUE", "difficulte": 9, "duree": 5, "statut": "abandonné", "score": {}},
+						{"nom": "R1", "gameplay": "CLASSIQUE", "difficulte": 9, "duree": 10, "statut": "reussi", "score": {"duree": 1, "ratio_reussite": 10}},
+						{"nom": "P", "gameplay": "CLASSIQUE", "difficulte": 9, "duree": 10, "statut": "passé", "score": {"duree": 0, "ratio_reussite": 0}}
+					]
+				}
+			]
+		},
+		{
+			"campagne": "campagne_2",
+			"score": {},
+			"niveaux": [
+				{
+					"niveau": "niveau_2",
+					"score": {},
+					"plateaux": [
+						{"nom": "R2", "gameplay": "QUI_PERD_GAGNE", "difficulte": 20, "duree": 20, "statut": "reussi", "score": {"duree": 1, "ratio_reussite": 20}}
+					]
+				}
+			]
+		}
+	]
+	var sauvegarde_anna = SauvegardeBddJoueursService.sauvegarde_vierge(nom_anna)
+	sauvegarde_anna["enregistrement_campagne"] = [
+		{
+			"campagne": "ancienne_campagne_anna",
+			"niveaux": [{"niveau": "niveau_1", "plateaux": [
+				{"nom": "R0", "gameplay": "CLASSIQUE", "difficulte": 10, "duree": 20, "statut": "reussi", "score": {"duree": 1}}
+			]}]
+		},
+		{
+			"campagne": "campagne_anna",
+			"score": {},
+			"niveaux": [
+				{
+					"niveau": "niveau_1",
+					"score": {},
+					"plateaux": [
+						{"nom": "R3", "gameplay": "QUI_PERD_GAGNE", "difficulte": 20, "duree": 20, "statut": "reussi"}
+					]
+				}
+			]
+		}
+	]
+	_declarer_joueurs([
+		{"nom": "Alice", "fichier": "joueur_alice.json", "score": 999, "contenu": sauvegarde_alice},
+		{"nom": nom_anna, "fichier": "joueur_anna.json", "score": 1, "contenu": sauvegarde_anna}
+	])
+	for index_score in range(SauvegardeTableauDesScoresService.liste_des_scores.size() - 1, -1, -1):
+		if SauvegardeTableauDesScoresService.liste_des_scores[index_score].get("nom") == "Alice":
+			SauvegardeTableauDesScoresService.liste_des_scores.remove_at(index_score)
+	SauvegardeTableauDesScoresService.liste_des_scores.append({
+		"nom": "Joueur sans sauvegarde",
+		"rang": 3,
+		"score": 4000,
+		"score_txt": "4.000"
+	})
+
+	_creer_service_sans_nettoyage(_configuration_disque("V1.0.4"))
+
+	var alice_migree = _relire_joueur("joueur_alice.json")
+	assert_eq(alice_migree.get("enregistrement_campagne")[0].get("niveaux")[0].get("plateaux")[0].get("score"), {})
+	assert_eq(alice_migree.get("enregistrement_campagne")[0].get("niveaux")[0].get("plateaux")[1].get("score").get("duree"), 900)
+	assert_eq(alice_migree.get("enregistrement_campagne")[0].get("niveaux")[0].get("plateaux")[2].get("score").get("duree"), 0)
+	assert_eq(alice_migree.get("enregistrement_campagne")[0].get("niveaux")[0].get("plateaux")[2].get("score").get("ratio_reussite"), 0)
+	assert_eq(alice_migree.get("enregistrement_campagne")[1].get("niveaux")[0].get("plateaux")[0].get("score").get("duree"), 2000)
+	assert_eq(alice_migree.get("enregistrement_campagne")[0].get("niveaux")[0].get("plateaux")[1].get("score").get("ratio_reussite"), 10)
+	assert_eq(SauvegardeTableauDesScoresService.lire_score_joueur("Alice"), 2020)
+	var anna_migree = _relire_joueur("joueur_anna.json").get("enregistrement_campagne")
+	assert_eq(anna_migree[0].get("niveaux")[0].get("plateaux")[0].get("score").get("duree"), 750)
+	assert_eq(anna_migree[1].get("niveaux")[0].get("plateaux")[0].get("score"), {"duree": 2000.0})
+	assert_eq(SauvegardeTableauDesScoresService.lire_score_joueur(nom_anna), 8000)
+	assert_eq(SauvegardeTableauDesScoresService.lire_rang_joueur(nom_anna), 1)
+	assert_eq(SauvegardeTableauDesScoresService.lire_score_joueur("Joueur sans sauvegarde"), 4000)
+	assert_eq(SauvegardeTableauDesScoresService.lire_rang_joueur("Joueur sans sauvegarde"), 2)
+	assert_eq(SauvegardeTableauDesScoresService.lire_rang_joueur("Alice"), 3)
+
+	var classement_apres_migration = SauvegardeTableauDesScoresService.liste_des_scores.duplicate(true)
+	_lancer_service()
+	assert_eq(SauvegardeTableauDesScoresService.liste_des_scores, classement_apres_migration)
+
+func test_migration_v1_0_5_classement_a_zero_pour_une_derniere_campagne_vide():
+	var sauvegarde = SauvegardeBddJoueursService.sauvegarde_vierge("Alice")
+	sauvegarde["enregistrement_campagne"] = [
+		{"campagne": "ancienne", "niveaux": [{"niveau": "niveau_1", "plateaux": [
+			{"nom": "R1", "gameplay": "CLASSIQUE", "difficulte": 9, "duree": 10, "statut": "reussi", "score": {"duree": 1}}
+		]}]},
+		{"campagne": "nouvelle", "niveaux": []}
+	]
+	_declarer_joueurs([{"nom": "Alice", "fichier": "joueur_alice.json", "score": 999, "contenu": sauvegarde}])
+	_creer_service_sans_nettoyage(_configuration_disque("V1.0.4"))
+
+	assert_eq(_relire_joueur("joueur_alice.json")["enregistrement_campagne"][0]["niveaux"][0]["plateaux"][0]["score"]["duree"], 1350)
+	assert_eq(SauvegardeTableauDesScoresService.lire_score_joueur("Alice"), 0)
+
+func test_migration_v1_0_5_continue_si_une_sauvegarde_est_absente():
+	var sauvegarde_alice = SauvegardeBddJoueursService.sauvegarde_vierge("Alice")
+	sauvegarde_alice["enregistrement_campagne"] = [
+		{
+			"campagne": "campagne_1",
+			"score": {},
+			"niveaux": [
+				{
+					"niveau": "niveau_1",
+					"score": {},
+					"plateaux": [
+						{"nom": "R1", "gameplay": "CLASSIQUE", "difficulte": 9, "duree": 10, "statut": "reussi", "score": {"duree": 1}}
+					]
+				}
+			]
+		}
+	]
+	var sauvegarde_bob = SauvegardeBddJoueursService.sauvegarde_vierge("Bob")
+	sauvegarde_bob["enregistrement_campagne"] = [
+		{
+			"campagne": "campagne_1",
+			"score": {},
+			"niveaux": [
+				{
+					"niveau": "niveau_1",
+					"score": {},
+					"plateaux": [
+						{"nom": "R2", "difficulte": 20, "duree": 20, "statut": "reussi", "score": {"duree": 1}}
+					]
+				}
+			]
+		}
+	]
+	var sauvegarde_charlie = SauvegardeBddJoueursService.sauvegarde_vierge("Charlie")
+	sauvegarde_charlie["enregistrement_campagne"] = [
+		{
+			"campagne": "campagne_1",
+			"score": {},
+			"niveaux": [
+				{
+					"niveau": "niveau_1",
+					"score": {},
+					"plateaux": [
+						{"nom": "R3", "gameplay": "CLASSIQUE", "difficulte": 9, "duree": 10, "statut": "reussi", "score": {"duree": 1}}
+					]
+				}
+			]
+		}
+	]
+	_declarer_joueurs([
+		{"nom": "Alice", "fichier": "joueur_alice.json", "score": 999, "contenu": sauvegarde_alice},
+		{"nom": "Bob", "fichier": "joueur_bob.json", "score": 888, "contenu": sauvegarde_bob},
+		{"nom": "Charlie", "fichier": "joueur_charlie.json", "score": 777, "contenu": sauvegarde_charlie}
+	])
+	FichiersJsonService.remove_json_file("joueur_bob.json")
+
+	_creer_service_sans_nettoyage(_configuration_disque("V1.0.4"))
+
+	assert_eq(_relire_joueur("joueur_alice.json").get("enregistrement_campagne")[0].get("niveaux")[0].get("plateaux")[0].get("score").get("duree"), 1350)
+	assert_false(FichiersJsonService.json_file_exists("joueur_bob.json"))
+	assert_eq(_relire_joueur("joueur_charlie.json").get("enregistrement_campagne")[0].get("niveaux")[0].get("plateaux")[0].get("score").get("duree"), 1350)
+	assert_eq(SauvegardeTableauDesScoresService.lire_score_joueur("Alice"), 1350)
+	assert_eq(SauvegardeTableauDesScoresService.lire_score_joueur("Bob"), 888)
+	assert_eq(SauvegardeTableauDesScoresService.lire_score_joueur("Charlie"), 1350)
+	assert_false(SauvegardeBddJoueursService.le_joueur_existe())
+	assert_eq(_lire_configuration_fichier().get("version"), _version_courante())
+	var alice_migree = _relire_joueur("joueur_alice.json")
+	_lancer_service()
+	assert_eq(_relire_joueur("joueur_alice.json"), alice_migree)
+
+func test_migration_v1_0_5_conserve_le_calcul_pour_un_gameplay_inconnu():
+	var sauvegarde = SauvegardeBddJoueursService.sauvegarde_vierge("Alice")
+	sauvegarde["enregistrement_campagne"] = [
+		{
+			"campagne": "campagne_1",
+			"score": {},
+			"niveaux": [
+				{
+					"niveau": "niveau_1",
+					"score": {},
+					"plateaux": [
+						{"nom": "R1", "gameplay": "AUTRE", "difficulte": 9, "duree": 10, "statut": "reussi", "score": {"duree": 1}}
+					]
+				}
+			]
+		}
+	]
+	_declarer_joueurs([
+		{"nom": "Alice", "fichier": "joueur_alice.json", "score": 999, "contenu": sauvegarde}
+	])
+	_creer_service_sans_nettoyage(_configuration_disque("V1.0.4"))
+
+	assert_eq(_relire_joueur("joueur_alice.json").get("enregistrement_campagne")[0].get("niveaux")[0].get("plateaux")[0].get("score").get("duree"), 0)
+	assert_eq(SauvegardeTableauDesScoresService.lire_score_joueur("Alice"), 0)
 
 func test_relancer_apres_migration_ne_migre_plus():
 	_migrer_un_joueur("V0.4.0.beta7", _joueur_ancien("Alice"))

@@ -446,10 +446,16 @@ func enregistrement_campagne_existe() -> bool:
 func enregistrement_campagne_lire_campagne(nom_campagne : String) -> Dictionary:
 	"Retourne la campagne"
 	if enregistrement_campagne_existe():
-		for campagne in enregistrement_campagne():
-			if campagne.get('campagne') == nom_campagne:
-				return campagne
+		for dico_campagne in enregistrement_campagne():
+			if dico_campagne.get('campagne') == nom_campagne:
+				return dico_campagne
 	return {}
+
+func enregistrement_campagne_lire_campagnes() -> Array:
+	"Retourne les campagnes"
+	if enregistrement_campagne_existe():
+		return enregistrement_campagne()
+	return []
 
 func enregistrement_campagne_lire_derniere_campagne() -> Dictionary:
 	"Retourne la dernière campagne"
@@ -457,10 +463,10 @@ func enregistrement_campagne_lire_derniere_campagne() -> Dictionary:
 		return enregistrement_campagne().back()
 	return {}
 
-func enregistrement_campagne_importer_campagne(campagne: Dictionary) -> bool:
+func enregistrement_campagne_importer_campagne(dico_campagne: Dictionary) -> bool:
 	"Importe l'intégralité d'une campagne dans la sauvegarde du joueur."
-	var nom_campagne: Variant = campagne.get('campagne', '')
-	var niveaux: Variant = campagne.get('niveaux', null)
+	var nom_campagne: Variant = dico_campagne.get('campagne', '')
+	var niveaux: Variant = dico_campagne.get('niveaux', null)
 	if not le_joueur_existe() or not nom_campagne is String \
 		or nom_campagne.strip_edges().is_empty() or not niveaux is Array:
 		LogService.log_erreur("Bdd joueurs : données de campagne importées invalides.")
@@ -470,7 +476,7 @@ func enregistrement_campagne_importer_campagne(campagne: Dictionary) -> bool:
 		return false
 	if not lire_sauvegarde().has('enregistrement_campagne'):
 		lire_sauvegarde()['enregistrement_campagne'] = []
-	enregistrement_campagne().append(campagne.duplicate(true))
+	enregistrement_campagne().append(dico_campagne.duplicate(true))
 	_enregistrer_sauvegarde_joueur()
 	return true
 
@@ -562,11 +568,29 @@ func enregistrement_campagne_lire_score_derniere_fin_campagne() -> int:
 			return derniere_campagne.get('score').get('fin_campagne')
 	return 0
 
-func enregistrement_campagne_lire_score_fin_campagne(campagne  : Dictionary) -> int:
-	if campagne:
-		if campagne.get('score') and campagne.get('score').get('fin_campagne'):
-			return campagne.get('score').get('fin_campagne')
+func enregistrement_campagne_lire_score_fin_campagne(dico_campagne  : Dictionary) -> int:
+	if dico_campagne:
+		if dico_campagne.get('score') and dico_campagne.get('score').get('fin_campagne'):
+			return dico_campagne.get('score').get('fin_campagne')
 	return 0
+
+func enregistrement_campagne_lire_score_total_derniere_campagne() -> int:
+	var derniere_campagne = enregistrement_campagne_lire_derniere_campagne()
+	if derniere_campagne:
+		return enregistrement_campagne_lire_score_total_campagne(derniere_campagne)
+	return 0
+
+func enregistrement_campagne_lire_score_total_campagne(dico_campagne  : Dictionary) -> int:
+	var score_total = 0
+	if dico_campagne:
+		score_total += enregistrement_campagne_lire_score_fin_campagne(dico_campagne)
+		for niveau in enregistrement_campagne_lire_niveaux(dico_campagne):
+			score_total += enregistrement_campagne_lire_score_niveau(niveau)
+			score_total += enregistrement_campagne_lire_score_niveau_parfait(niveau)
+			for plateau in enregistrement_campagne_lire_plateaux(niveau):
+				score_total += enregistrement_campagne_lire_score_duree_plateau(plateau)
+				score_total += enregistrement_campagne_lire_score_ratio_reussite_plateau(plateau)
+	return score_total
 
 ###############################################
 # ENREGISTREMENT CAMPAGNE / NIVEAUX
@@ -600,10 +624,10 @@ func enregistrement_campagne_niveau_existe() -> bool:
 	return enregistrement_campagne_lire_derniere_campagne() \
 		and not enregistrement_campagne_lire_derniere_campagne().get('niveaux', []).is_empty()
 
-func enregistrement_campagne_lire_niveaux(campagne : Dictionary) -> Array:
+func enregistrement_campagne_lire_niveaux(dico_campagne : Dictionary) -> Array:
 	"Retourne les niveaux"
-	if campagne:
-		return campagne.get('niveaux', [])
+	if dico_campagne:
+		return dico_campagne.get('niveaux', [])
 	return []
 
 func enregistrement_campagne_lire_derniers_niveaux() -> Array:
@@ -613,12 +637,12 @@ func enregistrement_campagne_lire_derniers_niveaux() -> Array:
 	return []
 
 # TODO : inutilise
-func enregistrement_campagne_lire_niveau(nom_campagne : String, nom_niveau : String) -> Dictionary:
+func enregistrement_campagne_lire_niveau(nom_campagne : String, nom_du_niveau : String) -> Dictionary:
 	"Retourne le niveau de la campagne"
-	var campagne = enregistrement_campagne_lire_campagne(nom_campagne)
-	if campagne:
-		for niveau in campagne.get('niveaux', []):
-			if niveau.get('niveau') == nom_niveau:
+	var dico_campagne = enregistrement_campagne_lire_campagne(nom_campagne)
+	if dico_campagne:
+		for niveau in dico_campagne.get('niveaux', []):
+			if niveau.get('niveau') == nom_du_niveau:
 				return niveau
 	return {}
 
@@ -932,10 +956,10 @@ func enregistrement_campagne_lire_plateaux(niveau : Dictionary) -> Array:
 
 # TODO : inutilise
 func enregistrement_campagne_lire_plateau(nom_campagne : String,
-										nom_niveau : String,
+										nom_du_niveau : String,
 										nom_plateau : String) -> Dictionary:
 	"Retourne le plateau du niveau de la campagne"
-	var niveau = enregistrement_campagne_lire_niveau(nom_campagne, nom_niveau)
+	var niveau = enregistrement_campagne_lire_niveau(nom_campagne, nom_du_niveau)
 	if niveau:
 		for plateau in niveau.get('plateaux', []):
 			if plateau.get('nom') == nom_plateau:
@@ -951,6 +975,9 @@ func enregistrement_campagne_lire_dernier_plateau() -> Dictionary:
 
 func enregistrement_campagne_lire_nom_plateau() -> String:
 	var plateau = enregistrement_campagne_lire_dernier_plateau()
+	return enregistrement_campagne_lire_nom_plateau_particulier(plateau)
+
+func enregistrement_campagne_lire_nom_plateau_particulier(plateau : Dictionary) -> String:
 	if plateau:
 		return plateau.get('nom')
 	return ""
@@ -985,10 +1012,16 @@ func enregistrement_campagne_lire_duree_plateau_recommence() -> float:
 		# Cumuler le temps passé en abandon sur ce plateau
 		var nom_plateau_ref = plateau_ref.get('nom')
 		var dernier_niveau = enregistrement_campagne_lire_dernier_niveau()
-		if dernier_niveau:
-			for plateau in dernier_niveau.get('plateaux', []):
-				if plateau.get('nom') == nom_plateau_ref and plateau.get('statut') == 'abandonné':
-					duree_recommence_en_s += plateau.get('duree', 0.)
+		duree_recommence_en_s = enregistrement_campagne_lire_duree_plateau_recommence_pour_plateau(dernier_niveau, nom_plateau_ref)
+	return duree_recommence_en_s
+
+func enregistrement_campagne_lire_duree_plateau_recommence_pour_plateau(niveau : Dictionary, nom_plateau : String) -> float:
+	var duree_recommence_en_s : float = 0.
+	if nom_plateau and niveau:
+		# Cumuler le temps passé en abandon sur ce plateau
+		for plateau in niveau.get('plateaux', []):
+			if plateau.get('nom') == nom_plateau and plateau.get('statut') == 'abandonné':
+				duree_recommence_en_s += plateau.get('duree', 0.)
 	return duree_recommence_en_s
 
 func enregistrement_campagne_lire_le_temps_du_joueur() -> String: # TODO : INUTILISE !
@@ -1029,6 +1062,9 @@ func enregistrement_campagne_lire_le_temps_du_joueur() -> String: # TODO : INUTI
 
 func enregistrement_campagne_lire_difficulte_plateau() -> int:
 	var plateau = enregistrement_campagne_lire_dernier_plateau()
+	return enregistrement_campagne_lire_difficulte_plateau_particulier(plateau)
+
+func enregistrement_campagne_lire_difficulte_plateau_particulier(plateau : Dictionary) -> int:
 	if plateau:
 		return roundi(plateau.get('difficulte'))
 	return 0
@@ -1068,14 +1104,20 @@ func enregistrement_campagne_lire_statut_plateau(plateau : Dictionary) -> String
 
 func enregistrement_campagne_modifier_score_duree_plateau(score : int) -> void:
 	var plateau = enregistrement_campagne_lire_dernier_plateau()
+	enregistrement_campagne_modifier_score_duree_plateau_particulier(plateau, score)
+
+func enregistrement_campagne_modifier_score_ratio_reussite_plateau(score : int) -> void:
+	var plateau = enregistrement_campagne_lire_dernier_plateau()
+	enregistrement_campagne_modifier_score_ratio_reussite_plateau_particulier(plateau, score)
+
+func enregistrement_campagne_modifier_score_duree_plateau_particulier(plateau : Dictionary, score : int) -> void:
 	if plateau:
 		if 'score' not in plateau:
 			plateau['score'] = {}
 		plateau['score']['duree'] = score
 		_enregistrer_sauvegarde_joueur()
 
-func enregistrement_campagne_modifier_score_ratio_reussite_plateau(score : int) -> void:
-	var plateau = enregistrement_campagne_lire_dernier_plateau()
+func enregistrement_campagne_modifier_score_ratio_reussite_plateau_particulier(plateau : Dictionary, score : int) -> void:
 	if plateau:
 		if 'score' not in plateau:
 			plateau['score'] = {}

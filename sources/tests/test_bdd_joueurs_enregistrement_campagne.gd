@@ -583,6 +583,17 @@ func test_lire_score_fin_campagne_retourne_zero_pour_les_cas_vides():
 	singleton.enregistrement_campagne_modifier_score_fin_campagne(5)
 	assert_eq(singleton.enregistrement_campagne_lire_score_derniere_fin_campagne(), 0)
 
+func test_lire_score_total_campagne_additionne_les_scores_enregistres():
+	var campagne = _campagne_enreg("campagne_a", [
+		_niveau("niveau_1", [
+			_plateau("P1", "reussi", 100.0, 110.0, 1, "CLASSIQUE", {"duree": 20, "ratio_reussite": 30}),
+			_plateau("P2", "passé", 110.0, 120.0, 1, "CLASSIQUE", {})
+		], 0.0, 0.0, {"niveau": 40, "niveau_parfait": 50}),
+		_niveau("niveau_2", [_plateau("P3", "reussi", 100.0, 110.0, 1, "CLASSIQUE", {"duree": 60})])
+	], 1000.0, 0.0, {"fin_campagne": 100})
+	assert_eq(singleton.enregistrement_campagne_lire_score_total_campagne(campagne), 300)
+	assert_eq(singleton.enregistrement_campagne_lire_score_total_campagne({}), 0)
+
 
 # ---------------------------------------------------------
 # ENREGISTREMENT CAMPAGNE : NIVEAUX
@@ -1147,6 +1158,14 @@ func test_lire_duree_plateau_recommence_sans_abandon_ou_sans_plateau():
 	_charger([_campagne_enreg("campagne_a", [_niveau("niveau_1")])])
 	assert_eq(singleton.enregistrement_campagne_lire_duree_plateau_recommence(), 0.0)
 
+func test_lire_duree_recommencee_pour_un_plateau_historique():
+	var niveau = _niveau("niveau_1", [
+		_plateau("X", "abandonné", 100.0, 104.0),
+		_plateau("X", "abandonné", 110.0, 113.0),
+		_plateau("X", "reussi", 120.0, 130.0)
+	])
+	assert_eq(singleton.enregistrement_campagne_lire_duree_plateau_recommence_pour_plateau(niveau, "X"), 7.0)
+
 func test_modifier_et_lire_le_statut_du_plateau():
 	_charger_plateau_en_cours()
 	assert_eq(singleton.enregistrement_campagne_lire_statut_dernier_plateau(), "en cours")
@@ -1175,6 +1194,21 @@ func test_modifier_les_scores_du_plateau():
 	assert_eq(singleton.enregistrement_campagne_lire_score_duree_plateau(plateau), 1200)
 	assert_eq(singleton.enregistrement_campagne_lire_score_ratio_reussite_plateau(plateau), 80)
 	assert_eq(_derniere_campagne_relue()["niveaux"][0]["plateaux"][0]["score"], {"duree": 1200.0, "ratio_reussite": 80.0})
+
+func test_modifier_scores_un_plateau_historique_cree_et_enregistre_le_score():
+	var ancien = _plateau("P1", "reussi", 100.0, 110.0)
+	var autre = _plateau("P2", "passé", 110.0, 120.0)
+	ancien.erase("score")
+	autre.erase("score")
+	_charger_niveau_avec_plateaux([ancien, autre, _plateau_en_cours("P3")])
+	var plateaux = singleton.enregistrement_campagne_lire_plateaux(singleton.enregistrement_campagne_lire_dernier_niveau())
+	singleton.enregistrement_campagne_modifier_score_duree_plateau_particulier(plateaux[0], 42)
+	singleton.enregistrement_campagne_modifier_score_ratio_reussite_plateau_particulier(plateaux[0], 7)
+	singleton.enregistrement_campagne_modifier_score_ratio_reussite_plateau_particulier(plateaux[1], 8)
+	var plateaux_relus = _derniere_campagne_relue()["niveaux"][0]["plateaux"]
+	assert_eq(plateaux_relus[0]["score"], {"duree": 42.0, "ratio_reussite": 7.0})
+	assert_eq(plateaux_relus[1]["score"], {"ratio_reussite": 8.0})
+	assert_eq(plateaux_relus[2]["score"], {})
 
 func test_modifier_les_scores_du_plateau_cree_la_cle_score_si_absente():
 	_charger_plateau_en_cours()

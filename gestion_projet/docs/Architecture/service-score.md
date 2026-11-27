@@ -23,6 +23,7 @@ Calculateur de score. Il convertit le déroulement d’une partie en score explo
 ## Actions clés
 
 - Évalue le score de durée
+- Retourne le temps de référence et calcule le score de durée à partir des données fournies sans lire ni modifier les sauvegardes. Lors d’un passage, le score calculé est ensuite annulé pour conserver zéro point de durée et de ratio.
 - Évalue le score de ratio de réussite
 - Applique le bonus Anna
 

@@ -4,7 +4,7 @@ const FIN_CAMPAGNE := 500_000
 
 func mettre_a_jour_score_pour_victoire() -> Dictionary:
 	"Calculer le score suite à une victoire (duree, ratio réussites, niveau, campagne)"
-	var score_duree = mettre_a_jour_score_duree() 
+	var score_duree = mettre_a_jour_score_duree()
 	var score_ratio_reussite = mettre_a_jour_score_ratio_reussite()
 	var score_niveau = mettre_a_jour_score_niveau()
 	var score_niveau_parfait = mettre_a_jour_score_niveau_parfait()
@@ -72,26 +72,14 @@ func mettre_a_jour_score_pour_passer() -> Dictionary:
 
 func mettre_a_jour_score_duree() -> Dictionary:
 	"Calculer le score relatif au temps"
+	var nom_joueur = SauvegardeBddJoueursService.lire_nom_joueur()
 	var difficulte = SauvegardeBddJoueursService.enregistrement_campagne_lire_difficulte_plateau()
 	var gameplay = SauvegardeBddJoueursService.enregistrement_campagne_lire_gameplay_plateau()
-	var temps_reference_en_s = 0.
-	if gameplay.to_lower() == "classique":
-		temps_reference_en_s = _classique_temps_reference_par_difficulte(difficulte)
-	elif gameplay.to_lower() == "qui_perd_gagne":
-		temps_reference_en_s = _qui_perd_gagne_temps_reference_par_difficulte(difficulte)
-	else:
-		LogService.log_erreur("Erreur : Gameplay inattendu pour le score ! " + str(gameplay))
-
-	var bonus_duree = 0
-	var nom_joueur = SauvegardeBddJoueursService.lire_nom_joueur()
 	var duree_recommence_en_s = SauvegardeBddJoueursService.enregistrement_campagne_lire_duree_plateau_recommence()
 	var duree_realise_en_s = SauvegardeBddJoueursService.enregistrement_campagne_lire_duree_plateau()
 	var duree_totale_en_s = duree_recommence_en_s + duree_realise_en_s
-	# Score sur le ratio du temps référence/joué
-	var ratio_temps = 0.
-	if duree_totale_en_s:
-		ratio_temps = temps_reference_en_s / duree_totale_en_s
-	bonus_duree = roundi(100 * difficulte * ratio_temps)
+	var temps_reference_en_s = calculer_temps_reference_duree(difficulte, gameplay)
+	var bonus_duree = calculer_score_duree(difficulte, temps_reference_en_s, duree_totale_en_s)
 	SauvegardeBddJoueursService.enregistrement_campagne_modifier_score_duree_plateau(bonus_duree)
 	SauvegardeTableauDesScoresService.incrementer_score_joueur(nom_joueur, bonus_duree)
 	return {'type':'duree',
@@ -100,34 +88,52 @@ func mettre_a_jour_score_duree() -> Dictionary:
 			'realise': duree_realise_en_s,
 			'points': bonus_duree}
 
+func calculer_temps_reference_duree(difficulte: int, gameplay: String) -> float:
+	"Retourne le temps de référence selon le gameplay et la difficulté."
+	if gameplay.to_lower() == "classique":
+		return _classique_temps_reference_par_difficulte(difficulte)
+	if gameplay.to_lower() == "qui_perd_gagne":
+		return _qui_perd_gagne_temps_reference_par_difficulte(difficulte)
+	LogService.log_erreur("Erreur : Gameplay inattendu pour le score ! " + str(gameplay))
+	return 0.
+
+func calculer_score_duree(difficulte: int, temps_reference_en_s: float, duree_totale_en_s: float) -> int:
+	"Calcule les points de durée à partir des arguments fournis."
+	var bonus_duree = 0
+	if duree_totale_en_s:
+		bonus_duree = roundi(100 * difficulte * temps_reference_en_s / duree_totale_en_s)
+	return bonus_duree
+
 func _classique_temps_reference_par_difficulte(difficulte: int) -> int:
 	var temps_reference_par_difficulte = {
-		9 : 22.,
-		23 : 30.,
-		34 : 38.,
-		40 : 40.,
-		50 : 93.,
-		59 : 124.,
-		72 : 322.,
-		78 : 352.,
-		90 : 381.,
-		95 : 393.,
-		100 : 400.
+		10 : 15.,
+		20 : 20.,
+		30 : 25.,
+		40 : 30.,
+		50 : 40.,
+		60 : 45.,
+		65 : 65.,
+		70 : 90.,
+		75 : 115.,
+		80 : 140.,
+		90 : 160.,
+		95 : 170.,
+		100 : 180.
 		}
 	return _temps_reference_par_difficulte(difficulte, temps_reference_par_difficulte)
 
 func _qui_perd_gagne_temps_reference_par_difficulte(difficulte: int) -> int:
 	var temps_reference_par_difficulte = {
-		20 : 37.,
-		29 : 40.,
-		42 : 42.,
-		52 : 46.,
-		60 : 60.,
-		71 : 80.,
-		79 : 85.,
-		88 : 90.,
-		95 : 95.,
-		100 : 100.
+		20 : 20.,
+		30 : 25.,
+		40 : 30.,
+		50 : 35.,
+		60 : 40.,
+		70 : 45.,
+		80 : 50.,
+		90 : 55.,
+		95 : 60.,
+		100 : 70.
 		}
 	return _temps_reference_par_difficulte(difficulte, temps_reference_par_difficulte)
 

@@ -54,6 +54,7 @@ func _initialiser_la_configuration() -> void:
 		if delta_mineur:
 			# Changements mineurs (3eme digit de la version)
 			_V1_0_0_rcX___V1_0_X()
+			_V1_0_X___V1_0_5(version_courante_disque)
 
 		if delta_majeur or \
 			delta_mineur and \
@@ -164,6 +165,43 @@ func _raz_aide_gameplay() -> void:
 	# Reactiver l'aide des gameplay
 	SauvegardeBddJoueursService.configuration_activer_aide_classique()
 	SauvegardeBddJoueursService.configuration_activer_aide_qui_perd_gagne()
+
+func _V1_0_X___V1_0_5(version_courante_disque : String) -> void:
+	if int(version_courante_disque.split('.')[2]) >= 5:
+		return
+
+	var scores_joueurs := {}
+	for nom_joueur in SauvegardeListeJoueursService.retourner_la_liste_des_joueurs():
+		var fichier_sauvegarde = SauvegardeListeJoueursService.retourner_le_fichier_de_sauvegarde(nom_joueur)
+		if not SauvegardeBddJoueursService.choisir_le_joueur(nom_joueur, fichier_sauvegarde):
+			LogService.log_erreur("Migration des scores impossible : sauvegarde illisible pour ", nom_joueur)
+			SauvegardeBddJoueursService.liberer_le_joueur()
+			continue
+
+		var score_total := 0
+		scores_joueurs[nom_joueur] = 0
+		for campagne in SauvegardeBddJoueursService.enregistrement_campagne_lire_campagnes():
+			for niveau in SauvegardeBddJoueursService.enregistrement_campagne_lire_niveaux(campagne):
+				for plateau in SauvegardeBddJoueursService.enregistrement_campagne_lire_plateaux(niveau):
+					var statut = SauvegardeBddJoueursService.enregistrement_campagne_lire_statut_plateau(plateau)
+					if statut == "reussi":
+						var difficulte = SauvegardeBddJoueursService.enregistrement_campagne_lire_difficulte_plateau_particulier(plateau)
+						var temps_reference = ScoreService.calculer_temps_reference_duree(difficulte, plateau.get("gameplay"))
+						var duree_recommencee = SauvegardeBddJoueursService.enregistrement_campagne_lire_duree_plateau_recommence_pour_plateau(
+							niveau, SauvegardeBddJoueursService.enregistrement_campagne_lire_nom_plateau_particulier(plateau)
+						)
+						var points = ScoreService.calculer_score_duree(
+							difficulte, temps_reference, duree_recommencee + plateau.get("duree")
+						)
+						SauvegardeBddJoueursService.enregistrement_campagne_modifier_score_duree_plateau_particulier(plateau, points)
+			score_total = SauvegardeBddJoueursService.enregistrement_campagne_lire_score_total_campagne(campagne)
+
+			if nom_joueur.to_lower() == ScoreService.lire_nom_anna_triche().to_lower():
+				score_total *= 4
+			scores_joueurs[nom_joueur] = score_total
+		SauvegardeBddJoueursService.liberer_le_joueur()
+
+	SauvegardeTableauDesScoresService.modifier_scores_joueurs(scores_joueurs)
 
 func _V1_0_0_rcX___V1_0_X() -> void:
 	# CONVERSION [V1.0.0-rcX -> V1.0.X]

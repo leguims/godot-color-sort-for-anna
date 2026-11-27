@@ -113,6 +113,17 @@ func modifier_score_joueur(nom_joueur : String, nouveau_score : int) -> void:
 		joueur['score_txt'] = nombre_avec_separateur_de_milliers(nouveau_score, '.')
 		_mettre_a_jour_les_rangs()
 
+func modifier_scores_joueurs(scores : Dictionary) -> void:
+	"Met à jour les scores fournis et recalcule les rangs une seule fois."
+	for nom_joueur in scores.keys():
+		var joueur = _retourner_le_joueur(nom_joueur)
+		if not joueur:
+			joueur = {'nom': nom_joueur, 'rang': 0}
+			liste_des_scores.append(joueur)
+		joueur['score'] = scores[nom_joueur]
+		joueur['score_txt'] = nombre_avec_separateur_de_milliers(scores[nom_joueur], '.')
+	_mettre_a_jour_les_rangs()
+
 func incrementer_score_joueur(nom_joueur : String, increment_score : int) -> void:
 	var joueur = _retourner_le_joueur(nom_joueur)
 	if joueur:

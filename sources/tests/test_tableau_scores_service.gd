@@ -157,6 +157,20 @@ func test_modifier_score_joueur_met_a_jour_le_score_le_texte_et_les_rangs():
 	assert_eq(int(service._retourner_le_joueur("Bob").get("rang")), 1)
 	assert_eq(int(_lire_fichier_scores()[1].get("score")), 2500)
 
+func test_modifier_scores_joueurs_ajoute_les_absents_et_conserve_les_autres():
+	_creer_service([
+		{"nom": "Alice", "rang": 1, "score": 2000, "score_txt": "2.000"},
+		{"nom": "Bob", "rang": 2, "score": 1000, "score_txt": "1.000"}
+	])
+	service.modifier_scores_joueurs({"Alice": 500, "Charlie": 1500})
+	assert_eq(service.lire_score_joueur("Alice"), 500)
+	assert_eq(service.lire_score_joueur("Bob"), 1000)
+	assert_eq(service.lire_score_txt_joueur("Charlie"), "1.500")
+	assert_eq(service.lire_rang_joueur("Charlie"), 1)
+	assert_eq(service.lire_rang_joueur("Bob"), 2)
+	assert_eq(service.lire_rang_joueur("Alice"), 3)
+	_assert_liste_scores_eq(_lire_fichier_scores(), service.liste_des_scores)
+
 func test_incrementer_score_joueur_gere_les_egalites_et_retourner_classement_trie_par_rang():
 	_creer_service([
 		{"nom": "Alice", "rang": 1, "score": 2000, "score_txt": "2.000"},

@@ -145,6 +145,26 @@ func test_mettre_a_jour_score_duree_avec_duree_totale_nulle_ne_rapporte_aucun_po
 	var score_duree = service.mettre_a_jour_score_duree()
 	assert_eq(score_duree.get("points"), 0)
 
+func test_calculer_score_duree_utilise_les_arguments_sans_ecrire_dans_les_sauvegardes():
+	var score_joueur_avant = _score()
+	var score_plateau_avant = _dernier_plateau().get("score", {}).duplicate(true)
+
+	var temps_reference_en_s = service.calculer_temps_reference_duree(9, "CLASSIQUE")
+	var score = service.calculer_score_duree(9, temps_reference_en_s, 15.)
+
+	assert_eq(temps_reference_en_s, 15)
+	assert_eq(score, 900)
+	assert_eq(_score(), score_joueur_avant)
+	assert_eq(_dernier_plateau().get("score", {}), score_plateau_avant)
+
+func test_calculer_score_duree_garde_une_reference_nulle_pour_un_gameplay_inconnu():
+	var reference_qpg = service.calculer_temps_reference_duree(20, "QUI_PERD_GAGNE")
+	var reference_inconnue = service.calculer_temps_reference_duree(20, "AUTRE")
+
+	assert_eq(service.calculer_score_duree(20, reference_qpg, 20.), 2000)
+	assert_eq(reference_inconnue, 0)
+	assert_eq(service.calculer_score_duree(20, reference_inconnue, 20.), 0)
+
 func test_mettre_a_jour_score_pour_victoire_retourne_une_grille_complete():
 	_level_finishes_current_level_as_won()
 	var score = service.mettre_a_jour_score_pour_victoire()
@@ -475,14 +495,14 @@ func test_score_duree_signale_une_difficulte_superieure_a_cent():
 	assert_string_contains(journal.lire_messages(), "Erreur : Difficulté inattendue pour le score !")
 
 func test_score_duree_reference_par_difficulte():
-	var cas = {1: 22, 9: 22, 10: 30, 20: 30, 30: 38, 40: 40, 50: 93, 60: 322, 71: 322, 81: 381, 100: 400}
+	var cas = {0: 15, 1: 15, 9: 15, 10: 15, 20: 20, 30: 25, 40: 30, 50: 40, 60: 45, 71: 115, 81: 160, 100: 180}
 	for difficulte in cas:
 		_set_last_plateau_difficulte(difficulte)
 		assert_eq(service.mettre_a_jour_score_duree().get("reference"), cas[difficulte], "difficulté %d" % difficulte)
 
 func test_score_duree_reference_qui_perd_gagne_par_difficulte():
 	_dernier_plateau()["gameplay"] = "QUI_PERD_GAGNE"
-	var cas = {1: 37, 20: 37, 21: 40, 29: 40, 30: 42, 60: 60, 100: 100}
+	var cas = {1: 20, 20: 20, 21: 25, 29: 25, 30: 25, 60: 40, 100: 70}
 	for difficulte in cas:
 		_set_last_plateau_difficulte(difficulte)
 		assert_eq(service.mettre_a_jour_score_duree().get("reference"), cas[difficulte], "difficulté %d" % difficulte)
@@ -491,7 +511,7 @@ func test_score_duree_points_exacts():
 	_preparer_plateau_a_passer(18., 4)
 	var avant = _score()
 	var score = service.mettre_a_jour_score_duree()
-	assert_eq(score.get("points"), roundi(100 * 4 * 22. / 18.))
+	assert_eq(score.get("points"), roundi(100 * 4 * 15. / 18.))
 	assert_eq(_score(), avant + score.get("points"))
 	assert_eq(_dernier_plateau().get("score").get("duree"), score.get("points"))
 
